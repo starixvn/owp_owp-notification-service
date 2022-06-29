@@ -7,6 +7,8 @@ using RabbitMQ.Client.Events;
 using System.Text;
 
 namespace OWP.MessageConsumer;
+
+#nullable disable
 public class Consumer
 {
     private ConnectionFactory factory;
@@ -51,7 +53,7 @@ public class Consumer
         }
     }
 
-    private async void OnReceived(object? model, BasicDeliverEventArgs eventArgs)
+    private async void OnReceived(object model, BasicDeliverEventArgs eventArgs)
     {
         var body = eventArgs.Body.ToArray();
         var message = Encoding.UTF8.GetString(body);

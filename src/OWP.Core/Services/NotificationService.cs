@@ -1,29 +1,44 @@
 ﻿using Fanex.Data.Repository;
 using Microsoft.AspNetCore.SignalR;
 using OWP.Core.Criteria;
+using OWP.Core.Hubs;
 using OWP.Core.Models;
-using OWP.NotificationHandler.Hubs;
 
 namespace OWP.NotificationHandler.Services;
 
-public interface NotifyEngine
+public interface NotificationService
 {
-    Task Notify<T>(IList<T> messages, IList<string> usersId) where T : class;
 
-    Task Notify<T>(string sessionId, Func<Tuple<IList<User>, IList<MessageModel>>, IDictionary<string, T>> messageModelFunc) where T : class;
+    Task Notify(string messages);
+    Task Notify(object messages);
+    Task Notify<T>(IList<T> messages, IList<string> usersId) where T : MessageModel;
+    Task Notify<T>(string sessionId, Func<Tuple<IList<User>, IList<MessageModel>>, IDictionary<string, T>> messageModelFunc) where T : MessageModel;
 }
 
-public class NotifyEngineImp : NotifyEngine
+public class NotifyEngineImp : NotificationService
 {
     private readonly IHubContext<ChangedInfoNotifyHubImp, ChangedInfoNotifyHub> notificationHub;
     private readonly IDynamicRepository repository;
 
-    public NotifyEngineImp(IHubContext<ChangedInfoNotifyHubImp, ChangedInfoNotifyHub> notificationHub)
+
+    public NotifyEngineImp(IHubContext<ChangedInfoNotifyHubImp, ChangedInfoNotifyHub> notificationHub, IDynamicRepository repository)
     {
         this.notificationHub = notificationHub;
+        this.repository = repository;
     }
 
-    public async Task Notify<T>(IList<T> messages, IList<string> usersId) where T : class
+
+    public async Task Notify(string messages)
+    {
+        await notificationHub.Clients.All.notifyChangedInformationData(messages);
+    }
+
+    public async Task Notify(object messages)
+    {
+        await notificationHub.Clients.All.notifyChangedInformationData(messages);
+    }
+
+    public async Task Notify<T>(IList<T> messages, IList<string> usersId) where T : MessageModel
     {
         foreach (var message in messages)
         {
@@ -36,10 +51,11 @@ public class NotifyEngineImp : NotifyEngine
             await notificationHub.Clients
                 .Users((IReadOnlyList<string>)usersId)
                 .notifyChangedInformationData(result);
+
         }
     }
 
-    public async Task Notify<T>(string sessionId, Func<Tuple<IList<User>, IList<MessageModel>>, IDictionary<string, T>> messageModelFunc) where T : class
+    public async Task Notify<T>(string sessionId, Func<Tuple<IList<User>, IList<MessageModel>>, IDictionary<string, T>> messageModelFunc) where T : MessageModel
     {
         var userTuple = await QueryBySession(sessionId);
 

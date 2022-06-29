@@ -1,14 +1,13 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 
-namespace OWP.NotificationHandler.Hubs;
+namespace OWP.Core.Hubs;
 
 
 public interface ChangedInfoNotifyHub
 {
-    Task notifyChangedInformationData(object message);
+    Task notifyChangedInformationData(dynamic message);
 }
 
 public class ChangedInfoNotifyHubImp : Hub<ChangedInfoNotifyHub>
 {
-
 }

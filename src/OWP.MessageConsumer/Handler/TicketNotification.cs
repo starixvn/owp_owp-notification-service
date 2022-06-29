@@ -9,16 +9,16 @@ public class TicketNotificationCommand : NotificationRequest, IRequest<Unit>
 
 public class NotificationHandler : IRequestHandler<TicketNotificationCommand, Unit>
 {
-    private readonly NotifyEngine notifyEngine;
+    private readonly NotificationService notifyEngine;
 
-    public NotificationHandler(NotifyEngine notifyEngine)
+    public NotificationHandler(NotificationService notifyEngine)
     {
         this.notifyEngine = notifyEngine;
     }
 
     public async Task<Unit> Handle(TicketNotificationCommand request, CancellationToken cancellationToken)
     {
-        await notifyEngine.Notify<object>(new List<dynamic> { new { } }, new List<string> { "1" });
+        await notifyEngine.Notify(request.SessionId!);
 
         return Unit.Value;
     }
