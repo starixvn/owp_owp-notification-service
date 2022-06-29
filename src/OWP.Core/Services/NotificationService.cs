@@ -8,7 +8,6 @@ namespace OWP.NotificationHandler.Services;
 
 public interface NotificationService
 {
-
     Task Notify(string messages);
     Task Notify(object messages);
     Task Notify<T>(IList<T> messages, IList<string> usersId) where T : MessageModel;

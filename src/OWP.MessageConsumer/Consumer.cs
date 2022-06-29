@@ -33,6 +33,7 @@ public class Consumer
             connection = factory.CreateConnection();
             channel = connection.CreateModel();
             channel.ExchangeDeclare(exchange: setting.Exchange, type: "direct", durable: true, autoDelete: false);
+            channel.ExchangeDeclare(exchange: setting.Exchange, type: "direct", durable: true, autoDelete: false);
             channel.QueueDeclare(queue: setting.Queue, durable: true, exclusive: false, autoDelete: false);
 
             foreach (var key in RoutingKey.Keys)

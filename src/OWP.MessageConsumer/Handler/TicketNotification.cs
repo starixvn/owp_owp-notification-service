@@ -21,9 +21,9 @@ public class NotificationHandler : IRequestHandler<TicketNotificationCommand, Un
 
     public async Task<Unit> Handle(TicketNotificationCommand request, CancellationToken cancellationToken)
     {
-        //await notifyEngine.Notify(request.SessionId!);
+        await notifyEngine.Notify(request.SessionId!);
 
-        var data = await notifyEngine.QueryBySession(request.SessionId);
+        //var data = await notifyEngine.QueryBySession(request.SessionId);
 
         return Unit.Value;
     }
