@@ -56,7 +56,7 @@ public class Consumer
         var body = eventArgs.Body.ToArray();
         var message = Encoding.UTF8.GetString(body);
 
-        var request = NotificationRequestFactory.GetNotificationRequest(eventArgs.RoutingKey);
+        var request = NotificationRequestFactory.GetNotificationRequest(eventArgs.RoutingKey, message);
 
         await mediator.Send(request);
 

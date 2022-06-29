@@ -1,6 +1,9 @@
 using MediatR;
+using OWP.Core.Hubs;
 using OWP.MessageConsumer;
 using OWP.MessageConsumer.Handler;
+using OWP.NotificationHandler.Hubs;
+using OWP.NotificationHandler.Services;
 using OWP.NotificationService.Extensions;
 using System.Reflection;
 
@@ -17,6 +20,7 @@ builder.Services.AddSignalR();
 builder.Services.Configure<RabbitMQSetting>(
     builder.Configuration.GetSection(RabbitMQSetting.RabbitMQ));
 builder.Services.AddSingleton<Consumer>();
+builder.Services.AddTransient<NotifyEngine, NotifyEngineImp>();
 
 var app = builder.Build();
 
@@ -34,5 +38,8 @@ app.UseAuthorization();
 app.UseRabbitListener();
 
 app.MapControllers();
+
+app.MapHub<ChangedInfoNotifyHubImp>("/changedInfoNotifyHub");
+app.MapHub<NotificationHub>("/changedInfoNotifyHub");
 
 app.Run();
