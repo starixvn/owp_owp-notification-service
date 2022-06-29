@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Options;
+﻿using MediatR;
+using Microsoft.Extensions.Options;
 using OWP.MessageConsumer.Constants;
+using OWP.MessageConsumer.Handler;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
@@ -11,9 +13,11 @@ public class Consumer
     private IConnection connection;
     private IModel channel;
     private readonly RabbitMQSetting setting;
-    public Consumer(IOptions<RabbitMQSetting> options)
+    private readonly IMediator mediator;
+    public Consumer(IOptions<RabbitMQSetting> options, IMediator mediator)
     {
         setting = options.Value;
+        this.mediator = mediator;
     }
 
     public void ReceiveMessageFromQueue()
@@ -26,8 +30,8 @@ public class Consumer
             };
             connection = factory.CreateConnection();
             channel = connection.CreateModel();
-            channel.ExchangeDeclare(exchange: setting.Exchange, type: "direct", durable: true);
-            channel.QueueDeclare(queue: setting.Queue, durable: true);
+            channel.ExchangeDeclare(exchange: setting.Exchange, type: "direct", durable: true, autoDelete: false);
+            channel.QueueDeclare(queue: setting.Queue, durable: true, exclusive: false, autoDelete: false);
 
             foreach (var key in RoutingKey.Keys)
             {
@@ -51,5 +55,10 @@ public class Consumer
     {
         var body = eventArgs.Body.ToArray();
         var message = Encoding.UTF8.GetString(body);
+
+        var request = NotificationRequestFactory.GetNotificationRequest(eventArgs.RoutingKey);
+
+        await mediator.Send(request);
+
     }
 }
