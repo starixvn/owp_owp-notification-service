@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-
+builder.Services.AddFanexServices(builder.Configuration);
 builder.Services.AddMediatR(typeof(NotificationRequest).GetTypeInfo().Assembly);
 builder.Services.AddSignalR();
 builder.Services.Configure<RabbitMQSetting>(
@@ -48,7 +48,7 @@ app.UseCors();
 app.UseEndpoints(c =>
 {
     c.MapControllers();
-    app.MapHub<ChangedInfoNotifyHubImp>("/changedInfoNotifyHub");
+    c.MapHub<ChangedInfoNotifyHubImp>("/changedInfoNotifyHub");
 });
 
 

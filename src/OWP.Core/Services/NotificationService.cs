@@ -13,6 +13,8 @@ public interface NotificationService
     Task Notify(object messages);
     Task Notify<T>(IList<T> messages, IList<string> usersId) where T : MessageModel;
     Task Notify<T>(string sessionId, Func<Tuple<IList<User>, IList<MessageModel>>, IDictionary<string, T>> messageModelFunc) where T : MessageModel;
+
+    Task<Tuple<IList<User>, IList<MessageModel>>> QueryBySession(string sessionId);
 }
 
 public class NotifyEngineImp : NotificationService
@@ -64,7 +66,7 @@ public class NotifyEngineImp : NotificationService
         await Notify(messageModel);
     }
 
-    private async Task<Tuple<IList<User>, IList<MessageModel>>> QueryBySession(string sessionId)
+    public async Task<Tuple<IList<User>, IList<MessageModel>>> QueryBySession(string sessionId)
     {
         var criteria = new GetMessageBySessionCriteria
         {

@@ -10,4 +10,10 @@
     <ProjectReference Include="..\src\OWP.MessageConsumer\OWP.MessageConsumer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="App_Data\OWPDataCenterSPNames.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

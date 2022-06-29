@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Functions>
+	<Function Name ="EventAssignment">
+		<Setting Key="OWP_MessageGetBySessionId" SpName ="OWP_MessageGetBySessionId" DbName="DBOWP.bodb_OWP.bodbOWPNet" />
+	</Function>
+</Functions>
