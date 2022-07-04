@@ -2,5 +2,6 @@
 <Functions>
 	<Function Name ="EventAssignment">
 		<Setting Key="OWP_MessageGetBySessionId" SpName ="OWP_MessageGetBySessionId" DbName="DBOWP.bodb_OWP.bodbOWPNet" />
+		<Setting Key="OWP_CountUnreadMessageByUserId" SpName="OWP_CountUnreadMessageByUserId" DbName="DBOWP.bodb_OWP.bodbOWPNet" />
 	</Function>
 </Functions>

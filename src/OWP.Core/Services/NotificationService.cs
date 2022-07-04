@@ -1,10 +1,9 @@
 ﻿using Fanex.Data.Repository;
 using Microsoft.AspNetCore.SignalR;
-using OWP.Core.Criteria;
 using OWP.Core.Hubs;
 using OWP.Core.Models;
 
-namespace OWP.NotificationHandler.Services;
+namespace OWP.Core.Services;
 
 public interface NotificationService
 {
@@ -19,13 +18,12 @@ public interface NotificationService
 public class NotifyEngineImp : NotificationService
 {
     private readonly IHubContext<ChangedInfoNotifyHubImp, ChangedInfoNotifyHub> notificationHub;
-    private readonly IDynamicRepository repository;
+    private readonly QueryMessageService messageService;
 
-
-    public NotifyEngineImp(IHubContext<ChangedInfoNotifyHubImp, ChangedInfoNotifyHub> notificationHub, IDynamicRepository repository)
+    public NotifyEngineImp(IHubContext<ChangedInfoNotifyHubImp, ChangedInfoNotifyHub> notificationHub, IDynamicRepository repository, QueryMessageService messageService)
     {
         this.notificationHub = notificationHub;
-        this.repository = repository;
+        this.messageService = messageService;
     }
 
 
@@ -58,22 +56,11 @@ public class NotifyEngineImp : NotificationService
 
     public async Task Notify<T>(string sessionId, Func<Tuple<IList<User>, IList<MessageModel>>, IDictionary<string, T>> messageModelFunc) where T : MessageModel
     {
-        var userTuple = await QueryBySession(sessionId);
+        var userTuple = await messageService.QueryBySession(sessionId);
 
         var messageModel = messageModelFunc(userTuple);
 
         await Notify(messageModel);
-    }
-
-    public async Task<Tuple<IList<User>, IList<MessageModel>>> QueryBySession(string sessionId)
-    {
-        var criteria = new GetMessageBySessionCriteria
-        {
-            SessionId = sessionId
-        };
-
-        var result = await repository.FetchMultipleAsync<User, MessageModel>(criteria);
-        return new Tuple<IList<User>, IList<MessageModel>>(result.Item1.ToList(), result.Item2.ToList());
     }
 
     private async Task Notify<T>(IDictionary<string, T> messagesKeyValuePair) where T : class
