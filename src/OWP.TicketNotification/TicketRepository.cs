@@ -1,8 +1,8 @@
 ﻿using Fanex.Data.Repository;
-using TicketNotification.Critera;
-using TicketNotification.Models;
+using OWP.TicketNotification.Critera;
+using OWP.TicketNotification.Models;
 
-namespace TicketNotification;
+namespace OWP.TicketNotification;
 
 public interface TicketRepository
 {

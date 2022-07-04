@@ -1,6 +1,6 @@
 ﻿using OWP.Core.Models;
 
-namespace TicketNotification.Models;
+namespace OWP.TicketNotification.Models;
 
 public class NotificationModel : MessageModel
 {

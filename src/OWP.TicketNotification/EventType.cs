@@ -1,4 +1,4 @@
-﻿namespace TicketNotification;
+﻿namespace OWP.TicketNotification;
 
 public enum EventType
 {

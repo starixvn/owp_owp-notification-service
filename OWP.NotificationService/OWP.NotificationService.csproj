@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\src\OWP.MessageConsumer\OWP.MessageConsumer.csproj" />
+    <ProjectReference Include="..\src\OWP.TicketNotification\OWP.TicketNotification.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,4 @@
-﻿namespace TicketNotification.Models;
+﻿namespace OWP.TicketNotification.Models;
 
 public class MessageUnreadCounter
 {

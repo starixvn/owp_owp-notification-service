@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Options;
+using OWP.Core.NotificationRequests;
 using OWP.MessageConsumer.Constants;
-using OWP.MessageConsumer.Handler;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;

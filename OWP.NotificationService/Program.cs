@@ -5,8 +5,8 @@ using OWP.Core.NotificationRequests;
 using OWP.Core.Services;
 using OWP.MessageConsumer;
 using OWP.NotificationService.Extensions;
+using OWP.TicketNotification;
 using System.Reflection;
-using TicketNotification;
 
 var builder = WebApplication.CreateBuilder(args);
 

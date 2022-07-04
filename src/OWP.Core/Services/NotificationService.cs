@@ -12,7 +12,6 @@ public interface NotificationService
     Task Notify<T>(IList<T> messages, IList<string> usersId) where T : MessageModel;
     Task Notify<T>(string sessionId, Func<Tuple<IList<User>, IList<MessageModel>>, IDictionary<string, T>> messageModelFunc) where T : MessageModel;
 
-    Task<Tuple<IList<User>, IList<MessageModel>>> QueryBySession(string sessionId);
 }
 
 public class NotifyEngineImp : NotificationService

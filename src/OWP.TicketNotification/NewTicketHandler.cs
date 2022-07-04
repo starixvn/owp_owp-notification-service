@@ -1,7 +1,8 @@
 ﻿using MediatR;
 using OWP.Core.NotificationRequests;
 using OWP.Core.Services;
-using TicketNotification.Models;
+using OWP.TicketNotification;
+using OWP.TicketNotification.Models;
 
 namespace TicketNotification;
 

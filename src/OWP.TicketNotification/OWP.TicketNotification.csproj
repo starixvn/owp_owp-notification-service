@@ -7,8 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\OWP.Core\OWP.Core.csproj" />
-    <ProjectReference Include="..\src\OWP.MessageConsumer\OWP.MessageConsumer.csproj" />
+    <ProjectReference Include="..\OWP.Core\OWP.Core.csproj" />
   </ItemGroup>
 
 </Project>
