@@ -15,11 +15,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddFanexServices(builder.Configuration);
 
+builder.Services.AddMessageConsumer(builder.Configuration);
+
 builder.Services.AddMediatR(typeof(NotificationRequest).GetTypeInfo().Assembly);
 builder.Services.AddSignalR();
-builder.Services.Configure<RabbitMQSetting>(
-builder.Configuration.GetSection(RabbitMQSetting.RabbitMQ));
-builder.Services.AddSingleton<Consumer>();
+
 builder.Services.AddTransient<NotificationService, NotifyEngineImp>();
 builder.Services.AddTransient<QueryMessageService, QueryMessageServiceImp>();
 builder.Services.AddTransient<IDynamicRepository, DynamicRepository>();

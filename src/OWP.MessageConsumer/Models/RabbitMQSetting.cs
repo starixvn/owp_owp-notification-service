@@ -1,4 +1,4 @@
-﻿namespace OWP.MessageConsumer;
+﻿namespace OWP.MessageConsumer.Models;
 
 public class RabbitMQSetting
 {

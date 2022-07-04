@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using OWP.Core.NotificationRequests;
 using OWP.MessageConsumer.Constants;
+using OWP.MessageConsumer.Models;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
