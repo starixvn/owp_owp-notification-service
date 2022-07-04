@@ -1,10 +1,9 @@
 ﻿using MediatR;
 using OWP.Core.NotificationRequests;
 using OWP.Core.Services;
-using OWP.TicketNotification;
 using OWP.TicketNotification.Models;
 
-namespace TicketNotification;
+namespace OWP.TicketNotification;
 
 public class NewTicketHandler : IRequestHandler<NewTicketNotificationRequest, Unit>
 {
@@ -26,11 +25,11 @@ public class NewTicketHandler : IRequestHandler<NewTicketNotificationRequest, Un
               .Select(x => x.UserId)
               .ToList();
 
-            var awaiter = ticketRepository
-                      .GetMessageUnreadByMultipleUserId(userIds)
-                      .ConfigureAwait(true);
+            //var awaiter = ticketRepository
+            //          .GetMessageUnreadByMultipleUserId(userIds)
+            //          .ConfigureAwait(true);
 
-            var messageUnread = awaiter.GetAwaiter().GetResult();
+            //var messageUnread = awaiter.GetAwaiter().GetResult();
 
             return messageTuple.Item2.Select(x => new NotificationModel
             {
@@ -40,8 +39,8 @@ public class NewTicketHandler : IRequestHandler<NewTicketNotificationRequest, Un
                 MessageContent = x.MessageContent,
                 TicketId = request.TicketId,
                 EventType = request.EventType,
-                TotalMessageUnread = messageUnread?.FirstOrDefault(m => m.UserId == x.UserId)?.Total,
-                IsNewMessage = request.IsNewMessage
+                //TotalMessageUnread = messageUnread?.FirstOrDefault(m => m.UserId == x.UserId)?.Total,
+                // IsNewMessage = request.IsNewMessage
             }).DistinctBy(x => new
             {
                 x.UserId,

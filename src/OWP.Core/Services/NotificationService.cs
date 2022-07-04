@@ -74,7 +74,8 @@ public class NotifyEngineImp : NotificationService
             };
 
             await notificationHub.Clients
-                .Users(userId)
+               // .Users(userId)
+               .All
                 .notifyChangedInformationData(result);
         }
     }

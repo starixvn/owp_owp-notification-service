@@ -2,7 +2,9 @@
 using Fanex.Caching;
 using Fanex.Caching.Redis;
 using Fanex.Data;
+using Fanex.Data.Repository;
 using Fanex.Data.SqlServer;
+using OWP.Core.Services;
 
 namespace OWP.NotificationService.Extensions
 {
@@ -37,6 +39,15 @@ namespace OWP.NotificationService.Extensions
                 ApplicationName = redisSetting.AppName
             }));
 
+            return services;
+        }
+
+        public static IServiceCollection AddCoreServices(this IServiceCollection services)
+        {
+
+            services.AddTransient<OWP.Core.Services.NotificationService, NotifyEngineImp>();
+            services.AddTransient<QueryMessageService, QueryMessageServiceImp>();
+            services.AddTransient<IDynamicRepository, DynamicRepository>();
             return services;
         }
     }

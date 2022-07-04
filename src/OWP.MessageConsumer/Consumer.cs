@@ -21,22 +21,20 @@ public class Consumer
     {
         setting = options.Value;
         this.mediator = mediator;
+        factory = new ConnectionFactory()
+        {
+            HostName = setting.Hosting,
+        };
+        connection = factory.CreateConnection();
+        channel = connection.CreateModel();
+        channel.ExchangeDeclare(exchange: setting.Exchange, type: "direct", durable: true, autoDelete: false);
+        channel.QueueDeclare(queue: setting.Queue, durable: true, exclusive: false, autoDelete: false);
     }
 
     public void ReceiveMessageFromQueue()
     {
         try
         {
-            factory = new ConnectionFactory()
-            {
-                HostName = setting.Hosting,
-            };
-            connection = factory.CreateConnection();
-            channel = connection.CreateModel();
-            channel.ExchangeDeclare(exchange: setting.Exchange, type: "direct", durable: true, autoDelete: false);
-            channel.ExchangeDeclare(exchange: setting.Exchange, type: "direct", durable: true, autoDelete: false);
-            channel.QueueDeclare(queue: setting.Queue, durable: true, exclusive: false, autoDelete: false);
-
             foreach (var key in RoutingKey.Keys)
             {
                 channel.QueueBind(queue: setting.Queue, exchange: setting.Exchange, routingKey: key);
