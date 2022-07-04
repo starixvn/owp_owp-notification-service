@@ -30,7 +30,7 @@ namespace OWP.NotificationService.Extensions
 
         public static IServiceCollection AddRedisServices(this IServiceCollection services, IConfiguration configuration)
         {
-            var redisSetting = configuration.GetSection(RedisSettings.RedisConnectKey).Get<RedisSettings>();
+            var redisSetting = configuration.GetSection(RedisSetting.RedisConnectKey).Get<RedisSetting>();
             services.AddSingleton<ICache>(new RedisCache(new RedisCacheOptions
             {
                 ConnectionString = redisSetting.ConnectionString,
@@ -43,7 +43,7 @@ namespace OWP.NotificationService.Extensions
 }
 
 
-public class RedisSettings
+public class RedisSetting
 {
     public static string RedisConnectKey = "RedisConnect";
     public string ConnectionString { get; set; }

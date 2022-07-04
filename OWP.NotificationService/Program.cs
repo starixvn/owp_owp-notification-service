@@ -4,6 +4,7 @@ using OWP.Core.Hubs;
 using OWP.Core.NotificationRequests;
 using OWP.Core.Services;
 using OWP.MessageConsumer;
+using OWP.MessageConsumer.Models;
 using OWP.NotificationService.Extensions;
 using OWP.TicketNotification;
 using System.Reflection;
@@ -15,6 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddFanexServices(builder.Configuration);
 
+builder.Services.Configure<RabbitMQSetting>(builder.Configuration.GetSection(RabbitMQSetting.RabbitMQ));
 builder.Services.AddMessageConsumer(builder.Configuration);
 
 builder.Services.AddMediatR(typeof(NotificationRequest).GetTypeInfo().Assembly);
