@@ -42,9 +42,25 @@ namespace OWP.NotificationService.Extensions
             return services;
         }
 
+        public static IServiceCollection AddCorsPolicy(this IServiceCollection services)
+        {
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:3000")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowCredentials();
+                    });
+            });
+            return services;
+        }
+
+
         public static IServiceCollection AddCoreServices(this IServiceCollection services)
         {
-
             services.AddTransient<OWP.Core.Services.NotificationService, NotifyEngineImp>();
             services.AddTransient<QueryMessageService, QueryMessageServiceImp>();
             services.AddTransient<IDynamicRepository, DynamicRepository>();

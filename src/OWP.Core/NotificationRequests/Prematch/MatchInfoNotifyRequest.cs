@@ -1,9 +1,8 @@
 using MediatR;
-using OWP.Core.Models;
 
 namespace OWP.Core.NotificationRequests.Prematch;
 
-public class MatchInfoNotifyRequest : NotificationCommandBaseModel, IRequest<Unit>
+public class MatchInfoNotifyRequest : NotificationRequest, IRequest<Unit>
 {
     public DateTime FromDate { get; set; }
 

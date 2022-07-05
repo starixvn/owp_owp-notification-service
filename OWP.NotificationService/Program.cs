@@ -10,32 +10,20 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddFanexServices(builder.Configuration);
-
-builder.Services.Configure<RabbitMQSetting>(builder.Configuration.GetSection(RabbitMQSetting.RabbitMQ));
-
+builder.Services.AddCorsPolicy();
 builder.Services.AddSignalR();
 
+builder.Services.AddFanexServices(builder.Configuration);
+
+// Add config
+builder.Services.Configure<RabbitMQSetting>(builder.Configuration.GetSection(RabbitMQSetting.RabbitMQ));
+
+// Add internal service
 builder.Services.AddCoreServices();
 builder.Services.AddMessageConsumer(builder.Configuration);
 builder.Services.AddTicket();
 builder.Services.AddOtherSport();
 
-
-
-
-
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(
-        builder =>
-        {
-            builder.WithOrigins("http://localhost:3000")
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .AllowCredentials();
-        });
-});
 
 var app = builder.Build();
 
