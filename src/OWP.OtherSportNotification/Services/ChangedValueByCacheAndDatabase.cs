@@ -4,7 +4,7 @@ namespace OWP.OtherSportNotification.Services;
 
 public interface ChangedValueByCacheAndDatabase
 {
-    Task<List<ChangedValue>> Create(string sessionId, string eventDate);
+    Task<List<ChangedValue>> Create(string sessionId, DateTime fromDate, DateTime toDate);
 }
 
 internal class ChangedValueByCacheAndDatabaseImp : ChangedValueByCacheAndDatabase
@@ -20,12 +20,12 @@ internal class ChangedValueByCacheAndDatabaseImp : ChangedValueByCacheAndDatabas
         this.changedValueBySnapshot = changedValueBySnapshot;
     }
 
-    public async Task<List<ChangedValue>> Create(string sessionId, string eventDate)
+    public async Task<List<ChangedValue>> Create(string sessionId, DateTime fromDate, DateTime toDate)
     {
-        var oldSnapshot = await cacheManipulator.GetAssignmentSnapshot(sessionId, eventDate);
-        var newSnapshot = await repository.Query(eventDate);
+        var oldSnapshot = await cacheManipulator.GetAssignmentSnapshot(sessionId);
+        var newSnapshot = await repository.Query(fromDate, toDate);
 
-        await cacheManipulator.DeleteAssignmentSnapshot(sessionId, eventDate);
+        await cacheManipulator.DeleteAssignmentSnapshot(sessionId);
 
         return changedValueBySnapshot.Create(oldSnapshot, newSnapshot);
     }

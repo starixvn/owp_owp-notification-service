@@ -24,10 +24,17 @@ public class Consumer
         factory = new ConnectionFactory()
         {
             HostName = setting.Hosting,
+            VirtualHost = setting.VirtualHost,
+            Port = setting.Port,
+            Password = setting.Password,
+            UserName = setting.UserName
         };
         connection = factory.CreateConnection();
+
         channel = connection.CreateModel();
+
         channel.ExchangeDeclare(exchange: setting.Exchange, type: "direct", durable: true, autoDelete: false);
+
         channel.QueueDeclare(queue: setting.Queue, durable: true, exclusive: false, autoDelete: false);
     }
 

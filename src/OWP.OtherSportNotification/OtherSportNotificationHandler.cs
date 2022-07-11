@@ -27,8 +27,7 @@ public class OtherSportNotificationHandler : IRequestHandler<OtherSportNotificat
 
     public async Task<Unit> Handle(OtherSportNotificationRequest request, CancellationToken cancellationToken)
     {
-        var messages = await changedValueByCacheAndDatabase.Create(request.SessionId, request.EventDate);
-        var assigneeChangedValues = await assigneeChangedValueFilter.Filter(messages);
+        var messages = await changedValueByCacheAndDatabase.Create(request.SessionId, request.FromDate, request.ToDate); var assigneeChangedValues = await assigneeChangedValueFilter.Filter(messages);
         var aggregatedChangedValues = changedValueAggregator.Aggregate(assigneeChangedValues);
 
         var messageModels = messageFactory.Transform(aggregatedChangedValues);

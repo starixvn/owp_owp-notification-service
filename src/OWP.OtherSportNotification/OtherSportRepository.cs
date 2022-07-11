@@ -8,9 +8,8 @@ namespace OWP.OtherSportNotification;
 public interface OtherSportRepository
 {
     Task InsertMessage(List<InsertMessageModel> messages, string sessionId, int createdBy);
-    Task<AssignmentSnapshot> Query(string eventDates);
+    Task<AssignmentSnapshot> Query(DateTime fromDate, DateTime toDate);
     Task<HashSet<string>> GetUnsubscribeSettings();
-
     Task<Dictionary<string, List<Assignee>>> GetSessionWatcherSettings();
 }
 
@@ -37,11 +36,12 @@ public class OtherSportRepositoryImp : OtherSportRepository
         await repository.ExecuteAsync(criteria);
     }
 
-    public async Task<AssignmentSnapshot> Query(string eventDates)
+    public async Task<AssignmentSnapshot> Query(DateTime fromDate, DateTime toDate)
     {
         var criteria = new GetAllMatchesByDateTimeListCriteria
         {
-            EventDates = eventDates
+            FromDate = fromDate,
+            ToDate = toDate
         };
 
         var (firstResultSet, secondResultSet, thirdResultSet) = await repository.FetchMultipleAsync<MatchInfo, MatchAssignment, MatchSetting>(criteria);

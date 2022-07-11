@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Fanex.NAP.Client.Helpers.Web;
+using MediatR;
 using OWP.Core.NotificationRequests;
 using OWP.Core.Services;
 using OWP.TicketNotification.Models;
@@ -9,16 +10,28 @@ public class NewTicketHandler : IRequestHandler<NewTicketNotificationRequest, Un
 {
     private readonly NotificationService notificationService;
     private readonly TicketRepository ticketRepository;
+    private readonly INapSession napSession;
 
 
-    public NewTicketHandler(NotificationService notificationService, TicketRepository ticketRepository)
+    public NewTicketHandler(NotificationService notificationService, TicketRepository ticketRepository, INapSession napSession)
     {
         this.notificationService = notificationService;
         this.ticketRepository = ticketRepository;
+        this.napSession = napSession;
     }
 
     public async Task<Unit> Handle(NewTicketNotificationRequest request, CancellationToken cancellationToken)
     {
+        //try
+        //{
+        //    var user = napSession?.UserId;
+        //}
+        //catch (Exception ex)
+        //{
+        //    var exMessage = ex.Message;
+        //    //   throw;
+        //}
+
         await notificationService.Notify(request.SessionId, messageTuple =>
         {
             var userIds = messageTuple.Item1
@@ -40,7 +53,7 @@ public class NewTicketHandler : IRequestHandler<NewTicketNotificationRequest, Un
                 TicketId = request.TicketId,
                 EventType = request.EventType,
                 //TotalMessageUnread = messageUnread?.FirstOrDefault(m => m.UserId == x.UserId)?.Total,
-                // IsNewMessage = request.IsNewMessage
+                IsNewMessage = request.IsNewMessage
             }).DistinctBy(x => new
             {
                 x.UserId,
