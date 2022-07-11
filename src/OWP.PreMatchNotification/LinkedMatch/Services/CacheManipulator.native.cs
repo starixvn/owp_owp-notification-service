@@ -1,8 +1,7 @@
-﻿namespace OWP.PreMatchNotification.LinkedMatch.Services;
-
-using Models;
+﻿using OWP.PreMatchNotification.LinkedMatch.Models;
 using OWP.PreMatchNotification.Shared.Services;
 
+namespace OWP.PreMatchNotification.LinkedMatch.Services;
 public interface CacheManipulator
 {
     Task<List<GeneralMatch>> GetOldLGAMatchSnapshot(string sessionId);

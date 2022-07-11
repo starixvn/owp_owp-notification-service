@@ -1,8 +1,8 @@
-﻿namespace OWP.PreMatchNotification.Shared.Services;
-
-using OWP.PreMatchNotification.Shared.Constants;
+﻿using OWP.PreMatchNotification.Shared.Constants;
 using OWP.PreMatchNotification.Shared.Models;
 using System.Collections.Immutable;
+
+namespace OWP.PreMatchNotification.Shared.Services;
 
 public interface MessageFactory
 {

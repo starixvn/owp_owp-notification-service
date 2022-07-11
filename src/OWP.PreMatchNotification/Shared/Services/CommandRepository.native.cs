@@ -1,10 +1,10 @@
-﻿namespace OWP.PreMatchNotification.Shared.Services;
-
-using Criteria;
-using Fanex.Data.Repository;
+﻿using Fanex.Data.Repository;
 using Fanex.NAP.Client.Helpers.Web;
-using Models;
 using Olympus.Xml;
+using OWP.PreMatchNotification.Criteria;
+using OWP.PreMatchNotification.Shared.Models;
+
+namespace OWP.PreMatchNotification.Shared.Services;
 
 public interface CommandRepository
 {

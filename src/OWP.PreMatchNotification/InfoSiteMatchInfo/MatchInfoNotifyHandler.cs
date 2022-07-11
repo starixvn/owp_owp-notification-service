@@ -1,12 +1,12 @@
-﻿namespace OWP.PreMatchNotification.InfoSiteMatchInfo;
-
-using MediatR;
+﻿using MediatR;
 using OWP.Core.NotificationRequests.Prematch;
-using OWP.PreMatchNotification.Shared.Constants;
 using OWP.PreMatchNotification.InfoSiteMatchInfo.Models;
 using OWP.PreMatchNotification.InfoSiteMatchInfo.Services;
+using OWP.PreMatchNotification.Shared.Constants;
 using OWP.PreMatchNotification.Shared.Models;
 using OWP.PreMatchNotification.Shared.Services;
+
+namespace OWP.PreMatchNotification.InfoSiteMatchInfo;
 
 public class MatchInfoNotifyHandler : IRequestHandler<MatchInfoNotifyRequest, Unit>
 {

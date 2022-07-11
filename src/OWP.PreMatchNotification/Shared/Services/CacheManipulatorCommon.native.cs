@@ -1,7 +1,7 @@
-﻿namespace OWP.PreMatchNotification.Shared.Services;
-
-using Fanex.Caching;
+﻿using Fanex.Caching;
 using Newtonsoft.Json;
+
+namespace OWP.PreMatchNotification.Shared.Services;
 
 public interface CacheManipulatorCommon
 {

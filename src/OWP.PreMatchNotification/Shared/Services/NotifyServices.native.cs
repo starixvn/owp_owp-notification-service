@@ -1,8 +1,8 @@
-﻿namespace OWP.PreMatchNotification.Shared.Services;
-
-using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.SignalR;
 using OWP.Core.Hubs;
 using OWP.PreMatchNotification.Shared.Models;
+
+namespace OWP.PreMatchNotification.Shared.Services;
 
 public interface NotifyServices
 {

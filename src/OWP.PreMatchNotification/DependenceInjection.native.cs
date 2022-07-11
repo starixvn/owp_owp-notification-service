@@ -1,10 +1,12 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
+using InfoSiteMatchInfos = OWP.PreMatchNotification.InfoSiteMatchInfo.Services;
+using LinkedMatchs = OWP.PreMatchNotification.LinkedMatch.Services;
 using MyAssignment = OWP.PreMatchNotification.Assignment.Services.MyAssignment;
+using NewLeagues = OWP.PreMatchNotification.NewLeague.Services;
 using OtherAssignment = OWP.PreMatchNotification.Assignment.Services.OtherAssignment;
 using PreMatchNotificationServices = OWP.PreMatchNotification.Shared.Services;
-using LinkedMatchs = OWP.PreMatchNotification.LinkedMatch.Services;
-using InfoSiteMatchInfos = OWP.PreMatchNotification.InfoSiteMatchInfo.Services;
-using NewLeagues = OWP.PreMatchNotification.NewLeague.Services;
 
 namespace OWP.PreMatchNotification;
 
@@ -12,6 +14,8 @@ public static class DependenceInjection
 {
     public static void AddPrematchNotificationServices(this IServiceCollection services)
     {
+        services.AddMediatR(Assembly.GetExecutingAssembly());
+
         services.AddTransient<PreMatchNotificationServices.CommandRepository, PreMatchNotificationServices.CommandRepositoryImp>();
         services.AddTransient<PreMatchNotificationServices.MessageFactory, PreMatchNotificationServices.MessageFactoryImp>();
         services.AddTransient<PreMatchNotificationServices.NotifyServices, PreMatchNotificationServices.NotifyServicesImp>();

@@ -1,9 +1,10 @@
-﻿namespace OWP.PreMatchNotification.NewLeague.Services;
-
+﻿
+using OWP.PreMatchNotification.NewLeague.Models;
 using OWP.PreMatchNotification.Shared.Constants;
 using OWP.PreMatchNotification.Shared.Models;
-using OWP.PreMatchNotification.NewLeague.Models;
 using OWP.PreMatchNotification.Shared.Services;
+
+namespace OWP.PreMatchNotification.NewLeague.Services;
 
 public interface NewLeagueValueGenerator
 {

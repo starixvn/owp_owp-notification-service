@@ -1,12 +1,11 @@
-﻿namespace OWP.PreMatchNotification.InfoSiteMatchInfo.Services;
-
-using Shared.Constants;
-using InfoSiteMatchInfo.Models;
-using OWP.Core.Extensions;
+﻿using OWP.Core.Extensions;
+using OWP.PreMatchNotification.InfoSiteMatchInfo.Models;
+using OWP.PreMatchNotification.Shared.Constants;
 using OWP.PreMatchNotification.Shared.Models;
 using OWP.PreMatchNotification.Shared.Services;
-
 using System.Reflection;
+
+namespace OWP.PreMatchNotification.InfoSiteMatchInfo.Services;
 
 public interface ChangedValueGenerator
 {

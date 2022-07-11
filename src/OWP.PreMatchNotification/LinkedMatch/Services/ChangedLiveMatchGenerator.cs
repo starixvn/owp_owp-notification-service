@@ -1,9 +1,9 @@
-﻿namespace OWP.PreMatchNotification.LinkedMatch.Services;
-
-using OWP.Core.Extensions;
-using OWP.PreMatchNotification.Shared.Constants;
+﻿using OWP.Core.Extensions;
 using OWP.PreMatchNotification.LinkedMatch.Models;
+using OWP.PreMatchNotification.Shared.Constants;
 using OWP.PreMatchNotification.Shared.Models;
+
+namespace OWP.PreMatchNotification.LinkedMatch.Services;
 
 public interface ChangedLiveMatchGenerator
 {

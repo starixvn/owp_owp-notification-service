@@ -6,6 +6,7 @@ using OWP.MessageConsumer;
 using OWP.MessageConsumer.Models;
 using OWP.NotificationService.Extensions;
 using OWP.OtherSportNotification;
+using OWP.PreMatchNotification;
 using OWP.TicketNotification;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,18 +24,17 @@ builder.Services.AddControllerAuthorization();
 builder.Services.AddCookieAuthentication(builder.Configuration);
 
 builder.Services.AddSessionConfig(builder.Configuration);
-
 builder.Services.AddNapServices(builder.Configuration);
 
 // Add config
 builder.Services.Configure<RabbitMQSetting>(builder.Configuration.GetSection(RabbitMQSetting.RabbitMQ));
 
 // Add internal service
-
 builder.Services.AddCoreServices();
 builder.Services.AddMessageConsumer(builder.Configuration);
 builder.Services.AddTicket();
 builder.Services.AddOtherSport();
+builder.Services.AddPrematchNotificationServices();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

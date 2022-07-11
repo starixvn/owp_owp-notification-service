@@ -21,6 +21,7 @@ public class TicketRepositoryImp : TicketRepository
     public async Task<IEnumerable<MessageUnreadCounter>> GetMessageUnreadByMultipleUserId(IList<int> userIds)
     {
         var messageUnread = new List<MessageUnreadCounter>();
+
         foreach (var userId in userIds)
         {
             var result = await dynamicRepository.FetchAsync<int>(new CountUnreadMessageCriteria

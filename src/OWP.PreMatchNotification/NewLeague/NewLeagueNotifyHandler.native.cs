@@ -1,17 +1,16 @@
-﻿namespace OWP.PreMatchNotification.NewLeague;
-
-using Shared.Constants;
-using Criteria;
-using Fanex.Logging;
+﻿using Fanex.Data.Repository;
 using MediatR;
-using Models;
 using Newtonsoft.Json;
 using OWP.Core.NotificationRequests.Prematch;
 using OWP.PreMatchNotification.Criteria;
+using OWP.PreMatchNotification.NewLeague.Criteria;
+using OWP.PreMatchNotification.NewLeague.Models;
+using OWP.PreMatchNotification.NewLeague.Services;
+using OWP.PreMatchNotification.Shared.Constants;
 using OWP.PreMatchNotification.Shared.Models;
 using OWP.PreMatchNotification.Shared.Services;
-using Services;
-using Fanex.Data.Repository;
+
+namespace OWP.PreMatchNotification.NewLeague;
 
 public class NewLeagueNotifyHandler : IRequestHandler<PrematchNewLeagueNotifyRequest, Unit>
 {

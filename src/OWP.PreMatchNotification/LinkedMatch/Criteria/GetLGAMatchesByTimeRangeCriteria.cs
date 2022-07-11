@@ -1,6 +1,6 @@
-﻿namespace OWP.PreMatchNotification.LinkedMatch.Criteria;
+﻿using Fanex.Data.Repository;
 
-using Fanex.Data.Repository;
+namespace OWP.PreMatchNotification.LinkedMatch.Criteria;
 
 public class GetLGAMatchesByTimeRangeCriteria : CriteriaBase
 {
