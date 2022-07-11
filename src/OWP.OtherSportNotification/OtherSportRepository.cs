@@ -7,7 +7,7 @@ namespace OWP.OtherSportNotification;
 
 public interface OtherSportRepository
 {
-    Task InsertMessage(List<InsertMessageModel> messages, string sessionId, int createdBy);
+    Task InsertMessage(List<MessageModel> messages, string sessionId, int createdBy);
     Task<AssignmentSnapshot> Query(DateTime fromDate, DateTime toDate);
     Task<HashSet<string>> GetUnsubscribeSettings();
     Task<Dictionary<string, List<Assignee>>> GetSessionWatcherSettings();
@@ -22,7 +22,7 @@ public class OtherSportRepositoryImp : OtherSportRepository
         this.repository = repository;
     }
 
-    public async Task InsertMessage(List<InsertMessageModel> messages, string sessionId, int createdBy)
+    public async Task InsertMessage(List<MessageModel> messages, string sessionId, int createdBy)
     {
         messages.ForEach(x => x.ReceivedUserIdList = string.Join(",", x.ReceivedUserIds));
 

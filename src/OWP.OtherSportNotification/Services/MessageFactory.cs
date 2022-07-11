@@ -7,7 +7,7 @@ namespace OWP.OtherSportNotification.Services;
 
 public interface MessageFactory
 {
-    List<InsertMessageModel> Transform(List<ChangedValue> changedValues);
+    List<MessageModel> Transform(List<ChangedValue> changedValues);
 }
 
 internal class MessageFactoryImp : MessageFactory
@@ -220,7 +220,7 @@ internal class MessageFactoryImp : MessageFactory
 
     private static readonly Dictionary<int, MessageTemplate> messageTemplateMap = messageTemplates.ToDictionary(m => m.MessageType, m => m);
 
-    public List<InsertMessageModel> Transform(List<ChangedValue> changedValues)
+    public List<MessageModel> Transform(List<ChangedValue> changedValues)
     {
         var messageModels = TransformChangedValueToMessageModel(changedValues);
         return Reduce(messageModels);
@@ -264,13 +264,13 @@ internal class MessageFactoryImp : MessageFactory
         return content;
     }
 
-    private static List<InsertMessageModel> Reduce(List<MessageModelRaw> messageModels)
+    private static List<MessageModel> Reduce(List<MessageModelRaw> messageModels)
     {
         return messageModels.GroupBy(m => new { m.MessageContent, m.IsImportant, m.MessageType })
             .Select(m =>
             {
                 var assignees = m.SelectMany(x => x.Assignees).Distinct().ToArray();
-                return new InsertMessageModel
+                return new MessageModel
                 {
                     MessageType = m.Key.MessageType,
                     MessageContent = m.Key.MessageContent,

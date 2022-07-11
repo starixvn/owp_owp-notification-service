@@ -8,6 +8,7 @@ public class NotificationRequestFactory
         => key switch
         {
             RoutingKey.TicketCenter => JsonConvert.DeserializeObject<NewTicketNotificationRequest>(message),
+            RoutingKey.OtherSport => JsonConvert.DeserializeObject<OtherSportNotificationRequest>(message),
             _ => new NotificationRequest()
         };
 }

@@ -21,19 +21,19 @@ public class HomeController : ControllerBase
         this.session = session;
     }
 
-    //[HttpGet]
-    //public async Task<IActionResult> Get()
-    //{
-    //    return Ok(new
-    //    {
-    //        Title = "OWP Notification Service",
-    //        IsSessionAvailable = HttpContext.Session.IsAvailable,
-    //        UserId = session.UserId,
-    //        Username = session.UserName
-    //    });
-    //}
+    [HttpGet]
+    public async Task<IActionResult> Get()
+    {
+        return Ok(new
+        {
+            Title = "OWP Notification Service",
+            IsSessionAvailable = HttpContext.Session.IsAvailable,
+            UserId = session.UserId,
+            Username = session.UserName
+        });
+    }
 
-    //[HttpGet("FakeLogin")]
+    [HttpGet("FakeLogin")]
     public async Task<IActionResult> FakeLogin()
     {
         var criteria = new LoginParameter

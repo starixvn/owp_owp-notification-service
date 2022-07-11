@@ -1,6 +1,7 @@
-﻿namespace OWP.OtherSportNotification.Models;
+﻿
+namespace OWP.OtherSportNotification.Models;
 
-public class InsertMessageModel
+public class MessageModel
 {
     public bool IsImportant { get; set; }
 
