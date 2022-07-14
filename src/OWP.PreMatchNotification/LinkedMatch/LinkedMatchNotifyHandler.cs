@@ -42,6 +42,7 @@ public class LinkedMatchNotifyHandler : IRequestHandler<LinkedMatchNotifyRequest
         await commandRepository.InsertMessage(messageModels, request.SessionId);
         await notify.Notify(messageModels);
 
+
         await cacheManipulator.DeleteAssignmentSnapshot(request.SessionId);
 
         return await Task.FromResult(Unit.Value);

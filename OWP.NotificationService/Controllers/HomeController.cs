@@ -22,7 +22,7 @@ public class HomeController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> Get()
+    public IActionResult Get()
     {
         return Ok(new
         {
@@ -57,7 +57,7 @@ public class HomeController : ControllerBase
         return Ok(new
         {
             Title = "OWP Notification Service Faked Login",
-            IsSessionAvailable = HttpContext.Session.IsAvailable,
+            IsSessionAvailable = HttpContext!.Session.IsAvailable,
             UserId = session.UserId,
             Username = session.UserName
         });
@@ -83,7 +83,7 @@ public class HomeController : ControllerBase
     }
 
     [HttpGet("ExpiredSession")]
-    public async Task<string> ExpiredSession()
+    public string ExpiredSession()
     {
         return "ExpiredSession";
     }

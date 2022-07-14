@@ -12,30 +12,46 @@ namespace OWP.MessageConsumer;
 #nullable disable
 public class Consumer
 {
+    private readonly RabbitMQSetting setting;
+    private readonly IMediator mediator;
+    //   private readonly ILogger logger;
+
     private ConnectionFactory factory;
     private IConnection connection;
     private IModel channel;
-    private readonly RabbitMQSetting setting;
-    private readonly IMediator mediator;
     public Consumer(IOptions<RabbitMQSetting> options, IMediator mediator)
     {
         setting = options.Value;
         this.mediator = mediator;
-        factory = new ConnectionFactory()
+        this.CreateConnection();
+        //  this.logger = logger;
+    }
+
+    private void CreateConnection()
+    {
+        try
         {
-            HostName = setting.Hosting,
-            VirtualHost = setting.VirtualHost,
-            Port = setting.Port,
-            Password = setting.Password,
-            UserName = setting.UserName
-        };
-        connection = factory.CreateConnection();
+            factory = new ConnectionFactory()
+            {
+                HostName = setting.Hosting,
+                VirtualHost = setting.VirtualHost,
+                Port = setting.Port,
+                Password = setting.Password,
+                UserName = setting.UserName
+            };
+            connection = factory.CreateConnection();
 
-        channel = connection.CreateModel();
+            channel = connection.CreateModel();
 
-        channel.ExchangeDeclare(exchange: setting.Exchange, type: "direct", durable: true, autoDelete: false);
+            channel.ExchangeDeclare(exchange: setting.Exchange, type: "direct", durable: true, autoDelete: false);
 
-        channel.QueueDeclare(queue: setting.Queue, durable: true, exclusive: false, autoDelete: false);
+            channel.QueueDeclare(queue: setting.Queue, durable: true, exclusive: false, autoDelete: false);
+        }
+        catch (Exception ex)
+        {
+            //  logger.Error(ex.Message);
+            throw;
+        }
     }
 
     public void ReceiveMessageFromQueue()
@@ -55,7 +71,7 @@ public class Consumer
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"{ex.Message}");
+            //  logger.Error(ex.Message);
             throw;
         }
     }

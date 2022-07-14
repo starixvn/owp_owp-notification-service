@@ -25,7 +25,7 @@ namespace OWP.NotificationService.Controllers
         {
             var request = new NewTicketNotificationRequest();
             await mediator.Send(request);
-            return Ok(napSession.UserName);
+            return Ok();
         }
     }
 }

@@ -22,27 +22,18 @@ public class NewTicketHandler : IRequestHandler<NewTicketNotificationRequest, Un
 
     public async Task<Unit> Handle(NewTicketNotificationRequest request, CancellationToken cancellationToken)
     {
-        //try
-        //{
-        //    var user = napSession?.UserId;
-        //}
-        //catch (Exception ex)
-        //{
-        //    var exMessage = ex.Message;
-        //    //   throw;
-        //}
-
+        var currentSession = napSession;
         await notificationService.Notify(request.SessionId, messageTuple =>
         {
             var userIds = messageTuple.Item1
               .Select(x => x.UserId)
               .ToList();
 
-            //var awaiter = ticketRepository
-            //          .GetMessageUnreadByMultipleUserId(userIds)
-            //          .ConfigureAwait(true);
+            var awaiter = ticketRepository
+                      .GetMessageUnreadByMultipleUserId(userIds)
+                      .ConfigureAwait(true);
 
-            //var messageUnread = awaiter.GetAwaiter().GetResult();
+            var messageUnread = awaiter.GetAwaiter().GetResult();
 
             return messageTuple.Item2.Select(x => new NotificationModel
             {
@@ -52,7 +43,7 @@ public class NewTicketHandler : IRequestHandler<NewTicketNotificationRequest, Un
                 MessageContent = x.MessageContent,
                 TicketId = request.TicketId,
                 EventType = request.EventType,
-                //TotalMessageUnread = messageUnread?.FirstOrDefault(m => m.UserId == x.UserId)?.Total,
+                TotalMessageUnread = messageUnread?.FirstOrDefault(m => m.UserId == x.UserId)?.Total,
                 IsNewMessage = request.IsNewMessage
             }).DistinctBy(x => new
             {

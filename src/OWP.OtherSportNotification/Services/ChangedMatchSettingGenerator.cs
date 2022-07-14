@@ -142,7 +142,7 @@ public class ChangedMatchSettingGeneratorImp : ChangedMatchSettingGenerator
         return changedValueList;
     }
 
-    private static string? GetMaxbetSpreadValue(decimal? value)
+    private static string GetMaxbetSpreadValue(decimal? value)
         => value?.ToString().TrimEnd('0').TrimEnd('.');
     public static string ToOWPSpreadFormatPercent(decimal? spread)
              => spread.HasValue

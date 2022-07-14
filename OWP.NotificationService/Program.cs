@@ -51,6 +51,8 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
+app.UseException();
+
 app.UseRabbitListener();
 
 app.UseCors();
