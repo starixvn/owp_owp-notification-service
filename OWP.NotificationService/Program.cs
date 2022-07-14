@@ -2,8 +2,9 @@ using Fanex.NAP.Client;
 using Fanex.NAP.Client.Configuration;
 using Fanex.NAP.Client.Helpers.Web;
 using OWP.Core.Hubs;
+using OWP.Core.Models;
 using OWP.MessageConsumer;
-using OWP.MessageConsumer.Models;
+using OWP.MessagePublisher;
 using OWP.NotificationService.Extensions;
 using OWP.OtherSportNotification;
 using OWP.PreMatchNotification;
@@ -32,6 +33,7 @@ builder.Services.Configure<RabbitMQSetting>(builder.Configuration.GetSection(Rab
 // Add internal service
 builder.Services.AddCoreServices();
 builder.Services.AddMessageConsumer(builder.Configuration);
+builder.Services.AddMessagePublisher();
 builder.Services.AddTicket();
 builder.Services.AddOtherSport();
 builder.Services.AddPrematchNotificationServices();

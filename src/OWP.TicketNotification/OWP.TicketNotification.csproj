@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OWP.Core\OWP.Core.csproj" />
+    <ProjectReference Include="..\OWP.MessagePublisher\OWP.MessagePublisher.csproj" />
   </ItemGroup>
 
 </Project>

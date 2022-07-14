@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Options;
+using OWP.Core.Models;
 using OWP.Core.NotificationRequests;
 using OWP.MessageConsumer.Constants;
-using OWP.MessageConsumer.Models;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
@@ -15,6 +15,8 @@ public class Consumer
     private readonly RabbitMQSetting setting;
     private readonly IMediator mediator;
     //   private readonly ILogger logger;
+    private const string Exchange = "SessionMessage";
+    private const string QueueName = "Session";
 
     private ConnectionFactory factory;
     private IConnection connection;
@@ -43,9 +45,9 @@ public class Consumer
 
             channel = connection.CreateModel();
 
-            channel.ExchangeDeclare(exchange: setting.Exchange, type: "direct", durable: true, autoDelete: false);
+            channel.ExchangeDeclare(exchange: Exchange, type: "direct", durable: true, autoDelete: false);
 
-            channel.QueueDeclare(queue: setting.Queue, durable: true, exclusive: false, autoDelete: false);
+            channel.QueueDeclare(queue: QueueName, durable: true, exclusive: false, autoDelete: false);
         }
         catch (Exception ex)
         {
@@ -60,14 +62,14 @@ public class Consumer
         {
             foreach (var key in RoutingKey.Keys)
             {
-                channel.QueueBind(queue: setting.Queue, exchange: setting.Exchange, routingKey: key);
+                channel.QueueBind(queue: QueueName, exchange: Exchange, routingKey: key);
             }
 
             var consumer = new EventingBasicConsumer(channel);
 
             consumer.Received += OnReceived;
 
-            channel.BasicConsume(setting.Queue, autoAck: true, consumer: consumer);
+            channel.BasicConsume(QueueName, autoAck: true, consumer: consumer);
         }
         catch (Exception ex)
         {
