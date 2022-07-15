@@ -2,7 +2,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OWP.Core.NotificationRequests;
 
 namespace OWP.NotificationService.Controllers
 {
@@ -23,8 +22,8 @@ namespace OWP.NotificationService.Controllers
         [HttpGet]
         public async Task<ActionResult> Index()
         {
-            var request = new NewTicketNotificationRequest();
-            await mediator.Send(request);
+            //  var request = new NewTicketNotificationRequest();
+            //   await mediator.Send(request);
             return Ok();
         }
     }

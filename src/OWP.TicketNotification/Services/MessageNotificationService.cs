@@ -1,30 +1,29 @@
-﻿using Fanex.NAP.Client.Helpers.Web;
-using MediatR;
-using OWP.Core.NotificationRequests;
-using OWP.Core.Services;
-using OWP.MessageConsumer.Constants;
-using OWP.MessagePublisher;
+﻿using OWP.Core.Services;
 using OWP.TicketNotification.Models;
 
-namespace OWP.TicketNotification;
+namespace OWP.TicketNotification.Services;
 
-public class NewTicketHandler : IRequestHandler<NewTicketNotificationRequest, Unit>
+public interface MessageNotificationService
 {
+    Task<dynamic> CreateMessageNotification(NotificationSource source);
+}
+
+
+
+public class MessageNotificationServiceImp : MessageNotificationService
+{
+    private readonly QueryMessageService queryMessageService;
     private readonly TicketRepository ticketRepository;
-    private readonly QueryMessageService messageService;
-    private readonly Publisher publisher;
 
-
-    public NewTicketHandler(TicketRepository ticketRepository, INapSession napSession, QueryMessageService messageService, Publisher publisher)
+    public MessageNotificationServiceImp(QueryMessageService queryMessageService, TicketRepository ticketRepository)
     {
+        this.queryMessageService = queryMessageService;
         this.ticketRepository = ticketRepository;
-        this.messageService = messageService;
-        this.publisher = publisher;
     }
 
-    public async Task<Unit> Handle(NewTicketNotificationRequest request, CancellationToken cancellationToken)
+    public async Task<dynamic> CreateMessageNotification(NotificationSource source)
     {
-        var userTuple = await messageService.QueryBySession(request.SessionId);
+        var userTuple = await queryMessageService.QueryBySession(source.SessionId);
         var userIds = userTuple.Item1.Select(x => x.UserId).ToList();
         var awaiter = ticketRepository.GetMessageUnreadByMultipleUserId(userIds).ConfigureAwait(true);
         var messageUnread = awaiter.GetAwaiter().GetResult();
@@ -34,10 +33,10 @@ public class NewTicketHandler : IRequestHandler<NewTicketNotificationRequest, Un
             IsImportant = x.IsImportant,
             MessageType = x.MessageType,
             MessageContent = x.MessageContent,
-            TicketId = request.TicketId,
-            EventType = request.EventType,
+            TicketId = source.TicketId,
+            EventType = source.EventType,
             TotalMessageUnread = messageUnread?.FirstOrDefault(m => m.UserId == x.UserId)?.Total,
-            IsNewMessage = request.IsNewMessage
+            IsNewMessage = source.IsNewMessage
         }).DistinctBy(x => new
         {
             x.UserId,
@@ -65,8 +64,7 @@ public class NewTicketHandler : IRequestHandler<NewTicketNotificationRequest, Un
 
         }
 
-        publisher.PushMessage(messages, routingKey: RoutingKey.TicketCenter);
-
-        return Unit.Value;
+        return messages;
     }
 }
+
