@@ -2,7 +2,7 @@
 
 public class NotificationTemplate
 {
-    public string? NotificationContent { get; set; }
+    public string NotificationContent { get; set; }
 
     public bool IsImportant { get; set; }
 

@@ -13,8 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\OWP.MessageConsumer\OWP.MessageConsumer.csproj" />
-    <ProjectReference Include="..\src\OWP.MessagePublisher\OWP.MessagePublisher.csproj" />
     <ProjectReference Include="..\src\OWP.OtherSportNotification\OWP.OtherSportNotification.csproj" />
     <ProjectReference Include="..\src\OWP.PreMatchNotification\OWP.PreMatchNotification.csproj" />
     <ProjectReference Include="..\src\OWP.TicketNotification\OWP.TicketNotification.csproj" />

@@ -1,7 +1,7 @@
 ﻿using MediatR;
+using OWP.Core.Contants;
 using OWP.Core.NotificationRequests.TicketCenter;
-using OWP.MessageConsumer.Constants;
-using OWP.MessagePublisher;
+using OWP.RabbitMQ.Publisher;
 using OWP.TicketNotification.Constants;
 using OWP.TicketNotification.Models;
 using OWP.TicketNotification.Services;
@@ -11,10 +11,10 @@ namespace OWP.TicketNotification.Handlers
     internal class NewTicketSupportHandler : IRequestHandler<NewTicketSupportNoticationRequest, Unit>
     {
         private readonly NewTicketSupportMessageDBWriter writer;
-        private readonly Publisher publisher;
+        private readonly MessagePublisher publisher;
         private readonly MessageNotificationService messageNotificationService;
 
-        public NewTicketSupportHandler(NewTicketSupportMessageDBWriter writer, Publisher publisher, MessageNotificationService messageNotificationService)
+        public NewTicketSupportHandler(NewTicketSupportMessageDBWriter writer, MessagePublisher publisher, MessageNotificationService messageNotificationService)
         {
             this.writer = writer;
             this.publisher = publisher;

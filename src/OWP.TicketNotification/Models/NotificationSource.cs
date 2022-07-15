@@ -2,7 +2,7 @@
 
 public class NotificationSource
 {
-    public string? SessionId { get; set; }
+    public string SessionId { get; set; }
 
     public int TicketId { get; set; }
 

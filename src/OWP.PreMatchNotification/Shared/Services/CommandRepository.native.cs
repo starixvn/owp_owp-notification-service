@@ -1,5 +1,4 @@
 ﻿using Fanex.Data.Repository;
-using Fanex.NAP.Client.Helpers.Web;
 using Olympus.Xml;
 using OWP.PreMatchNotification.Criteria;
 using OWP.PreMatchNotification.Shared.Models;
@@ -21,13 +20,13 @@ public class CommandRepositoryImp : CommandRepository
 {
     private readonly IDynamicRepository dynamicRepository;
 
-    private readonly INapSession currentSession;
+    // private readonly INapSession currentSession;
 
     public CommandRepositoryImp(
-        INapSession currentSession,
+        //   INapSession currentSession,
         IDynamicRepository dynamicRepository)
     {
-        this.currentSession = currentSession;
+        //     this.currentSession = currentSession;
         this.dynamicRepository = dynamicRepository;
     }
 
@@ -38,7 +37,7 @@ public class CommandRepositoryImp : CommandRepository
         var criteria = new InsertMessageCommand
         {
             Messages = XmlConverter.Serialize(messages),
-            CreatedByUserId = currentSession.UserId,
+            //         CreatedByUserId = currentSession.UserId,
             SessionId = sessionId
         };
 

@@ -1,7 +1,7 @@
 ﻿using MediatR;
+using OWP.Core.Contants;
 using OWP.Core.NotificationRequests.TicketCenter;
-using OWP.MessageConsumer.Constants;
-using OWP.MessagePublisher;
+using OWP.RabbitMQ.Publisher;
 using OWP.TicketNotification.Models;
 using OWP.TicketNotification.Services;
 
@@ -12,9 +12,9 @@ public class NewRecipientHandler : IRequestHandler<NewRecipientNotificationReque
 
     private readonly NewRecipientMessageDBWriter newRecipientMessageDBWriter;
     private readonly MessageNotificationService messageNotificationService;
-    private readonly Publisher publisher;
+    private readonly MessagePublisher publisher;
 
-    public NewRecipientHandler(NewRecipientMessageDBWriter newRecipientMessageDBWriter, MessageNotificationService messageNotificationService, Publisher publisher)
+    public NewRecipientHandler(NewRecipientMessageDBWriter newRecipientMessageDBWriter, MessageNotificationService messageNotificationService, MessagePublisher publisher)
     {
         this.newRecipientMessageDBWriter = newRecipientMessageDBWriter;
         this.messageNotificationService = messageNotificationService;

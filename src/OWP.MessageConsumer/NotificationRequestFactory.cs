@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using OWP.Core.NotificationRequests.OtherSport;
 using OWP.Core.NotificationRequests.Prematch;
 using OWP.Core.NotificationRequests.TicketCenter;
 using OWP.MessageConsumer.Constants;
