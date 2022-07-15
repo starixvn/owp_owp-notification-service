@@ -7,4 +7,5 @@ public class OtherSportNotificationRequest : NotificationRequest, IRequest<Unit>
     public DateTime FromDate { get; set; }
 
     public DateTime ToDate { get; set; }
+    public int ActorId { get; set; }
 }

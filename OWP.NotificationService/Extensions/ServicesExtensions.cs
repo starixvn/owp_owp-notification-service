@@ -61,7 +61,6 @@ namespace OWP.NotificationService.Extensions
             return services;
         }
 
-
         public static IServiceCollection AddCoreServices(this IServiceCollection services)
         {
             services.AddTransient<QueryMessageService, QueryMessageServiceImp>();

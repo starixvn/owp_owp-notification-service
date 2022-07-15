@@ -14,6 +14,7 @@ public class MessageConsumer
     private readonly RabbitMQSetting setting;
     private readonly IMediator mediator;
     //   private readonly ILogger logger;
+
     private const string Exchange = "SessionMessage";
     private const string QueueName = "Session";
 
@@ -24,11 +25,10 @@ public class MessageConsumer
     {
         setting = options.Value;
         this.mediator = mediator;
-        this.CreateConnection();
-        //  this.logger = logger;
+
     }
 
-    private void CreateConnection()
+    public void ReceiveMessageFromQueue()
     {
         try
         {
@@ -47,18 +47,7 @@ public class MessageConsumer
             channel.ExchangeDeclare(exchange: Exchange, type: "direct", durable: true, autoDelete: false);
 
             channel.QueueDeclare(queue: QueueName, durable: true, exclusive: false, autoDelete: false);
-        }
-        catch (Exception ex)
-        {
-            //  logger.Error(ex.Message);
-            throw;
-        }
-    }
 
-    public void ReceiveMessageFromQueue()
-    {
-        try
-        {
             foreach (var key in RoutingKey.Keys)
             {
                 channel.QueueBind(queue: QueueName, exchange: Exchange, routingKey: key);
@@ -70,7 +59,7 @@ public class MessageConsumer
 
             channel.BasicConsume(QueueName, autoAck: true, consumer: consumer);
         }
-        catch (Exception ex)
+        catch
         {
             //  logger.Error(ex.Message);
             throw;

@@ -27,7 +27,7 @@ public class MessagePublisher
             UserName = setting.UserName
         };
 
-        var connection = factory.CreateConnection();
+        using var connection = factory.CreateConnection();
         using var channel = connection.CreateModel();
 
         channel.ExchangeDeclare(exchange: Exchange, type: "direct", durable: true, autoDelete: false);
