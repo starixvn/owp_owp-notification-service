@@ -14,3 +14,13 @@ public class NotificationModel : MessageModel
 
     public bool IsNewMessage { get; set; }
 }
+
+
+public class NotificationContent
+{
+    public string NotificationId { get; set; }
+    public NotificationModel Message { get; set; }
+}
+
+
+

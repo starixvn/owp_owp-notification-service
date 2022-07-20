@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
-using OWP.RabbitMQ.Consumer;
+using OWP.RabbitMQ;
 using IHostApplicationLifetime = Microsoft.Extensions.Hosting.IHostApplicationLifetime;
 
 namespace OWP.NotificationService.Extensions;
@@ -8,9 +8,13 @@ public static class AppExtensions
 {
     public static IApplicationBuilder UseRabbitListener(this IApplicationBuilder app)
     {
-        var rabbitService = app.ApplicationServices.GetService<MessageConsumer>();
+        //var rabbitService = app.ApplicationServices.GetService<MessageConsumer>();
+        //var lifetime = app.ApplicationServices.GetService<IHostApplicationLifetime>();
+        //lifetime!.ApplicationStarted.Register(() => rabbitService!.ReceiveMessageFromQueue());
+
+        var rabbitService = app.ApplicationServices.GetService<MessageServer>();
         var lifetime = app.ApplicationServices.GetService<IHostApplicationLifetime>();
-        lifetime!.ApplicationStarted.Register(() => rabbitService!.ReceiveMessageFromQueue());
+        lifetime!.ApplicationStarted.Register(() => rabbitService!.ReceiveMessage());
 
         return app;
     }

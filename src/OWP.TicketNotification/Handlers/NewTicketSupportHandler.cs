@@ -1,28 +1,23 @@
 ﻿using MediatR;
-using OWP.Core.Contants;
 using OWP.Core.NotificationRequests.TicketCenter;
-using OWP.RabbitMQ.Publisher;
 using OWP.TicketNotification.Constants;
 using OWP.TicketNotification.Models;
 using OWP.TicketNotification.Services;
 
 namespace OWP.TicketNotification.Handlers
 {
-    internal class NewTicketSupportHandler : IRequestHandler<NewTicketSupportNoticationRequest, Unit>
+    internal class NewTicketSupportHandler : IRequestHandler<NewTicketSupportNoticationRequest, List<object>>
     {
         private readonly NewTicketSupportMessageDBWriter writer;
-        private readonly MessagePublisher publisher;
         private readonly MessageNotificationService messageNotificationService;
 
-        public NewTicketSupportHandler(NewTicketSupportMessageDBWriter writer, MessagePublisher publisher, MessageNotificationService messageNotificationService)
+        public NewTicketSupportHandler(NewTicketSupportMessageDBWriter writer, MessageNotificationService messageNotificationService)
         {
             this.writer = writer;
-            this.publisher = publisher;
             this.messageNotificationService = messageNotificationService;
         }
 
-
-        public async Task<Unit> Handle(NewTicketSupportNoticationRequest request, CancellationToken cancellationToken)
+        public async Task<List<object>> Handle(NewTicketSupportNoticationRequest request, CancellationToken cancellationToken)
         {
             var notificationMessage = new NewTicketModel
             {
@@ -41,10 +36,13 @@ namespace OWP.TicketNotification.Handlers
             };
             var messages = await messageNotificationService.CreateMessageNotification(notificationSource);
 
-            // publish
-            publisher.PushMessage(messages, routingKey: RoutingKey.TicketCenterNewTicketSupport);
+            var result = messages.Select(m => new
+            {
+                NotificationId = Guid.NewGuid().ToString(),
+                Message = m
+            }).ToList();
 
-            return Unit.Value;
+            return result.ToList<object>();
         }
     }
 

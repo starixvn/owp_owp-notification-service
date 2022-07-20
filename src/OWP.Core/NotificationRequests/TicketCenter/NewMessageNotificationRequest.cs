@@ -2,7 +2,7 @@
 
 namespace OWP.Core.NotificationRequests.TicketCenter;
 
-public class NewMessageNotificationRequest : NotificationRequest, IRequest<Unit>
+public class NewMessageNotificationRequest : NotificationRequest, IRequest<List<object>>
 {
     public string Message { get; set; }
 

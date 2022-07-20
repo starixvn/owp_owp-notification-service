@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using OWP.Core.Contants;
 using OWP.Core.NotificationRequests.TicketCenter;
 using OWP.RabbitMQ.Publisher;
 using OWP.TicketNotification.Constants;
@@ -8,7 +7,7 @@ using OWP.TicketNotification.Services;
 
 namespace OWP.TicketNotification.Handlers;
 
-public class NewTicketLeagueHandler : IRequestHandler<NewTicketLeagueNotificationRequest, Unit>
+public class NewTicketLeagueHandler : IRequestHandler<NewTicketLeagueNotificationRequest, List<object>>
 {
     private readonly NewTicketLeagueMessageDBWriter writer;
     private readonly MessagePublisher publisher;
@@ -22,7 +21,7 @@ public class NewTicketLeagueHandler : IRequestHandler<NewTicketLeagueNotificatio
     }
 
 
-    public async Task<Unit> Handle(NewTicketLeagueNotificationRequest request, CancellationToken cancellationToken)
+    public async Task<List<object>> Handle(NewTicketLeagueNotificationRequest request, CancellationToken cancellationToken)
     {
         var notificationMessage = new NewTicketModel
         {
@@ -40,9 +39,13 @@ public class NewTicketLeagueHandler : IRequestHandler<NewTicketLeagueNotificatio
         };
         var messages = await messageNotificationService.CreateMessageNotification(notificationSource);
 
-        // publish
-        publisher.PushMessage(messages, routingKey: RoutingKey.TicketCenterNewTicketLeague);
 
-        return Unit.Value;
+        var result = messages.Select(m => new
+        {
+            NotificationId = Guid.NewGuid().ToString(),
+            Message = m
+        }).ToList();
+
+        return result.ToList<object>();
     }
 }

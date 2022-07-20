@@ -1,26 +1,22 @@
 ﻿using MediatR;
-using OWP.Core.Contants;
 using OWP.Core.NotificationRequests.TicketCenter;
-using OWP.RabbitMQ.Publisher;
 using OWP.TicketNotification.Models;
 using OWP.TicketNotification.Services;
 
 namespace OWP.TicketNotification.Handlers;
 
-public class NewMessageHandler : IRequestHandler<NewMessageNotificationRequest, Unit>
+public class NewMessageHandler : IRequestHandler<NewMessageNotificationRequest, List<object>>
 {
     private readonly NewMessageDBWriter writer;
     private readonly MessageNotificationService messageNotificationService;
-    private readonly MessagePublisher publisher;
 
-    public NewMessageHandler(NewMessageDBWriter writer, MessageNotificationService messageNotificationService, MessagePublisher publisher)
+    public NewMessageHandler(NewMessageDBWriter writer, MessageNotificationService messageNotificationService)
     {
         this.writer = writer;
         this.messageNotificationService = messageNotificationService;
-        this.publisher = publisher;
     }
 
-    public async Task<Unit> Handle(NewMessageNotificationRequest request, CancellationToken cancellationToken)
+    public async Task<List<object>> Handle(NewMessageNotificationRequest request, CancellationToken cancellationToken)
     {
         var newMessageModel = new NewMessageModel
         {
@@ -31,7 +27,7 @@ public class NewMessageHandler : IRequestHandler<NewMessageNotificationRequest, 
             TicketId = request.TicketId,
             ActorId = request.ActorId
         };
-        var messageId = await writer.Execute(newMessageModel); // insert messs
+        var messageId = await writer.Execute(newMessageModel); // insert mess
 
         var notificationSource = new NotificationSource
         {
@@ -42,10 +38,13 @@ public class NewMessageHandler : IRequestHandler<NewMessageNotificationRequest, 
         };
         var messages = await messageNotificationService.CreateMessageNotification(notificationSource); // get mess
 
-        // publish
-        publisher.PushMessage(messages, routingKey: RoutingKey.TicketCenterNewMessage);
+        var result = messages.Select(m => new
+        {
+            NotificationId = Guid.NewGuid().ToString(),
+            Message = m
+        }).ToList();
 
-        return Unit.Value;
+        return result.ToList<object>();
     }
 }
 

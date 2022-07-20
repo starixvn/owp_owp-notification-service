@@ -2,7 +2,7 @@
 
 namespace OWP.Core.NotificationRequests.TicketCenter;
 
-public class NewTicketEventNotificationRequest : NotificationRequest, IRequest<Unit>
+public class NewTicketEventNotificationRequest : NotificationRequest, IRequest<List<object>>
 {
     public int ActorId { get; set; }
     public int TicketId { get; set; }

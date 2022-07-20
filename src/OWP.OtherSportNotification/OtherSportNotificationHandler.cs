@@ -1,36 +1,31 @@
 ﻿using MediatR;
-using OWP.Core.Contants;
 using OWP.Core.NotificationRequests.OtherSport;
 using OWP.OtherSportNotification.Services;
-using OWP.RabbitMQ.Publisher;
 
 namespace OWP.OtherSportNotification;
 
-public class OtherSportNotificationHandler : IRequestHandler<OtherSportNotificationRequest, Unit>
+public class OtherSportNotificationHandler : IRequestHandler<OtherSportNotificationRequest, List<object>>
 {
     private readonly ChangedValueByCacheAndDatabase changedValueByCacheAndDatabase;
     private readonly AssigneeChangedValueFilter assigneeChangedValueFilter;
     private readonly ChangedValueAggregator changedValueAggregator;
     private readonly MessageFactory messageFactory;
     private readonly OtherSportRepository repository;
-    private readonly MessagePublisher publisher;
 
     public OtherSportNotificationHandler(ChangedValueByCacheAndDatabase changedValueByCacheAndDatabase,
         AssigneeChangedValueFilter assigneeChangedValueFilter,
         ChangedValueAggregator changedValueAggregator,
         MessageFactory messageFactory,
-        OtherSportRepository repository,
-        MessagePublisher publisher)
+        OtherSportRepository repository)
     {
         this.changedValueByCacheAndDatabase = changedValueByCacheAndDatabase;
         this.assigneeChangedValueFilter = assigneeChangedValueFilter;
         this.changedValueAggregator = changedValueAggregator;
         this.messageFactory = messageFactory;
         this.repository = repository;
-        this.publisher = publisher;
     }
 
-    public async Task<Unit> Handle(OtherSportNotificationRequest request, CancellationToken cancellationToken)
+    public async Task<List<object>> Handle(OtherSportNotificationRequest request, CancellationToken cancellationToken)
     {
         var messages = await changedValueByCacheAndDatabase.Create(request.SessionId, request.FromDate, request.ToDate); var assigneeChangedValues = await assigneeChangedValueFilter.Filter(messages);
         var aggregatedChangedValues = changedValueAggregator.Aggregate(assigneeChangedValues);
@@ -39,8 +34,12 @@ public class OtherSportNotificationHandler : IRequestHandler<OtherSportNotificat
 
         await repository.InsertMessage(messageModels, request.SessionId, request.ActorId);
 
-        publisher.PushMessage(messageModels, RoutingKey.OtherSport);
+        var result = messageModels.Select(m => new
+        {
+            NotificationId = Guid.NewGuid().ToString(),
+            Message = m
+        }).ToList();
 
-        return Unit.Value;
+        return result.ToList<object>();
     }
 }

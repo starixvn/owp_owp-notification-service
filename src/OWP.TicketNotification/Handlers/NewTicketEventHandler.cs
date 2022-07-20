@@ -1,29 +1,25 @@
 ﻿using MediatR;
-using OWP.Core.Contants;
 using OWP.Core.NotificationRequests.TicketCenter;
-using OWP.RabbitMQ.Publisher;
 using OWP.TicketNotification.Constants;
 using OWP.TicketNotification.Models;
 using OWP.TicketNotification.Services;
 
 namespace OWP.TicketNotification.Handlers;
 
-public class NewTicketEventHandler : IRequestHandler<NewTicketEventNotificationRequest, Unit>
+public class NewTicketEventHandler : IRequestHandler<NewTicketEventNotificationRequest, List<object>>
 {
     private readonly NewTicketMatchMessageDBWriter writer;
-    private readonly MessagePublisher publisher;
     private readonly MessageNotificationService messageNotificationService;
 
 
 
-    public NewTicketEventHandler(MessagePublisher publisher, NewTicketMatchMessageDBWriter writer, MessageNotificationService messageNotificationService)
+    public NewTicketEventHandler(NewTicketMatchMessageDBWriter writer, MessageNotificationService messageNotificationService)
     {
-        this.publisher = publisher;
         this.writer = writer;
         this.messageNotificationService = messageNotificationService;
     }
 
-    public async Task<Unit> Handle(NewTicketEventNotificationRequest request, CancellationToken cancellationToken)
+    public async Task<List<object>> Handle(NewTicketEventNotificationRequest request, CancellationToken cancellationToken)
     {
         var notificationMessage = new NewTicketModel
         {
@@ -41,9 +37,13 @@ public class NewTicketEventHandler : IRequestHandler<NewTicketEventNotificationR
         };
         var messages = await messageNotificationService.CreateMessageNotification(notificationSource); // get mess
 
-        // publish
-        publisher.PushMessage(messages, routingKey: RoutingKey.TicketCenterNewTicketEvent);
 
-        return Unit.Value;
+        var result = messages.Select(m => new
+        {
+            NotificationId = Guid.NewGuid().ToString(),
+            Message = m
+        }).ToList();
+
+        return result.ToList<object>();
     }
 }
