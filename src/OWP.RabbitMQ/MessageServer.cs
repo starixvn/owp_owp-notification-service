@@ -1,5 +1,4 @@
-﻿using Fanex.Logging;
-using MediatR;
+﻿using MediatR;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using OWP.Core.NotificationRequests;
@@ -21,7 +20,7 @@ public class MessageServer
     private readonly RabbitMQSetting setting;
     private readonly IMediator mediator;
 
-    public MessageServer(IOptions<RabbitMQSetting> options, IMediator mediator, ILogger logger)
+    public MessageServer(IOptions<RabbitMQSetting> options, IMediator mediator)
     {
         setting = options.Value;
 

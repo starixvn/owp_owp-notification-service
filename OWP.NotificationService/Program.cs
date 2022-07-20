@@ -10,7 +10,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddCorsPolicy();
 builder.Services.AddSignalR();
 builder.Services.AddFanexServices(builder.Configuration);
 builder.Services.AddRedisServices(builder.Configuration);
