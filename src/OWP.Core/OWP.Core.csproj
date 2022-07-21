@@ -14,6 +14,7 @@
     <PackageReference Include="Fanex.Data.Repository" Version="4.2.2" />
     <PackageReference Include="Fanex.Data.SqlServer" Version="4.2.2" />
     <PackageReference Include="Fanex.Logging" Version="2.0.1" />
+    <PackageReference Include="Fanex.Logging.Sentry.RavenClient" Version="1.0.1" />
     <PackageReference Include="Fanex.NAP.Client.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Fanex.NAP.Signin.AspNetCore" Version="2.0.0" />
     <PackageReference Include="MediatR" Version="10.0.1" />

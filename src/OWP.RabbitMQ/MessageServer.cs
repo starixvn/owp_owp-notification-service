@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Fanex.Logging;
+using MediatR;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using OWP.Core.NotificationRequests;
@@ -9,6 +10,7 @@ using System.Text;
 
 namespace OWP.RabbitMQ;
 
+//: IHostedService
 public class MessageServer
 {
     private const string QueueName = "Message";
@@ -19,14 +21,17 @@ public class MessageServer
 
     private readonly RabbitMQSetting setting;
     private readonly IMediator mediator;
+    private readonly ILogger logger;
 
-    public MessageServer(IOptions<RabbitMQSetting> options, IMediator mediator)
+    public MessageServer(IOptions<RabbitMQSetting> options, IMediator mediator, ILogger logger)
     {
         setting = options.Value;
 
         this.mediator = mediator;
+        this.logger = logger;
 
         factory = new ConnectionFactory() { HostName = setting.Hosting };
+
     }
 
     public void ReceiveMessage()
@@ -34,7 +39,7 @@ public class MessageServer
         connection = factory.CreateConnection();
         channel = connection.CreateModel();
 
-        channel.QueueDeclare(queue: QueueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
+        channel.QueueDeclare(queue: QueueName, durable: true, autoDelete: false);
         channel.BasicQos(0, 1, false);
 
         var consumer = new EventingBasicConsumer(channel);
@@ -61,7 +66,10 @@ public class MessageServer
         catch (Exception e)
         {
             //
-            throw;
+            //logger.Error(e.Message, e);
+            //throw;
+            response = "bdfe";
+
         }
         finally
         {
@@ -84,4 +92,26 @@ public class MessageServer
         return json;
     }
 
+    //public async Task StartAsync(CancellationToken cancellationToken)
+    //{
+    //    connection = factory.CreateConnection();
+    //    channel = connection.CreateModel();
+
+    //    channel.QueueDeclare(queue: QueueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
+    //    channel.BasicQos(0, 1, false);
+
+    //    var consumer = new EventingBasicConsumer(channel);
+    //    channel.BasicConsume(queue: QueueName, autoAck: false, consumer: consumer);
+
+    //    consumer.Received += OnReceived;
+
+    //    await Task.CompletedTask;
+    //}
+
+    //public async Task StopAsync(CancellationToken cancellationToken)
+    //{
+    //    connection.Close();
+    //    channel.Close();
+    //    await Task.CompletedTask;
+    //}
 }

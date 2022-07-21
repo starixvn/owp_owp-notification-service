@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using OWP.RabbitMQ;
-using IHostApplicationLifetime = Microsoft.Extensions.Hosting.IHostApplicationLifetime;
 
 namespace OWP.NotificationService.Extensions;
 
