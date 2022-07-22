@@ -1,7 +1,7 @@
 ﻿using Fanex.Logging;
 using MediatR;
 using Microsoft.Extensions.Options;
-using OWP.Core.NotificationRequests;
+using OWP.RabbitMQ.Handler;
 using OWP.RabbitMQ.Models;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -11,72 +11,81 @@ namespace OWP.RabbitMQ;
 
 public class MessageServer
 {
-    private ConnectionFactory factory;
-    private IConnection connection;
     private IModel channel;
-
     private readonly RabbitMQSetting setting;
-    private readonly IMediator mediator;
     private readonly ILogger logger;
+    private readonly NotificationHander notificationHander;
 
-    public MessageServer(IOptions<RabbitMQSetting> options, IMediator mediator, ILogger logger)
+    public MessageServer(
+        IOptions<RabbitMQSetting> options,
+        ILogger logger,
+        NotificationHander notificationHander
+        )
     {
         setting = options.Value;
-        factory = new ConnectionFactory() { HostName = setting.Hosting };
-
-        this.mediator = mediator;
         this.logger = logger;
+        this.notificationHander = notificationHander;
     }
 
-    public void ReceiveMessage()
+    public void ConsumeRequestQueue()
     {
         try
         {
-            connection = factory.CreateConnection();
-            channel = connection.CreateModel();
+            var factory = new ConnectionFactory()
+            {
+                UserName = setting.UserName,
+                Password = setting.Password,
+                HostName = setting.Hosting,
+                Port = setting.Port,
+                VirtualHost = setting.VirtualHost,
+                DispatchConsumersAsync = true
+            };
 
-            channel.QueueDeclare(queue: setting.Queue, durable: true, autoDelete: false);
+            var connection = factory.CreateConnection();
+            channel = connection.CreateModel();
+            channel.QueueDeclare(queue: setting.RequestQueue, durable: true, autoDelete: false);
             channel.BasicQos(0, 1, false);
 
             var consumer = new EventingBasicConsumer(channel);
-            channel.BasicConsume(queue: setting.Queue, autoAck: false, consumer: consumer);
+            channel.BasicConsume(queue: setting.RequestQueue, autoAck: false, consumer: consumer);
 
             consumer.Received += OnReceived;
         }
         catch (Exception ex)
         {
-            logger.Error(ex.Message, ex);
+            //log
         }
-
     }
 
     private async void OnReceived(object model, BasicDeliverEventArgs eventArgs)
     {
+        var response = string.Empty;
         var props = eventArgs.BasicProperties;
         var replyProps = channel.CreateBasicProperties();
-        replyProps.CorrelationId = props.CorrelationId;
+        replyProps.Type = props.Type;
 
+        try
+        {
+            var body = eventArgs.Body.ToArray();
+            var requestMessage = Encoding.UTF8.GetString(body);
 
-        var body = eventArgs.Body.ToArray();
-        var message = Encoding.UTF8.GetString(body);
+            response = await notificationHander.Handle(props.Type, requestMessage);
+        }
+        catch (Exception e)
+        {
+            //logger.Error(e.Message, e);
+        }
+        finally
+        {
+            var responseBytes = Encoding.UTF8.GetBytes(response);
 
-        var response = await HandleRequest(props.CorrelationId, message);
+            channel.BasicPublish(
+                exchange: string.Empty,
+                routingKey: props.ReplyTo,
+                basicProperties: replyProps,
+                body: responseBytes);
 
-        var responseBytes = Encoding.UTF8.GetBytes(response);
-
-        channel.BasicPublish(exchange: "", routingKey: props.ReplyTo, basicProperties: replyProps, body: responseBytes);
-
-        channel.BasicAck(deliveryTag: eventArgs.DeliveryTag, multiple: false);
-
+            channel.BasicAck(deliveryTag: eventArgs.DeliveryTag, multiple: false);
+        }
     }
-
-    private async Task<string> HandleRequest(string key, string value)
-    {
-        var request = NotificationRequestFactory.GetNotificationRequest(key, value);
-
-        var result = await mediator.Send(request);
-
-        return result;
-    }
-
 }

@@ -7,13 +7,9 @@ public static class AppExtensions
 {
     public static IApplicationBuilder UseRabbitListener(this IApplicationBuilder app)
     {
-        //var rabbitService = app.ApplicationServices.GetService<MessageConsumer>();
-        //var lifetime = app.ApplicationServices.GetService<IHostApplicationLifetime>();
-        //lifetime!.ApplicationStarted.Register(() => rabbitService!.ReceiveMessageFromQueue());
-
         var rabbitService = app.ApplicationServices.GetService<MessageServer>();
         var lifetime = app.ApplicationServices.GetService<IHostApplicationLifetime>();
-        lifetime!.ApplicationStarted.Register(() => rabbitService!.ReceiveMessage());
+        lifetime!.ApplicationStarted.Register(() => rabbitService!.ConsumeRequestQueue());
 
         return app;
     }
@@ -32,7 +28,5 @@ public static class AppExtensions
 
         return app;
     }
-
-
 }
 

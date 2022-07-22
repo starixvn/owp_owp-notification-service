@@ -12,8 +12,6 @@ public class NewTicketEventHandler : IRequestHandler<NewTicketEventNotificationR
     private readonly NewTicketMatchMessageDBWriter writer;
     private readonly MessageNotificationService messageNotificationService;
 
-
-
     public NewTicketEventHandler(NewTicketMatchMessageDBWriter writer, MessageNotificationService messageNotificationService)
     {
         this.writer = writer;

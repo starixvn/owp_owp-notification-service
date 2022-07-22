@@ -55,21 +55,21 @@ namespace OWP.NotificationService.Extensions
 
         public static IServiceCollection AddNapServices(this IServiceCollection services, IConfiguration configuration)
         {
-            LogManager.SetDefaultLogCategory(configuration.GetSection("FanexLogCategory").Value)
-       .Use(new List<ILogEngine>
-       {
-                new SentryLogging( new SentryEngineOptions
-                {
-                    Dsn = new SharpRaven.Dsn(configuration.GetSection("SentryToken").Value)
-                })
-       });
+            LogManager
+               .SetDefaultLogCategory(configuration.GetSection("FanexLogCategory").Value)
+               .Use(new List<ILogEngine>
+               {
+                        new SentryLogging( new SentryEngineOptions
+                        {
+                            Dsn = new SharpRaven.Dsn(configuration.GetSection("SentryToken").Value)
+                        })
+               });
             services.AddSingleton<Fanex.Logging.ILogger, Logger>();
 
             return services;
         }
     }
 }
-
 
 public class RedisSetting
 {
