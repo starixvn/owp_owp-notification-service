@@ -1,8 +1,6 @@
-﻿using MediatR;
+﻿namespace OWP.Core.NotificationRequests.TicketCenter;
 
-namespace OWP.Core.NotificationRequests.TicketCenter;
-
-public class NewRecipientNotificationRequest : NotificationRequest, IRequest<List<object>>
+public class NewRecipientNotificationRequest : NotificationRequest
 {
     public string TicketTitle { get; set; }
 

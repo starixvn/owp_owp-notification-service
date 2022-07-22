@@ -1,6 +1,8 @@
-﻿namespace OWP.Core.NotificationRequests;
+﻿using MediatR;
 
-public class NotificationRequest
+namespace OWP.Core.NotificationRequests;
+
+public class NotificationRequest : IRequest<string>
 {
     public string SessionId { get; set; }
 }

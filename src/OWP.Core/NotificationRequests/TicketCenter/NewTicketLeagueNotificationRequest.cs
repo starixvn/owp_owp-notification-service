@@ -1,8 +1,6 @@
-﻿using MediatR;
+﻿namespace OWP.Core.NotificationRequests.TicketCenter;
 
-namespace OWP.Core.NotificationRequests.TicketCenter;
-
-public class NewTicketLeagueNotificationRequest : NotificationRequest, IRequest<List<object>>
+public class NewTicketLeagueNotificationRequest : NotificationRequest
 {
     public int CreatorId { get; set; }
     public int TicketId { get; set; }

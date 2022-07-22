@@ -1,11 +1,12 @@
 ﻿using MediatR;
+using Newtonsoft.Json;
 using OWP.Core.NotificationRequests.TicketCenter;
 using OWP.TicketNotification.Models;
 using OWP.TicketNotification.Services;
 
 namespace OWP.TicketNotification.Handlers;
 
-public class NewMessageHandler : IRequestHandler<NewMessageNotificationRequest, List<object>>
+public class NewMessageHandler : IRequestHandler<NewMessageNotificationRequest, string>
 {
     private readonly NewMessageDBWriter writer;
     private readonly MessageNotificationService messageNotificationService;
@@ -16,7 +17,7 @@ public class NewMessageHandler : IRequestHandler<NewMessageNotificationRequest, 
         this.messageNotificationService = messageNotificationService;
     }
 
-    public async Task<List<object>> Handle(NewMessageNotificationRequest request, CancellationToken cancellationToken)
+    public async Task<string> Handle(NewMessageNotificationRequest request, CancellationToken cancellationToken)
     {
         var newMessageModel = new NewMessageModel
         {
@@ -44,7 +45,7 @@ public class NewMessageHandler : IRequestHandler<NewMessageNotificationRequest, 
             Message = m
         }).ToList();
 
-        return result.ToList<object>();
+        return JsonConvert.SerializeObject(result);
     }
 }
 
