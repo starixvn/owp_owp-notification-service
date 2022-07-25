@@ -1,5 +1,4 @@
 ﻿using Fanex.Logging;
-using MediatR;
 using Microsoft.Extensions.Options;
 using OWP.RabbitMQ.Handler;
 using OWP.RabbitMQ.Models;
@@ -43,7 +42,7 @@ public class MessageServer
 
             var connection = factory.CreateConnection();
             channel = connection.CreateModel();
-            channel.QueueDeclare(queue: setting.RequestQueue, durable: true, autoDelete: false);
+            channel.QueueDeclare(queue: setting.RequestQueue, durable: true, exclusive: false, autoDelete: false);
             channel.BasicQos(0, 1, false);
 
             var consumer = new EventingBasicConsumer(channel);
