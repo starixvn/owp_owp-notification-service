@@ -45,5 +45,7 @@ app.UseEndpoints(c =>
     c.MapControllers();
 });
 
+app.Logger.LogInformation("Starting the app");
+
 app.Run();
 

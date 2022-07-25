@@ -1,4 +1,4 @@
-﻿using Fanex.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using OWP.RabbitMQ.Handler;
 using OWP.RabbitMQ.Models;
@@ -14,11 +14,12 @@ public class MessageServer
 
     private readonly RabbitMQSetting setting;
     private readonly ILogger logger;
+
     private readonly NotificationHander notificationHander;
 
     public MessageServer(
         IOptions<RabbitMQSetting> options,
-        ILogger logger,
+        ILogger<MessageServer> logger,
         NotificationHander notificationHander
         )
     {
@@ -31,6 +32,7 @@ public class MessageServer
     {
         try
         {
+            logger.LogInformation("ConsumeRequestQueue runing");
             var factory = new ConnectionFactory()
             {
                 UserName = setting.UserName,
@@ -52,10 +54,12 @@ public class MessageServer
             channel.BasicConsume(queue: setting.RequestQueue, autoAck: false, consumer: consumer);
 
             consumer.Received += OnReceived;
+
+            logger.LogInformation("ConsumeRequestQueue runded");
         }
         catch (Exception ex)
         {
-            //log
+            logger.LogError(ex.Message, ex);
         }
     }
 
