@@ -11,8 +11,6 @@ namespace OWP.RabbitMQ;
 public class MessageServer
 {
     private IModel channel;
-    private ConnectionFactory factory;
-    private IConnection connection;
 
     private readonly RabbitMQSetting setting;
     private readonly ILogger logger;
@@ -33,7 +31,7 @@ public class MessageServer
     {
         try
         {
-            factory = new ConnectionFactory()
+            var factory = new ConnectionFactory()
             {
                 UserName = setting.UserName,
                 Password = setting.Password,
@@ -43,7 +41,7 @@ public class MessageServer
                 DispatchConsumersAsync = true
             };
 
-            connection = factory.CreateConnection();
+            var connection = factory.CreateConnection();
             channel = connection.CreateModel();
 
             channel.QueueDeclare(queue: setting.RequestQueue, durable: true, exclusive: false, autoDelete: false);
@@ -81,6 +79,5 @@ public class MessageServer
             body: responseBytes);
 
         channel.BasicAck(deliveryTag: eventArgs.DeliveryTag, multiple: false);
-
     }
 }
