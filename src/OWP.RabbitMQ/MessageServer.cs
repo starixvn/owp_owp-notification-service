@@ -11,6 +11,9 @@ namespace OWP.RabbitMQ;
 public class MessageServer
 {
     private IModel channel;
+    private ConnectionFactory factory;
+    private IConnection connection;
+
     private readonly RabbitMQSetting setting;
     private readonly ILogger logger;
     private readonly NotificationHander notificationHander;
@@ -30,7 +33,7 @@ public class MessageServer
     {
         try
         {
-            var factory = new ConnectionFactory()
+            factory = new ConnectionFactory()
             {
                 UserName = setting.UserName,
                 Password = setting.Password,
@@ -40,12 +43,14 @@ public class MessageServer
                 DispatchConsumersAsync = true
             };
 
-            var connection = factory.CreateConnection();
+            connection = factory.CreateConnection();
             channel = connection.CreateModel();
+
             channel.QueueDeclare(queue: setting.RequestQueue, durable: true, exclusive: false, autoDelete: false);
+
             channel.BasicQos(0, 1, false);
 
-            var consumer = new EventingBasicConsumer(channel);
+            var consumer = new AsyncEventingBasicConsumer(channel);
             channel.BasicConsume(queue: setting.RequestQueue, autoAck: false, consumer: consumer);
 
             consumer.Received += OnReceived;
@@ -56,35 +61,26 @@ public class MessageServer
         }
     }
 
-    private async void OnReceived(object model, BasicDeliverEventArgs eventArgs)
+    private async Task OnReceived(object model, BasicDeliverEventArgs eventArgs)
     {
-        var response = string.Empty;
         var props = eventArgs.BasicProperties;
         var replyProps = channel.CreateBasicProperties();
         replyProps.Type = props.Type;
 
-        try
-        {
-            var body = eventArgs.Body.ToArray();
-            var requestMessage = Encoding.UTF8.GetString(body);
+        var body = eventArgs.Body.ToArray();
+        var requestMessage = Encoding.UTF8.GetString(body);
 
-            response = await notificationHander.Handle(props.Type, requestMessage);
-        }
-        catch (Exception e)
-        {
-            //logger.Error(e.Message, e);
-        }
-        finally
-        {
-            var responseBytes = Encoding.UTF8.GetBytes(response);
+        var response = await notificationHander.Handle(props.Type, requestMessage);
 
-            channel.BasicPublish(
-                exchange: string.Empty,
-                routingKey: props.ReplyTo,
-                basicProperties: replyProps,
-                body: responseBytes);
+        var responseBytes = Encoding.UTF8.GetBytes(response);
 
-            channel.BasicAck(deliveryTag: eventArgs.DeliveryTag, multiple: false);
-        }
+        channel.BasicPublish(
+            exchange: string.Empty,
+            routingKey: props.ReplyTo,
+            basicProperties: replyProps,
+            body: responseBytes);
+
+        channel.BasicAck(deliveryTag: eventArgs.DeliveryTag, multiple: false);
+
     }
 }
