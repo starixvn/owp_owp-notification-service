@@ -40,11 +40,13 @@ app.UseException();
 
 app.UseRabbitListener();
 
-app.UseCors();
-
 app.UseEndpoints(c =>
 {
     c.MapControllers();
 });
 
+#if DEBUG
 app.Run();
+#endif
+
+await app.RunAsync("http://0.0.0.0:5000");
