@@ -7,11 +7,11 @@ RUN dotnet tool install --tool-path /tools dotnet-counters
 #
 WORKDIR /src
 
-COPY ./src/OWP.MessageConsumer/. ./src/OWP.MessageConsumer
 COPY ./src/OWP.Core/. src/OWP.Core
 COPY ./src/OWP.TicketNotification/. ./src/OWP.TicketNotification
 COPY ./src/OWP.PreMatchNotification/. ./src/OWP.PreMatchNotification
 COPY ./src/OWP.OtherSportNotification/. ./src/OWP.OtherSportNotification
+COPY ./src/OWP.RabbitMQ/. ./src/OWP.RabbitMQ
 COPY ./OWP.NotificationService/OWP.NotificationService.csproj ./OWP.NotificationService/OWP.NotificationService.csproj
 
 WORKDIR /src/OWP.NotificationService
