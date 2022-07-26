@@ -50,23 +50,23 @@ public class ChangedLinkedMatchDetectorImp : ChangedLinkedMatchDetector
         };
     }
 
-    public IEnumerable<GeneralMatch> FilterExistPrematches(List<GeneralMatch> matches, Dictionary<int, List<InfositePrematchLeague>> prematchLeagues)
+    public static IEnumerable<GeneralMatch> FilterExistPrematches(List<GeneralMatch> matches, Dictionary<int, List<InfositePrematchLeague>> prematchLeagues)
     {
         var existInfositePrematch = prematchLeagues.Keys.Distinct();
         return matches.Where(x => x.InfoSiteMatchId != 0 && existInfositePrematch.Contains(x.InfoSiteMatchId));
     }
 
-    public List<GeneralMatch> GetDeletedLinkedMatches(IEnumerable<GeneralMatch> oldMatches, IEnumerable<GeneralMatch> newMatches)
+    public static List<GeneralMatch> GetDeletedLinkedMatches(IEnumerable<GeneralMatch> oldMatches, IEnumerable<GeneralMatch> newMatches)
     {
         return oldMatches.Except(newMatches, new LinkedMatchComparer()).ToList();
     }
 
-    public List<GeneralMatch> GetInsertedLinkedMatches(IEnumerable<GeneralMatch> oldMatches, IEnumerable<GeneralMatch> newMatches)
+    public static List<GeneralMatch> GetInsertedLinkedMatches(IEnumerable<GeneralMatch> oldMatches, IEnumerable<GeneralMatch> newMatches)
     {
         return newMatches.Except(oldMatches, new LinkedMatchComparer()).ToList();
     }
 
-    public List<GeneralMatch> GetChangedLinkedMatches(IEnumerable<GeneralMatch> oldMatches, IEnumerable<GeneralMatch> newMatches)
+    public static List<GeneralMatch> GetChangedLinkedMatches(IEnumerable<GeneralMatch> oldMatches, IEnumerable<GeneralMatch> newMatches)
     {
         return oldMatches.Intersect(newMatches, new LinkedMatchComparer()).ToList();
     }

@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using OWP.OtherSportNotification.Services;
-using System.Reflection;
 
 namespace OWP.OtherSportNotification;
 
@@ -10,8 +9,8 @@ public static class DependenceInjection
     public static IServiceCollection AddOtherSport(this IServiceCollection services)
     {
         services.AddTransient<OtherSportRepository, OtherSportRepositoryImp>();
-        services.AddMediatR(Assembly.GetExecutingAssembly());
-        services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddMediatR(typeof(OtherSportNotificationHandler).Assembly);
+        services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
         services.AddTransient<CacheManipulator, CacheManipulatorImp>();
         services.AddTransient<ChangedValueByCacheAndDatabase, ChangedValueByCacheAndDatabaseImp>();
         services.AddTransient<ChangedValueBySnapshot, ChangedValueBySnapshotImp>();

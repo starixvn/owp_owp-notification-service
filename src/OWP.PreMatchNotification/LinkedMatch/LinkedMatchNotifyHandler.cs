@@ -83,7 +83,7 @@ public class LinkedMatchNotifyHandler : IRequestHandler<LinkedMatchNotifyRequest
         };
     }
 
-    public void MapAssignmentWithInfositeId(List<InfositePrematchLeague> prematchLeagues, List<Assignee> prematchAssignees)
+    public static void MapAssignmentWithInfositeId(List<InfositePrematchLeague> prematchLeagues, List<Assignee> prematchAssignees)
     {
         foreach (var prematchLeague in prematchLeagues)
         {

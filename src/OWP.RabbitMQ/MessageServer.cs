@@ -34,7 +34,7 @@ public class MessageServer : IHostedService
         try
         {
             logger.Info("ConsumeRequestQueue Runing");
-            var factory = new ConnectionFactory()
+            var factory = new ConnectionFactory
             {
                 UserName = setting.UserName,
                 Password = setting.Password,

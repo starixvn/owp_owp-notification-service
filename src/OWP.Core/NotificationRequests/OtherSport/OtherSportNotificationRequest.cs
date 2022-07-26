@@ -2,7 +2,7 @@
 
 namespace OWP.Core.NotificationRequests.OtherSport;
 
-public class OtherSportNotificationRequest : NotificationRequest, IRequest<List<object>>
+public class OtherSportNotificationRequest : NotificationRequest, IRequest<string>
 {
     public DateTime FromDate { get; set; }
 

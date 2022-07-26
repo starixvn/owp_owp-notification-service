@@ -1,10 +1,11 @@
 ﻿using MediatR;
+using Newtonsoft.Json;
 using OWP.Core.NotificationRequests.OtherSport;
 using OWP.OtherSportNotification.Services;
 
 namespace OWP.OtherSportNotification;
 
-public class OtherSportNotificationHandler : IRequestHandler<OtherSportNotificationRequest, List<object>>
+public class OtherSportNotificationHandler : IRequestHandler<OtherSportNotificationRequest, string>
 {
     private readonly ChangedValueByCacheAndDatabase changedValueByCacheAndDatabase;
     private readonly AssigneeChangedValueFilter assigneeChangedValueFilter;
@@ -25,9 +26,10 @@ public class OtherSportNotificationHandler : IRequestHandler<OtherSportNotificat
         this.repository = repository;
     }
 
-    public async Task<List<object>> Handle(OtherSportNotificationRequest request, CancellationToken cancellationToken)
+    public async Task<string> Handle(OtherSportNotificationRequest request, CancellationToken cancellationToken)
     {
-        var messages = await changedValueByCacheAndDatabase.Create(request.SessionId, request.FromDate, request.ToDate); var assigneeChangedValues = await assigneeChangedValueFilter.Filter(messages);
+        var messages = await changedValueByCacheAndDatabase.Create(request.SessionId, request.FromDate, request.ToDate);
+        var assigneeChangedValues = await assigneeChangedValueFilter.Filter(messages);
         var aggregatedChangedValues = changedValueAggregator.Aggregate(assigneeChangedValues);
 
         var messageModels = messageFactory.Transform(aggregatedChangedValues);
@@ -40,6 +42,6 @@ public class OtherSportNotificationHandler : IRequestHandler<OtherSportNotificat
             Message = m
         }).ToList();
 
-        return result.ToList<object>();
+        return JsonConvert.SerializeObject(result);
     }
 }

@@ -14,7 +14,11 @@ public class ChangedValueBySnapshotImp : ChangedValueBySnapshot
     private readonly DeletedMatchChangedValueGenerator deletedMatchChangedValueGenerator;
     private readonly ChangedMatchChangedValueGenerator changedMatchChangedValueGenerator;
 
-    public ChangedValueBySnapshotImp(ChangedDetector changedDetector, InsertedMatchChangedValueGenerator insertedMatchChangedValueGenerator, DeletedMatchChangedValueGenerator deletedMatchChangedValueGenerator, ChangedMatchChangedValueGenerator changedMatchChangedValueGenerator)
+    public ChangedValueBySnapshotImp(
+        ChangedDetector changedDetector,
+        InsertedMatchChangedValueGenerator insertedMatchChangedValueGenerator,
+        DeletedMatchChangedValueGenerator deletedMatchChangedValueGenerator,
+        ChangedMatchChangedValueGenerator changedMatchChangedValueGenerator)
     {
         this.changedDetector = changedDetector;
         this.insertedMatchChangedValueGenerator = insertedMatchChangedValueGenerator;

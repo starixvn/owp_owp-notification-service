@@ -145,7 +145,7 @@ public class MessageFactoryImp : MessageFactory
             }).ToList();
     }
 
-    private string CreateMessageContent(ChangedValue value)
+    private static string CreateMessageContent(ChangedValue value)
     {
         var messageTemplate = messageTemplateMap[value.MessageTypeId];
         var content = messageTemplate.MessageContent;

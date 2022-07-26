@@ -244,7 +244,7 @@ internal class MessageFactoryImp : MessageFactory
             }).ToList();
     }
 
-    private string CreateMessageContent(MessageGroup messageGroup)
+    private static string CreateMessageContent(MessageGroup messageGroup)
     {
         var messageTemplate = messageTemplateMap[messageGroup.MessageTypeId];
         var content = messageTemplate.MessageContent;

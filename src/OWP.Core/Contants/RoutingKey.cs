@@ -15,7 +15,7 @@ public static class RoutingKey
     public const string TicketCenterNewTicketSupport = "ticket-center-new-ticket-support";
     public const string OtherSport = "other-sport";
 
-    public static readonly string[] Keys = new string[]
+    public static readonly string[] Keys = new[]
     {
         LinkedLgaMatch,
         PrematchNewLeague,
