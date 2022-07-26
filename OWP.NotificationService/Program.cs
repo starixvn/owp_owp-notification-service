@@ -26,11 +26,13 @@ builder.Services.AddTicket();
 builder.Services.AddOtherSport();
 builder.Services.AddPrematchNotificationServices();
 
+builder.Services.AddHostedService<MessageServer>();
+
 var app = builder.Build();
 
 app.UseRouting();
 
-app.UseRabbitListener();
+//app.UseRabbitListener();
 
 app.UseEndpoints(c =>
 {

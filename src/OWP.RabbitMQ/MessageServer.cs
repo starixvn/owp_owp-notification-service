@@ -1,4 +1,5 @@
 ﻿using Fanex.Logging;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using OWP.RabbitMQ.Handler;
 using OWP.RabbitMQ.Models;
@@ -8,7 +9,7 @@ using System.Text;
 
 namespace OWP.RabbitMQ;
 
-public class MessageServer
+public class MessageServer : IHostedService
 {
     private IModel channel;
 
@@ -81,5 +82,18 @@ public class MessageServer
             body: responseBytes);
 
         channel.BasicAck(deliveryTag: eventArgs.DeliveryTag, multiple: false);
+    }
+
+    public async Task StartAsync(CancellationToken cancellationToken)
+    {
+        this.ConsumeRequestQueue();
+        await Task.CompletedTask;
+        // throw new NotImplementedException();
+    }
+
+    public async Task StopAsync(CancellationToken cancellationToken)
+    {
+        await Task.CompletedTask;
+        //throw new NotImplementedException();
     }
 }
