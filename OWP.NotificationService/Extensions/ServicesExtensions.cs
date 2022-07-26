@@ -7,6 +7,7 @@ using Fanex.Data.SqlServer;
 using Fanex.Logging;
 using Fanex.Logging.Sentry.RavenClient;
 using Fanex.NAP.Client.AspNetCore.Session;
+using OWP.Core.Models;
 using OWP.Core.Services;
 
 namespace OWP.NotificationService.Extensions
@@ -69,11 +70,4 @@ namespace OWP.NotificationService.Extensions
             return services;
         }
     }
-}
-
-public class RedisSetting
-{
-    public static string RedisConnectKey = "RedisConnect";
-    public string ConnectionString { get; set; }
-    public string AppName { get; set; }
 }

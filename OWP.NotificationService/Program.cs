@@ -26,17 +26,9 @@ builder.Services.AddTicket();
 builder.Services.AddOtherSport();
 builder.Services.AddPrematchNotificationServices();
 
-//builder.Services.AddHostedService<MessageServer>();
-
 var app = builder.Build();
 
-//app.UseHttpsRedirection();
-
 app.UseRouting();
-
-app.UseAuthentication();
-
-app.UseException();
 
 app.UseRabbitListener();
 
@@ -44,8 +36,6 @@ app.UseEndpoints(c =>
 {
     c.MapControllers();
 });
-
-app.Logger.LogInformation("Starting the app");
 
 app.Run();
 
