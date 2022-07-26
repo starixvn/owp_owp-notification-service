@@ -141,7 +141,7 @@ public class ChangedValueGeneratorImp : ChangedValueGenerator
         var currentDate = dateTimeHelper.GetCurrentDate();
         var fromDate = currentDate.AddHours(12);
         var toDate = currentDate.AddDays(1).AddHours(11).AddMinutes(59);
-        var hours = 8;
+        const int hours = 8;
         return oldSnapshot.Where(x => x.EventDateTime.AddHours(hours) >= fromDate && x.EventDateTime.AddHours(value: hours) <= toDate).ToList();
     }
 }

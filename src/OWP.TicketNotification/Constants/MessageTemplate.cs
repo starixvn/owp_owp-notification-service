@@ -38,7 +38,7 @@ public static class MessageTemplate
 
     #endregion MessageTemplate
 
-    public static ImmutableDictionary<int, NotificationTemplate> NotificationTemplateMap =
+    public static readonly ImmutableDictionary<int, NotificationTemplate> NotificationTemplateMap =
         notificationTemplates.ToDictionary(
         m => m.NotificationType,
         m => m).ToImmutableDictionary();
