@@ -7,7 +7,7 @@ namespace OWP.OtherSportNotification.Services;
 
 public interface MessageFactory
 {
-    List<MessageModel> Transform(List<ChangedValue> changedValues);
+    List<MessageModel> Transform(List<ChangedValue> changedValues, string actor);
 }
 
 internal class MessageFactoryImp : MessageFactory
@@ -220,19 +220,19 @@ internal class MessageFactoryImp : MessageFactory
 
     private static readonly Dictionary<int, MessageTemplate> messageTemplateMap = messageTemplates.ToDictionary(m => m.MessageType, m => m);
 
-    public List<MessageModel> Transform(List<ChangedValue> changedValues)
+    public List<MessageModel> Transform(List<ChangedValue> changedValues, string actor)
     {
-        var messageModels = TransformChangedValueToMessageModel(changedValues);
+        var messageModels = TransformChangedValueToMessageModel(changedValues, actor);
         return Reduce(messageModels);
     }
 
-    private List<MessageModelRaw> TransformChangedValueToMessageModel(List<ChangedValue> changedValues)
+    private List<MessageModelRaw> TransformChangedValueToMessageModel(List<ChangedValue> changedValues, string actor)
     {
         return changedValues.GroupBy(v => new MessageGroup(v))
             .Select(g =>
             {
                 var messageTemplate = messageTemplateMap[g.Key.MessageTypeId];
-                var content = CreateMessageContent(g.Key);
+                var content = CreateMessageContent(g.Key, actor);
 
                 return new MessageModelRaw
                 {
@@ -244,7 +244,7 @@ internal class MessageFactoryImp : MessageFactory
             }).ToList();
     }
 
-    private static string CreateMessageContent(MessageGroup messageGroup)
+    private static string CreateMessageContent(MessageGroup messageGroup, string actor)
     {
         var messageTemplate = messageTemplateMap[messageGroup.MessageTypeId];
         var content = messageTemplate.MessageContent;
@@ -257,7 +257,7 @@ internal class MessageFactoryImp : MessageFactory
         content = content.Replace("<Match.No>", !string.IsNullOrEmpty(messageGroup.MatchNo) ? $"#{messageGroup.MatchNo}" : string.Empty);
         content = content.Replace("<League>", messageGroup.League);
         content = content.Replace("<Event>", messageGroup.EventName);
-        //content = content.Replace("<User>", currentSession.UserName);
+        content = content.Replace("<User>", actor);
         content = content.Replace("<bettype>", messageGroup.BetTypeName);
         content = content.Replace("<KOTime>", messageGroup.EventDateTime.ToString("MM/dd/yyyy hh:mm tt"));
 

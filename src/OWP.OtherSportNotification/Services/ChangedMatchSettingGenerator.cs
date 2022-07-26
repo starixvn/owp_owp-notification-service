@@ -150,6 +150,7 @@ public class ChangedMatchSettingGeneratorImp : ChangedMatchSettingGenerator
              : string.Empty;
     public static string ToOWPSpreadFormat(decimal? spread)
     {
-        return spread.HasValue ? (spread.Value * 100).ToString("0.##", CultureInfo.InvariantCulture) : string.Empty;
+        const int percent = 100;
+        return spread.HasValue ? (spread.Value * percent).ToString("0.##", CultureInfo.InvariantCulture) : string.Empty;
     }
 }

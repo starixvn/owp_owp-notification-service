@@ -32,7 +32,7 @@ public class OtherSportNotificationHandler : IRequestHandler<OtherSportNotificat
         var assigneeChangedValues = await assigneeChangedValueFilter.Filter(messages);
         var aggregatedChangedValues = changedValueAggregator.Aggregate(assigneeChangedValues);
 
-        var messageModels = messageFactory.Transform(aggregatedChangedValues);
+        var messageModels = messageFactory.Transform(aggregatedChangedValues, request.UserName);
 
         await repository.InsertMessage(messageModels, request.SessionId, request.ActorId);
 

@@ -88,12 +88,10 @@ public class MessageServer : IHostedService
     {
         this.ConsumeRequestQueue();
         await Task.CompletedTask;
-        // throw new NotImplementedException();
     }
 
     public async Task StopAsync(CancellationToken cancellationToken)
     {
         await Task.CompletedTask;
-        //throw new NotImplementedException();
     }
 }

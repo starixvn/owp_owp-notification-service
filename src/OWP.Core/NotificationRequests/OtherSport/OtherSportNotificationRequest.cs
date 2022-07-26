@@ -8,4 +8,5 @@ public class OtherSportNotificationRequest : NotificationRequest, IRequest<strin
 
     public DateTime ToDate { get; set; }
     public int ActorId { get; set; }
+    public string UserName { get; set; }
 }
