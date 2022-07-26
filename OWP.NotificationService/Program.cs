@@ -30,18 +30,4 @@ builder.Services.AddHostedService<MessageServer>();
 
 var app = builder.Build();
 
-app.UseRouting();
-
-//app.UseRabbitListener();
-
-app.UseEndpoints(c =>
-{
-    c.MapControllers();
-});
-
-#if DEBUG
-app.Run();
-#endif
-
-await app.RunAsync("http://0.0.0.0:5000");
-
+await app.RunAsync("http://0.0.0.0:6000");
