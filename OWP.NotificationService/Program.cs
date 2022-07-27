@@ -29,5 +29,19 @@ builder.Services.AddPrematchNotificationServices();
 builder.Services.AddHostedService<MessageServer>();
 
 var app = builder.Build();
-
-await app.RunAsync("http://0.0.0.0:6000");
+app.Run(async context =>
+{
+    var request = context.Request.Path.HasValue
+    ? context.Request.Path.Value
+    : string.Empty;
+    if (request.Contains("Collect"))
+    {
+        GC.Collect();
+        await context.Response.WriteAsync($"OWP Worker Services. GC.Collected = {request}");
+    }
+    else
+    {
+        await context.Response.WriteAsync($"OWP Worker Services. Request Path = {request}");
+    }
+});
+await app.RunAsync("http://0.0.0.0:5000");
