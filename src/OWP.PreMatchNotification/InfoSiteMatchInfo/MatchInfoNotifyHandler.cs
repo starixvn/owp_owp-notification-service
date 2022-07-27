@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Newtonsoft.Json;
 using OWP.Core.NotificationRequests.Prematch;
 using OWP.PreMatchNotification.InfoSiteMatchInfo.Models;
 using OWP.PreMatchNotification.InfoSiteMatchInfo.Services;
@@ -8,7 +9,7 @@ using OWP.PreMatchNotification.Shared.Services;
 
 namespace OWP.PreMatchNotification.InfoSiteMatchInfo;
 
-public class MatchInfoNotifyHandler : IRequestHandler<MatchInfoNotifyRequest, Unit>
+public class MatchInfoNotifyHandler : IRequestHandler<MatchInfoNotifyRequest, string>
 {
     private readonly CacheManipulatorCommon cacheManipulator;
 
@@ -20,8 +21,6 @@ public class MatchInfoNotifyHandler : IRequestHandler<MatchInfoNotifyRequest, Un
 
     private readonly CommandRepository commandRepository;
 
-    private readonly NotifyServices notify;
-
     private const string OLD_INFOSITEMATCHES_SNAPSHOT_KEY = "OWP-Old-InfoSiteMatches";
 
     public MatchInfoNotifyHandler(
@@ -29,35 +28,32 @@ public class MatchInfoNotifyHandler : IRequestHandler<MatchInfoNotifyRequest, Un
         Repository queryRepository,
         ChangedValueGenerator changedValueGenerator,
         MessageFactory messageFactory,
-        CommandRepository commandRepository,
-        NotifyServices notify)
+        CommandRepository commandRepository)
     {
         this.cacheManipulator = cacheManipulator;
         this.queryRepository = queryRepository;
         this.changedValueGenerator = changedValueGenerator;
         this.messageFactory = messageFactory;
         this.commandRepository = commandRepository;
-        this.notify = notify;
     }
 
-    public async Task<Unit> Handle(MatchInfoNotifyRequest request, CancellationToken cancellationToken)
+    public async Task<string> Handle(MatchInfoNotifyRequest request, CancellationToken cancellationToken)
     {
         var messages = await GenerateMessages(request);
         var messageModels = messageFactory.Transform(messages);
 
         await commandRepository.InsertMessage(messageModels, request.SessionId);
 
-        await notify.Notify(messageModels);
-
-        await cacheManipulator.RemoveData($"{OLD_INFOSITEMATCHES_SNAPSHOT_KEY}-{request.SessionId}");
-
-        return await Task.FromResult(Unit.Value);
+        return JsonConvert.SerializeObject(messageModels);
     }
 
     public async Task<IList<ChangedValue>> GenerateMessages(MatchInfoNotifyRequest request)
     {
-        var oldSnapshot = await cacheManipulator.GetMultipleData<InfoSiteMatch>($"{OLD_INFOSITEMATCHES_SNAPSHOT_KEY}-{request.SessionId}");
+        var snapShotKey = $"{OLD_INFOSITEMATCHES_SNAPSHOT_KEY}-{request.SessionId}";
+        var oldSnapshot = await cacheManipulator.GetMultipleData<InfoSiteMatch>(snapShotKey);
         var newSnapshot = await queryRepository.GetInfoSiteMatchNewSnapshot(request.FromDate, request.ToDate);
+
+        await cacheManipulator.RemoveData(snapShotKey);
 
         var owpLeagueIds = newSnapshot.Select(x => x.OWPLeagueId).ToList();
         var preMatchAssignees = await commandRepository.GetPreMatchLeagueAssigneesByOWPLeagueIds(owpLeagueIds, request.FromDate);

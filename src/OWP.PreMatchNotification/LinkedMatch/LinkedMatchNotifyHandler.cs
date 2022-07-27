@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Newtonsoft.Json;
 using OWP.Core.NotificationRequests.Prematch;
 using OWP.PreMatchNotification.LinkedMatch.Models;
 using OWP.PreMatchNotification.LinkedMatch.Services;
@@ -8,44 +9,38 @@ using OWP.PreMatchNotification.Shared.Services;
 
 namespace OWP.PreMatchNotification.LinkedMatch;
 
-public class LinkedMatchNotifyHandler : IRequestHandler<LinkedMatchNotifyRequest, Unit>
+public class LinkedMatchNotifyHandler : IRequestHandler<LinkedMatchNotifyRequest, string>
 {
     private readonly CacheManipulator cacheManipulator;
     private readonly Repository queryRepository;
     private readonly ChangedLinkedMatchDetector changedValueBySnapshot;
     private readonly MessageFactory messageFactory;
     private readonly CommandRepository commandRepository;
-    private readonly NotifyServices notify;
-
 
     public LinkedMatchNotifyHandler(
         CacheManipulator cacheManipulator,
         Repository queryRepository,
         ChangedLinkedMatchDetector changedValueBySnapshot,
         MessageFactory messageFactory,
-        CommandRepository commandRepository,
-        NotifyServices notify)
+        CommandRepository commandRepository)
     {
         this.cacheManipulator = cacheManipulator;
         this.queryRepository = queryRepository;
         this.changedValueBySnapshot = changedValueBySnapshot;
         this.messageFactory = messageFactory;
         this.commandRepository = commandRepository;
-        this.notify = notify;
     }
 
-    public async Task<Unit> Handle(LinkedMatchNotifyRequest request, CancellationToken cancellationToken)
+    public async Task<string> Handle(LinkedMatchNotifyRequest request, CancellationToken cancellationToken)
     {
         var messages = await GenerateMessages(request);
         var messageModels = messageFactory.Transform(messages);
 
         await commandRepository.InsertMessage(messageModels, request.SessionId);
-        await notify.Notify(messageModels);
-
 
         await cacheManipulator.DeleteAssignmentSnapshot(request.SessionId);
 
-        return await Task.FromResult(Unit.Value);
+        return JsonConvert.SerializeObject(messageModels);
     }
 
     public async Task<List<ChangedValue>> GenerateMessages(LinkedMatchNotifyRequest request)

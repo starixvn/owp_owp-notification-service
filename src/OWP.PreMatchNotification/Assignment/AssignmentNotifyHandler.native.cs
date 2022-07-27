@@ -1,5 +1,6 @@
 ﻿using Fanex.Data.Repository;
 using MediatR;
+using Newtonsoft.Json;
 using OWP.Core.NotificationRequests.Prematch;
 using OWP.PreMatchNotification.Assignment.Criteria;
 using OWP.PreMatchNotification.Assignment.Models;
@@ -10,7 +11,7 @@ using OWP.PreMatchNotification.Shared.Services;
 
 namespace OWP.PreMatchNotification.Assignment;
 
-public class AssignmentNotifyHandler : IRequestHandler<PrematchAssignmentNotifyRequest, Unit>
+public class AssignmentNotifyHandler : IRequestHandler<PrematchAssignmentNotifyRequest, string>
 {
     private readonly CacheManipulatorCommon cacheManipulator;
 
@@ -24,15 +25,12 @@ public class AssignmentNotifyHandler : IRequestHandler<PrematchAssignmentNotifyR
 
     private readonly CommandRepository commandRepository;
 
-    private readonly NotifyServices notify;
-
     public AssignmentNotifyHandler(
         CacheManipulatorCommon cacheManipulator,
         IDynamicRepository dynamicRepository,
         MyAssignmentGenerator myAssignmentGenerator,
         MessageFactory messageFactory,
         CommandRepository commandRepository,
-        NotifyServices notify,
         OtherAssignmentGenerator otherAssignmentGenerator)
     {
         this.cacheManipulator = cacheManipulator;
@@ -40,19 +38,17 @@ public class AssignmentNotifyHandler : IRequestHandler<PrematchAssignmentNotifyR
         this.myAssignmentGenerator = myAssignmentGenerator;
         this.messageFactory = messageFactory;
         this.commandRepository = commandRepository;
-        this.notify = notify;
         this.otherAssignmentGenerator = otherAssignmentGenerator;
     }
 
-    public async Task<Unit> Handle(PrematchAssignmentNotifyRequest request, CancellationToken cancellationToken)
+    public async Task<string> Handle(PrematchAssignmentNotifyRequest request, CancellationToken cancellationToken)
     {
         var messages = await GenerateMessages(request);
         var messageModels = messageFactory.Transform(messages);
 
         await commandRepository.InsertMessage(messageModels, request.SessionId);
 
-        await notify.Notify(messageModels);
-        return await Task.FromResult(Unit.Value);
+        return JsonConvert.SerializeObject(messageModels);
     }
 
     private async Task<IList<ChangedValue>> GenerateMessages(PrematchAssignmentNotifyRequest request)

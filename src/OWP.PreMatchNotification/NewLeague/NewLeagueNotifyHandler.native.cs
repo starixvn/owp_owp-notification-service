@@ -12,7 +12,7 @@ using OWP.PreMatchNotification.Shared.Services;
 
 namespace OWP.PreMatchNotification.NewLeague;
 
-public class NewLeagueNotifyHandler : IRequestHandler<PrematchNewLeagueNotifyRequest, Unit>
+public class NewLeagueNotifyHandler : IRequestHandler<PrematchNewLeagueNotifyRequest, string>
 {
     private readonly CacheManipulatorCommon cacheManipulator;
 
@@ -24,8 +24,6 @@ public class NewLeagueNotifyHandler : IRequestHandler<PrematchNewLeagueNotifyReq
 
     private readonly CommandRepository commandRepository;
 
-    private readonly NotifyServices notify;
-
     private const string OLD_PREMATCHLEAGUES_SNAPSHOT_KEY = "OWP-Old-PreMatchLeagues";
 
     public NewLeagueNotifyHandler(
@@ -33,29 +31,23 @@ public class NewLeagueNotifyHandler : IRequestHandler<PrematchNewLeagueNotifyReq
         IDynamicRepository dynamicRepository,
         NewLeagueValueGenerator newLeagueGenerator,
         MessageFactory messageFactory,
-        CommandRepository commandRepository,
-        NotifyServices notify)
+        CommandRepository commandRepository)
     {
         this.cacheManipulator = cacheManipulator;
         this.dynamicRepository = dynamicRepository;
         this.newLeagueGenerator = newLeagueGenerator;
         this.messageFactory = messageFactory;
         this.commandRepository = commandRepository;
-        this.notify = notify;
     }
 
-    public async Task<Unit> Handle(PrematchNewLeagueNotifyRequest request, CancellationToken cancellationToken)
+    public async Task<string> Handle(PrematchNewLeagueNotifyRequest request, CancellationToken cancellationToken)
     {
         var messages = await GenerateMessages(request);
         var messageModels = messageFactory.Transform(messages);
 
         await commandRepository.InsertMessage(messageModels, request.SessionId);
 
-        await notify.Notify(messageModels);
-
-        var mesage = JsonConvert.SerializeObject(messageModels);
-
-        return await Task.FromResult(Unit.Value);
+        return JsonConvert.SerializeObject(messageModels);
     }
 
     private async Task<IList<ChangedValue>> GenerateMessages(PrematchNewLeagueNotifyRequest request)
