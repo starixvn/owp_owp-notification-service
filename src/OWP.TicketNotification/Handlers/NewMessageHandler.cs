@@ -39,13 +39,7 @@ public class NewMessageHandler : IRequestHandler<NewMessageNotificationRequest, 
         };
         var messages = await messageNotificationService.CreateMessageNotification(notificationSource); // get mess
 
-        var result = messages.Select(m => new
-        {
-            NotificationId = Guid.NewGuid().ToString(),
-            Message = m
-        }).ToList();
-
-        return JsonConvert.SerializeObject(result);
+        return JsonConvert.SerializeObject(messages);
     }
 }
 

@@ -36,12 +36,6 @@ public class OtherSportNotificationHandler : IRequestHandler<OtherSportNotificat
 
         await repository.InsertMessage(messageModels, request.SessionId, request.ActorId);
 
-        var result = messageModels.Select(m => new
-        {
-            NotificationId = Guid.NewGuid().ToString(),
-            Message = m
-        }).ToList();
-
-        return JsonConvert.SerializeObject(result);
+        return JsonConvert.SerializeObject(messageModels);
     }
 }
