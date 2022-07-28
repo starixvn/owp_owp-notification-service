@@ -1,8 +1,6 @@
-using MediatR;
-
 namespace OWP.Core.NotificationRequests.Prematch;
 
-public class LinkedMatchNotifyRequest : NotificationRequest, IRequest<Unit>
+public class LinkedMatchNotifyRequest : NotificationRequest
 {
     public DateTime EventDate { get; set; }
 }

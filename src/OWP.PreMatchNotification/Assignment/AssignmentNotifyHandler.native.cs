@@ -11,7 +11,7 @@ using OWP.PreMatchNotification.Shared.Services;
 
 namespace OWP.PreMatchNotification.Assignment;
 
-public class AssignmentNotifyHandler : IRequestHandler<PrematchAssignmentNotifyRequest, string>
+public class MathInfoNotifyHandler : IRequestHandler<PrematchAssignmentNotifyRequest, string>
 {
     private readonly CacheManipulatorCommon cacheManipulator;
 
@@ -25,7 +25,7 @@ public class AssignmentNotifyHandler : IRequestHandler<PrematchAssignmentNotifyR
 
     private readonly CommandRepository commandRepository;
 
-    public AssignmentNotifyHandler(
+    public MathInfoNotifyHandler(
         CacheManipulatorCommon cacheManipulator,
         IDynamicRepository dynamicRepository,
         MyAssignmentGenerator myAssignmentGenerator,

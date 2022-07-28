@@ -1,9 +1,8 @@
-using MediatR;
 using System.Globalization;
 
 namespace OWP.Core.NotificationRequests.Prematch;
 
-public class PrematchAssignmentNotifyRequest : NotificationRequest, IRequest<Unit>
+public class PrematchAssignmentNotifyRequest : NotificationRequest
 {
     public string RedisKey { get; set; }
 
