@@ -38,8 +38,17 @@ public class MessageNotificationServiceImp : MessageNotificationService
             EventType = source.EventType,
             TotalMessageUnread = messageUnread?.FirstOrDefault(m => m.UserId == x.UserId)?.Total,
             IsNewMessage = source.IsNewMessage
+        }).DistinctBy(x => new
+        {
+            x.UserId,
+            x.IsImportant,
+            x.MessageType,
+            x.MessageContent,
+            x.TicketId,
+            x.EventType,
+            x.TotalMessageUnread,
+            x.IsNewMessage
         }).ToList();
-
 
         return messages;
     }
