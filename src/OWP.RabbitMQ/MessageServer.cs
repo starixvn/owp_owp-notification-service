@@ -48,6 +48,8 @@ public class MessageServer : IHostedService
             channel = connection.CreateModel();
 
             channel.QueueDeclare(queue: setting.RequestQueue, durable: true, exclusive: false, autoDelete: false);
+            channel.QueueDeclare(queue: setting.ReplyQueue, durable: true, exclusive: false, autoDelete: false);
+
 
             channel.BasicQos(0, 1, false);
 
