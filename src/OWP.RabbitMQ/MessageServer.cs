@@ -51,7 +51,7 @@ public class MessageServer : IHostedService
             channel.BasicQos(0, 1, false);
 
             var consumer = new AsyncEventingBasicConsumer(channel);
-            channel.BasicConsume(queue: setting.RequestQueue, autoAck: false, consumer: consumer);
+            channel.BasicConsume(queue: setting.RequestQueue, consumer: consumer);
 
             consumer.Received += OnReceived;
         }
@@ -63,24 +63,32 @@ public class MessageServer : IHostedService
 
     private async Task OnReceived(object model, BasicDeliverEventArgs eventArgs)
     {
-        var props = eventArgs.BasicProperties;
-        var replyProps = channel.CreateBasicProperties();
-        replyProps.Type = props.Type;
+        try
+        {
+            var props = eventArgs.BasicProperties;
+            var replyProps = channel.CreateBasicProperties();
+            replyProps.Type = props.Type;
 
-        var body = eventArgs.Body.ToArray();
-        var requestMessage = Encoding.UTF8.GetString(body);
+            var body = eventArgs.Body.ToArray();
+            var requestMessage = Encoding.UTF8.GetString(body);
 
-        var response = await notificationHander.Handle(props.Type, requestMessage);
+            var response = await notificationHander.Handle(props.Type, requestMessage);
 
-        var responseBytes = Encoding.UTF8.GetBytes(response);
+            var responseBytes = Encoding.UTF8.GetBytes(response);
 
-        channel.BasicPublish(
-            exchange: string.Empty,
-            routingKey: props.ReplyTo,
-            basicProperties: replyProps,
-            body: responseBytes);
+            channel.BasicPublish(
+                exchange: string.Empty,
+                routingKey: props.ReplyTo,
+                basicProperties: replyProps,
+                body: responseBytes);
 
-        channel.BasicAck(deliveryTag: eventArgs.DeliveryTag, multiple: false);
+            channel.BasicAck(deliveryTag: eventArgs.DeliveryTag, multiple: false);
+        }
+        catch (Exception ex)
+        {
+            logger.Error(ex.Message, ex);
+        }
+
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)
