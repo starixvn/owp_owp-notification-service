@@ -63,7 +63,7 @@ public class LinkedMatchNotifyHandler : IRequestHandler<LinkedMatchNotifyRequest
 
     public async Task<Employee> GetEmployees(DateTime eventDate)
     {
-        var prematchLeagues = await queryRepository.GetInfositePrematch(eventDate);
+        var prematchLeagues = await queryRepository.GetInfositePrematch(eventDate.Date);
         var allPrematchEmployees = await commandRepository.GetEmployeesBySection(Section.PreMatch);
         var allLSTEmployees = await commandRepository.GetEmployeesBySection(Section.LST);
 

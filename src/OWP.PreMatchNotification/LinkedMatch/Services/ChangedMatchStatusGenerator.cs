@@ -40,6 +40,6 @@ public class ChangedMatchStatusGeneratorImp : ChangedMatchStatusGenerator
             };
         }
 
-        return new ChangedValue();
+        return null;
     }
 }
