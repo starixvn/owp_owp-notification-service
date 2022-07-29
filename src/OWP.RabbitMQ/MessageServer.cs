@@ -12,6 +12,7 @@ namespace OWP.RabbitMQ;
 public class MessageServer : IHostedService
 {
     private IModel channel;
+    //private IConnection connection;
 
     private readonly RabbitMQSetting setting;
     private readonly ILogger logger;
@@ -51,7 +52,7 @@ public class MessageServer : IHostedService
             channel.BasicQos(0, 1, false);
 
             var consumer = new AsyncEventingBasicConsumer(channel);
-            channel.BasicConsume(queue: setting.RequestQueue, consumer: consumer);
+            channel.BasicConsume(queue: setting.RequestQueue, autoAck: true, consumer: consumer);
 
             consumer.Received += OnReceived;
         }
@@ -87,6 +88,7 @@ public class MessageServer : IHostedService
         catch (Exception ex)
         {
             logger.Error(ex.Message, ex);
+
         }
 
     }
