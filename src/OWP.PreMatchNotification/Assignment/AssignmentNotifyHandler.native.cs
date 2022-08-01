@@ -55,6 +55,8 @@ public class MathInfoNotifyHandler : IRequestHandler<PrematchAssignmentNotifyReq
     {
         var changedValuesResult = new List<ChangedValue>();
         var oldSnapshot = await cacheManipulator.GetMultipleData<AssignmentSnapshot>(request.RedisKey);
+        await cacheManipulator.RemoveData(request.RedisKey);
+
         var preMatchLeagueIdUpdated = oldSnapshot.Select(item => item.PreMatchLeagueId).ToList();
         var newSnapshot = await GetAssignmentNewSnapshot(preMatchLeagueIdUpdated);
         var prematchIdUpdated = newSnapshot.Select(p => p.PreMatchLeagueId);

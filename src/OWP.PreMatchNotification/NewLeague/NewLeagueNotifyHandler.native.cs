@@ -52,7 +52,10 @@ public class NewLeagueNotifyHandler : IRequestHandler<PrematchNewLeagueNotifyReq
 
     private async Task<IList<ChangedValue>> GenerateMessages(PrematchNewLeagueNotifyRequest request)
     {
-        var oldSnapshot = await cacheManipulator.GetMultipleData<PreMatchLeague>($"{OLD_PREMATCHLEAGUES_SNAPSHOT_KEY}-{request.SessionId}");
+        var cacheKey = $"{OLD_PREMATCHLEAGUES_SNAPSHOT_KEY}-{request.SessionId}";
+        var oldSnapshot = await cacheManipulator.GetMultipleData<PreMatchLeague>(cacheKey);
+        await cacheManipulator.RemoveData(cacheKey);
+
         var newSnapshot = await GetPreMatchLeagueNewSnapshot(request.FromDate);
 
         var preMatchAssignees = await commandRepository.GetEmployeesBySection(Section.PreMatch);
