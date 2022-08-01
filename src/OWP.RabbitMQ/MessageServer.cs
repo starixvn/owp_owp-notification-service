@@ -84,8 +84,6 @@ public class MessageServer : IHostedService
                 routingKey: props.ReplyTo,
                 basicProperties: replyProps,
                 body: responseBytes);
-
-            channel.BasicAck(deliveryTag: eventArgs.DeliveryTag, multiple: false);
         }
         catch (Exception ex)
         {
