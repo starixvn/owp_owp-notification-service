@@ -30,26 +30,25 @@ builder.Services.AddHostedService<MessageServer>();
 
 var app = builder.Build();
 
-app.UseRouting();
-app.MapControllers();
+//app.UseRouting();
+//app.MapControllers();
 
-//app.Run(async context =>
-//{
-//    var request = context.Request.Path.HasValue
-//    ? context.Request.Path.Value
-//    : string.Empty;
-//    //var mediator = app.Services.GetRequiredService<IMediator>();
-//    //await mediator.Send(new OtherSportNotificationRequest());
-//    if (request.Contains("Collect"))
-//    {
-//        GC.Collect();
-//        await context.Response.WriteAsync($"OWP Worker Services. GC.Collected = {request}");
-//    }
-//    else
-//    {
-//        await context.Response.WriteAsync($"OWP Worker Services. Request Path = {request}");
-//    }
-//});
+app.Run(async context =>
+{
+    var request = context.Request.Path.HasValue
+    ? context.Request.Path.Value
+    : string.Empty;
+
+    if (request.Contains("Collect"))
+    {
+        GC.Collect();
+        await context.Response.WriteAsync($"OWP Worker Services. GC.Collected = {request}");
+    }
+    else
+    {
+        await context.Response.WriteAsync($"OWP Worker Services. Request Path = {request}");
+    }
+});
 
 #if DEBUG
 app.Run();
