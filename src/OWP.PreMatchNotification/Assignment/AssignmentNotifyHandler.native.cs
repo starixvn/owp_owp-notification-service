@@ -1,6 +1,5 @@
 ﻿using Fanex.Data.Repository;
 using MediatR;
-using Newtonsoft.Json;
 using OWP.Core.NotificationRequests.Prematch;
 using OWP.PreMatchNotification.Assignment.Criteria;
 using OWP.PreMatchNotification.Assignment.Models;
@@ -11,7 +10,7 @@ using OWP.PreMatchNotification.Shared.Services;
 
 namespace OWP.PreMatchNotification.Assignment;
 
-public class MathInfoNotifyHandler : IRequestHandler<PrematchAssignmentNotifyRequest, string>
+public class MathInfoNotifyHandler : IRequestHandler<PrematchAssignmentNotifyRequest, Unit>
 {
     private readonly CacheManipulatorCommon cacheManipulator;
 
@@ -41,14 +40,14 @@ public class MathInfoNotifyHandler : IRequestHandler<PrematchAssignmentNotifyReq
         this.otherAssignmentGenerator = otherAssignmentGenerator;
     }
 
-    public async Task<string> Handle(PrematchAssignmentNotifyRequest request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(PrematchAssignmentNotifyRequest request, CancellationToken cancellationToken)
     {
         var messages = await GenerateMessages(request);
         var messageModels = messageFactory.Transform(messages);
 
         await commandRepository.InsertMessage(messageModels, request.SessionId);
 
-        return JsonConvert.SerializeObject(messageModels);
+        return Unit.Value;
     }
 
     private async Task<IList<ChangedValue>> GenerateMessages(PrematchAssignmentNotifyRequest request)

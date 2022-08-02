@@ -1,6 +1,5 @@
 ﻿using Fanex.Data.Repository;
 using MediatR;
-using Newtonsoft.Json;
 using OWP.Core.NotificationRequests.Prematch;
 using OWP.PreMatchNotification.Criteria;
 using OWP.PreMatchNotification.NewLeague.Criteria;
@@ -12,7 +11,7 @@ using OWP.PreMatchNotification.Shared.Services;
 
 namespace OWP.PreMatchNotification.NewLeague;
 
-public class NewLeagueNotifyHandler : IRequestHandler<PrematchNewLeagueNotifyRequest, string>
+public class NewLeagueNotifyHandler : IRequestHandler<PrematchNewLeagueNotifyRequest, Unit>
 {
     private readonly CacheManipulatorCommon cacheManipulator;
 
@@ -40,14 +39,14 @@ public class NewLeagueNotifyHandler : IRequestHandler<PrematchNewLeagueNotifyReq
         this.commandRepository = commandRepository;
     }
 
-    public async Task<string> Handle(PrematchNewLeagueNotifyRequest request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(PrematchNewLeagueNotifyRequest request, CancellationToken cancellationToken)
     {
         var messages = await GenerateMessages(request);
         var messageModels = messageFactory.Transform(messages);
 
         await commandRepository.InsertMessage(messageModels, request.SessionId);
 
-        return JsonConvert.SerializeObject(messageModels);
+        return Unit.Value;
     }
 
     private async Task<IList<ChangedValue>> GenerateMessages(PrematchNewLeagueNotifyRequest request)

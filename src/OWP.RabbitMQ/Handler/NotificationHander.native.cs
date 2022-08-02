@@ -10,7 +10,7 @@ namespace OWP.RabbitMQ.Handler;
 
 public interface NotificationHander
 {
-    Task<string> Handle(string key, string message);
+    Task Handle(string key, string message);
 }
 
 public class SendNotificationHanderImp : NotificationHander
@@ -22,10 +22,10 @@ public class SendNotificationHanderImp : NotificationHander
         this.mediator = mediator;
     }
 
-    public async Task<string> Handle(string key, string message)
+    public async Task Handle(string key, string message)
     {
         var request = MapRequest(key, message);
-        return await mediator.Send(request);
+        await mediator.Send(request);
     }
 
     public static NotificationRequest MapRequest(string key, string message) => key switch

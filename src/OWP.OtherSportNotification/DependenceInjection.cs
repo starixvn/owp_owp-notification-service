@@ -8,9 +8,10 @@ public static class DependenceInjection
 {
     public static IServiceCollection AddOtherSport(this IServiceCollection services)
     {
-        services.AddTransient<OtherSportRepository, OtherSportRepositoryImp>();
         services.AddMediatR(typeof(OtherSportNotificationHandler).Assembly);
         services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+
+        services.AddTransient<OtherSportRepository, OtherSportRepositoryImp>();
         services.AddTransient<CacheManipulator, CacheManipulatorImp>();
         services.AddTransient<ChangedValueByCacheAndDatabase, ChangedValueByCacheAndDatabaseImp>();
         services.AddTransient<ChangedValueBySnapshot, ChangedValueBySnapshotImp>();
@@ -27,6 +28,8 @@ public static class DependenceInjection
         services.AddTransient<ChangedMatchInfoGenerator, ChangedMatchInfoGeneratorImp>();
         services.AddTransient<ChangedAssignmentGenerator, ChangedAssignmentGeneratorImp>();
         services.AddTransient<ChangedAssignmentNoteGenerator, ChangedAssignmentNoteGeneratorImp>();
+        services.AddTransient<NotificationService, NotificationServiceImp>();
+
         return services;
     }
 }

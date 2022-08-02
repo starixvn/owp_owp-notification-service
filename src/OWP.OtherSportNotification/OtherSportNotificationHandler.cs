@@ -1,32 +1,34 @@
 ﻿using MediatR;
-using Newtonsoft.Json;
 using OWP.Core.NotificationRequests.OtherSport;
 using OWP.OtherSportNotification.Services;
 
 namespace OWP.OtherSportNotification;
 
-public class OtherSportNotificationHandler : IRequestHandler<OtherSportNotificationRequest, string>
+public class OtherSportNotificationHandler : IRequestHandler<OtherSportNotificationRequest, Unit>
 {
     private readonly ChangedValueByCacheAndDatabase changedValueByCacheAndDatabase;
     private readonly AssigneeChangedValueFilter assigneeChangedValueFilter;
     private readonly ChangedValueAggregator changedValueAggregator;
     private readonly MessageFactory messageFactory;
     private readonly OtherSportRepository repository;
+    private readonly NotificationService notificationService;
 
     public OtherSportNotificationHandler(ChangedValueByCacheAndDatabase changedValueByCacheAndDatabase,
         AssigneeChangedValueFilter assigneeChangedValueFilter,
         ChangedValueAggregator changedValueAggregator,
         MessageFactory messageFactory,
-        OtherSportRepository repository)
+        OtherSportRepository repository,
+        NotificationService notificationService)
     {
         this.changedValueByCacheAndDatabase = changedValueByCacheAndDatabase;
         this.assigneeChangedValueFilter = assigneeChangedValueFilter;
         this.changedValueAggregator = changedValueAggregator;
         this.messageFactory = messageFactory;
         this.repository = repository;
+        this.notificationService = notificationService;
     }
 
-    public async Task<string> Handle(OtherSportNotificationRequest request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(OtherSportNotificationRequest request, CancellationToken cancellationToken)
     {
         var messages = await changedValueByCacheAndDatabase.Create(request.SessionId, request.FromDate, request.ToDate);
         var assigneeChangedValues = await assigneeChangedValueFilter.Filter(messages);
@@ -36,6 +38,8 @@ public class OtherSportNotificationHandler : IRequestHandler<OtherSportNotificat
 
         await repository.InsertMessage(messageModels, request.SessionId, request.ActorId);
 
-        return JsonConvert.SerializeObject(messageModels);
+        await notificationService.Notify(messageModels);
+
+        return Unit.Value;
     }
 }

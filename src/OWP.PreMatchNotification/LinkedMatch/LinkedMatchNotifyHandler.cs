@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Newtonsoft.Json;
 using OWP.Core.NotificationRequests.Prematch;
 using OWP.PreMatchNotification.LinkedMatch.Models;
 using OWP.PreMatchNotification.LinkedMatch.Services;
@@ -9,7 +8,7 @@ using OWP.PreMatchNotification.Shared.Services;
 
 namespace OWP.PreMatchNotification.LinkedMatch;
 
-public class LinkedMatchNotifyHandler : IRequestHandler<LinkedMatchNotifyRequest, string>
+public class LinkedMatchNotifyHandler : IRequestHandler<LinkedMatchNotifyRequest, Unit>
 {
     private readonly CacheManipulator cacheManipulator;
     private readonly Repository queryRepository;
@@ -31,7 +30,7 @@ public class LinkedMatchNotifyHandler : IRequestHandler<LinkedMatchNotifyRequest
         this.commandRepository = commandRepository;
     }
 
-    public async Task<string> Handle(LinkedMatchNotifyRequest request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(LinkedMatchNotifyRequest request, CancellationToken cancellationToken)
     {
         var messages = await GenerateMessages(request);
         var messageModels = messageFactory.Transform(messages);
@@ -40,7 +39,7 @@ public class LinkedMatchNotifyHandler : IRequestHandler<LinkedMatchNotifyRequest
 
         await cacheManipulator.DeleteAssignmentSnapshot(request.SessionId);
 
-        return JsonConvert.SerializeObject(messageModels);
+        return Unit.Value;
     }
 
     public async Task<List<ChangedValue>> GenerateMessages(LinkedMatchNotifyRequest request)

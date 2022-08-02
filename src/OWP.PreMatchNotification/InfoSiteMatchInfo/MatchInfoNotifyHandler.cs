@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Newtonsoft.Json;
 using OWP.Core.NotificationRequests.Prematch;
 using OWP.PreMatchNotification.InfoSiteMatchInfo.Models;
 using OWP.PreMatchNotification.InfoSiteMatchInfo.Services;
@@ -9,7 +8,7 @@ using OWP.PreMatchNotification.Shared.Services;
 
 namespace OWP.PreMatchNotification.InfoSiteMatchInfo;
 
-public class MatchInfoNotifyHandler : IRequestHandler<MatchInfoNotifyRequest, string>
+public class MatchInfoNotifyHandler : IRequestHandler<MatchInfoNotifyRequest, Unit>
 {
     private readonly CacheManipulatorCommon cacheManipulator;
 
@@ -37,14 +36,14 @@ public class MatchInfoNotifyHandler : IRequestHandler<MatchInfoNotifyRequest, st
         this.commandRepository = commandRepository;
     }
 
-    public async Task<string> Handle(MatchInfoNotifyRequest request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(MatchInfoNotifyRequest request, CancellationToken cancellationToken)
     {
         var messages = await GenerateMessages(request);
         var messageModels = messageFactory.Transform(messages);
 
         await commandRepository.InsertMessage(messageModels, request.SessionId);
 
-        return JsonConvert.SerializeObject(messageModels);
+        return Unit.Value;
     }
 
     public async Task<IList<ChangedValue>> GenerateMessages(MatchInfoNotifyRequest request)

@@ -13,8 +13,8 @@ public static class DependenceInjection
 
         services.AddTransient<TicketRepository, TicketRepositoryImp>();
         services.AddTransient<MessageNotificationService, MessageNotificationServiceImp>();
+        services.AddTransient<NotificationService, NotificationServiceImp>();
         services.AddTransient<NewRecipientMessageDBWriter, NewRecipientMessageDBWriterImp>();
-        services.AddTransient<MessageNotificationService, MessageNotificationServiceImp>();
         services.AddTransient<NewMessageDBWriter, NewMessageDBWriterImp>();
         services.AddTransient<NewTicketLeagueMessageDBWriter, NewTicketLeagueMessageDBWriterImp>();
         services.AddTransient<NewTicketMatchMessageDBWriter, NewTicketMatchMessageDBWriterImp>();

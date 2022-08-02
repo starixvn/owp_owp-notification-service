@@ -12,7 +12,6 @@ namespace OWP.RabbitMQ;
 public class MessageServer : IHostedService
 {
     private IModel channel;
-    //private IConnection connection;
 
     private readonly RabbitMQSetting setting;
     private readonly ILogger logger;
@@ -48,8 +47,6 @@ public class MessageServer : IHostedService
             channel = connection.CreateModel();
 
             channel.QueueDeclare(queue: setting.RequestQueue, durable: true, exclusive: false, autoDelete: false);
-            channel.QueueDeclare(queue: setting.ReplyQueue, durable: true, exclusive: false, autoDelete: false);
-
 
             channel.BasicQos(0, 1, false);
 
@@ -69,21 +66,12 @@ public class MessageServer : IHostedService
         try
         {
             var props = eventArgs.BasicProperties;
-            var replyProps = channel.CreateBasicProperties();
-            replyProps.Type = props.Type;
 
             var body = eventArgs.Body.ToArray();
             var requestMessage = Encoding.UTF8.GetString(body);
 
-            var response = await notificationHander.Handle(props.Type, requestMessage);
+            await notificationHander.Handle(props.Type, requestMessage);
 
-            var responseBytes = Encoding.UTF8.GetBytes(response);
-
-            channel.BasicPublish(
-                exchange: string.Empty,
-                routingKey: props.ReplyTo,
-                basicProperties: replyProps,
-                body: responseBytes);
         }
         catch (Exception ex)
         {

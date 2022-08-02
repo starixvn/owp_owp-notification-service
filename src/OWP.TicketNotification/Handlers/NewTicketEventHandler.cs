@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Newtonsoft.Json;
 using OWP.Core.NotificationRequests.TicketCenter;
 using OWP.TicketNotification.Constants;
 using OWP.TicketNotification.Models;
@@ -7,18 +6,24 @@ using OWP.TicketNotification.Services;
 
 namespace OWP.TicketNotification.Handlers;
 
-public class NewTicketEventHandler : IRequestHandler<NewTicketEventNotificationRequest, string>
+public class NewTicketEventHandler : IRequestHandler<NewTicketEventNotificationRequest, Unit>
 {
     private readonly NewTicketMatchMessageDBWriter writer;
     private readonly MessageNotificationService messageNotificationService;
+    private readonly NotificationService notificationService;
 
-    public NewTicketEventHandler(NewTicketMatchMessageDBWriter writer, MessageNotificationService messageNotificationService)
+
+    public NewTicketEventHandler(
+        NewTicketMatchMessageDBWriter writer,
+        MessageNotificationService messageNotificationService,
+        NotificationService notificationService)
     {
         this.writer = writer;
         this.messageNotificationService = messageNotificationService;
+        this.notificationService = notificationService;
     }
 
-    public async Task<string> Handle(NewTicketEventNotificationRequest request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(NewTicketEventNotificationRequest request, CancellationToken cancellationToken)
     {
         var notificationMessage = new NewTicketModel
         {
@@ -34,8 +39,10 @@ public class NewTicketEventHandler : IRequestHandler<NewTicketEventNotificationR
             TicketId = request.TicketId,
             EventType = (int)EventType.Match,
         };
-        var messages = await messageNotificationService.CreateMessageNotification(notificationSource); // get mess
+        var messages = await messageNotificationService.CreateMessageNotification(notificationSource);
 
-        return JsonConvert.SerializeObject(messages);
+        await notificationService.Notify(messages);
+
+        return Unit.Value;
     }
 }
