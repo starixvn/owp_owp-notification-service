@@ -23,6 +23,7 @@ public class MathInfoNotifyHandler : IRequestHandler<PrematchAssignmentNotifyReq
     private readonly MessageFactory messageFactory;
 
     private readonly CommandRepository commandRepository;
+    private readonly NotificationService notificationService;
 
     public MathInfoNotifyHandler(
         CacheManipulatorCommon cacheManipulator,
@@ -30,7 +31,8 @@ public class MathInfoNotifyHandler : IRequestHandler<PrematchAssignmentNotifyReq
         MyAssignmentGenerator myAssignmentGenerator,
         MessageFactory messageFactory,
         CommandRepository commandRepository,
-        OtherAssignmentGenerator otherAssignmentGenerator)
+        OtherAssignmentGenerator otherAssignmentGenerator,
+        NotificationService notificationService)
     {
         this.cacheManipulator = cacheManipulator;
         this.dynamicRepository = dynamicRepository;
@@ -38,6 +40,7 @@ public class MathInfoNotifyHandler : IRequestHandler<PrematchAssignmentNotifyReq
         this.messageFactory = messageFactory;
         this.commandRepository = commandRepository;
         this.otherAssignmentGenerator = otherAssignmentGenerator;
+        this.notificationService = notificationService;
     }
 
     public async Task<Unit> Handle(PrematchAssignmentNotifyRequest request, CancellationToken cancellationToken)
@@ -46,6 +49,8 @@ public class MathInfoNotifyHandler : IRequestHandler<PrematchAssignmentNotifyReq
         var messageModels = messageFactory.Transform(messages);
 
         await commandRepository.InsertMessage(messageModels, request.SessionId);
+
+        await notificationService.Notify(messageModels);
 
         return Unit.Value;
     }

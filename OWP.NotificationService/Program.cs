@@ -10,10 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddSignalR().AddStackExchangeRedis("ha.nexdev.net:16379,password=foo1@bared,defaultDatabase=11", options =>
-{
-    options.Configuration.ChannelPrefix = "OWPApp";
-});
+builder.Services.AddSignalRedis(builder.Configuration);
 builder.Services.AddFanexServices(builder.Configuration);
 builder.Services.AddRedisServices(builder.Configuration);
 

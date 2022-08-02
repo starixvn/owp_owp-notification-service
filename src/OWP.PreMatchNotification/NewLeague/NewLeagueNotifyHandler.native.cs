@@ -23,6 +23,8 @@ public class NewLeagueNotifyHandler : IRequestHandler<PrematchNewLeagueNotifyReq
 
     private readonly CommandRepository commandRepository;
 
+    private readonly NotificationService notificationService;
+
     private const string OLD_PREMATCHLEAGUES_SNAPSHOT_KEY = "OWP-Old-PreMatchLeagues";
 
     public NewLeagueNotifyHandler(
@@ -30,13 +32,15 @@ public class NewLeagueNotifyHandler : IRequestHandler<PrematchNewLeagueNotifyReq
         IDynamicRepository dynamicRepository,
         NewLeagueValueGenerator newLeagueGenerator,
         MessageFactory messageFactory,
-        CommandRepository commandRepository)
+        CommandRepository commandRepository,
+        NotificationService notificationService)
     {
         this.cacheManipulator = cacheManipulator;
         this.dynamicRepository = dynamicRepository;
         this.newLeagueGenerator = newLeagueGenerator;
         this.messageFactory = messageFactory;
         this.commandRepository = commandRepository;
+        this.notificationService = notificationService;
     }
 
     public async Task<Unit> Handle(PrematchNewLeagueNotifyRequest request, CancellationToken cancellationToken)
@@ -45,6 +49,8 @@ public class NewLeagueNotifyHandler : IRequestHandler<PrematchNewLeagueNotifyReq
         var messageModels = messageFactory.Transform(messages);
 
         await commandRepository.InsertMessage(messageModels, request.SessionId);
+
+        await notificationService.Notify(messageModels);
 
         return Unit.Value;
     }

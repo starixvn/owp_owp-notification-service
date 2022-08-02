@@ -21,6 +21,7 @@ public static class DependenceInjection
         services.AddTransient<PreMatchNotificationServices.MessageFactory, PreMatchNotificationServices.MessageFactoryImp>();
         services.AddTransient<PreMatchNotificationServices.CacheManipulatorCommon, PreMatchNotificationServices.CacheManipulatorCommonImp>();
         services.AddTransient<PreMatchNotificationServices.DateTimeHelper, PreMatchNotificationServices.DateTimeHelperImp>();
+        services.AddTransient<PreMatchNotificationServices.NotificationService, PreMatchNotificationServices.NotificationServiceImp>();
 
 
         services.AddTransient<MyAssignment.MyAssignmentGenerator, MyAssignment.MyAssignmentGeneratorImp>();

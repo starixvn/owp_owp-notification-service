@@ -22,18 +22,22 @@ public class MatchInfoNotifyHandler : IRequestHandler<MatchInfoNotifyRequest, Un
 
     private const string OLD_INFOSITEMATCHES_SNAPSHOT_KEY = "OWP-Old-InfoSiteMatches";
 
+    private readonly NotificationService notificationService;
+
     public MatchInfoNotifyHandler(
         CacheManipulatorCommon cacheManipulator,
         Repository queryRepository,
         ChangedValueGenerator changedValueGenerator,
         MessageFactory messageFactory,
-        CommandRepository commandRepository)
+        CommandRepository commandRepository,
+        NotificationService notificationService)
     {
         this.cacheManipulator = cacheManipulator;
         this.queryRepository = queryRepository;
         this.changedValueGenerator = changedValueGenerator;
         this.messageFactory = messageFactory;
         this.commandRepository = commandRepository;
+        this.notificationService = notificationService;
     }
 
     public async Task<Unit> Handle(MatchInfoNotifyRequest request, CancellationToken cancellationToken)
@@ -42,6 +46,8 @@ public class MatchInfoNotifyHandler : IRequestHandler<MatchInfoNotifyRequest, Un
         var messageModels = messageFactory.Transform(messages);
 
         await commandRepository.InsertMessage(messageModels, request.SessionId);
+
+        await notificationService.Notify(messageModels);
 
         return Unit.Value;
     }

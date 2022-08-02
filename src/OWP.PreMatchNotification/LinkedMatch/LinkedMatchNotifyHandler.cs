@@ -15,19 +15,22 @@ public class LinkedMatchNotifyHandler : IRequestHandler<LinkedMatchNotifyRequest
     private readonly ChangedLinkedMatchDetector changedValueBySnapshot;
     private readonly MessageFactory messageFactory;
     private readonly CommandRepository commandRepository;
+    private readonly NotificationService notificationService;
 
     public LinkedMatchNotifyHandler(
         CacheManipulator cacheManipulator,
         Repository queryRepository,
         ChangedLinkedMatchDetector changedValueBySnapshot,
         MessageFactory messageFactory,
-        CommandRepository commandRepository)
+        CommandRepository commandRepository,
+        NotificationService notificationService)
     {
         this.cacheManipulator = cacheManipulator;
         this.queryRepository = queryRepository;
         this.changedValueBySnapshot = changedValueBySnapshot;
         this.messageFactory = messageFactory;
         this.commandRepository = commandRepository;
+        this.notificationService = notificationService;
     }
 
     public async Task<Unit> Handle(LinkedMatchNotifyRequest request, CancellationToken cancellationToken)
@@ -38,6 +41,8 @@ public class LinkedMatchNotifyHandler : IRequestHandler<LinkedMatchNotifyRequest
         await commandRepository.InsertMessage(messageModels, request.SessionId);
 
         await cacheManipulator.DeleteAssignmentSnapshot(request.SessionId);
+
+        await notificationService.Notify(messageModels);
 
         return Unit.Value;
     }
