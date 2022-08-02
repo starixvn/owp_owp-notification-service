@@ -1,5 +1,6 @@
 ﻿using Fanex.Caching;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using StackExchange.Redis;
 
 namespace OWP.NotificationService.Controllers
@@ -47,6 +48,23 @@ namespace OWP.NotificationService.Controllers
         {
             var value = cache.TryGet<string>(cacheKey, out string ab);
             //  cache.Remove(cacheKey);
+
+            return Ok(ab);
+        }
+
+
+        [HttpGet("save/{cacheKey}")]
+        public async Task<ActionResult> SaveCache(string cacheKey)
+        {
+            var testObject = new List<object>{
+            new {
+                LeagueName = "Tyler-TestLeague",
+                PreMatchLeagueId = 1,
+                IsDay = true
+            }};
+            var cachePolicy = new CacheItemOptions().SetAbsoluteExpiration(TimeSpan.FromDays(1));
+            var assignmentSnapshotInJson = JsonConvert.SerializeObject(testObject);
+            await cache.SetAsync(cacheKey, "TylerTestContent", cachePolicy);
 
             return Ok();
         }

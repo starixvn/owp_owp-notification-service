@@ -1,4 +1,5 @@
-﻿using Fanex.Caching.Redis;
+﻿using Fanex.Caching;
+using Fanex.Caching.Redis;
 using Fanex.Data;
 using Fanex.Data.Repository;
 using Fanex.Data.SqlServer;
@@ -35,13 +36,13 @@ namespace OWP.NotificationService.Extensions
         public static IServiceCollection AddRedisServices(this IServiceCollection services, IConfiguration configuration)
         {
             var redisSetting = configuration.GetSection(RedisSetting.RedisConnectKey).Get<RedisSetting>();
-            //services.AddSingleton<ICache>(new RedisCache(new RedisCacheOptions
-            //{
-            //    ConnectionString = redisSetting.ConnectionString,
-            //    ApplicationName = redisSetting.AppName
-            //}));
+            services.AddSingleton<ICache>(new RedisCache(new RedisCacheOptions
+            {
+                ConnectionString = redisSetting.ConnectionString,
+                ApplicationName = redisSetting.AppName
+            }));
 
-            services.AddRedisCache(configuration.GetSection("fanex.caching.redis"));
+            // services.AddRedisCache(configuration.GetSection("fanex.caching.redis"));
 
             return services;
         }
