@@ -23,6 +23,7 @@ public class CacheManipulatorImp : CacheManipulator
     public async Task<AssignmentSnapshot> GetAssignmentSnapshot(string sessionId)
     {
         var cacheKey = $"{KEY_OLD_OS_ASSIGNMENT_SNAPSHOT}-{sessionId}";
+        //var cacheKey = "OWP-Old-OS-Assignment-7e64fe08-6757-49bb-adb4-8c7f5b40793d";
         var cacheResult = await cache.TryGetAsync<string>(cacheKey);
         var assignmentSnapshot = string.IsNullOrEmpty(cacheResult.Item2)
             ? new AssignmentSnapshot()

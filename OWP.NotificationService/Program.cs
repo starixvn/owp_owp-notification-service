@@ -29,19 +29,29 @@ builder.Services.AddPrematchNotificationServices();
 builder.Services.AddHostedService<MessageServer>();
 
 var app = builder.Build();
-app.Run(async context =>
-{
-    var request = context.Request.Path.HasValue
-    ? context.Request.Path.Value
-    : string.Empty;
-    if (request.Contains("Collect"))
-    {
-        GC.Collect();
-        await context.Response.WriteAsync($"OWP Worker Services. GC.Collected = {request}");
-    }
-    else
-    {
-        await context.Response.WriteAsync($"OWP Worker Services. Request Path = {request}");
-    }
-});
+
+app.UseRouting();
+app.MapControllers();
+
+//app.Run(async context =>
+//{
+//    var request = context.Request.Path.HasValue
+//    ? context.Request.Path.Value
+//    : string.Empty;
+//    //var mediator = app.Services.GetRequiredService<IMediator>();
+//    //await mediator.Send(new OtherSportNotificationRequest());
+//    if (request.Contains("Collect"))
+//    {
+//        GC.Collect();
+//        await context.Response.WriteAsync($"OWP Worker Services. GC.Collected = {request}");
+//    }
+//    else
+//    {
+//        await context.Response.WriteAsync($"OWP Worker Services. Request Path = {request}");
+//    }
+//});
+
+#if DEBUG
+app.Run();
+#endif
 await app.RunAsync("http://0.0.0.0:5000");

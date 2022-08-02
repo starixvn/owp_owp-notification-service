@@ -23,6 +23,7 @@ public class MathInfoNotifyHandler : IRequestHandler<PrematchAssignmentNotifyReq
     private readonly MessageFactory messageFactory;
 
     private readonly CommandRepository commandRepository;
+
     private readonly NotificationService notificationService;
 
     public MathInfoNotifyHandler(
