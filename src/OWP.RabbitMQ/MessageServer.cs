@@ -70,6 +70,7 @@ public class MessageServer : IHostedService
             var body = eventArgs.Body.ToArray();
             var requestMessage = Encoding.UTF8.GetString(body);
 
+            logger.Info(requestMessage);
             await notificationHander.Handle(props.Type, requestMessage);
 
         }
