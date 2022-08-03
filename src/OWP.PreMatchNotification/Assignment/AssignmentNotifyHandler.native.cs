@@ -1,4 +1,5 @@
 ﻿using Fanex.Data.Repository;
+using Fanex.Logging;
 using MediatR;
 using OWP.Core.NotificationRequests.Prematch;
 using OWP.PreMatchNotification.Assignment.Criteria;
@@ -26,6 +27,8 @@ public class MathInfoNotifyHandler : IRequestHandler<PrematchAssignmentNotifyReq
 
     private readonly NotificationService notificationService;
 
+    private readonly ILogger logger;
+
     public MathInfoNotifyHandler(
         CacheManipulatorCommon cacheManipulator,
         IDynamicRepository dynamicRepository,
@@ -33,7 +36,8 @@ public class MathInfoNotifyHandler : IRequestHandler<PrematchAssignmentNotifyReq
         MessageFactory messageFactory,
         CommandRepository commandRepository,
         OtherAssignmentGenerator otherAssignmentGenerator,
-        NotificationService notificationService)
+        NotificationService notificationService,
+        ILogger logger)
     {
         this.cacheManipulator = cacheManipulator;
         this.dynamicRepository = dynamicRepository;
@@ -42,10 +46,12 @@ public class MathInfoNotifyHandler : IRequestHandler<PrematchAssignmentNotifyReq
         this.commandRepository = commandRepository;
         this.otherAssignmentGenerator = otherAssignmentGenerator;
         this.notificationService = notificationService;
+        this.logger = logger;
     }
 
     public async Task<Unit> Handle(PrematchAssignmentNotifyRequest request, CancellationToken cancellationToken)
     {
+        logger.Error("PrematchAssignmentNotifyRequest running");
         var messages = await GenerateMessages(request);
         var messageModels = messageFactory.Transform(messages);
 
