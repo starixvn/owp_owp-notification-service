@@ -74,11 +74,10 @@ namespace OWP.NotificationService.Extensions
         public static IServiceCollection AddSignalRedis(this IServiceCollection services, IConfiguration configuration)
         {
             var redisSetting = configuration.GetSection(RedisSetting.RedisConnectKey).Get<RedisSetting>();
-            services.AddSignalR();
-            //    .AddStackExchangeRedis(redisSetting.ConnectionString, options =>
-            //{
-            //    options.Configuration.ChannelPrefix = "OWPApp";
-            //});
+            services.AddSignalR().AddStackExchangeRedis(redisSetting.ConnectionString, options =>
+            {
+                options.Configuration.ChannelPrefix = "OWPApp";
+            });
             return services;
         }
     }

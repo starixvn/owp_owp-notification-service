@@ -15,14 +15,12 @@ public class MessageServer : IHostedService
 
     private readonly RabbitMQSetting setting;
     private readonly ILogger logger;
-
     private readonly NotificationHander notificationHander;
 
     public MessageServer(
         IOptions<RabbitMQSetting> options,
         ILogger logger,
-        NotificationHander notificationHander
-        )
+        NotificationHander notificationHander)
     {
         setting = options.Value;
         this.logger = logger;

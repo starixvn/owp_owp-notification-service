@@ -30,10 +30,7 @@ builder.Services.AddHostedService<MessageServer>();
 
 var app = builder.Build();
 
-//app.UseRouting();
-//app.MapControllers();
-
-app.Run(async context =>
+app.Run(async (context) =>
 {
     var request = context.Request.Path.HasValue
     ? context.Request.Path.Value
@@ -50,7 +47,4 @@ app.Run(async context =>
     }
 });
 
-#if DEBUG
-app.Run();
-#endif
 await app.RunAsync("http://0.0.0.0:5000");

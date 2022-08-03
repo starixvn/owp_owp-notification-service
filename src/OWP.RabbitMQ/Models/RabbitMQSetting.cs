@@ -17,6 +17,4 @@ public class RabbitMQSetting
     public string Exchange { get; set; }
 
     public string RequestQueue { get; set; }
-
-    public string ReplyQueue { get; set; }
 }
