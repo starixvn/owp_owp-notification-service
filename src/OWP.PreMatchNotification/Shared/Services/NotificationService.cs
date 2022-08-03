@@ -1,6 +1,5 @@
 ﻿using Fanex.Logging;
 using Microsoft.AspNetCore.SignalR;
-using Newtonsoft.Json;
 using OWP.Hubs;
 using OWP.PreMatchNotification.Shared.Models;
 
@@ -24,7 +23,6 @@ public class NotificationServiceImp : NotificationService
 
     public async Task Notify(List<MessageModel> sources)
     {
-        logger.Warn(JsonConvert.SerializeObject(sources));
         foreach (var message in sources)
         {
             var result = new
@@ -33,8 +31,7 @@ public class NotificationServiceImp : NotificationService
                 message
             };
             await hubContext.Clients
-                //.Users(message.ReceivedUserIds)
-                .All
+                .Users(message.ReceivedUserIds)
                 .notifyChangedInformationData(result);
         }
     }
