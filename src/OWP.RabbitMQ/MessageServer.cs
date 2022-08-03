@@ -1,6 +1,7 @@
 ﻿using Fanex.Logging;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using OWP.RabbitMQ.Handler;
 using OWP.RabbitMQ.Models;
 using RabbitMQ.Client;
@@ -68,6 +69,7 @@ public class MessageServer : IHostedService
             var body = eventArgs.Body.ToArray();
             var requestMessage = Encoding.UTF8.GetString(body);
 
+            logger.Error($"ConsumeRequestQueue: {JsonConvert.SerializeObject(requestMessage)}");
             await notificationHander.Handle(props.Type, requestMessage);
 
         }

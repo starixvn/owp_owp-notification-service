@@ -17,6 +17,7 @@ public class SendNotificationHanderImp : NotificationHander
 {
     private readonly IMediator mediator;
 
+
     public SendNotificationHanderImp(IMediator mediator)
     {
         this.mediator = mediator;
