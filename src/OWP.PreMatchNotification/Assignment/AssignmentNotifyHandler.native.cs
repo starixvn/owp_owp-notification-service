@@ -51,7 +51,6 @@ public class MathInfoNotifyHandler : IRequestHandler<PrematchAssignmentNotifyReq
 
     public async Task<Unit> Handle(PrematchAssignmentNotifyRequest request, CancellationToken cancellationToken)
     {
-        logger.Error("PrematchAssignmentNotifyRequest running");
         var messages = await GenerateMessages(request);
         var messageModels = messageFactory.Transform(messages);
 

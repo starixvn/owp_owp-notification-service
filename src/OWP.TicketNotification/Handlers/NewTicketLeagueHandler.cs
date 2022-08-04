@@ -29,7 +29,7 @@ public class NewTicketLeagueHandler : IRequestHandler<NewTicketLeagueNotificatio
         {
             TicketId = request.TicketId,
             Comment = request.Comment,
-            ActorId = request.CreatorId
+            ActorId = request.ActorId
         };
         var messageId = await writer.Execute(notificationMessage, NotificationTemplateCode.NewTicket);
 

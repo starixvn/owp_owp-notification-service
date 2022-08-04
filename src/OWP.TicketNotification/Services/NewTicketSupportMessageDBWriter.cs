@@ -20,7 +20,6 @@ public class NewTicketSupportMessageDBWriterImp : NewTicketSupportMessageDBWrite
 
     public async Task<string> Execute(NewTicketModel message, NotificationTemplateCode code)
     {
-
         var template = MessageTemplate.NotificationTemplateMap[(int)code];
         var criteria = new InsertNewTicketSupportNotificationCriteria
         {

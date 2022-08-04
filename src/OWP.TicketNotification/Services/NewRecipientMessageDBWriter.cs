@@ -18,19 +18,19 @@ public class NewRecipientMessageDBWriterImp : NewRecipientMessageDBWriter
         this.repository = repository;
     }
 
-    public async Task<string> Execute(NewRecipientModel newRecipient)
+    public async Task<string> Execute(NewRecipientModel recipient)
     {
         var template = MessageTemplate.NotificationTemplateMap[(int)NotificationTemplateCode.AddRecipient];
         var criteria = new InsertNewRecipientNotificationCriteria
         {
-            ActorId = newRecipient.ActorId,
+            ActorId = recipient.ActorId,
             IsImportant = template.IsImportant,
             IsWatcher = template.IsWatcher,
-            ReceivedUserId = newRecipient.RecipientId,
-            ReceivedUserType = newRecipient.RecipientType,
+            ReceivedUserId = recipient.RecipientId,
+            ReceivedUserType = recipient.RecipientType,
             NotificationContent = template.NotificationContent
-                .Replace("<ticketId>", $"{newRecipient.TicketId}")
-                .Replace("<Event>", newRecipient.TicketTitle),
+                .Replace("<ticketId>", $"{recipient.TicketId}")
+                .Replace("<Event>", recipient.TicketTitle),
             NotificationType = template.NotificationType,
         };
 
