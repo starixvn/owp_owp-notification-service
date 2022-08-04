@@ -42,8 +42,6 @@ namespace OWP.NotificationService.Extensions
                 ApplicationName = redisSetting.AppName
             }));
 
-            // services.AddRedisCache(configuration.GetSection("fanex.caching.redis"));
-
             return services;
         }
 

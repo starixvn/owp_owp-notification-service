@@ -12,8 +12,6 @@ namespace OWP.RabbitMQ;
 
 public class MessageServer : IHostedService
 {
-    private IModel channel;
-
     private readonly RabbitMQSetting setting;
     private readonly ILogger logger;
     private readonly NotificationHander notificationHander;
@@ -43,7 +41,7 @@ public class MessageServer : IHostedService
             };
 
             var connection = factory.CreateConnection();
-            channel = connection.CreateModel();
+            var channel = connection.CreateModel();
 
             channel.QueueDeclare(queue: setting.RequestQueue, durable: true, exclusive: false, autoDelete: false);
 
