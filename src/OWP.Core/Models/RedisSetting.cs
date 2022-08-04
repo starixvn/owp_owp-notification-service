@@ -5,4 +5,5 @@ public class RedisSetting
     public const string RedisConnectKey = "RedisConnect";
     public string ConnectionString { get; set; }
     public string AppName { get; set; }
+    public string ChannelPrefix { get; set; }
 }
