@@ -1,6 +1,4 @@
-﻿using Fanex.Logging;
-using MediatR;
-using Newtonsoft.Json;
+﻿using MediatR;
 using OWP.Core.NotificationRequests.TicketCenter;
 using OWP.TicketNotification.Models;
 using OWP.TicketNotification.Services;
@@ -12,18 +10,15 @@ public class NewMessageHandler : IRequestHandler<NewMessageNotificationRequest, 
     private readonly NewMessageDBWriter writer;
     private readonly MessageNotificationService messageNotificationService;
     private readonly NotificationService notificationService;
-    private readonly ILogger logger;
 
     public NewMessageHandler(
         NewMessageDBWriter writer,
         MessageNotificationService messageNotificationService,
-        NotificationService notificationService,
-        ILogger logger)
+        NotificationService notificationService)
     {
         this.writer = writer;
         this.messageNotificationService = messageNotificationService;
         this.notificationService = notificationService;
-        this.logger = logger;
     }
 
     public async Task<Unit> Handle(NewMessageNotificationRequest request, CancellationToken cancellationToken)
@@ -48,7 +43,6 @@ public class NewMessageHandler : IRequestHandler<NewMessageNotificationRequest, 
         };
         var messages = await messageNotificationService.CreateMessageNotification(notificationSource);
 
-        logger.Info(JsonConvert.SerializeObject(messages));
         await notificationService.Notify(messages);
 
         return Unit.Value;

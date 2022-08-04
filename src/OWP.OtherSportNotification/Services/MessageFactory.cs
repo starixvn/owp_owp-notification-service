@@ -10,7 +10,7 @@ public interface MessageFactory
     List<MessageModel> Transform(List<ChangedValue> changedValues, string actor);
 }
 
-internal class MessageFactoryImp : MessageFactory
+public class MessageFactoryImp : MessageFactory
 {
     #region MessageTemplate
 

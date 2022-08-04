@@ -7,7 +7,7 @@ public interface ChangedValueByCacheAndDatabase
     Task<List<ChangedValue>> Create(string sessionId, DateTime fromDate, DateTime toDate);
 }
 
-internal class ChangedValueByCacheAndDatabaseImp : ChangedValueByCacheAndDatabase
+public class ChangedValueByCacheAndDatabaseImp : ChangedValueByCacheAndDatabase
 {
     private readonly CacheManipulator cacheManipulator;
     private readonly OtherSportRepository repository;

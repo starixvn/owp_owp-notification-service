@@ -22,4 +22,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\OWP.TicketNotification\OWP.TicketNotification.csproj" />
+  </ItemGroup>
+
 </Project>

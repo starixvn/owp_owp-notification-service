@@ -21,7 +21,7 @@ public interface ChangedValueAggregator
     IEnumerable<ChangedValue> GetNonAggregatedChangedValues(List<ChangedValue> changedValues);
 }
 
-internal class ChangedValueAggregatorImp : ChangedValueAggregator
+public class ChangedValueAggregatorImp : ChangedValueAggregator
 {
     private readonly IMapper mapper;
 

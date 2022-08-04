@@ -8,7 +8,7 @@ public interface AssigneeChangedValueFilter
     Task<List<ChangedValue>> Filter(List<ChangedValue> changedValues);
 }
 
-internal class AssigneeMessageFilterImp : AssigneeChangedValueFilter
+public class AssigneeMessageFilterImp : AssigneeChangedValueFilter
 {
     private readonly OtherSportRepository repository;
 
