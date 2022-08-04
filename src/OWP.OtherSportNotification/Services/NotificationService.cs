@@ -28,7 +28,11 @@ namespace OWP.OtherSportNotification.Services
                     message
                 };
                 await hubContext.Clients
+#if DEBUG
+                    .All
+#else
                     .Users(message.ReceivedUserIds)
+#endif
                     .notifyChangedInformationData(result);
             }
         }

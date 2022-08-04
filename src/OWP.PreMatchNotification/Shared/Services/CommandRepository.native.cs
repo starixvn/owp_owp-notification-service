@@ -7,7 +7,7 @@ namespace OWP.PreMatchNotification.Shared.Services;
 
 public interface CommandRepository
 {
-    Task InsertMessage(List<MessageModel> messages, string sessionId);
+    Task InsertMessage(List<MessageModel> messages, string sessionId, int ActorId = 0);
 
     Task<IList<Assignee>> GetEmployeesBySection(string section);
 
@@ -20,24 +20,19 @@ public class CommandRepositoryImp : CommandRepository
 {
     private readonly IDynamicRepository dynamicRepository;
 
-    // private readonly INapSession currentSession;
-
-    public CommandRepositoryImp(
-        //   INapSession currentSession,
-        IDynamicRepository dynamicRepository)
+    public CommandRepositoryImp(IDynamicRepository dynamicRepository)
     {
-        //     this.currentSession = currentSession;
         this.dynamicRepository = dynamicRepository;
     }
 
-    public async Task InsertMessage(List<MessageModel> messages, string sessionId)
+    public async Task InsertMessage(List<MessageModel> messages, string sessionId, int ActorId = 0)
     {
         messages.ForEach(x => x.ReceivedUserIdList = string.Join(",", x.ReceivedUserIds));
 
         var criteria = new InsertMessageCommand
         {
             Messages = XmlConverter.Serialize(messages),
-            //         CreatedByUserId = currentSession.UserId,
+            CreatedByUserId = ActorId,
             SessionId = sessionId
         };
 

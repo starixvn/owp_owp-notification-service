@@ -46,5 +46,7 @@ app.Run(async (context) =>
         await context.Response.WriteAsync($"OWP Worker Services. Request Path = {request}");
     }
 });
-
+#if DEBUG
+app.Run();
+#endif
 await app.RunAsync("http://0.0.0.0:5000");

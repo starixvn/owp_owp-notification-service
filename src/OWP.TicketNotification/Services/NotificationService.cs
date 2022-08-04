@@ -29,9 +29,11 @@ public class NotificationServiceImp : NotificationService
                 message
             };
             await hubContext.Clients
-                 .Users($"{message.UserId}")
-                //.All
-                //.Users("8")
+#if DEBUG
+                .All
+#else
+                .Users($"{message.UserId}")
+#endif
                 .notifyChangedInformationData(result);
         }
     }
