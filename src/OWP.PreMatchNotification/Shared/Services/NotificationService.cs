@@ -1,5 +1,4 @@
-﻿using Fanex.Logging;
-using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.SignalR;
 using OWP.Hubs;
 using OWP.PreMatchNotification.Shared.Models;
 
@@ -13,12 +12,9 @@ public interface NotificationService
 public class NotificationServiceImp : NotificationService
 {
     private readonly IHubContext<ChangedInfoNotifyHubImp, ChangedInfoNotifyHub> hubContext;
-    private readonly ILogger logger;
-
-    public NotificationServiceImp(IHubContext<ChangedInfoNotifyHubImp, ChangedInfoNotifyHub> hubContext, ILogger logger)
+    public NotificationServiceImp(IHubContext<ChangedInfoNotifyHubImp, ChangedInfoNotifyHub> hubContext)
     {
         this.hubContext = hubContext;
-        this.logger = logger;
     }
 
     public async Task Notify(List<MessageModel> sources)
