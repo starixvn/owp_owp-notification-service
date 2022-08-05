@@ -30,7 +30,7 @@ public class NotificationServiceImp : NotificationService
 #if DEBUG
                 .All
 #else
-                .Users(message.ReceivedUserIdList)
+                .Users(message.ReceivedUserIds)
 #endif
                 .notifyChangedInformationData(result);
         }
