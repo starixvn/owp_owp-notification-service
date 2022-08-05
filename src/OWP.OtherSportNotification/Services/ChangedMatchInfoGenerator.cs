@@ -45,7 +45,8 @@ public class ChangedMatchInfoGeneratorImp : ChangedMatchInfoGenerator
                 MatchNo = $"{newMatch.MatchNo}",
                 EventName = UpdatedValueHelper.CreateEventName(newMatch),
                 UserId = a.AssigneeId,
-                Username = a.AssigneeName
+                Username = a.AssigneeName,
+                OSMatchId = oldMatch.OSMatchId
             });
 
             changedValueList.AddRange(changedValues);

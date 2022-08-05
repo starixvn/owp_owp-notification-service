@@ -276,12 +276,6 @@ public class MessageFactoryImp : MessageFactory
                     IsImportant = m.IsImportant,
                     ReceivedUserIds = m.Assignees.Select(a => a.AssigneeId.ToString()).Distinct().ToList()
                 };
-            }).DistinctBy(x => new
-            {
-                MessageType = x.MessageType,
-                MessageContent = x.MessageContent,
-                IsImportant = x.IsImportant,
-                ReceivedUserIds = x.ReceivedUserIds
             })
             .ToList();
     }
