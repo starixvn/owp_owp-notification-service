@@ -266,17 +266,22 @@ public class MessageFactoryImp : MessageFactory
 
     private static List<MessageModel> Reduce(List<MessageModelRaw> messageModels)
     {
-        return messageModels.GroupBy(m => new { m.MessageContent, m.IsImportant, m.MessageType })
+        return messageModels
             .Select(m =>
             {
-                var assignees = m.SelectMany(x => x.Assignees).Distinct().ToArray();
                 return new MessageModel
                 {
-                    MessageType = m.Key.MessageType,
-                    MessageContent = m.Key.MessageContent,
-                    IsImportant = m.Key.IsImportant,
-                    ReceivedUserIds = assignees.Select(a => a.AssigneeId.ToString()).ToList()
+                    MessageType = m.MessageType,
+                    MessageContent = m.MessageContent,
+                    IsImportant = m.IsImportant,
+                    ReceivedUserIds = m.Assignees.Select(a => a.AssigneeId.ToString()).Distinct().ToList()
                 };
+            }).DistinctBy(x => new
+            {
+                MessageType = x.MessageType,
+                MessageContent = x.MessageContent,
+                IsImportant = x.IsImportant,
+                ReceivedUserIds = x.ReceivedUserIds
             })
             .ToList();
     }
