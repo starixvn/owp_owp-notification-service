@@ -57,11 +57,10 @@ public class ChangedValueGeneratorImp : ChangedValueGenerator
     {
         var changedValueList = new List<ChangedValue>();
         var changedMatches = newSnapshot.Except(oldSnapshot, new InfoSiteMatchComparer()).ToList();
-        var oldSnapshotTimeRange = GetOldSnapshotTimeRange(oldSnapshot);
 
         foreach (var item in changedMatches)
         {
-            var oldInfositeMatch = oldSnapshotTimeRange.FirstOrDefault(x => x.InfoSiteMatchId == item.InfoSiteMatchId);
+            var oldInfositeMatch = oldSnapshot.FirstOrDefault(x => x.InfoSiteMatchId == item.InfoSiteMatchId);
 
             if (oldInfositeMatch != null)
             {
@@ -134,14 +133,5 @@ public class ChangedValueGeneratorImp : ChangedValueGenerator
     private static PropertyInfo GetProperty(InfoSiteMatch match, string propertyName)
     {
         return match.GetType().GetProperties().Single(p => p.Name == propertyName);
-    }
-
-    private IList<InfoSiteMatch> GetOldSnapshotTimeRange(IList<InfoSiteMatch> oldSnapshot)
-    {
-        var currentDate = dateTimeHelper.GetCurrentDate();
-        var fromDate = currentDate.AddHours(12);
-        var toDate = currentDate.AddDays(1).AddHours(11).AddMinutes(59);
-        const int hours = 8;
-        return oldSnapshot.Where(x => x.EventDateTime.AddHours(hours) >= fromDate && x.EventDateTime.AddHours(value: hours) <= toDate).ToList();
     }
 }
