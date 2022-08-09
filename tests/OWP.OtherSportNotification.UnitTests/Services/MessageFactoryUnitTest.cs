@@ -74,9 +74,15 @@ public class MessageFactoryUnitTest
                 {
                    MessageContent = "<b>Max Bet</b> of <b>FT (HDP)</b> Updated from 12000 to <b>11000</b> for #1234 - Vleague - Binh Dinh -vs- Ha Noi updated by sa",
                    MessageType = (int)MsgTemplateCode.EditMaxbet,
-                   ReceivedUserIds = new List<string> { "8","11" }
+                   ReceivedUserIds = new List<string> { "8" }
                 },
                 new MessageModel
+                {
+                   MessageContent = "<b>Max Bet</b> of <b>FT (HDP)</b> Updated from 12000 to <b>11000</b> for #1234 - Vleague - Binh Dinh -vs- Ha Noi updated by sa",
+                   MessageType = (int)MsgTemplateCode.EditMaxbet,
+                   ReceivedUserIds = new List<string> { "11" }
+                },
+                 new MessageModel
                 {
                    MessageContent = "<b>Spread</b> of <b>FT (HDP)</b> Updated from 12% to <b>11%</b> for #1234 - Vleague - Binh Dinh -vs- Ha Noi updated by sa",
                    MessageType = (int)MsgTemplateCode.EditSpread,
