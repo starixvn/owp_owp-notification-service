@@ -2,7 +2,6 @@
 using OWP.PreMatchNotification.InfoSiteMatchInfo.Models;
 using OWP.PreMatchNotification.Shared.Constants;
 using OWP.PreMatchNotification.Shared.Models;
-using OWP.PreMatchNotification.Shared.Services;
 using System.Reflection;
 
 namespace OWP.PreMatchNotification.InfoSiteMatchInfo.Services;
@@ -45,13 +44,6 @@ public class ChangedValueGeneratorImp : ChangedValueGenerator
         { "HomeName" , (int)MsgTemplateCode.UpdateHome },
         { "AwayName" , (int)MsgTemplateCode.UpdateAway }
     };
-
-    private readonly DateTimeHelper dateTimeHelper;
-
-    public ChangedValueGeneratorImp(DateTimeHelper dateTimeHelper)
-    {
-        this.dateTimeHelper = dateTimeHelper;
-    }
 
     public IList<ChangedValue> CreateAssigneeMessages(IList<InfoSiteMatch> oldSnapshot, IList<InfoSiteMatch> newSnapshot, IList<Assignee> preMatchAssignees)
     {
@@ -131,7 +123,5 @@ public class ChangedValueGeneratorImp : ChangedValueGenerator
     }
 
     private static PropertyInfo GetProperty(InfoSiteMatch match, string propertyName)
-    {
-        return match.GetType().GetProperties().Single(p => p.Name == propertyName);
-    }
+        => match.GetType().GetProperties().Single(p => p.Name == propertyName);
 }
