@@ -14,6 +14,7 @@ public static class RoutingKey
     public const string TicketCenterNewTicketOther = "ticket-center-new-ticket-other";
     public const string TicketCenterNewTicketSupport = "ticket-center-new-ticket-support";
     public const string OtherSport = "other-sport";
+    public const string LiveDetail = "live-detail";
 
     public static readonly string[] Keys = new[]
     {
@@ -23,6 +24,7 @@ public static class RoutingKey
         PrematchAssignment,
         TicketCenter,
         OtherSport,
+        LiveDetail,
         TicketCenterNewMessage,
         TicketCenterNewRecipient,
         TicketCenterNewTicketEvent,

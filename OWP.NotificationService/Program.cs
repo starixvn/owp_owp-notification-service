@@ -1,3 +1,4 @@
+using OWP.LiveDetailNotification;
 using OWP.NotificationService.Extensions;
 using OWP.OtherSportNotification;
 using OWP.PreMatchNotification;
@@ -24,6 +25,7 @@ builder.Services.AddCoreServices();
 builder.Services.AddRabbitMQ();
 builder.Services.AddTicket();
 builder.Services.AddOtherSport();
+builder.Services.AddLiveDetail();
 builder.Services.AddPrematchNotificationServices();
 
 builder.Services.AddHostedService<MessageServer>();

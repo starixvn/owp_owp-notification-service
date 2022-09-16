@@ -8,6 +8,8 @@ using OWP.Core.NotificationRequests.TicketCenter;
 
 namespace OWP.RabbitMQ.Handler;
 
+using Core.NotificationRequests.LiveDetail;
+
 public interface NotificationHander
 {
     Task Handle(string key, string message);
@@ -54,6 +56,8 @@ public class SendNotificationHanderImp : NotificationHander
         RoutingKey.TicketCenterNewTicketOther => JsonConvert.DeserializeObject<NewTicketOtherNotificationRequest>(message),
 
         RoutingKey.TicketCenterNewTicketSupport => JsonConvert.DeserializeObject<NewTicketSupportNoticationRequest>(message),
+
+        RoutingKey.LiveDetail => JsonConvert.DeserializeObject<LiveDetailNotifyRequest>(message),
 
         _ => new NotificationRequest()
     };
