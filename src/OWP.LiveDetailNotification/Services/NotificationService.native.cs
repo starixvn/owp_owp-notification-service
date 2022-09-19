@@ -31,7 +31,7 @@ namespace OWP.LiveDetailNotification.Services
 #if DEBUG
                     .All
 #else
-                    .Users(message.ReceivedUserIds)
+                    .Users($"{message.UserId}")
 #endif
                     .notifyChangedInformationData(result);
             }

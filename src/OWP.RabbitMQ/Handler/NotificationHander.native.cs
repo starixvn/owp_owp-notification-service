@@ -5,10 +5,9 @@ using OWP.Core.NotificationRequests;
 using OWP.Core.NotificationRequests.OtherSport;
 using OWP.Core.NotificationRequests.Prematch;
 using OWP.Core.NotificationRequests.TicketCenter;
+using OWP.Core.NotificationRequests.LiveDetail;
 
 namespace OWP.RabbitMQ.Handler;
-
-using Core.NotificationRequests.LiveDetail;
 
 public interface NotificationHander
 {
