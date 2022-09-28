@@ -8,6 +8,7 @@ RUN dotnet tool install --tool-path /tools dotnet-counters
 WORKDIR /src
 
 COPY ./src/OWP.Core/. src/OWP.Core
+COPY ./src/OWP.LiveDetailNotification/. ./src/OWP.LiveDetailNotification
 COPY ./src/OWP.TicketNotification/. ./src/OWP.TicketNotification
 COPY ./src/OWP.PreMatchNotification/. ./src/OWP.PreMatchNotification
 COPY ./src/OWP.OtherSportNotification/. ./src/OWP.OtherSportNotification

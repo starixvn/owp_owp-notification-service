@@ -5,6 +5,7 @@ using OWP.Core.NotificationRequests;
 using OWP.Core.NotificationRequests.OtherSport;
 using OWP.Core.NotificationRequests.Prematch;
 using OWP.Core.NotificationRequests.TicketCenter;
+using OWP.Core.NotificationRequests.LiveDetail;
 
 namespace OWP.RabbitMQ.Handler;
 
@@ -54,6 +55,8 @@ public class SendNotificationHanderImp : NotificationHander
         RoutingKey.TicketCenterNewTicketOther => JsonConvert.DeserializeObject<NewTicketOtherNotificationRequest>(message),
 
         RoutingKey.TicketCenterNewTicketSupport => JsonConvert.DeserializeObject<NewTicketSupportNoticationRequest>(message),
+
+        RoutingKey.LiveDetail => JsonConvert.DeserializeObject<LiveDetailNotifyRequest>(message),
 
         _ => new NotificationRequest()
     };
