@@ -1,6 +1,6 @@
 ﻿
 using OWP.TicketNotification.Constants;
-using OWP.TicketNotification.Critera;
+using OWP.TicketNotification.Criteria;
 using OWP.TicketNotification.Models;
 
 namespace OWP.TicketNotification.Services;

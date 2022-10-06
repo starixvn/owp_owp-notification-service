@@ -1,4 +1,4 @@
-﻿namespace OWP.TicketNotification.Critera;
+﻿namespace OWP.TicketNotification.Criteria;
 
 public class InsertNewTicketOtherNotificationCriteria : InsertNotificationMessageCriteria
 {

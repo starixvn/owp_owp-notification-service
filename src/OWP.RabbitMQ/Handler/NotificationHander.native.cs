@@ -48,6 +48,8 @@ public class SendNotificationHanderImp : NotificationHander
 
         RoutingKey.TicketCenterNewRecipient => JsonConvert.DeserializeObject<NewRecipientNotificationRequest>(message),
 
+        RoutingKey.TicketCenterNewTicketLiveIncident => JsonConvert.DeserializeObject<NewTicketLiveIncidentNotificationRequest>(message),
+
         RoutingKey.TicketCenterNewTicketEvent => JsonConvert.DeserializeObject<NewTicketEventNotificationRequest>(message),
 
         RoutingKey.TicketCenterNewTicketLeague => JsonConvert.DeserializeObject<NewTicketLeagueNotificationRequest>(message),

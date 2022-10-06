@@ -1,4 +1,4 @@
-﻿namespace OWP.TicketNotification.Critera;
+﻿namespace OWP.TicketNotification.Criteria;
 public class InsertNewTicketMatchNotificationCriteria : InsertNotificationMessageCriteria
 {
     public int TicketId { get; set; }
