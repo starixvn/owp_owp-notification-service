@@ -6,10 +6,13 @@ namespace OWP.PreMatchNotification.UnitTests.InfoSiteMatchInfo;
 public class ChangedValueGeneratorUnitTests
 {
     private readonly ChangedValueGenerator service;
+    private readonly DateTimeHelper dateTimeHelper;
 
     public ChangedValueGeneratorUnitTests()
     {
-        service = new ChangedValueGeneratorImp();
+        dateTimeHelper = Substitute.For<DateTimeHelper>();
+        dateTimeHelper.GetCurrentDate().Returns(new DateTime(2021, 06, 23));
+        service = new ChangedValueGeneratorImp(dateTimeHelper);
     }
 
     [Fact]
@@ -43,7 +46,7 @@ public class ChangedValueGeneratorUnitTests
                 Home = "Liv",
                 Away = "MC",
                 OldValue =  new DateTime(2021, 06, 23, 15, 00, 00).ToString("MM/dd/yyyy hh:mm tt"),
-                NewValue =  new DateTime(2022, 09, 03, 15, 00, 00).ToString("MM/dd/yyyy hh:mm tt"),
+                NewValue =  new DateTime(2021, 06, 24, 15, 00, 00).ToString("MM/dd/yyyy hh:mm tt"),
                 ReceivedUserIds = new List<int> { 1,4,5 },
                 MessageTypeId = (int)MsgTemplateCode.UpdateKOTime
             },
@@ -66,17 +69,6 @@ public class ChangedValueGeneratorUnitTests
                 Away = "MC",
                 OldValue = "MC",
                 NewValue = "MC changed",
-                ReceivedUserIds = new List<int> { 1,4,5 },
-                MessageTypeId = (int)MsgTemplateCode.UpdateAway
-            },
-            new ChangedValue
-            {
-                InfoSiteMatchId = 3,
-                League="Premier League",
-                Home = "BVB",
-                Away = "BAY",
-                OldValue = "BAY",
-                NewValue = "BAY changed",
                 ReceivedUserIds = new List<int> { 1,4,5 },
                 MessageTypeId = (int)MsgTemplateCode.UpdateAway
             },
@@ -164,7 +156,7 @@ public class ChangedValueGeneratorUnitTests
                 InfoSiteMatchId = 2,
                 HomeName = "Liv changed",
                 AwayName = "MC changed",
-                EventDateTime = new DateTime(2022, 09, 03, 15, 00, 00),
+                EventDateTime = new DateTime(2021, 06, 24, 15, 00, 00),
                 OWPLeagueId = 101,
                 LeagueName="Premier League change"
             },
@@ -241,7 +233,7 @@ public class ChangedValueGeneratorUnitTests
                 Home = "Liv",
                 Away = "MC",
                 OldValue = new DateTime(2021, 06, 23, 15, 00, 00).ToString("MM/dd/yyyy hh:mm tt"),
-                NewValue = new DateTime(2022, 09, 03, 15, 00, 00).ToString("MM/dd/yyyy hh:mm tt"),
+                NewValue = new DateTime(2021, 06, 24, 15, 00, 00).ToString("MM/dd/yyyy hh:mm tt"),
                 ReceivedUserIds = new List<int> { 2, 3, 4, 5, 6 },
                 MessageTypeId = (int)MsgTemplateCode.UpdateKOTime
             },
@@ -266,18 +258,7 @@ public class ChangedValueGeneratorUnitTests
                 NewValue = "MC changed",
                 ReceivedUserIds = new List<int> { 2, 3, 4, 5, 6 },
                 MessageTypeId = (int)MsgTemplateCode.UpdateAway
-            },
-            new ChangedValue
-            {
-                InfoSiteMatchId = 3,
-                League = "Premier League",
-                Home = "BVB",
-                Away = "BAY",
-                OldValue = "BAY",
-                NewValue = "BAY changed",
-                ReceivedUserIds = new List<int> { 2, 3, 4, 5, 6 },
-                MessageTypeId = (int)MsgTemplateCode.UpdateAway
-            },
+            }
         };
     }
 
