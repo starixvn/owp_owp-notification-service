@@ -40,7 +40,7 @@ app.Run(async (context) =>
 
     if (request.Contains("Collect"))
     {
-        GC.Collect();
+        GC.Collect(2, GCCollectionMode.Optimized);
         await context.Response.WriteAsync($"OWP Worker Services. GC.Collected = {request}");
     }
     else
