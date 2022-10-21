@@ -1,4 +1,4 @@
-﻿namespace OWP.Core.Contants;
+﻿namespace OWP.Core.Constants;
 
 public static class RoutingKey
 {
