@@ -123,11 +123,21 @@ public class OtherAssignmentDetectorUnitTests : IClassFixture<OtherAssignmentDet
         changedValueHdpTakeOverDetector = Substitute.For<ChangedValueHdpTakeOverDetector>();
         changedValueOuDetector = Substitute.For<ChangedValueOuDetector>();
         changedValueOuTakeOverDetector = Substitute.For<ChangedValueOuTakeOverDetector>();
+
+        changedValueHdpDetector.DetectMain(Arg.Any<AssignmentSnapshot>(), Arg.Any<AssignmentSnapshot>(), Arg.Any<List<ChangedValue>>(), Arg.Any<int>());
+        changedValueHdpDetector.DetectMain(Arg.Any<AssignmentSnapshot>(), Arg.Any<AssignmentSnapshot>(), Arg.Any<List<ChangedValue>>(), Arg.Any<int>());
+        changedValueOuDetector.DetectMain(Arg.Any<AssignmentSnapshot>(), Arg.Any<AssignmentSnapshot>(), Arg.Any<List<ChangedValue>>(), Arg.Any<int>());
+        changedValueOuDetector.DetectMain(Arg.Any<AssignmentSnapshot>(), Arg.Any<AssignmentSnapshot>(), Arg.Any<List<ChangedValue>>(), Arg.Any<int>());
+        changedValueHdpTakeOverDetector.DetectMain(Arg.Any<AssignmentSnapshot>(), Arg.Any<AssignmentSnapshot>(), Arg.Any<List<ChangedValue>>(), Arg.Any<int>());
+        changedValueHdpTakeOverDetector.DetectMain(Arg.Any<AssignmentSnapshot>(), Arg.Any<AssignmentSnapshot>(), Arg.Any<List<ChangedValue>>(), Arg.Any<int>());
+        changedValueOuTakeOverDetector.DetectMain(Arg.Any<AssignmentSnapshot>(), Arg.Any<AssignmentSnapshot>(), Arg.Any<List<ChangedValue>>(), Arg.Any<int>());
+        changedValueOuTakeOverDetector.DetectOther(Arg.Any<AssignmentSnapshot>(), Arg.Any<AssignmentSnapshot>(), Arg.Any<List<ChangedValue>>(), Arg.Any<int>());
         this.setUp = setUp;
-        this.otherAssignment = new OtherAssignmentDetectorImp(changedValueHdpDetector,
-       changedValueHdpTakeOverDetector,
-       changedValueOuDetector,
-       changedValueOuTakeOverDetector);
+
+        otherAssignment = new OtherAssignmentDetectorImp(changedValueHdpDetector,
+           changedValueHdpTakeOverDetector,
+           changedValueOuDetector,
+           changedValueOuTakeOverDetector);
     }
 
     [Fact]

@@ -1,5 +1,5 @@
 ﻿using Fanex.Data.Repository;
-using OWP.TicketNotification.Critera;
+using OWP.TicketNotification.Criteria;
 using OWP.TicketNotification.Models;
 
 namespace OWP.TicketNotification;
@@ -7,7 +7,10 @@ namespace OWP.TicketNotification;
 public interface TicketRepository
 {
     Task<IEnumerable<MessageUnreadCounter>> GetMessageUnreadByMultipleUserId(IList<int> userIds);
+
     Task InsertNewTicketLeagueNotification(InsertNewTicketLeagueNotificationCriteria criteria);
+
+    Task InsertNewTicketLiveIncidentNotification(InsertNewTicketLiveIncidentNotificationCriteria criteria);
 
     Task InsertNewTicketMatchNotification(InsertNewTicketMatchNotificationCriteria criteria);
 
@@ -51,6 +54,9 @@ public class TicketRepositoryImp : TicketRepository
 
     public async Task InsertNewTicketLeagueNotification(InsertNewTicketLeagueNotificationCriteria criteria)
     => await dynamicRepository.ExecuteAsync(criteria);
+
+    public async Task InsertNewTicketLiveIncidentNotification(InsertNewTicketLiveIncidentNotificationCriteria criteria)
+        => await dynamicRepository.ExecuteAsync(criteria);
 
     public async Task InsertNewTicketMatchNotification(InsertNewTicketMatchNotificationCriteria criteria)
         => await dynamicRepository.ExecuteAsync(criteria);

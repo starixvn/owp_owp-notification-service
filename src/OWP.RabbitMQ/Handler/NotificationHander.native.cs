@@ -1,11 +1,11 @@
 ﻿using MediatR;
 using Newtonsoft.Json;
-using OWP.Core.Contants;
+using OWP.Core.Constants;
 using OWP.Core.NotificationRequests;
+using OWP.Core.NotificationRequests.LiveDetail;
 using OWP.Core.NotificationRequests.OtherSport;
 using OWP.Core.NotificationRequests.Prematch;
 using OWP.Core.NotificationRequests.TicketCenter;
-using OWP.Core.NotificationRequests.LiveDetail;
 
 namespace OWP.RabbitMQ.Handler;
 
@@ -47,6 +47,8 @@ public class SendNotificationHanderImp : NotificationHander
         RoutingKey.TicketCenterNewMessage => JsonConvert.DeserializeObject<NewMessageNotificationRequest>(message),
 
         RoutingKey.TicketCenterNewRecipient => JsonConvert.DeserializeObject<NewRecipientNotificationRequest>(message),
+
+        RoutingKey.TicketCenterNewTicketLiveIncident => JsonConvert.DeserializeObject<NewTicketLiveIncidentNotificationRequest>(message),
 
         RoutingKey.TicketCenterNewTicketEvent => JsonConvert.DeserializeObject<NewTicketEventNotificationRequest>(message),
 

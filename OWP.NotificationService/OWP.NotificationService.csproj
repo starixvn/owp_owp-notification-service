@@ -6,6 +6,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UserSecretsId>948f220a-b3eb-4a41-83b4-de4e181eb1f9</UserSecretsId>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<SonarQubeExclude>True</SonarQubeExclude>
 	</PropertyGroup>
 
 	<ItemGroup>

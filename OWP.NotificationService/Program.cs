@@ -40,7 +40,6 @@ app.Run(async (context) =>
 
     if (request.Contains("Collect"))
     {
-        GC.Collect();
         await context.Response.WriteAsync($"OWP Worker Services. GC.Collected = {request}");
     }
     else

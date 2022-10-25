@@ -226,4 +226,70 @@ public class ChangedMatchInfoGeneratorUnitTests
         var actual = changedMatchInfoGeneratorImp.Create(oldMatch, newMatch, assignees);
         DeepAssert.Equal(expected, actual);
     }
+
+    [Fact]
+    public void GetOldValue_MessageTypeIdIsChangeHome_ReturnHomeOldValue()
+    {
+        var actual = ChangedMatchInfoGeneratorImp.GetOldValue(
+            new MatchInfo { Away = "away" },
+            new ChangedValue { MessageTypeId = 0, OldValue = "oldHome" }
+        );
+
+        Assert.Equal("oldHome -vs- away", actual);
+    }
+
+    [Fact]
+    public void GetOldValue_ChangeIsNeutralAndOldValueisFalse_ReturnHomeOldValue()
+    {
+        var actual = ChangedMatchInfoGeneratorImp.GetOldValue(
+            new MatchInfo { Away = "away", Home = "home" },
+            new ChangedValue { MessageTypeId = 122, OldValue = "False" }
+        );
+
+        Assert.Equal("home -vs- away", actual);
+    }
+
+    [Fact]
+    public void GetOldValue_ChangeIsNeutralAndOldValueisTrue_ReturnHomeOldValue()
+    {
+        var actual = ChangedMatchInfoGeneratorImp.GetOldValue(
+            new MatchInfo { Away = "away", Home = "home" },
+            new ChangedValue { MessageTypeId = 122, OldValue = "True" }
+        );
+
+        Assert.Equal("home (N) -vs- away", actual);
+    }
+
+    [Fact]
+    public void GetNewValue_MessageTypeIdIsChangeHome_ReturnHomeOldValue()
+    {
+        var actual = ChangedMatchInfoGeneratorImp.GetNewValue(
+            new MatchInfo { Away = "away" },
+            new ChangedValue { MessageTypeId = 0, NewValue = "newHome" }
+        );
+
+        Assert.Equal("newHome -vs- away", actual);
+    }
+
+    [Fact]
+    public void GetNewValue_ChangeIsNeutralAndOldValueisTrue_ReturnHomeOldValue()
+    {
+        var actual = ChangedMatchInfoGeneratorImp.GetNewValue(
+            new MatchInfo { Away = "away", Home = "home" },
+            new ChangedValue { MessageTypeId = 122, NewValue = "True" }
+        );
+
+        Assert.Equal("home (N) -vs- away", actual);
+    }
+
+    [Fact]
+    public void GetNewValue_ChangeIsNeutralAndOldValueisFalse_ReturnHomeOldValue()
+    {
+        var actual = ChangedMatchInfoGeneratorImp.GetNewValue(
+            new MatchInfo { Away = "away", Home = "home" },
+            new ChangedValue { MessageTypeId = 122, NewValue = "False" }
+        );
+
+        Assert.Equal("home -vs- away", actual);
+    }
 }

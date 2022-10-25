@@ -1,7 +1,7 @@
 ﻿using Fanex.Data.Repository;
 using System.Globalization;
 
-namespace OWP.TicketNotification.Critera;
+namespace OWP.TicketNotification.Criteria;
 
 public abstract class InsertNotificationMessageCriteria : NonQueryCommand
 {

@@ -139,7 +139,7 @@ public class MessageFactoryImp : MessageFactory
 
     #region MessageGroup
 
-    private class MessageGroup : IEqualityComparer<MessageGroup>
+    private class MessageGroup
     {
         public MessageGroup(ChangedValue value)
         {
@@ -174,31 +174,6 @@ public class MessageFactoryImp : MessageFactory
         public bool IsWatcher { get; set; }
 
         public DateTime EventDateTime { get; set; }
-
-        public bool Equals(MessageGroup x, MessageGroup y)
-        {
-#pragma warning disable S1067 // Expressions should not be too complex - ignored by Jacob
-            return x.AssignmentNote == y.AssignmentNote &&
-               x.BetTypeName == y.BetTypeName &&
-               x.MessageTypeId == y.MessageTypeId &&
-               x.NewValue == y.NewValue &&
-               x.OldValue == y.OldValue &&
-               x.League == y.League &&
-               x.EventName == y.EventName &&
-               x.MatchNo == y.MatchNo &&
-               x.EventDateTime == y.EventDateTime;
-#pragma warning restore S1067 // Expressions should not be too complex
-        }
-
-        public int GetHashCode(MessageGroup obj)
-        {
-            var hash = 17;
-            hash = hash * 31 + obj.MessageTypeId;
-            hash = hash * 47 + obj.League.GetHashCode();
-            hash = hash * 59 + obj.EventName.GetHashCode();
-
-            return hash;
-        }
     }
 
     #endregion MessageGroup

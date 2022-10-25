@@ -12,3 +12,12 @@ public class NewTicketModel
 
     public string Username { get; set; }
 }
+
+public class NewTicketLiveIncidentModel : NewTicketModel
+{
+    public string OwpLeagueName { get; set; }
+
+    public string OwpHomeName { get; set; }
+
+    public string OwpAwayName { get; set; }
+}

@@ -1,19 +1,19 @@
 ﻿using OWP.TicketNotification.Constants;
-using OWP.TicketNotification.Critera;
+using OWP.TicketNotification.Criteria;
 using OWP.TicketNotification.Models;
 
 namespace OWP.TicketNotification.Services;
 
-public interface NewTicketLeagueMessageDBWriter
+public interface NewTicketOtherMessageDBWriter
 {
     public Task<string> Execute(NewTicketModel message, NotificationTemplateCode code);
 }
 
-public class NewTicketLeagueMessageDBWriterImp : NewTicketLeagueMessageDBWriter
+public class NewTicketOtherMessageDBWriterImp : NewTicketOtherMessageDBWriter
 {
     private readonly TicketRepository repository;
 
-    public NewTicketLeagueMessageDBWriterImp(TicketRepository repository)
+    public NewTicketOtherMessageDBWriterImp(TicketRepository repository)
     {
         this.repository = repository;
     }
@@ -21,7 +21,7 @@ public class NewTicketLeagueMessageDBWriterImp : NewTicketLeagueMessageDBWriter
     public async Task<string> Execute(NewTicketModel message, NotificationTemplateCode code)
     {
         var template = MessageTemplate.NotificationTemplateMap[(int)code];
-        var criteria = new InsertNewTicketLeagueNotificationCriteria
+        var criteria = new InsertNewTicketOtherNotificationCriteria
         {
             ActorId = message.ActorId,
             IsImportant = template.IsImportant,
@@ -33,7 +33,7 @@ public class NewTicketLeagueMessageDBWriterImp : NewTicketLeagueMessageDBWriter
             TicketId = message.TicketId
         };
 
-        await repository.InsertNewTicketLeagueNotification(criteria);
+        await repository.InsertNewTicketOtherNotification(criteria);
 
         return criteria.SessionId;
     }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OWP.LiveDetailNotification.Services
+﻿namespace OWP.LiveDetailNotification.Services
 {
     using Core.Models;
     using Core.Services;
@@ -16,7 +10,7 @@ namespace OWP.LiveDetailNotification.Services
 
     public class LiveDetailMessageNotificationServiceImp : LiveDetailMessageNotificationService
     {
-        private  readonly QueryMessageService queryMessageService;
+        private readonly QueryMessageService queryMessageService;
 
         public LiveDetailMessageNotificationServiceImp(QueryMessageService queryMessageService)
         {
