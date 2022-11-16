@@ -18,6 +18,7 @@
 		<ProjectReference Include="..\src\OWP.OtherSportNotification\OWP.OtherSportNotification.csproj" />
 		<ProjectReference Include="..\src\OWP.PreMatchNotification\OWP.PreMatchNotification.csproj" />
 		<ProjectReference Include="..\src\OWP.TicketNotification\OWP.TicketNotification.csproj" />
+		<ProjectReference Include="..\src\OWP.AssignmentUploadNotification\OWP.AssignmentUploadNotification.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

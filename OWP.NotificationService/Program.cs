@@ -1,3 +1,4 @@
+using OWP.AssignmentUploadNotification;
 using OWP.LiveDetailNotification;
 using OWP.NotificationService.Extensions;
 using OWP.OtherSportNotification;
@@ -27,6 +28,7 @@ builder.Services.AddTicket();
 builder.Services.AddOtherSport();
 builder.Services.AddLiveDetail();
 builder.Services.AddPrematchNotificationServices();
+builder.Services.AddAssignmentUpload();
 
 builder.Services.AddHostedService<MessageServer>();
 

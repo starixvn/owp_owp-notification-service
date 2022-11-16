@@ -8,6 +8,7 @@ using Fanex.Logging.Sentry.RavenClient;
 using Fanex.NAP.Client.AspNetCore.Session;
 using OWP.Core.Models;
 using OWP.Core.Services;
+using notify= OWP.Core.Services;
 
 namespace OWP.NotificationService.Extensions
 {
@@ -49,7 +50,7 @@ namespace OWP.NotificationService.Extensions
         {
             services.AddTransient<QueryMessageService, QueryMessageServiceImp>();
             services.AddTransient<IDynamicRepository, DynamicRepository>();
-
+            services.AddTransient<notify.NotificationService, NotificationServiceImp>();
             return services;
         }
 

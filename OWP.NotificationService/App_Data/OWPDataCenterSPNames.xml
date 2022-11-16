@@ -28,5 +28,14 @@
 			<Setting Key="OWP_PreMatchNotification_QueryInfoSiteMatchByOWPLeagueIds" SpName="OWP_PreMatchNotification_QueryInfoSiteMatchByOWPLeagueIds" DbName="DBOWP.bodb_OWP.bodbOWPNet" />
 			<Setting Key="OWP_PreMatchNotification_QueryInfoSiteMatchesByDateRange" SpName="OWP_PreMatchNotification_QueryInfoSiteMatchesByDateRange" DbName="DBOWP.bodb_OWP.bodbOWPNet" />
 		</Function>
+		<Function Name="AssignmentUpload">
+			<Setting Key="OWP_AssignmentUpload_AllAssignmentsByTimeRange" SpName="OWP_AssignmentUpload_AllAssignmentsByTimeRange" DbName="DBOWP.bodb_OWP.bodbOWPNet" />
+			<Setting Key="OWP_AssignmentUpload_AllMatchIdsByDateSel" SpName="OWP_AssignmentUpload_AllMatchIdsByDateSel" DbName="DBOWP.bodb_OWP.bodbOWPNet" />
+			<Setting Key="OWP_AssignmentUpload_AllMatchSettingsByTimeRange" SpName="OWP_AssignmentUpload_AllMatchSettingsByTimeRange" DbName="DBOWP.bodb_OWP.bodbOWPNet" />
+			<Setting Key="OWP_AssignmentUpload_AllMatchesByTimeRange" SpName="OWP_AssignmentUpload_AllMatchesByTimeRange" DbName="DBOWP.bodb_OWP.bodbOWPNet" />
+			<Setting Key="OWP_AssignmentUpload_GetNotificationSetting" SpName="OWP_AssignmentUpload_GetNotificationSetting" DbName="DBOWP.bodb_OWP.bodbOWPNet" />
+			<Setting Key="OWP_AssignmentUpload_GetSectionMemberOfUserReceivedWatcher" SpName="OWP_AssignmentUpload_GetSectionMemberOfUserReceivedWatcher" DbName="DBOWP.bodb_OWP.bodbOWPNet" />
+			<Setting Key="OWP_AssignmentUpload_MessageInsert" SpName="OWP_AssignmentUpload_MessageInsert" DbName="DBOWP.bodb_OWP.bodbOWPNet" />
+		</Function>
 	</Function>
 </Functions>
