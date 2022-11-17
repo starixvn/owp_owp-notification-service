@@ -4,34 +4,30 @@
     using System.Threading.Tasks;
     using Criteria;
     using Fanex.Data.Repository;
-    using Fanex.NAP.Client.Helpers.Web;
     using Models;
     using Olympus.Xml;
 
     public interface CommandRepository
     {
-        Task InsertMessage(List<MessageInfo> messages, string sessionId);
+        Task InsertMessage(List<MessageInfo> messages, string sessionId, int actorId);
     }
 
     public class CommandRepositoryImp : CommandRepository
     {
         private readonly IDynamicRepository repository;
-        private readonly INapSession currentSession;
 
         public CommandRepositoryImp(
-            INapSession currentSession,
             IDynamicRepository repository)
         {
-            this.currentSession = currentSession;
             this.repository = repository;
         }
 
-        public async Task InsertMessage(List<MessageInfo> messages, string sessionId)
+        public async Task InsertMessage(List<MessageInfo> messages, string sessionId, int actorId)
         {
             var criteria = new InsertMessageCommand
             {
                 Messages = XmlConverter.Serialize(messages),
-                CreatedByUserId = currentSession.UserId,
+                CreatedByUserId = actorId,
                 SessionId = sessionId
             };
 

@@ -2,6 +2,7 @@
 
 public static class RoutingKey
 {
+    public const string AssignmentUpload = "assignment-upload";
     public const string LinkedLgaMatch = "linked-lga-match";
     public const string PrematchNewLeague = "prematch-new-league";
     public const string InfositeMatchInfo = "infosite-match-info";

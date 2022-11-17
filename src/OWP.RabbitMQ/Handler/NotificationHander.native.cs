@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using OWP.Core.Constants;
 using OWP.Core.NotificationRequests;
+using OWP.Core.NotificationRequests.AssignmentUpload;
 using OWP.Core.NotificationRequests.LiveDetail;
 using OWP.Core.NotificationRequests.OtherSport;
 using OWP.Core.NotificationRequests.Prematch;
@@ -32,6 +33,8 @@ public class SendNotificationHanderImp : NotificationHander
 
     public static NotificationRequest MapRequest(string key, string message) => key switch
     {
+        RoutingKey.AssignmentUpload => JsonConvert.DeserializeObject<AssignmentUploadNotifyRequest>(message),
+
         RoutingKey.TicketCenter => JsonConvert.DeserializeObject<NewTicketEventNotificationRequest>(message),
 
         RoutingKey.LinkedLgaMatch => JsonConvert.DeserializeObject<LinkedMatchNotifyRequest>(message),

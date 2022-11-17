@@ -12,6 +12,7 @@ COPY ./src/OWP.LiveDetailNotification/. ./src/OWP.LiveDetailNotification
 COPY ./src/OWP.TicketNotification/. ./src/OWP.TicketNotification
 COPY ./src/OWP.PreMatchNotification/. ./src/OWP.PreMatchNotification
 COPY ./src/OWP.OtherSportNotification/. ./src/OWP.OtherSportNotification
+COPY ./src/OWP.OWP.AssignmentUploadNotification/. ./src/OWP.OWP.AssignmentUploadNotification
 COPY ./src/OWP.RabbitMQ/. ./src/OWP.RabbitMQ
 COPY ./OWP.NotificationService/OWP.NotificationService.csproj ./OWP.NotificationService/OWP.NotificationService.csproj
 
@@ -32,8 +33,8 @@ RUN sed -i 's/MinProtocol = TLSv1.2/MinProtocol = TLSv1/g' /usr/lib/ssl/openssl.
 
 # Don’t run as root
 RUN adduser --disabled-password \
-  --home /app \
-  --gecos '' dotnetuser && chown -R dotnetuser /app
+    --home /app \
+    --gecos '' dotnetuser && chown -R dotnetuser /app
 USER dotnetuser
 #
 
