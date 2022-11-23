@@ -12,7 +12,7 @@ COPY ./src/OWP.LiveDetailNotification/. ./src/OWP.LiveDetailNotification
 COPY ./src/OWP.TicketNotification/. ./src/OWP.TicketNotification
 COPY ./src/OWP.PreMatchNotification/. ./src/OWP.PreMatchNotification
 COPY ./src/OWP.OtherSportNotification/. ./src/OWP.OtherSportNotification
-COPY ./src/OWP.OWP.AssignmentUploadNotification/. ./src/OWP.OWP.AssignmentUploadNotification
+COPY ./src/OWP.AssignmentUploadNotification/. ./src/OWP.AssignmentUploadNotification
 COPY ./src/OWP.RabbitMQ/. ./src/OWP.RabbitMQ
 COPY ./OWP.NotificationService/OWP.NotificationService.csproj ./OWP.NotificationService/OWP.NotificationService.csproj
 
