@@ -46,7 +46,7 @@ public class AssignmentUploadHandler : IRequestHandler<AssignmentUploadNotifyReq
         var allChangedValues = assigneeChangedValues.Union(watcherChangedValues).ToList();
 
         var aggregatedChangedValues = changedValueAggregator.Aggregate(allChangedValues);
-        var messageModels = messageFactory.Transform(aggregatedChangedValues);
+        var messageModels = messageFactory.Transform(aggregatedChangedValues, request.UserName);
 
         await commandRepository.InsertMessage(messageModels, request.SessionId, request.ActorId);
 

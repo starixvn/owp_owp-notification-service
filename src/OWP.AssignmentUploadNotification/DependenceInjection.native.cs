@@ -9,7 +9,7 @@ namespace OWP.AssignmentUploadNotification
         public static IServiceCollection AddAssignmentUpload(this IServiceCollection services)
         {
             services.AddMediatR(typeof(AssignmentUploadHandler).Assembly);
-            
+
             services.Add(new ServiceDescriptor(typeof(AssigneeChangedValueFilter), typeof(AssigneeMessageFilterImp), ServiceLifetime.Transient));
             services.Add(new ServiceDescriptor(typeof(CommandRepository), typeof(CommandRepositoryImp), ServiceLifetime.Transient));
             services.Add(new ServiceDescriptor(typeof(CacheManipulator), typeof(CacheManipulatorImp), ServiceLifetime.Transient));
@@ -28,7 +28,7 @@ namespace OWP.AssignmentUploadNotification
             services.Add(new ServiceDescriptor(typeof(ChangedMatchInfoGenerator), typeof(ChangedMatchInfoGeneratorImp), ServiceLifetime.Transient));
             services.Add(new ServiceDescriptor(typeof(ChangedAssignmentGenerator), typeof(ChangedAssignmentGeneratorImp), ServiceLifetime.Transient));
             services.Add(new ServiceDescriptor(typeof(QueryRepository), typeof(QueryRepositoryImp), ServiceLifetime.Transient));
-            
+
             return services;
         }
     }

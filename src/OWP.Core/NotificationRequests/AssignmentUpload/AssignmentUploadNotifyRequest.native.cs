@@ -7,5 +7,7 @@ namespace OWP.Core.NotificationRequests.AssignmentUpload
         public int ActorId { get; set; }
 
         public bool IsUploadFMAndAIO { get; set; }
+
+        public string UserName { get; set; }
     }
 }

@@ -10,7 +10,7 @@
 
     public interface MessageFactory
     {
-        List<MessageInfo> Transform(List<ChangedValue> changedValues);
+        List<MessageInfo> Transform(List<ChangedValue> changedValues, string actor);
     }
 
     public class MessageFactoryImp : MessageFactory
@@ -295,26 +295,22 @@
 
         private static readonly Dictionary<int, MessageTemplate> messageTemplateMap = messageTemplates.ToDictionary(m => m.MessageType, m => m);
 
-        private readonly INapSession currentSession;
 
-        public MessageFactoryImp(INapSession currentSession)
-        {
-            this.currentSession = currentSession;
-        }
 
-        public List<MessageInfo> Transform(List<ChangedValue> changedValues)
+
+        public List<MessageInfo> Transform(List<ChangedValue> changedValues, string actor)
         {
-            var messageModels = TransformChangedValueToMessageModel(changedValues);
+            var messageModels = TransformChangedValueToMessageModel(changedValues, actor);
             return Reduce(messageModels);
         }
 
-        private List<MessageModelRaw> TransformChangedValueToMessageModel(List<ChangedValue> changedValues)
+        private List<MessageModelRaw> TransformChangedValueToMessageModel(List<ChangedValue> changedValues, string actor)
         {
             return changedValues.GroupBy(v => new MessageGroup(v))
                 .Select(g =>
                 {
                     var messageTemplate = messageTemplateMap[g.Key.MessageTypeId];
-                    var content = CreateMessageContent(g.Key);
+                    var content = CreateMessageContent(g.Key, actor);
 
                     return new MessageModelRaw
                     {
@@ -327,7 +323,7 @@
                 }).ToList();
         }
 
-        private string CreateMessageContent(MessageGroup messageGroup)
+        private string CreateMessageContent(MessageGroup messageGroup, string actor)
         {
             var messageTemplate = messageTemplateMap[messageGroup.MessageTypeId];
             var content = messageTemplate.MessageContent;
@@ -339,7 +335,7 @@
             content = content.Replace("<Match.No>", !string.IsNullOrEmpty(messageGroup.MatchNo) ? $"#{messageGroup.MatchNo}" : string.Empty);
             content = content.Replace("<League>", messageGroup.League);
             content = content.Replace("<Event>", messageGroup.EventName);
-            content = content.Replace("<User>", currentSession.UserName);
+            content = content.Replace("<User>", actor);
             content = content.Replace("<Old>", messageGroup.OldValue);
             content = content.Replace("<Bettype>", messageGroup.BetTypeName);
             content = content.Replace("<Note>", assignmentNote);

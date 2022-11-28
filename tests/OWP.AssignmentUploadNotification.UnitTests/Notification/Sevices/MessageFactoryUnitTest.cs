@@ -15,8 +15,7 @@
 
         public MessageFactoryUnitTest()
         {
-            currentSession = Substitute.For<INapSession>();
-            messageFactory = new MessageFactoryImp(currentSession);
+            messageFactory = new MessageFactoryImp();
         }
 
         [Fact]
@@ -49,7 +48,7 @@
                 }
             };
 
-            var actual = messageFactory.Transform(changedValueList);
+            var actual = messageFactory.Transform(changedValueList, "sa");
             DeepAssert.Equal(expected, actual);
         }
 
@@ -83,7 +82,7 @@
                 }
             };
 
-            var actual = messageFactory.Transform(changedValueList);
+            var actual = messageFactory.Transform(changedValueList, "sa");
             DeepAssert.Equal(expected, actual);
         }
 
