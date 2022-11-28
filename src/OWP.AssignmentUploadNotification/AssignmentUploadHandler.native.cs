@@ -8,6 +8,8 @@ using OWP.Core.Models;
 using OWP.Core.NotificationRequests.AssignmentUpload;
 using OWP.Core.Services;
 using Services;
+using Fanex.Logging;
+using Newtonsoft.Json;
 
 public class AssignmentUploadHandler : IRequestHandler<AssignmentUploadNotifyRequest, Unit>
 {
@@ -20,6 +22,8 @@ public class AssignmentUploadHandler : IRequestHandler<AssignmentUploadNotifyReq
 
     private readonly NotificationService notificationService;
 
+    private readonly ILogger _logger;
+
     public AssignmentUploadHandler(
         ChangedValueByCacheAndDatabase changedValueByCacheAndDatabase,
         AssigneeChangedValueFilter assigneeChangedValueFilter,
@@ -27,7 +31,8 @@ public class AssignmentUploadHandler : IRequestHandler<AssignmentUploadNotifyReq
         ChangedValueAggregator changedValueAggregator,
         MessageFactory messageFactory,
         CommandRepository commandRepository,
-        NotificationService notificationService)
+        NotificationService notificationService,
+        ILogger logger)
     {
         this.changedValueByCacheAndDatabase = changedValueByCacheAndDatabase;
         this.assigneeChangedValueFilter = assigneeChangedValueFilter;
@@ -36,6 +41,7 @@ public class AssignmentUploadHandler : IRequestHandler<AssignmentUploadNotifyReq
         this.messageFactory = messageFactory;
         this.commandRepository = commandRepository;
         this.notificationService = notificationService;
+        _logger = logger;
     }
 
     public async Task<Unit> Handle(AssignmentUploadNotifyRequest request, CancellationToken cancellationToken)
@@ -51,7 +57,6 @@ public class AssignmentUploadHandler : IRequestHandler<AssignmentUploadNotifyReq
         await commandRepository.InsertMessage(messageModels, request.SessionId, request.ActorId);
 
         var messageSender = BuildMessageSenderInfo(messageModels);
-
         await notificationService.Notify(messageSender);
 
         return Unit.Value;

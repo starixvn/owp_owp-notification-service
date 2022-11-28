@@ -31,7 +31,11 @@ public class SendNotificationHandlerImp : NotificationHandler
     public async Task Handle(string key, string message)
     {
         var request = MapRequest(key, message);
-        logger.Info(key + "=>" + message);
+        if (key == "assignment-upload")
+        {
+            logger.Info(key + "=>" + message);
+        }
+
         await mediator.Send(request);
     }
 

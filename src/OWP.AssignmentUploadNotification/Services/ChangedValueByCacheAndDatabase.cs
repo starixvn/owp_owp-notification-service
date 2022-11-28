@@ -3,7 +3,9 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Fanex.Logging;
     using Models;
+    using Newtonsoft.Json;
 
     public interface ChangedValueByCacheAndDatabase
     {
@@ -15,6 +17,8 @@
         private readonly CacheManipulator cacheManipulator;
         private readonly QueryRepository queryRepository;
         private readonly ChangedValueBySnapshot changedValueBySnapshot;
+
+        private readonly ILogger logger;
 
         public ChangedValueCacheAndDatabaseImp(
             CacheManipulator cacheManipulator,
@@ -29,6 +33,7 @@
         public async Task<List<ChangedValue>> Create(string sessionId, DateTime eventDate)
         {
             var oldSnapshot = await cacheManipulator.GetAssignmentSnapshot(sessionId);
+
             var newSnapshot = await queryRepository.Query(eventDate);
 
             return changedValueBySnapshot.Create(oldSnapshot, newSnapshot);
