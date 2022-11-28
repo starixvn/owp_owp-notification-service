@@ -8,7 +8,7 @@ public static class DependenceInjection
     public static IServiceCollection AddRabbitMQ(this IServiceCollection services)
     {
         services.AddSingleton<MessageServer>();
-        services.AddTransient<NotificationHander, SendNotificationHanderImp>();
+        services.AddTransient<NotificationHandler, SendNotificationHandlerImp>();
 
         return services;
     }

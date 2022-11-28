@@ -7,27 +7,31 @@ using OWP.Core.NotificationRequests.LiveDetail;
 using OWP.Core.NotificationRequests.OtherSport;
 using OWP.Core.NotificationRequests.Prematch;
 using OWP.Core.NotificationRequests.TicketCenter;
+using Fanex.Logging;
 
 namespace OWP.RabbitMQ.Handler;
 
-public interface NotificationHander
+public interface NotificationHandler
 {
     Task Handle(string key, string message);
 }
 
-public class SendNotificationHanderImp : NotificationHander
+public class SendNotificationHandlerImp : NotificationHandler
 {
     private readonly IMediator mediator;
 
+    private readonly ILogger logger;
 
-    public SendNotificationHanderImp(IMediator mediator)
+    public SendNotificationHandlerImp(IMediator mediator, ILogger logger)
     {
         this.mediator = mediator;
+        this.logger = logger;
     }
 
     public async Task Handle(string key, string message)
     {
         var request = MapRequest(key, message);
+        logger.Info(key + "=>" + message);
         await mediator.Send(request);
     }
 
