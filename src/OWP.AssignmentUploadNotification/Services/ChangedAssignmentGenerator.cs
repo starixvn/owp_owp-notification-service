@@ -39,7 +39,7 @@
 
             return allChangedValues.Where(x => x.AssigneeId != 0)
                 .Union(indirectChangedValues)
-                .Distinct()
+                .Distinct(new AssignmentChangedValueComparer())
                 .ToList();
         }
 

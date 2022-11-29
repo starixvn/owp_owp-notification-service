@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public class ChangedValue : IEquatable<ChangedValue>
+    public class ChangedValue
     {
         public int AssigneeId { get; set; }
 
@@ -42,21 +42,22 @@
         {
             AssignmentNote = string.Empty;
         }
+    }
 
-        public bool Equals(ChangedValue y)
+    public class AssignmentChangedValueComparer : ChangedValue, IEqualityComparer<ChangedValue>
+    {
+        public bool Equals(ChangedValue x, ChangedValue y)
         {
-            if (y is null)
-            {
-                return false;
-            }
-            var condition1 = this.MatchId == y.MatchId && this.BetTypeId == y.BetTypeId && this.AssignmentType == y.AssignmentType;
-            var condition2 = this.MessageTypeId == y.MessageTypeId && this.AssigneeId == y.AssigneeId && this.IsIndirectChangedAssignment == y.IsIndirectChangedAssignment;
-            var condition3 = this.OldValue == y.OldValue && this.NewValue == y.NewValue && this.AssignmentNote == y.AssignmentNote;
+            var condition1 = x.MatchId == y.MatchId && x.BetTypeId == y.BetTypeId && x.AssignmentType == y.AssignmentType;
+            var condition2 = x.MessageTypeId == y.MessageTypeId && x.AssigneeId == y.AssigneeId && x.IsIndirectChangedAssignment == y.IsIndirectChangedAssignment;
+            var condition3 = x.OldValue == y.OldValue && x.NewValue == y.NewValue && x.AssignmentNote == y.AssignmentNote;
 
             return condition1 && condition2 && condition3;
         }
 
-        public override bool Equals(object obj) => Equals(obj as ChangedValue);
-        public override int GetHashCode() => (MatchId, BetTypeId, MessageTypeId).GetHashCode();
+        public int GetHashCode(ChangedValue obj)
+        {
+            return obj.MatchId * 17 + obj.MessageTypeId * 29;
+        }
     }
 }

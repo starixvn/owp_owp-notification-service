@@ -29,7 +29,7 @@
                                           .Where(x => x.UserId != 0)
                                           .ToList();
                 var assignmentChangedValues = GetInsertedAssignmentChangedValues(snapshot.Matches, assignments).ToList();
-                yield return assignmentChangedValues.Distinct().ToList();
+                yield return assignmentChangedValues.Distinct(new AssignmentChangedValueComparer()).ToList();
             }
         }
 
