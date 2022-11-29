@@ -8,7 +8,7 @@ namespace OWP.AssignmentUploadNotification
     {
         public static IServiceCollection AddAssignmentUpload(this IServiceCollection services)
         {
-            services.AddMediatR(typeof(AssignmentUploadHandler).Assembly);
+            services.AddMediatR(typeof(Handler).Assembly);
 
             services.Add(new ServiceDescriptor(typeof(AssigneeChangedValueFilter), typeof(AssigneeMessageFilterImp), ServiceLifetime.Transient));
             services.Add(new ServiceDescriptor(typeof(CommandRepository), typeof(CommandRepositoryImp), ServiceLifetime.Transient));

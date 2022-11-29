@@ -5,12 +5,11 @@
     using System.Linq;
     using System.Text.RegularExpressions;
     using Constants;
-    using Fanex.NAP.Client.Helpers.Web;
     using Models;
 
     public interface MessageFactory
     {
-        List<MessageModel> Transform(List<ChangedValue> changedValues, string actor);
+        List<MessageModel> Transform(List<ChangedValue> changedValues, string userName);
     }
 
     public class MessageFactoryImp : MessageFactory
@@ -295,22 +294,19 @@
 
         private static readonly Dictionary<int, MessageTemplate> messageTemplateMap = messageTemplates.ToDictionary(m => m.MessageType, m => m);
 
-
-
-
-        public List<MessageModel> Transform(List<ChangedValue> changedValues, string actor)
+        public List<MessageModel> Transform(List<ChangedValue> changedValues, string userName)
         {
-            var messageModels = TransformChangedValueToMessageModel(changedValues, actor);
+            var messageModels = TransformChangedValueToMessageModel(changedValues, userName);
             return Reduce(messageModels);
         }
 
-        private List<MessageModelRaw> TransformChangedValueToMessageModel(List<ChangedValue> changedValues, string actor)
+        private List<MessageModelRaw> TransformChangedValueToMessageModel(List<ChangedValue> changedValues, string userName)
         {
             return changedValues.GroupBy(v => new MessageGroup(v))
                 .Select(g =>
                 {
                     var messageTemplate = messageTemplateMap[g.Key.MessageTypeId];
-                    var content = CreateMessageContent(g.Key, actor);
+                    var content = CreateMessageContent(g.Key, userName);
 
                     return new MessageModelRaw
                     {
@@ -323,7 +319,7 @@
                 }).ToList();
         }
 
-        private string CreateMessageContent(MessageGroup messageGroup, string actor)
+        private string CreateMessageContent(MessageGroup messageGroup, string userName)
         {
             var messageTemplate = messageTemplateMap[messageGroup.MessageTypeId];
             var content = messageTemplate.MessageContent;
@@ -335,7 +331,7 @@
             content = content.Replace("<Match.No>", !string.IsNullOrEmpty(messageGroup.MatchNo) ? $"#{messageGroup.MatchNo}" : string.Empty);
             content = content.Replace("<League>", messageGroup.League);
             content = content.Replace("<Event>", messageGroup.EventName);
-            content = content.Replace("<User>", actor);
+            content = content.Replace("<User>", userName);
             content = content.Replace("<Old>", messageGroup.OldValue);
             content = content.Replace("<Bettype>", messageGroup.BetTypeName);
             content = content.Replace("<Note>", assignmentNote);

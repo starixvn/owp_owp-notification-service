@@ -1,6 +1,5 @@
 ﻿namespace OWP.AssignmentUploadNotification.Models
 {
-
     public class ChangedMatchSnapshot
     {
         public GeneralMatch OldMatch { get; set; }

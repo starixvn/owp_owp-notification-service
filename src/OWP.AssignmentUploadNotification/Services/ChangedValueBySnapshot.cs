@@ -34,13 +34,13 @@
 
             var insertedMatchChangedValues = insertedMatchChangedValueGenerator.Create(changedSnapshot.InsertedMatches, newSnapshot);
             var deletedMatchChangedValues = deletedMatchChangedValueGenerator.Create(changedSnapshot.DeletedMatches, oldSnapshot);
-            var changedMatchChangedValues = changedMatchChangedValueGenerator.Create(changedSnapshot.ChangedMatches, oldSnapshot, newSnapshot);
+            var changedMatchChagedValues = changedMatchChangedValueGenerator.Create(changedSnapshot.ChangedMatches, oldSnapshot, newSnapshot);
 
             return new[]
             {
                 insertedMatchChangedValues,
                 deletedMatchChangedValues,
-                changedMatchChangedValues
+                changedMatchChagedValues
             }
             .SelectMany(v => v)
             .ToList();

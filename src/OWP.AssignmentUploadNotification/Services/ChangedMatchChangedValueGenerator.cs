@@ -138,8 +138,9 @@
             return assignments;
         }
 
-        private static List<MatchAssignment> GetAssignmentByMatchId(int matchId, AssignmentSnapshot snapshot) => snapshot.Assignments.GetValue(
-                matchId,
-                new List<MatchAssignment>());
+        private static List<MatchAssignment> GetAssignmentByMatchId(int matchId, AssignmentSnapshot snapshot)
+        {
+            return snapshot.Assignments.GetValue(matchId, new List<MatchAssignment>());
+        }
     }
 }

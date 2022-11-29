@@ -21,8 +21,8 @@
                 return MajorBettypeShortName.GetMajorBetTypeShortName(bettypeId);
             }
 
-            return minorGenerateList.Contains(minorBettypeId) 
-                ? minorBettypeName 
+            return minorGenerateList.Contains(minorBettypeId)
+                ? minorBettypeName
                 : $"{minorBettypeName} ({MajorBettypeShortName.GetMajorBetTypeShortName(bettypeId)})";
         }
 
@@ -38,7 +38,7 @@
                     return "Fast Market";
                 default:
                     return $"{minorBettypeName} ({MajorBettypeShortName.GetMajorBetTypeShortName(bettypeId)})";
-            }            
+            }
         }
     }
 }

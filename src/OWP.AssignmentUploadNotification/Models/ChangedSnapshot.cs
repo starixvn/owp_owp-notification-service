@@ -1,6 +1,7 @@
 ﻿namespace OWP.AssignmentUploadNotification.Models
 {
     using System.Collections.Generic;
+
     public class ChangedSnapshot
     {
         public List<int> DeletedMatches { get; set; }

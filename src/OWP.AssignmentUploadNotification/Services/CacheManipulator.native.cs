@@ -4,7 +4,7 @@
     using Fanex.Caching;
     using Newtonsoft.Json;
     using OWP.AssignmentUploadNotification.Models;
-    using Fanex.Logging;
+
     public interface CacheManipulator
     {
         Task<AssignmentSnapshot> GetAssignmentSnapshot(string sessionId);
@@ -13,13 +13,12 @@
     public class CacheManipulatorImp : CacheManipulator
     {
         private readonly ICache cache;
-        private readonly ILogger logger;
+
         private const string KEY_ASSIGNMENT_SNAPSHOT = "OWP-ASSIGNMENT-SNAPSHOT";
 
-        public CacheManipulatorImp(ICache cache, ILogger logger)
+        public CacheManipulatorImp(ICache cache)
         {
             this.cache = cache;
-            this.logger = logger;
         }
 
         public async Task<AssignmentSnapshot> GetAssignmentSnapshot(string sessionId)

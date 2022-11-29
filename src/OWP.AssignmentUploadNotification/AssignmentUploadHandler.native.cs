@@ -1,4 +1,4 @@
-﻿namespace OWP.AssignmentUploadNotification;
+﻿/* namespace OWP.AssignmentUploadNotification;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -70,3 +70,4 @@ public class AssignmentUploadHandler : IRequestHandler<AssignmentUploadNotifyReq
                 ReceivedUserIds = m.ReceivedUserIdList.Split(",")
             }).ToList();
 }
+ */
