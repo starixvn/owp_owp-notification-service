@@ -25,9 +25,9 @@
             var changedValueList = GetListChangedValue();
             currentSession.UserName = "sa";
 
-            var expected = new List<MessageInfo>
+            var expected = new List<MessageModel>
             {
-                new MessageInfo
+                new MessageModel
                 {
                    IsImportant = false,
                    MessageContent = "Was updated match: #20000 - A-Coners - LiverPool-Coners -vs- Arsenal-Coners updated by sa, previous: [ #1234 - A-Coners - LiverPool-Coners -vs- Arsenal-Coners ]",
@@ -37,7 +37,7 @@
                    ReceivedUserNameList = "esther"
                 },
 
-                new MessageInfo
+                new MessageModel
                 {
                    IsImportant = false,
                    MessageContent = "Was updated Maxbet of Next of Coners (HDP): [ 300K ]  for the match: #50000 - PremierLeague - LiverPool -vs- Arsenal updated by sa, previous: [ 400K ]",
@@ -59,9 +59,9 @@
             var changedValueList = GetListAssignmentChanged();
             currentSession.UserName = "sa";
 
-            var expected = new List<MessageInfo>
+            var expected = new List<MessageModel>
             {
-                new MessageInfo
+                new MessageModel
                 {
                    IsImportant = true,
                    MessageContent = "You assignment has been REMOVED HDP PK  for the match:  - Jo - Spur -vs- MC updated by sa",
@@ -71,7 +71,7 @@
                    ReceivedUserNameList = "esther"
                 },
 
-                new MessageInfo
+                new MessageModel
                 {
                    IsImportant = true,
                    MessageContent = "You have been new ASSIGNED 1H HDP  for the match: #5000 - Jo - Spur -vs- MC updated by sa",

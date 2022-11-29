@@ -10,7 +10,7 @@
 
     public interface MessageFactory
     {
-        List<MessageInfo> Transform(List<ChangedValue> changedValues, string actor);
+        List<MessageModel> Transform(List<ChangedValue> changedValues, string actor);
     }
 
     public class MessageFactoryImp : MessageFactory
@@ -298,7 +298,7 @@
 
 
 
-        public List<MessageInfo> Transform(List<ChangedValue> changedValues, string actor)
+        public List<MessageModel> Transform(List<ChangedValue> changedValues, string actor)
         {
             var messageModels = TransformChangedValueToMessageModel(changedValues, actor);
             return Reduce(messageModels);
@@ -343,13 +343,13 @@
             return content;
         }
 
-        private static List<MessageInfo> Reduce(List<MessageModelRaw> messageModels)
+        private static List<MessageModel> Reduce(List<MessageModelRaw> messageModels)
         {
             return messageModels.GroupBy(m => new { m.MessageContent, m.IsImportant, m.IsWatcher, m.MessageType })
                 .Select(m =>
                 {
                     var assignees = m.SelectMany(x => x.Assignees).Distinct().ToArray();
-                    return new MessageInfo
+                    return new MessageModel
                     {
                         MessageType = m.Key.MessageType,
                         MessageContent = m.Key.MessageContent,

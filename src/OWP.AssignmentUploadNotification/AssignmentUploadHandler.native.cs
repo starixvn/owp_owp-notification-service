@@ -62,9 +62,9 @@ public class AssignmentUploadHandler : IRequestHandler<AssignmentUploadNotifyReq
         return Unit.Value;
     }
 
-    private IList<MessageModelCommon<MessageInfo>> BuildMessageSenderInfo(IList<MessageInfo> messageModels)
+    private IList<MessageModelCommon<Models.MessageModel>> BuildMessageSenderInfo(IList<Models.MessageModel> messageModels)
     => messageModels
-            .Select(m => new MessageModelCommon<MessageInfo>
+            .Select(m => new MessageModelCommon<Models.MessageModel>
             {
                 Message = m,
                 ReceivedUserIds = m.ReceivedUserIdList.Split(",")

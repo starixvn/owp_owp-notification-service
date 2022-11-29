@@ -1,6 +1,6 @@
 ﻿namespace OWP.AssignmentUploadNotification.Models
 {
-    public class MessageInfo
+    public class MessageModel
     {
         public string MessageContent { get; set; }
 
