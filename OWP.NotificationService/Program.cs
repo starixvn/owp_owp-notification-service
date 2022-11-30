@@ -6,7 +6,6 @@ using OWP.PreMatchNotification;
 using OWP.RabbitMQ;
 using OWP.RabbitMQ.Models;
 using OWP.TicketNotification;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -17,6 +16,12 @@ builder.Services.AddFanexServices(builder.Configuration);
 builder.Services.AddRedisServices(builder.Configuration);
 
 builder.Services.AddNapServices(builder.Configuration);
+
+// AutoMapper
+builder.Services.AddAutoMapper(mapper =>
+{
+    mapper.AddProfile(new OWP.AssignmentUploadNotification.AutoMapperProfile());
+});
 
 // Add config
 builder.Services.Configure<RabbitMQSetting>(builder.Configuration.GetSection(RabbitMQSetting.RabbitMQ));
