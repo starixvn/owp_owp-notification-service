@@ -10,6 +10,8 @@
 
         public int MessageType { get; set; }
 
+        public List<string> ReceivedUserIds { get; set; }
+
         public string ReceivedUserIdList { get; set; }
 
         public string ReceivedUserNameList { get; set; }

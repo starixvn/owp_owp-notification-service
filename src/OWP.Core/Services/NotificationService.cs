@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.SignalR;
 using OWP.Hubs;
 using OWP.Core.Models;
-using Newtonsoft.Json;
 using Fanex.Logging;
+using Newtonsoft.Json;
 
 namespace OWP.Core.Services;
 
@@ -25,8 +25,7 @@ public class NotificationServiceImp : NotificationService
 
     public async Task Notify<T>(IList<MessageModelCommon<T>> sources) where T : class
     {
-        _logger.Info(JsonConvert.SerializeObject(sources.Select(x => x.Message)));
-        _logger.Info(JsonConvert.SerializeObject(sources.Select(x => x.ReceivedUserIds)));
+        _logger.Info("Notify" + JsonConvert.SerializeObject(sources));
         foreach (var message in sources)
         {
             var result = new
@@ -35,8 +34,12 @@ public class NotificationServiceImp : NotificationService
                 message = message.Message
             };
             await hubContext.Clients
-                .All
-                .notifyChangedInformationData(result);
+#if DEBUG
+                   .All
+#else
+                    .Users(message.ReceivedUserIds)
+#endif
+                   .notifyChangedInformationData(result);
         }
     }
 }

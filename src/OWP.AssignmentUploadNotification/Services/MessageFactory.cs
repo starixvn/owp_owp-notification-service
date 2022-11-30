@@ -351,6 +351,7 @@
                         MessageContent = m.Key.MessageContent,
                         IsImportant = m.Key.IsImportant,
                         IsWatcher = m.Key.IsWatcher,
+                        ReceivedUserIds = assignees.Select(a => a.AssigneeId.ToString()).Distinct().ToList(),
                         ReceivedUserIdList = string.Join(",", assignees.Select(a => a.AssigneeId)),
                         ReceivedUserNameList = string.Join(",", assignees.Select(a => a.AssigneeName))
                     };

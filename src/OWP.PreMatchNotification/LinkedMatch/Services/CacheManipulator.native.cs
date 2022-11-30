@@ -30,6 +30,6 @@ public class CacheManipulatorImp : CacheManipulator
     public async Task DeleteAssignmentSnapshot(string sessionId)
     {
         var cacheKey = $"{OLD_LGAMATCHES_SNAPSHOT_KEY}-{sessionId}";
-        //await cacheManipulator.RemoveData(cacheKey);
+        await cacheManipulator.RemoveData(cacheKey);
     }
 }

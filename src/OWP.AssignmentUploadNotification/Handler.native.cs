@@ -8,8 +8,11 @@
     using MediatR;
     using Newtonsoft.Json;
     using OWP.AssignmentUploadNotification.Models;
+    using OWP.Core.Models;
     using OWP.Core.NotificationRequests.AssignmentUpload;
+    using OWP.Core.Services;
     using Services;
+    using MessageCore = OWP.Core.Models;
 
     public class NotifyRequest : IRequest<bool>
     {
@@ -33,13 +36,16 @@
         private readonly MessageFactory messageFactory;
         private readonly CommandRepository commandRepository;
 
+        private readonly NotificationService notificationService;
+
         public Handler(
             ChangedValueByCacheAndDatabase changedValueByCacheAndDatabase,
             AssigneeChangedValueFilter assigneeChangedValueFilter,
             WatcherChangedValueGenerator watcherChangedValueGenerator,
             ChangedValueAggregator changedValueAggregator,
             MessageFactory messageFactory,
-            CommandRepository commandRepository)
+            CommandRepository commandRepository,
+            NotificationService notificationService)
         {
             this.changedValueByCacheAndDatabase = changedValueByCacheAndDatabase;
             this.assigneeChangedValueFilter = assigneeChangedValueFilter;
@@ -47,6 +53,7 @@
             this.changedValueAggregator = changedValueAggregator;
             this.messageFactory = messageFactory;
             this.commandRepository = commandRepository;
+            this.notificationService = notificationService;
         }
 
         public async Task<Unit> Handle(AssignmentUploadNotifyRequest request, CancellationToken cancellationToken)
@@ -81,7 +88,22 @@
             }
             await commandRepository.InsertMessage(messageModels, request.SessionId, request.ActorId);
 
+            var messageSender = BuildMessageSender(messageModels);
+            await notificationService.Notify(messageSender);
+
             return Unit.Value;
         }
+
+        private IList<MessageModelCommon<MessageCore.MessageModel>> BuildMessageSender(IList<Models.MessageModel> messageModels)
+        => messageModels.Select(m => new MessageModelCommon<MessageCore.MessageModel>()
+        {
+            Message = new()
+            {
+                MessageContent = m.MessageContent,
+                MessageType = m.MessageType,
+                IsImportant = m.IsImportant
+            },
+            ReceivedUserIds = m.ReceivedUserIds
+        }).ToList();
     }
 }
