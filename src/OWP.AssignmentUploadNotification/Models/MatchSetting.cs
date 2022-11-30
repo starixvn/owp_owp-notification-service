@@ -1,5 +1,5 @@
-namespace OWP.AssignmentUploadNotification.Models;
-
+namespace OWP.AssignmentUploadNotification.Models
+{
     public class MatchSetting
     {
         public int MatchId { get; set; }
@@ -10,3 +10,4 @@ namespace OWP.AssignmentUploadNotification.Models;
 
         public decimal? MaxBet { get; set; }
     }
+}

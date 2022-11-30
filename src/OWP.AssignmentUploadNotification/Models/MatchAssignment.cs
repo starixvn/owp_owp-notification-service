@@ -1,6 +1,6 @@
 namespace OWP.AssignmentUploadNotification.Models
 {
-        public class MatchAssignment
+    public class MatchAssignment
     {
         public int MatchId { get; set; }
 

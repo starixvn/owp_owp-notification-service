@@ -57,7 +57,7 @@
 
         public int GetHashCode(ChangedValue obj)
         {
-            return obj.MatchId * 17 + obj.MessageTypeId * 29;
+            return obj.MatchId * 17 + obj.BetTypeId * 23 + obj.MessageTypeId * 29;
         }
     }
 }

@@ -5,9 +5,7 @@
     using System.Linq;
     using Constants;
     using Extensions;
-    using Fanex.Logging;
     using Models;
-    using Newtonsoft.Json;
     using OWP.Core.Extensions;
 
     public interface ChangedAssignmentGenerator
@@ -19,14 +17,11 @@
     {
         private const string EVENT_VS = " -vs- ";
 
-        private readonly ILogger _logger;
-
         private readonly ChangedDetector changeDetector;
 
-        public ChangedAssignmentGeneratorImp(ChangedDetector changeDetector, ILogger logger)
+        public ChangedAssignmentGeneratorImp(ChangedDetector changeDetector)
         {
             this.changeDetector = changeDetector;
-            _logger = logger;
         }
 
         public List<ChangedValue> Create(ChangedMatchSnapshot snapshot, List<Assignee> existingAssignees)
@@ -87,10 +82,7 @@
             var oldMatches = snapshot.OldSnapshot.Matches;
 
             var insertedAssignments = changeDetector.GetInsertedAssignments(oldAssignments, newAssignments);
-            if (insertedAssignments?.Count > 0)
-            {
-                _logger.Info("insertedAssignments" + JsonConvert.SerializeObject(insertedAssignments));
-            }
+
             foreach (var assignment in insertedAssignments)
             {
                 var match = oldMatches.GetValue(assignment.MatchId);

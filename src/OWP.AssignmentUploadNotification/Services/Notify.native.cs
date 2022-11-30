@@ -1,8 +1,11 @@
-﻿namespace OWP.AssignmentUploadNotification.Services
+﻿/* namespace OWP.AssignmentUploadNotification.Services
 {
     using System.Collections.Generic;
     using System.Linq;
     using Models;
+    using OWP.Models;
+    using OWP.Services;
+    using Utils;
 
     public interface Notify
     {
@@ -13,12 +16,12 @@
     {
         public void NotifyMessagesToUser(List<MessageModel> messages)
         {
-            //var userMessages = MapMessagesToUserName(messages);
+            var userMessages = MapMessagesToUserName(messages);
 
-            //SendMessageToUser(userMessages);
+            SendMessageToUser(userMessages);
         }
 
-        /* private static Dictionary<string, List<Message>> MapMessagesToUserName(List<MessageModel> messages)
+        private static Dictionary<string, List<Message>> MapMessagesToUserName(List<MessageModel> messages)
         {
             var userMessages = new Dictionary<string, List<Message>>();
             foreach (var message in messages)
@@ -63,6 +66,6 @@
                     userMessage.Add(newMessage);
                 }
             }
-        } */
+        }
     }
-}
+} */

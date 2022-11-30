@@ -1,5 +1,6 @@
 ﻿namespace OWP.AssignmentUploadNotification.Services
 {
+    using System;
     using System.Threading.Tasks;
     using Fanex.Caching;
     using Newtonsoft.Json;
@@ -13,7 +14,6 @@
     public class CacheManipulatorImp : CacheManipulator
     {
         private readonly ICache cache;
-
         private const string KEY_ASSIGNMENT_SNAPSHOT = "OWP-ASSIGNMENT-SNAPSHOT";
 
         public CacheManipulatorImp(ICache cache)

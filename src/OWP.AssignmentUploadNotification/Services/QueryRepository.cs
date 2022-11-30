@@ -1,10 +1,9 @@
-
 using Fanex.Data.Repository;
 using OWP.AssignmentUploadNotification.Criteria;
 using OWP.AssignmentUploadNotification.Models;
 
-namespace OWP.AssignmentUploadNotification.Services;
-
+namespace OWP.AssignmentUploadNotification.Services
+{
     public interface QueryRepository
     {
         Task<AssignmentSnapshot> Query(DateTime eventDate);
@@ -18,7 +17,6 @@ namespace OWP.AssignmentUploadNotification.Services;
         {
             this.repository = repository;
         }
-
         public async Task<AssignmentSnapshot> Query(DateTime eventDate)
         {
             var matchesTask = repository.FetchAsync<GeneralMatch>(new GetAllMatchesByTimeRangeCriteria { EventDate = eventDate });
@@ -33,3 +31,4 @@ namespace OWP.AssignmentUploadNotification.Services;
             };
         }
     }
+}

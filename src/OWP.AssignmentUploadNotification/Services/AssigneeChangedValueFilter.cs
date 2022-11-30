@@ -24,8 +24,8 @@
         {
             changedValues.ForEach(c => c.NotificationSettingId = NotificationSettingHelper.GetNotificationSettingIdForAssignee(c.MessageTypeId, c.BetTypeId, c.IsIndirectChangedAssignment));
 
-            var unsubcribeSettings = await repository.GetUnsubscribeSettings();
-            return changedValues.Where(m => !unsubcribeSettings.Contains($"{m.AssigneeId}-{m.NotificationSettingId}")).ToList();
+            var unsubscribeSettings = await repository.GetUnsubscribeSettings();
+            return changedValues.Where(m => !unsubscribeSettings.Contains($"{m.AssigneeId}-{m.NotificationSettingId}")).ToList();
         }
     }
 }

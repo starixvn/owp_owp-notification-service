@@ -2,7 +2,8 @@ using Fanex.Data.Repository;
 
 namespace OWP.AssignmentUploadNotification.Criteria
 {
-    public class GetAllAssignmentsByTimeRangeCriteria : CriteriaBase
+    public class GetAllAssignmentsByTimeRangeCriteria
+    : CriteriaBase
     {
         public DateTime EventDate { get; set; }
 

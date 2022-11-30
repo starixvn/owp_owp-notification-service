@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.ComponentModel;
 
 namespace OWP.AssignmentUploadNotification.Constants
@@ -29,4 +30,12 @@ namespace OWP.AssignmentUploadNotification.Constants
         [Description("No.of Corner")]
         NoOfCorner = -3,
     }
+
+    public static class MinorBettypeConst
+    {
+        public static readonly ImmutableList<int> MinorBettypeIdGenerateBySystem = ImmutableList<int>.Empty.AddRange(new List<int>
+        {
+             -88, -89, -1, -2, -8, -5
+        });
+    };
 }

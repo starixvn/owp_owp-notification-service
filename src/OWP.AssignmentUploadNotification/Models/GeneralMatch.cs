@@ -1,5 +1,5 @@
-namespace OWP.AssignmentUploadNotification.Models;
-
+namespace OWP.AssignmentUploadNotification.Models
+{
     public class GeneralMatch
     {
         public int MatchId { get; set; }
@@ -33,5 +33,5 @@ namespace OWP.AssignmentUploadNotification.Models;
         public string Website2 { get; set; }
         public string Website3 { get; set; }
         public string Website4 { get; set; }
-    
+    }
 }

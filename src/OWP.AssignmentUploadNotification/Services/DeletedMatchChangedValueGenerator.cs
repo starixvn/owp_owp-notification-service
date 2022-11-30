@@ -16,9 +16,9 @@
     {
         private const string EVENT_VS = " -vs- ";
 
-        public IEnumerable<ChangedValue> Create(List<int> matchIds, AssignmentSnapshot snapshot)
+        public IEnumerable<ChangedValue> Create(List<int> matcheIds, AssignmentSnapshot snapshot)
         {
-            foreach (var matchId in matchIds)
+            foreach (var matchId in matcheIds)
             {
                 var match = snapshot.Matches.GetValue(matchId);
                 var mainMatch = snapshot.Matches.GetValue(match.ParentMatchId, match);

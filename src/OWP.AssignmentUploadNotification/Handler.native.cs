@@ -7,6 +7,7 @@
     using Fanex.Logging;
     using MediatR;
     using Newtonsoft.Json;
+    using OWP.AssignmentUploadNotification.Models;
     using OWP.Core.NotificationRequests.AssignmentUpload;
     using Services;
 
@@ -20,7 +21,7 @@
 
         public string UserName { get; set; }
 
-        public int UserId { get; set; }
+        public int ActorId { get; set; }
     }
 
     public class Handler : IRequestHandler<AssignmentUploadNotifyRequest, Unit>
@@ -31,8 +32,6 @@
         private readonly ChangedValueAggregator changedValueAggregator;
         private readonly MessageFactory messageFactory;
         private readonly CommandRepository commandRepository;
-        private readonly ILogger iLogger;
-
 
         public Handler(
             ChangedValueByCacheAndDatabase changedValueByCacheAndDatabase,
@@ -40,8 +39,7 @@
             WatcherChangedValueGenerator watcherChangedValueGenerator,
             ChangedValueAggregator changedValueAggregator,
             MessageFactory messageFactory,
-            CommandRepository commandRepository,
-            ILogger iLogger)
+            CommandRepository commandRepository)
         {
             this.changedValueByCacheAndDatabase = changedValueByCacheAndDatabase;
             this.assigneeChangedValueFilter = assigneeChangedValueFilter;
@@ -49,7 +47,6 @@
             this.changedValueAggregator = changedValueAggregator;
             this.messageFactory = messageFactory;
             this.commandRepository = commandRepository;
-            this.iLogger = iLogger;
         }
 
         public async Task<Unit> Handle(AssignmentUploadNotifyRequest request, CancellationToken cancellationToken)
@@ -59,31 +56,30 @@
             var assigneeChangedValues = await assigneeChangedValueFilter.Filter(messages);
             if (assigneeChangedValues?.Count > 0)
             {
-                iLogger.Info("assigneeChangedValues" + JsonConvert.SerializeObject(assigneeChangedValues));
+                LogService.Info("assigneeChangedValues1" + JsonConvert.SerializeObject(assigneeChangedValues));
             }
             var watcherChangedValues = await watcherChangedValueGenerator.Create(messages, assigneeChangedValues);
             if (watcherChangedValues?.Count > 0)
             {
-                iLogger.Info("watcherChangedValues" + JsonConvert.SerializeObject(watcherChangedValues));
+                LogService.Info("watcherChangedValues" + JsonConvert.SerializeObject(watcherChangedValues));
             }
-            var allChangedValues = assigneeChangedValues.Union(watcherChangedValues).ToList();
+            var allChangedValues = watcherChangedValues.Union(assigneeChangedValues).ToList();
+            LogService.Info("assigneeChangedValues2" + JsonConvert.SerializeObject(assigneeChangedValues));
             if (allChangedValues?.Count > 0)
             {
-                iLogger.Info("allChangedValues" + JsonConvert.SerializeObject(allChangedValues));
+                LogService.Info("allChangedValues" + JsonConvert.SerializeObject(allChangedValues));
             }
             var aggregatedChangedValues = changedValueAggregator.Aggregate(allChangedValues);
             if (aggregatedChangedValues?.Count > 0)
             {
-                iLogger.Info("aggregatedChangedValues" + JsonConvert.SerializeObject(aggregatedChangedValues));
+                LogService.Info("aggregatedChangedValues" + JsonConvert.SerializeObject(aggregatedChangedValues));
             }
             var messageModels = messageFactory.Transform(aggregatedChangedValues, request.UserName);
             if (messageModels?.Count > 0)
             {
-                iLogger.Info("messageModels" + JsonConvert.SerializeObject(messageModels));
+                LogService.Info("messageModels" + JsonConvert.SerializeObject(messageModels));
             }
             await commandRepository.InsertMessage(messageModels, request.SessionId, request.ActorId);
-
-            //notify.NotifyMessagesToUser(messageModels);
 
             return Unit.Value;
         }
