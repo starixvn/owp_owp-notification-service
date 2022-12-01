@@ -1,8 +1,6 @@
 ﻿namespace OWP.AssignmentUploadNotification.UnitTests.Notification.Sevices
 {
     using System.Collections.Generic;
-    using Fanex.NAP.Client.Helpers.Web;
-    using NSubstitute;
     using OWP.AssignmentUploadNotification.Models;
     using OWP.AssignmentUploadNotification.Services;
     using Xunit;
@@ -10,7 +8,6 @@
 
     public class MessageFactoryUnitTest
     {
-        private readonly INapSession currentSession;
         private readonly MessageFactory messageFactory;
 
         public MessageFactoryUnitTest()
@@ -23,16 +20,16 @@
         public void Transform_Always_ReturnMessageList()
         {
             var changedValueList = GetListChangedValue();
-            currentSession.UserName = "sa";
 
             var expected = new List<MessageModel>
             {
-                new MessageModel
+                new ()
                 {
                    IsImportant = false,
                    MessageContent = "Was updated match: #20000 - A-Coners - LiverPool-Coners -vs- Arsenal-Coners updated by sa, previous: [ #1234 - A-Coners - LiverPool-Coners -vs- Arsenal-Coners ]",
                    MessageType = 40,
                    IsWatcher = false,
+                    ReceivedUserIds= new List<string>{"6789"},
                    ReceivedUserIdList = "6789",
                    ReceivedUserNameList = "esther"
                 },
@@ -43,6 +40,7 @@
                    MessageContent = "Was updated Maxbet of Next of Coners (HDP): [ 300K ]  for the match: #50000 - PremierLeague - LiverPool -vs- Arsenal updated by sa, previous: [ 400K ]",
                    MessageType = 29,
                    IsWatcher = false,
+                   ReceivedUserIds= new List<string>{"6789"},
                    ReceivedUserIdList = "6789",
                    ReceivedUserNameList = "esther"
                 }
@@ -57,16 +55,16 @@
         public void Transform_OtherAssignmentChanged_ReturnMessageList()
         {
             var changedValueList = GetListAssignmentChanged();
-            currentSession.UserName = "sa";
 
             var expected = new List<MessageModel>
             {
-                new MessageModel
+                new ()
                 {
                    IsImportant = true,
                    MessageContent = "You assignment has been REMOVED HDP PK  for the match:  - Jo - Spur -vs- MC updated by sa",
                    MessageType = 9,
                    IsWatcher = false,
+                   ReceivedUserIds= new List<string>{"2542"},
                    ReceivedUserIdList = "2542",
                    ReceivedUserNameList = "esther"
                 },
@@ -77,6 +75,7 @@
                    MessageContent = "You have been new ASSIGNED 1H HDP  for the match: #5000 - Jo - Spur -vs- MC updated by sa",
                    MessageType = 8,
                    IsWatcher = false,
+                     ReceivedUserIds= new List<string>{"2542"},
                    ReceivedUserIdList = "2542",
                    ReceivedUserNameList = "esther"
                 }

@@ -319,7 +319,7 @@
                 }).ToList();
         }
 
-        private string CreateMessageContent(MessageGroup messageGroup, string userName)
+        private static string CreateMessageContent(MessageGroup messageGroup, string userName)
         {
             var messageTemplate = messageTemplateMap[messageGroup.MessageTypeId];
             var content = messageTemplate.MessageContent;
