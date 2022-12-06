@@ -1,8 +1,8 @@
 ﻿namespace OWP.AssignmentUploadNotification.UnitTests.Notification.Sevices
 {
-    using System.Collections.Generic;
     using OWP.AssignmentUploadNotification.Models;
     using OWP.AssignmentUploadNotification.Services;
+    using System.Collections.Generic;
     using Xunit;
     using Xunit.Asserts.Compare;
 
@@ -75,7 +75,7 @@
                    MessageContent = "You have been new ASSIGNED 1H HDP  for the match: #5000 - Jo - Spur -vs- MC updated by sa",
                    MessageType = 8,
                    IsWatcher = false,
-                     ReceivedUserIds= new List<string>{"2542"},
+                   ReceivedUserIds= new List<string>{"2542"},
                    ReceivedUserIdList = "2542",
                    ReceivedUserNameList = "esther"
                 }
