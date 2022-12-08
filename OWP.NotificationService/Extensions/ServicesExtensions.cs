@@ -60,10 +60,10 @@ namespace OWP.NotificationService.Extensions
                .SetDefaultLogCategory(configuration.GetSection("FanexLogCategory").Value)
                .Use(new List<ILogEngine>
                {
-                        new SentryLogging( new SentryEngineOptions
-                        {
-                            Dsn = new SharpRaven.Dsn(configuration.GetSection("SentryToken").Value)
-                        })
+                    new SentryLogging( new SentryEngineOptions
+                    {
+                        Dsn = new SharpRaven.Dsn(configuration.GetSection("SentryToken").Value)
+                    })
                });
             services.AddSingleton<Fanex.Logging.ILogger, Logger>();
 
