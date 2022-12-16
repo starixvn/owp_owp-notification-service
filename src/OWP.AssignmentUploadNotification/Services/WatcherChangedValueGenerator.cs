@@ -29,21 +29,21 @@ namespace OWP.AssignmentUploadNotification.Services
         {
             var settings = await repository.GetSessionWatcherSettings();
 
-            var assigneesOfMatchs = GetAssignees(assigneeChangedValues);
+            var assigneesOfMatches = GetAssignees(assigneeChangedValues);
 
-            var watcherChangedValues = Create(changedValues, settings, assigneesOfMatchs);
+            var watcherChangedValues = Create(changedValues, settings, assigneesOfMatches);
 
             return watcherChangedValues.SelectMany(m => m).ToList();
         }
 
-        public IEnumerable<IEnumerable<ChangedValue>> Create(List<ChangedValue> changedValues, Dictionary<string, List<Assignee>> settings, Dictionary<int, List<Assignee>> assigneesOfMatchs)
+        public IEnumerable<IEnumerable<ChangedValue>> Create(List<ChangedValue> changedValues, Dictionary<string, List<Assignee>> settings, Dictionary<int, List<Assignee>> assigneesOfMatches)
         {
             foreach (var changedValue in changedValues)
             {
                 var notificationSettingId = NotificationSettingHelper.GetNotificationSettingIdForWatcher(changedValue.MessageTypeId, changedValue.BetTypeId);
 
                 var watchers = settings.GetValue($"{changedValue.AssigneeId}-{notificationSettingId}", new List<Assignee>());
-                var assignees = assigneesOfMatchs.GetValue(changedValue.MatchId, new List<Assignee>());
+                var assignees = assigneesOfMatches.GetValue(changedValue.MatchId, new List<Assignee>());
                 var watchersIgnoredAssignees = watchers.Where(x => x.AssigneeId != changedValue.AssigneeId)
                                                        .Except(assignees, new Assignee())
                                                        .Distinct(new Assignee())
