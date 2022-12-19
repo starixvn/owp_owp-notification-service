@@ -1,3 +1,4 @@
+using OWP.AssignmentUploadNotification;
 using OWP.LiveDetailNotification;
 using OWP.NotificationService.Extensions;
 using OWP.OtherSportNotification;
@@ -5,7 +6,6 @@ using OWP.PreMatchNotification;
 using OWP.RabbitMQ;
 using OWP.RabbitMQ.Models;
 using OWP.TicketNotification;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -17,6 +17,12 @@ builder.Services.AddRedisServices(builder.Configuration);
 
 builder.Services.AddNapServices(builder.Configuration);
 
+// AutoMapper
+builder.Services.AddAutoMapper(mapper =>
+{
+    mapper.AddProfile(new OWP.AssignmentUploadNotification.AutoMapperProfile());
+});
+
 // Add config
 builder.Services.Configure<RabbitMQSetting>(builder.Configuration.GetSection(RabbitMQSetting.RabbitMQ));
 
@@ -27,6 +33,7 @@ builder.Services.AddTicket();
 builder.Services.AddOtherSport();
 builder.Services.AddLiveDetail();
 builder.Services.AddPrematchNotificationServices();
+builder.Services.AddAssignmentUpload();
 
 builder.Services.AddHostedService<MessageServer>();
 

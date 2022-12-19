@@ -8,6 +8,7 @@ using Fanex.Logging.Sentry.RavenClient;
 using Fanex.NAP.Client.AspNetCore.Session;
 using OWP.Core.Models;
 using OWP.Core.Services;
+using Notify = OWP.Core.Services;
 
 namespace OWP.NotificationService.Extensions
 {
@@ -49,7 +50,7 @@ namespace OWP.NotificationService.Extensions
         {
             services.AddTransient<QueryMessageService, QueryMessageServiceImp>();
             services.AddTransient<IDynamicRepository, DynamicRepository>();
-
+            services.AddTransient<Notify.NotificationService, NotificationServiceImp>();
             return services;
         }
 
@@ -59,10 +60,10 @@ namespace OWP.NotificationService.Extensions
                .SetDefaultLogCategory(configuration.GetSection("FanexLogCategory").Value)
                .Use(new List<ILogEngine>
                {
-                        new SentryLogging( new SentryEngineOptions
-                        {
-                            Dsn = new SharpRaven.Dsn(configuration.GetSection("SentryToken").Value)
-                        })
+                    new SentryLogging( new SentryEngineOptions
+                    {
+                        Dsn = new SharpRaven.Dsn(configuration.GetSection("SentryToken").Value)
+                    })
                });
             services.AddSingleton<Fanex.Logging.ILogger, Logger>();
 
