@@ -7,29 +7,31 @@ public class ChangedMatchSettingGeneratorUnitTests
         var oldMatchSetting = new MatchSetting
         {
             MaxBet = 120.00m,
-            Spread = 0.32m,
+            Spread = 0.32m
         };
         var newMatchSetting = new MatchSetting
         {
             MaxBet = 11000.00m,
-            Spread = 0.31m,
+            Spread = 0.31m
         };
         var expected = new List<ChangedValue>
             {
-              new ChangedValue {
+              new()
+              {
                   BetTypeName = "FT (HDP)",
                   OldValue = "120",
                   NewValue = "11000",
                   MessageTypeId = (int)MsgTemplateCode.EditMaxbet,
                   OSMatchId = 123
                 },
-              new ChangedValue {
+              new()
+              {
                   BetTypeName = "FT (HDP)",
                   OldValue = "32%",
                   NewValue = "31%",
                   MessageTypeId = (int)MsgTemplateCode.EditSpread,
                   OSMatchId = 123
-                },
+                }
             };
 
         var actual = ChangedMatchSettingGeneratorImp.GetListValueChangedOfMatchSetting(oldMatchSetting, newMatchSetting, "FT (HDP)", 123);
@@ -38,11 +40,11 @@ public class ChangedMatchSettingGeneratorUnitTests
     }
 
     [Fact]
-    public void GetListMatchChangeMaxBet_WithBettypeFTHDP_ReturnListMatch_Has_MatxbetChanged()
+    public void GetListMatchChangeMaxBet_WithBettypeFTHDP_ReturnListMatch_Has_MaxbetChanged()
     {
         var oldMatchSettings = new List<MatchSetting>
             {
-                new MatchSetting
+                new()
                 {
                     OSMatchId=123,
                     MaxBet=11000.00m,
@@ -52,7 +54,7 @@ public class ChangedMatchSettingGeneratorUnitTests
             };
         var newMatchSettings = new List<MatchSetting>
             {
-                new MatchSetting
+                new()
                 {
                     OSMatchId=123,
                     MaxBet=12000.00m,
@@ -62,7 +64,7 @@ public class ChangedMatchSettingGeneratorUnitTests
             };
         var expected = new List<ChangedValue>
             {
-                new ChangedValue
+                new()
                 {
                     MessageTypeId=(int)MsgTemplateCode.EditMaxbet,
                     BetTypeName="FT (HDP)",
@@ -70,14 +72,14 @@ public class ChangedMatchSettingGeneratorUnitTests
                     NewValue="12000",
                     OSMatchId=123
                 },
-                new ChangedValue
+                new()
                 {
                     MessageTypeId=(int)MsgTemplateCode.EditSpread,
                     BetTypeName="FT (HDP)",
                     OldValue="2%",
                     NewValue="2.1%",
                     OSMatchId=123
-                },
+                }
             };
 
         var actual = ChangedMatchSettingGeneratorImp.GetListValueChangedWithDifferentBettype(oldMatchSettings, newMatchSettings, 123);
@@ -92,7 +94,7 @@ public class ChangedMatchSettingGeneratorUnitTests
         var snapshot = MockChangeSnapshot();
         var assignees = new List<Assignee>
             {
-                new Assignee
+                new()
                 {
                     AssigneeId=8,
                     AssigneeName="sa"
@@ -106,7 +108,7 @@ public class ChangedMatchSettingGeneratorUnitTests
     }
 
     private ChangedMatchSnapshot MockChangeSnapshot()
-    => new ChangedMatchSnapshot
+    => new()
     {
         OldSnapshot = new AssignmentSnapshot
         {
@@ -114,19 +116,19 @@ public class ChangedMatchSettingGeneratorUnitTests
                 {
                         {123, new List<MatchSetting>
                         {
-                            new MatchSetting
+                            new()
                             {
                                 OSMatchId=123,
                                 BetTypeName= "FT (HDP)",
                                 MaxBet=12000.00m,
-                                Spread=0.21m,
+                                Spread=0.21m
                             },
-                            new MatchSetting
+                            new()
                             {
                                 OSMatchId=123,
                                 BetTypeName= "FT (OE)",
                                 MaxBet=17000.00m,
-                                Spread=0.01m,
+                                Spread=0.01m
                             }
                         } }
                 }
@@ -137,19 +139,19 @@ public class ChangedMatchSettingGeneratorUnitTests
                 {
                         {123, new List<MatchSetting>
                         {
-                            new MatchSetting
+                            new()
                             {
                                 OSMatchId=123,
                                 BetTypeName= "FT (HDP)",
                                 MaxBet=11000.00m,
                                 Spread=0.22m
                             },
-                            new MatchSetting
+                            new()
                             {
                                 OSMatchId=123,
                                 BetTypeName= "FT (OE)",
                                 MaxBet=19000.00m,
-                                Spread=0.02m,
+                                Spread=0.02m
                             }
                         } }
                 },
@@ -167,8 +169,8 @@ public class ChangedMatchSettingGeneratorUnitTests
     };
 
     private List<ChangedValue> GetExpect()
-    => new List<ChangedValue>
-        {
+    => new()
+    {
                 new ChangedValue
                 {
                     UserId=8,

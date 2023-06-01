@@ -20,7 +20,7 @@ public class ChangedValueByCacheAndDatabaseUnitTests
         // Arrange
         var changedValues = new List<ChangedValue>
             {
-                new ChangedValue
+                new()
                 {
                     UserId = 10
                 }

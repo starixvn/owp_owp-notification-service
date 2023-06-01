@@ -37,7 +37,7 @@ public class NewTicketLeagueHandler : IRequestHandler<NewTicketLeagueNotificatio
         {
             SessionId = messageId,
             TicketId = request.TicketId,
-            EventType = (int)EventType.League,
+            EventType = (int)EventType.League
         };
         var messages = await messageNotificationService.CreateMessageNotification(notificationSource);
 

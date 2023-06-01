@@ -1,13 +1,12 @@
-﻿namespace OWP.AssignmentUploadNotification.Models
+﻿namespace OWP.AssignmentUploadNotification.Models;
+
+public class SessionWatcher
 {
-    public class SessionWatcher
-    {
-        public int UserId { get; set; }
+    public int UserId { get; set; }
 
-        public int UserWatcherId { get; set; }
+    public int UserWatcherId { get; set; }
 
-        public string UserWatcherName { get; set; }
+    public string UserWatcherName { get; set; }
 
-        public int NotificationSettingId { get; set; }
-    }
+    public int NotificationSettingId { get; set; }
 }

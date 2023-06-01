@@ -155,7 +155,7 @@ internal class AssignmentGroup
     {
         var other = obj as AssignmentGroup;
 
-        var condition1 = MatchId == other.MatchId && BetTypeName == other.BetTypeName && AssigneeId == other.AssigneeId;
+        var condition1 = MatchId == other!.MatchId && BetTypeName == other.BetTypeName && AssigneeId == other.AssigneeId;
         var condition2 = IsIndirectChanged == other.IsIndirectChanged;
 
         return condition1 && condition2;

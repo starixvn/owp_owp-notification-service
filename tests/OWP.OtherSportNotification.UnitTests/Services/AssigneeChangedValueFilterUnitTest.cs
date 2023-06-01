@@ -6,22 +6,22 @@ public class AssigneeChangedValueFilterUnitTest
 {
 
     [Fact]
-    public void Filter_AssigneeUnSubcribeForMatchInfoUpdatedId_ReturnAssigneeChangedValues()
+    public void Filter_AssigneeUnSubscribeForMatchInfoUpdatedId_ReturnAssigneeChangedValues()
     {
         var changedValueList = GetListValueChanged();
-        var unsubcribeSettings = new HashSet<string> { "6789-5" };
-        var assigneeMessageFilter = MockAssigneeChangedValueFilter(unsubcribeSettings);
+        var unsubscribeSettings = new HashSet<string> { "6789-5" };
+        var assigneeMessageFilter = MockAssigneeChangedValueFilter(unsubscribeSettings);
 
         var expected = new List<ChangedValue>
         {
-            new ChangedValue
+            new()
             {
                 MessageTypeId = (int)MsgTemplateCode.EditOtherProvider,
-                NewValue = "Rossi",
+                NewValue = "Rose",
                 OldValue = "Bow",
-                League = "PremierLeague-Coners",
+                League = "PremierLeague-Corners",
                 MatchNo = "20000",
-                EventName = "LiverPool-Coners -vs- Arsenal-Coners",
+                EventName = "LiverPool-Corners -vs- Arsenal-Corners",
                 UserId = 6789,
                 Username = "esther",
                 NotificationSettingId = 11
@@ -34,22 +34,22 @@ public class AssigneeChangedValueFilterUnitTest
     }
 
     [Fact]
-    public void Filter_AssigneeUnSubcribeForProviderInfoUpdatedId_ReturnAssigneeChangedValues()
+    public void FilterAssigneeUnSubsFilterAssigneeUnSubscribeForProviderInfoUpdatedIdReturnAssigneeChangedValues()
     {
         var changedValueList = GetListValueChanged();
-        var unsubcribeSettings = new HashSet<string> { "6789-11" };
-        var assigneeMessageFilter = MockAssigneeChangedValueFilter(unsubcribeSettings);
+        var unsubscribeSettings = new HashSet<string> { "6789-11" };
+        var assigneeMessageFilter = MockAssigneeChangedValueFilter(unsubscribeSettings);
 
         var expected = new List<ChangedValue>
         {
-            new ChangedValue
+            new()
             {
                 MessageTypeId = (int)MsgTemplateCode.EditMatchNo,
                 NewValue = "20000",
                 OldValue = "1234",
-                League = "PremierLeague-Coners",
+                League = "PremierLeague-Corners",
                 MatchNo = "20000",
-                EventName = "LiverPool-Coners -vs- Arsenal-Coners",
+                EventName = "LiverPool-Corners -vs- Arsenal-Corners",
                 UserId = 6789,
                 Username = "esther",
                 NotificationSettingId = 5
@@ -61,36 +61,36 @@ public class AssigneeChangedValueFilterUnitTest
         DeepAssert.Equal(expected, actual.Result);
     }
 
-    private static AssigneeChangedValueFilter MockAssigneeChangedValueFilter(HashSet<string> unsubcribeSettings)
+    private static AssigneeChangedValueFilter MockAssigneeChangedValueFilter(HashSet<string> unsubscribeSettings)
     {
         var repository = Substitute.For<OtherSportRepository>();
-        repository.GetUnsubscribeSettings().Returns(unsubcribeSettings);
+        repository.GetUnsubscribeSettings().Returns(unsubscribeSettings);
 
         return new AssigneeMessageFilterImp(repository);
     }
 
     private static List<ChangedValue> GetListValueChanged()
-    => new List<ChangedValue>
-        {
+    => new()
+    {
             new ChangedValue
             {
                 MessageTypeId = (int)MsgTemplateCode.EditMatchNo,
                 NewValue = "20000",
                 OldValue = "1234",
-                League = "PremierLeague-Coners",
+                League = "PremierLeague-Corners",
                 MatchNo = "20000",
-                EventName = "LiverPool-Coners -vs- Arsenal-Coners",
+                EventName = "LiverPool-Corners -vs- Arsenal-Corners",
                 UserId = 6789,
                 Username = "esther"
             },
             new ChangedValue
             {
                 MessageTypeId = (int)MsgTemplateCode.EditOtherProvider,
-                NewValue = "Rossi",
+                NewValue = "Rose",
                 OldValue = "Bow",
-                League = "PremierLeague-Coners",
+                League = "PremierLeague-Corners",
                 MatchNo = "20000",
-                EventName = "LiverPool-Coners -vs- Arsenal-Coners",
+                EventName = "LiverPool-Corners -vs- Arsenal-Corners",
                 UserId = 6789,
                 Username = "esther"
             }

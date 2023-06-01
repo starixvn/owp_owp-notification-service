@@ -1,11 +1,10 @@
-﻿namespace OWP.AssignmentUploadNotification.Criteria
+﻿namespace OWP.AssignmentUploadNotification.Criteria;
+
+using Fanex.Data.Repository;
+
+public class GetSessionReceivedWatcherCommand : CriteriaBase
 {
-    using Fanex.Data.Repository;
+    public override string GetSettingKey() => "OWP_AssignmentUpload_GetSectionMemberOfUserReceivedWatcher";
 
-    public class GetSessionReceivedWatcherCommand : CriteriaBase
-    {
-        public override string GetSettingKey() => "OWP_AssignmentUpload_GetSectionMemberOfUserReceivedWatcher";
-
-        public override bool IsValid() => true;
-    }
+    public override bool IsValid() => true;
 }

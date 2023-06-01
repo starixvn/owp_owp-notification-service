@@ -40,19 +40,19 @@ public class LinkedMatchNotifyHandlerUnitTests
         {
             new(){InfoSiteMatchId=111, PreMatchLeagueId=100},
             new(){InfoSiteMatchId=222, PreMatchLeagueId=200},
-            new(){InfoSiteMatchId=333, PreMatchLeagueId=300},
+            new(){InfoSiteMatchId=333, PreMatchLeagueId=300}
         };
         var prematchAssignees = new List<Assignee>
         {
             new(){PreMatchLeagueId=100,AssigneeId=1},
             new(){PreMatchLeagueId=200,AssigneeId=3},
-            new(){PreMatchLeagueId=200,AssigneeId=4},
+            new(){PreMatchLeagueId=200,AssigneeId=4}
         };
         var expected = new List<InfositePrematchLeague>
         {
             new(){InfoSiteMatchId=111, PreMatchLeagueId=100, PrematchAssigneeIds=new List<int>{1} },
             new(){InfoSiteMatchId=222, PreMatchLeagueId=200, PrematchAssigneeIds=new List<int>{3,4} },
-            new(){InfoSiteMatchId=333, PreMatchLeagueId=300, PrematchAssigneeIds=new List<int>{} },
+            new(){InfoSiteMatchId=333, PreMatchLeagueId=300, PrematchAssigneeIds=new List<int>{} }
         };
 
         LinkedMatchNotifyHandler.MapAssignmentWithInfositeId(prematchLeague, prematchAssignees);
@@ -81,7 +81,7 @@ public class LinkedMatchNotifyHandlerUnitTests
         commandRepository.GetEmployeesBySection("").Returns(new List<Assignee> { new() { AssigneeId = 1 }, new() { AssigneeId = 2 } });
         commandRepository.GetPreMatchLeagueAssignees(new List<int>()).Returns(new List<Assignee>());
 
-        var expected = new List<ChangedValue> { new ChangedValue { MessageTypeId = 200 } };
+        var expected = new List<ChangedValue> { new() { MessageTypeId = 200 } };
         changedValueBySnapshot.Create(Arg.Compat.Any<List<GeneralMatch>>(), Arg.Compat.Any<List<GeneralMatch>>(), Arg.Compat.Any<Employee>()).Returns(expected);
 
         var actual = await service.GenerateMessages(request);

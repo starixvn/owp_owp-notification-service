@@ -37,7 +37,7 @@ public class ChangedLiveMatchGeneratorUnitTests
                 {222, new(){ new(){ PreMatchLeagueId=200, InfoSiteMatchId=222, PrematchAssigneeIds=new List<int>{},
                                 LeagueName="LeagueB",HomeName="HomeB",AwayName="AwayB",EventDateTime=new DateTime(2021,6,18,02,10,20) } } },
                 {333, new(){ new(){ PreMatchLeagueId=300, InfoSiteMatchId=222, PrematchAssigneeIds=new List<int>{10,11},
-                                LeagueName="LeagueC",HomeName="HomeC",AwayName="AwayC",EventDateTime=new DateTime(2021,6,18,5,12,20) } } },
+                                LeagueName="LeagueC",HomeName="HomeC",AwayName="AwayC",EventDateTime=new DateTime(2021,6,18,5,12,20) } } }
             },
             AllLSTEmployees = new List<int> { 1, 2, 3 },
             AllPrematchEmployees = new List<int> { 4, 5, 6 }

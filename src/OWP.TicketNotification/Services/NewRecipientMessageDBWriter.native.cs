@@ -31,7 +31,7 @@ public class NewRecipientMessageDBWriterImp : NewRecipientMessageDBWriter
             NotificationContent = template.NotificationContent
                 .Replace("<ticketId>", $"{recipient.TicketId}")
                 .Replace("<Event>", recipient.TicketTitle),
-            NotificationType = template.NotificationType,
+            NotificationType = template.NotificationType
         };
 
         await repository.InsertNewRecipientNotification(criteria);

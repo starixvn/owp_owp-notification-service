@@ -1,11 +1,10 @@
-﻿namespace OWP.AssignmentUploadNotification.Criteria
+﻿namespace OWP.AssignmentUploadNotification.Criteria;
+
+using Fanex.Data.Repository;
+
+public class GetNotificationSettingCommand : CriteriaBase
 {
-    using Fanex.Data.Repository;
+    public override string GetSettingKey() => "OWP_AssignmentUpload_GetNotificationSetting";
 
-    public class GetNotificationSettingCommand : CriteriaBase
-    {
-        public override string GetSettingKey() => "OWP_AssignmentUpload_GetNotificationSetting";
-
-        public override bool IsValid() => true;
-    }
+    public override bool IsValid() => true;
 }

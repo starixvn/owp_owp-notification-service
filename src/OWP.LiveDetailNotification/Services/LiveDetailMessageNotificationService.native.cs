@@ -1,33 +1,32 @@
-﻿namespace OWP.LiveDetailNotification.Services
-{
-    using Core.Models;
-    using Core.Services;
+﻿namespace OWP.LiveDetailNotification.Services;
 
-    public interface LiveDetailMessageNotificationService
+using Core.Models;
+using Core.Services;
+
+public interface LiveDetailMessageNotificationService
+{
+    Task<List<MessageModel>> HandleMessage(string sessionId);
+}
+
+public class LiveDetailMessageNotificationServiceImp : LiveDetailMessageNotificationService
+{
+    private readonly QueryMessageService queryMessageService;
+
+    public LiveDetailMessageNotificationServiceImp(QueryMessageService queryMessageService)
     {
-        Task<List<MessageModel>> HandleMessage(string sessionId);
+        this.queryMessageService = queryMessageService;
     }
 
-    public class LiveDetailMessageNotificationServiceImp : LiveDetailMessageNotificationService
+    public async Task<List<MessageModel>> HandleMessage(string sessionId)
     {
-        private readonly QueryMessageService queryMessageService;
-
-        public LiveDetailMessageNotificationServiceImp(QueryMessageService queryMessageService)
+        var tuple = await queryMessageService.QueryBySession(sessionId);
+        var messages = tuple.Item2.Select(x => new MessageModel
         {
-            this.queryMessageService = queryMessageService;
-        }
-
-        public async Task<List<MessageModel>> HandleMessage(string sessionId)
-        {
-            var tuple = await queryMessageService.QueryBySession(sessionId);
-            var messages = tuple.Item2.Select(x => new MessageModel
-            {
-                UserId = x.UserId,
-                IsImportant = x.IsImportant,
-                MessageType = x.MessageType,
-                MessageContent = x.MessageContent
-            }).ToList();
-            return messages;
-        }
+            UserId = x.UserId,
+            IsImportant = x.IsImportant,
+            MessageType = x.MessageType,
+            MessageContent = x.MessageContent
+        }).ToList();
+        return messages;
     }
 }

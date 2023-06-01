@@ -30,7 +30,7 @@ public class MessageFactoryImp : MessageFactory
             new MessageTemplate
             {
                 MessageType = (int)MsgTemplateCode.EditCategory,
-                MessageContent = "<b>Category</b> Updated from <oldvalue> to <newvalue> for <Match.No> - <League> - <Event> updated by <User>",
+                MessageContent = "<b>Category</b> Updated from <oldvalue> to <newvalue> for <Match.No> - <League> - <Event> updated by <User>"
             },
             new MessageTemplate
             {

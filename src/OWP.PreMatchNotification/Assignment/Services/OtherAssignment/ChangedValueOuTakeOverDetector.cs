@@ -33,7 +33,7 @@ public class ChangedValueOuTakeOverDetectorImp : ChangedValueOuTakeOverDetector
                 BetTypeName = Bettype.OU_TAKEOVER,
                 OldValue = oldSnapshot.OuTakeOver,
                 NewValue = newSnapshot.OuTakeOver,
-                MessageTypeId = AssignmentHelper.DetectMessageType(newSnapshot.IsDay.Value)
+                MessageTypeId = AssignmentHelper.DetectMessageType(newSnapshot.IsDay!.Value)
             });
         }
     }

@@ -4,8 +4,8 @@ namespace OWP.OtherSportNotification.Constants;
 
 public static class MessageType
 {
-    private static readonly Dictionary<string, int> MessageTypeMap = new Dictionary<string, int>
-        {
+    private static readonly Dictionary<string, int> MessageTypeMap = new()
+    {
             { "MatchNo", (int)MsgTemplateCode.EditMatchNo },
             { "MatchStatus", (int)MsgTemplateCode.EditMatchStatus },
             { "Category", (int)MsgTemplateCode.EditCategory },
@@ -19,7 +19,7 @@ public static class MessageType
             { "MaxBet", (int)MsgTemplateCode.EditMaxbet },
             { "Reporter", (int)MsgTemplateCode.EditReporter },
             { "Provider", (int)MsgTemplateCode.EditProvider },
-            { "IsNeutral", (int)MsgTemplateCode.EditNeutral },
+            { "IsNeutral", (int)MsgTemplateCode.EditNeutral }
         };
 
     public static int GetMessageTypeIdForChangedMatchInfo(string property)

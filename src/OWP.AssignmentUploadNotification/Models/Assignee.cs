@@ -1,21 +1,20 @@
-﻿namespace OWP.AssignmentUploadNotification.Models
+﻿namespace OWP.AssignmentUploadNotification.Models;
+
+using System.Collections.Generic;
+
+public class Assignee : IEqualityComparer<Assignee>
 {
-    using System.Collections.Generic;
+    public int AssigneeId { get; set; }
 
-    public class Assignee : IEqualityComparer<Assignee>
+    public string AssigneeName { get; set; }
+
+    public bool Equals(Assignee x, Assignee y)
     {
-        public int AssigneeId { get; set; }
+        return x != null && y != null && x.AssigneeId == y.AssigneeId && x.AssigneeName == y.AssigneeName;
+    }
 
-        public string AssigneeName { get; set; }
-
-        public bool Equals(Assignee x, Assignee y)
-        {
-            return x.AssigneeId == y.AssigneeId && x.AssigneeName == y.AssigneeName;
-        }
-
-        public int GetHashCode(Assignee obj)
-        {
-            return AssigneeId;
-        }
+    public int GetHashCode(Assignee obj)
+    {
+        return AssigneeId;
     }
 }

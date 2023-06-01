@@ -8,14 +8,14 @@ namespace OWP.OtherSportNotification.Services;
 
 public interface DeletedMatchChangedValueGenerator
 {
-    IEnumerable<ChangedValue> Create(List<int> matcheIds, AssignmentSnapshot snapshot);
+    IEnumerable<ChangedValue> Create(List<int> matchIds, AssignmentSnapshot snapshot);
 }
 
 public class DeletedMatchChangedValueGeneratorImp : DeletedMatchChangedValueGenerator
 {
-    public IEnumerable<ChangedValue> Create(List<int> matcheIds, AssignmentSnapshot snapshot)
+    public IEnumerable<ChangedValue> Create(List<int> matchIds, AssignmentSnapshot snapshot)
     {
-        foreach (var matchId in matcheIds)
+        foreach (var matchId in matchIds)
         {
             var match = snapshot.Matches.GetValue(matchId);
             var assignments = snapshot.MatchAssignments.GetValue(matchId, new List<MatchAssignment>())

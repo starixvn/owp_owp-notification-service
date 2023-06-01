@@ -14,7 +14,7 @@ public class ChangedMatchInfoGeneratorImp : ChangedMatchInfoGenerator
 {
     private const string EVENT_VS = " -vs- ";
 
-    private static readonly List<string> MatchInfoPropertyNames = new List<string>
+    private static readonly List<string> MatchInfoPropertyNames = new()
     {
         "MatchNo",
         "Category",

@@ -24,11 +24,11 @@ public class ChangedMatchStatusGeneratorUnitTests
                 League = "Vleague",
                 Home = "Binh Dinh",
                 Away = "Ha Noi"
-            },
+            }
         };
         var assignees = new List<Assignee>
             {
-                new Assignee
+                new()
                 {
                     AssigneeId=8,
                     AssigneeName="sa"
@@ -37,7 +37,7 @@ public class ChangedMatchStatusGeneratorUnitTests
         var actual = changedMatchStatusGeneratorImp.Create(snapshot, assignees);
         var expected = new List<ChangedValue>
             {
-                new ChangedValue
+                new()
                 {
                     UserId=8,
                     Username="sa",
@@ -46,9 +46,9 @@ public class ChangedMatchStatusGeneratorUnitTests
                     MatchNo="1234",
                     MessageTypeId=10,
                     NewValue="LIVE",
-                    OldValue="CANCEL",
+                    OldValue="CANCEL"
                 }
             };
-        DeepAssert.Equals(expected, actual);
+        Equals(expected, actual);
     }
 }

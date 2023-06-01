@@ -37,7 +37,7 @@ public class NewTicketEventHandler : IRequestHandler<NewTicketEventNotificationR
         {
             SessionId = messageId,
             TicketId = request.TicketId,
-            EventType = (int)EventType.Match,
+            EventType = (int)EventType.Match
         };
         var messages = await messageNotificationService.CreateMessageNotification(notificationSource);
 

@@ -57,7 +57,7 @@ public class ChangedLinkedMatchDetectorUnitTests
                 {111, new List<InfositePrematchLeague>()},
                 {222, new List<InfositePrematchLeague>()},
                 {333, new List<InfositePrematchLeague>()},
-                {444, new List<InfositePrematchLeague>()},
+                {444, new List<InfositePrematchLeague>()}
             }
         };
 

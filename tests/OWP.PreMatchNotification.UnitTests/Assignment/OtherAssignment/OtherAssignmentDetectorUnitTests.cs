@@ -53,7 +53,7 @@ public class OtherAssignmentDetectorUnitTestsBase : IDisposable
 
             OtherOuTakeOver = "sa",
 
-            OtherOuTakeOverUserId = 8,
+            OtherOuTakeOverUserId = 8
         };
 
         NewSnapshot = new()
@@ -94,7 +94,7 @@ public class OtherAssignmentDetectorUnitTestsBase : IDisposable
 
             OtherOuTakeOver = "sa",
 
-            OtherOuTakeOverUserId = 8,
+            OtherOuTakeOverUserId = 8
         };
     }
 

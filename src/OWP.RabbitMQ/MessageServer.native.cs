@@ -78,7 +78,7 @@ public class MessageServer : IHostedService
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        this.ConsumeRequestQueue();
+        ConsumeRequestQueue();
         await Task.CompletedTask;
     }
 

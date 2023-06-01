@@ -104,7 +104,7 @@ public class OtherAssignmentDetectorImp : OtherAssignmentDetector
             return;
         }
 
-        var userId = newSnapshot.OtherHdpTakeOverUserId.Value;
+        var userId = newSnapshot.OtherHdpTakeOverUserId!.Value;
         changedValueHdpDetector.DetectMain(oldSnapshot, newSnapshot, changedValues, userId);
         changedValueHdpDetector.DetectOther(oldSnapshot, newSnapshot, changedValues, userId);
         changedValueHdpTakeOverDetector.DetectMain(oldSnapshot, newSnapshot, changedValues, userId);

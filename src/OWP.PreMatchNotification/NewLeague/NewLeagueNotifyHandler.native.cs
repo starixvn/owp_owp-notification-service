@@ -1,11 +1,11 @@
 ﻿using Fanex.Data.Repository;
 using MediatR;
 using OWP.Core.NotificationRequests.Prematch;
-using OWP.PreMatchNotification.Criteria;
 using OWP.PreMatchNotification.NewLeague.Criteria;
 using OWP.PreMatchNotification.NewLeague.Models;
 using OWP.PreMatchNotification.NewLeague.Services;
 using OWP.PreMatchNotification.Shared.Constants;
+using OWP.PreMatchNotification.Shared.Criteria;
 using OWP.PreMatchNotification.Shared.Models;
 using OWP.PreMatchNotification.Shared.Services;
 

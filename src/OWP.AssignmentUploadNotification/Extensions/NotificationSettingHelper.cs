@@ -1,106 +1,105 @@
-﻿namespace OWP.AssignmentUploadNotification.Extensions
+﻿namespace OWP.AssignmentUploadNotification.Extensions;
+
+using System.Collections.Generic;
+using Constants;
+
+public static class NotificationSettingHelper
 {
-    using System.Collections.Generic;
-    using Constants;
-
-    public static class NotificationSettingHelper
+    public static int GetNotificationSettingIdForAssignee(int messageTypeId, int bettypeId, bool isIndirectChangedAssignment)
     {
-        public static int GetNotificationSettingIdForAssignee(int messageTypeId, int bettypeId, bool isIndirectChangedAssignment)
+        if (isIndirectChangedAssignment)
         {
-            if (isIndirectChangedAssignment)
-            {
-                return GetIdForChangeAssignmentOfAssignee(bettypeId);
-            }
+            return GetIdForChangeAssignmentOfAssignee(bettypeId);
+        }
 
-            if (IsUpdateAssignment(messageTypeId))
-            {
-                return (int)NotificationSettingCode.MyAssignmentUpdatedId;
-            }
+        if (IsUpdateAssignment(messageTypeId))
+        {
+            return (int)NotificationSettingCode.MyAssignmentUpdatedId;
+        }
 
-            if (IsMatchSetting(messageTypeId))
-            {
-                return (int)NotificationSettingCode.AssigneeMatchInfoUpdatedId;
-            }
-
-            if (IsProviderInfoUpdate(messageTypeId))
-            {
-                return (int)NotificationSettingCode.AssigneeProviderInfoUpdatedId;
-            }
-
+        if (IsMatchSetting(messageTypeId))
+        {
             return (int)NotificationSettingCode.AssigneeMatchInfoUpdatedId;
         }
 
-        public static int GetNotificationSettingIdForWatcher(int messageTypeId, int bettypeId)
+        if (IsProviderInfoUpdate(messageTypeId))
         {
-            if (IsUpdateAssignment(messageTypeId))
-            {
-                return GetIdForChangeAssignmentOfWatcher(bettypeId);
-            }
+            return (int)NotificationSettingCode.AssigneeProviderInfoUpdatedId;
+        }
 
-            if (IsMatchSetting(messageTypeId))
-            {
-                return (int)NotificationSettingCode.WatcherMatchInfoUpdatedId;
-            }
+        return (int)NotificationSettingCode.AssigneeMatchInfoUpdatedId;
+    }
 
-            if (IsProviderInfoUpdate(messageTypeId))
-            {
-                return (int)NotificationSettingCode.WatcherProviderInfoUpdatedId;
-            }
+    public static int GetNotificationSettingIdForWatcher(int messageTypeId, int bettypeId)
+    {
+        if (IsUpdateAssignment(messageTypeId))
+        {
+            return GetIdForChangeAssignmentOfWatcher(bettypeId);
+        }
 
+        if (IsMatchSetting(messageTypeId))
+        {
             return (int)NotificationSettingCode.WatcherMatchInfoUpdatedId;
         }
 
-        private static int GetIdForChangeAssignmentOfWatcher(int bettypeId)
+        if (IsProviderInfoUpdate(messageTypeId))
         {
-            return bettypeId == (int)MajorBetType.LA
-                    ? (int)NotificationSettingCode.WatcherLAUpdatedId
-                    : (int)NotificationSettingCode.WatcherTraderUpdatedId;
+            return (int)NotificationSettingCode.WatcherProviderInfoUpdatedId;
         }
 
-        private static int GetIdForChangeAssignmentOfAssignee(int bettypeId)
+        return (int)NotificationSettingCode.WatcherMatchInfoUpdatedId;
+    }
+
+    private static int GetIdForChangeAssignmentOfWatcher(int bettypeId)
+    {
+        return bettypeId == (int)MajorBetType.LA
+            ? (int)NotificationSettingCode.WatcherLAUpdatedId
+            : (int)NotificationSettingCode.WatcherTraderUpdatedId;
+    }
+
+    private static int GetIdForChangeAssignmentOfAssignee(int bettypeId)
+    {
+        return bettypeId == (int)MajorBetType.LA
+            ? (int)NotificationSettingCode.AssigneeLAUpdatedId
+            : (int)NotificationSettingCode.AssigneeTraderUpdatedId;
+    }
+
+    public static bool IsUpdateAssignment(int messageTypeId)
+    {
+        var updateAssignmentMessageTypeIds = new List<int>
         {
-            return bettypeId == (int)MajorBetType.LA
-                    ? (int)NotificationSettingCode.AssigneeLAUpdatedId
-                    : (int)NotificationSettingCode.AssigneeTraderUpdatedId;
-        }
+            (int)MsgTemplateCode.AssignmentDelete,
+            (int)MsgTemplateCode.OtherAssignmentDelete,
+            (int)MsgTemplateCode.AssignmentInsert,
+            (int)MsgTemplateCode.OtherAssignmentInsert
+        };
 
-        public static bool IsUpdateAssignment(int messageTypeId)
+        return updateAssignmentMessageTypeIds.Contains(messageTypeId);
+    }
+
+    public static bool IsProviderInfoUpdate(int messageTypeId)
+    {
+        var providerMessageTypeIds = new List<int> {
+            (int)MsgTemplateCode.EditAgent,
+            (int)MsgTemplateCode.EditChannel,
+            (int)MsgTemplateCode.EditOtherProvider,
+            (int)MsgTemplateCode.EditProvider,
+            (int)MsgTemplateCode.EditTV,
+            (int)MsgTemplateCode.EditWB,
+            (int)MsgTemplateCode.EditPhone
+        };
+
+        return providerMessageTypeIds.Contains(messageTypeId);
+    }
+
+    public static bool IsMatchSetting(int messageTypeId)
+    {
+        var matchSettingMessageTypeIds = new List<int>
         {
-            var updateAssignmentMessageTypeIds = new List<int>
-            {
-                (int)MsgTemplateCode.AssignmentDelete,
-                (int)MsgTemplateCode.OtherAssignmentDelete,
-                (int)MsgTemplateCode.AssignmentInsert,
-                (int)MsgTemplateCode.OtherAssignmentInsert
-            };
+            (int)MsgTemplateCode.EditMaxbet,
+            (int)MsgTemplateCode.EditSpread
+        };
 
-            return updateAssignmentMessageTypeIds.Contains(messageTypeId);
-        }
-
-        public static bool IsProviderInfoUpdate(int messageTypeId)
-        {
-            var providerMessageTypeIds = new List<int> {
-                (int)MsgTemplateCode.EditAgent,
-                (int)MsgTemplateCode.EditChannel,
-                (int)MsgTemplateCode.EditOtherProvider,
-                (int)MsgTemplateCode.EditProvider,
-                (int)MsgTemplateCode.EditTV,
-                (int)MsgTemplateCode.EditWB,
-                (int)MsgTemplateCode.EditPhone
-            };
-
-            return providerMessageTypeIds.Contains(messageTypeId);
-        }
-
-        public static bool IsMatchSetting(int messageTypeId)
-        {
-            var matchSettingMessageTypeIds = new List<int>
-            {
-                (int)MsgTemplateCode.EditMaxbet,
-                (int)MsgTemplateCode.EditSpread,
-            };
-
-            return matchSettingMessageTypeIds.Contains(messageTypeId);
-        }
+        return matchSettingMessageTypeIds.Contains(messageTypeId);
     }
 }

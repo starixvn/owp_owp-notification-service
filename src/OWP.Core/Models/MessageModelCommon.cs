@@ -1,9 +1,8 @@
-namespace OWP.Core.Models
-{
-    public class MessageModelCommon<T> where T : class
-    {
-        public T Message { get; set; }
+namespace OWP.Core.Models;
 
-        public IList<string> ReceivedUserIds{get; set; }
-    }
+public class MessageModelCommon<T> where T : class
+{
+    public T Message { get; set; }
+
+    public IList<string> ReceivedUserIds { get; set; }
 }

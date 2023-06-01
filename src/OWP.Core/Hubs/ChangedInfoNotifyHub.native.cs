@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 
-namespace OWP.Hubs;
+namespace OWP.Core.Hubs;
 
 
 public interface ChangedInfoNotifyHub

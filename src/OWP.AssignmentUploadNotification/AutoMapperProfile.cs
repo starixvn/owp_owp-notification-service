@@ -1,13 +1,12 @@
 using AutoMapper;
 using OWP.AssignmentUploadNotification.Models;
 
-namespace OWP.AssignmentUploadNotification
+namespace OWP.AssignmentUploadNotification;
+
+public class AutoMapperProfile : Profile
 {
-    public class AutoMapperProfile : Profile
+    public AutoMapperProfile()
     {
-        public AutoMapperProfile()
-        {
-            CreateMap<ChangedValue, ChangedValue>();
-        }
+        CreateMap<ChangedValue, ChangedValue>();
     }
 }

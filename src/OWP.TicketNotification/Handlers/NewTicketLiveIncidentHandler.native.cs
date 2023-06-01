@@ -40,7 +40,7 @@ public class NewTicketLiveIncidentHandler: IRequestHandler<NewTicketLiveIncident
         {
             SessionId = messageId,
             TicketId = request.TicketId,
-            EventType = (int)EventType.LiveIncident,
+            EventType = (int)EventType.LiveIncident
         };
         var messages = await messageNotificationService.CreateMessageNotification(notificationSource);
 

@@ -37,7 +37,7 @@ public class NewRecipientHandler : IRequestHandler<NewRecipientNotificationReque
         {
             SessionId = messageId,
             TicketId = request.TicketId,
-            EventType = request.TicketEventType,
+            EventType = request.TicketEventType
         };
         var messages = await messageNotificationService.CreateMessageNotification(notificationSource);
 

@@ -1,40 +1,39 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using OWP.Hubs;
+using OWP.Core.Hubs;
 using OWP.Core.Models;
 
-namespace OWP.LiveDetailNotification.Services
+namespace OWP.LiveDetailNotification.Services;
+
+public interface NotificationService
 {
-    public interface NotificationService
+    Task Notify(List<MessageModel> sources);
+}
+
+public class NotificationServiceImp : NotificationService
+{
+    private readonly IHubContext<ChangedInfoNotifyHubImp, ChangedInfoNotifyHub> hubContext;
+
+    public NotificationServiceImp(IHubContext<ChangedInfoNotifyHubImp, ChangedInfoNotifyHub> hubContext)
     {
-        Task Notify(List<MessageModel> sources);
+        this.hubContext = hubContext;
     }
 
-    public class NotificationServiceImp : NotificationService
+    public async Task Notify(List<MessageModel> sources)
     {
-        private readonly IHubContext<ChangedInfoNotifyHubImp, ChangedInfoNotifyHub> hubContext;
-
-        public NotificationServiceImp(IHubContext<ChangedInfoNotifyHubImp, ChangedInfoNotifyHub> hubContext)
+        foreach (var message in sources)
         {
-            this.hubContext = hubContext;
-        }
-
-        public async Task Notify(List<MessageModel> sources)
-        {
-            foreach (var message in sources)
+            var result = new
             {
-                var result = new
-                {
-                    notificationId = Guid.NewGuid(),
-                    message
-                };
-                await hubContext.Clients
+                notificationId = Guid.NewGuid(),
+                message
+            };
+            await hubContext.Clients
 #if DEBUG
-                    .All
+                .All
 #else
                     .Users($"{message.UserId}")
 #endif
-                    .notifyChangedInformationData(result);
-            }
+                .notifyChangedInformationData(result);
         }
     }
 }

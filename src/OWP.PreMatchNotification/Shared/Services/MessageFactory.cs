@@ -83,20 +83,20 @@ public class MessageFactoryImp : MessageFactory
         {
              MessageType=(int)MsgTemplateCode.UpdateHome,
              MessageContent="<b>Home Team</b> Update from <League> - <oldvalue> -vs- <Away> to <League> - <newvalue> -vs- <Away>",
-             IsImportant = true,
+             IsImportant = true
         },
         new MessageTemplate
         {
              MessageType=(int)MsgTemplateCode.UpdateAway,
              MessageContent="<b>Away Team</b> Update from <League> - <Home> -vs- <oldvalue> to <League> - <Home> -vs- <newvalue>",
-             IsImportant = true,
+             IsImportant = true
         },
         new MessageTemplate
         {
              MessageType=(int)MsgTemplateCode.UpdateKOTime,
              MessageContent="<b>K.O time</b> Update from <oldvalue> to <newvalue> for <League> - <Home> -vs- <Away>",
-             IsImportant = true,
-        },
+             IsImportant = true
+        }
     });
 
     #endregion MessageTemplate

@@ -52,7 +52,7 @@ public class MatchInfoNotifyHandlerUnitTests
     {
         return new List<ChangedValue>
         {
-            new ChangedValue
+            new()
             {
                 InfoSiteMatchId = 1,
                 League="Premier League",
@@ -63,7 +63,7 @@ public class MatchInfoNotifyHandlerUnitTests
                 ReceivedUserIds = new List<int> { 1,4,5 },
                 MessageTypeId = (int)MsgTemplateCode.UpdateHome
             },
-            new ChangedValue
+            new()
             {
                 InfoSiteMatchId = 2,
                 League="Premier League",
@@ -81,7 +81,7 @@ public class MatchInfoNotifyHandlerUnitTests
     {
         return new List<InfoSiteMatch>
         {
-            new InfoSiteMatch
+            new()
             {
                 InfoSiteMatchId = 1,
                 HomeName = "MC",
@@ -90,7 +90,7 @@ public class MatchInfoNotifyHandlerUnitTests
                 OWPLeagueId = 101,
                 LeagueName="Premier League"
             },
-            new InfoSiteMatch
+            new()
             {
                 InfoSiteMatchId = 2,
                 HomeName = "Liv",
@@ -107,7 +107,7 @@ public class MatchInfoNotifyHandlerUnitTests
         return new List<InfoSiteMatch>
 
         {
-            new InfoSiteMatch
+            new()
             {
                 InfoSiteMatchId = 1,
                 HomeName = "MC changed",
@@ -115,7 +115,7 @@ public class MatchInfoNotifyHandlerUnitTests
                 EventDateTime = new DateTime(2021, 06, 23, 23, 00, 00),
                 OWPLeagueId = 101
             },
-            new InfoSiteMatch
+            new()
             {
                 InfoSiteMatchId = 2,
                 HomeName = "Liv changed",
@@ -131,27 +131,27 @@ public class MatchInfoNotifyHandlerUnitTests
     {
         return new List<Assignee>
         {
-            new Assignee
+            new()
             {
                 AssigneeId = 1,
                 OWPLeagueId = 101
             },
-            new Assignee
+            new()
             {
                 AssigneeId = 2,
                 OWPLeagueId = 102
             },
-            new Assignee
+            new()
             {
                 AssigneeId = 3,
                 OWPLeagueId = 102
             },
-            new Assignee
+            new()
             {
                 AssigneeId = 4,
                 OWPLeagueId = 101
             },
-            new Assignee
+            new()
             {
                 AssigneeId = 5,
                 OWPLeagueId = 101
@@ -163,7 +163,7 @@ public class MatchInfoNotifyHandlerUnitTests
     {
         return new List<ChangedValue>
         {
-            new ChangedValue
+            new()
             {
                 InfoSiteMatchId = 1,
                 League="Premier League",
@@ -181,26 +181,26 @@ public class MatchInfoNotifyHandlerUnitTests
     {
         return new List<Assignee>
         {
-            new Assignee
+            new()
             {
                 AssigneeId = 2
             },
-            new Assignee
+            new()
             {
                 AssigneeId = 3
             },
-            new Assignee
+            new()
             {
                 AssigneeId = 4
             },
-            new Assignee
+            new()
             {
                 AssigneeId = 5
             },
-            new Assignee
+            new()
             {
                 AssigneeId = 6
-            },
+            }
         };
     }
 
@@ -208,19 +208,19 @@ public class MatchInfoNotifyHandlerUnitTests
     {
         return new List<InfoSiteMatch>
         {
-            new InfoSiteMatch
+            new()
             {
                 InfoSiteMatchId = 1
             },
-            new InfoSiteMatch
+            new()
             {
                 InfoSiteMatchId = 2
             },
-            new InfoSiteMatch
+            new()
             {
                 InfoSiteMatchId = 3
             },
-            new InfoSiteMatch
+            new()
             {
                 InfoSiteMatchId = 5
             }

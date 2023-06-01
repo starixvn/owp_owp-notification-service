@@ -1,23 +1,22 @@
-﻿namespace OWP.AssignmentUploadNotification.Extensions
+﻿namespace OWP.AssignmentUploadNotification.Extensions;
+
+using System.Text.RegularExpressions;
+
+public static class UpdatedValueHelper
 {
-    using System.Text.RegularExpressions;
+    private const string USER = "#<user>";
 
-    public static class UpdatedValueHelper
+    public static string GetValue(int assignmentType, string userName, string assignmentNote)
     {
-        private const string USER = "#<user>";
+        return assignmentType == 1 ? $"#{userName}" : GetAssignmentNote(assignmentNote, userName);
+    }
 
-        public static string GetValue(int assignmentType, string userName, string assignmentNote)
-        {
-            return assignmentType == 1 ? $"#{userName}" : GetAssignmentNote(assignmentNote, userName);
-        }
-
-        private static string GetAssignmentNote(string assignmentNote, string userName)
-        {
-            var newValue = string.IsNullOrEmpty(userName)
-                            ? Regex.Replace(assignmentNote, USER, "", RegexOptions.IgnoreCase)
-                            : Regex.Replace(assignmentNote, USER, $"#{userName}", RegexOptions.IgnoreCase);
-            newValue = Regex.Replace(newValue, "same", "", RegexOptions.IgnoreCase).Trim();
-            return newValue;
-        }
+    private static string GetAssignmentNote(string assignmentNote, string userName)
+    {
+        var newValue = string.IsNullOrEmpty(userName)
+            ? Regex.Replace(assignmentNote, USER, "", RegexOptions.IgnoreCase)
+            : Regex.Replace(assignmentNote, USER, $"#{userName}", RegexOptions.IgnoreCase);
+        newValue = Regex.Replace(newValue, "same", "", RegexOptions.IgnoreCase).Trim();
+        return newValue;
     }
 }
