@@ -81,7 +81,7 @@ public class ChangedMatchInfoGeneratorUnitTests
                     NewValue="Provider2"
                 }
             };
-        Equals(expected, actual);
+        DeepAssert.Equal(expected, actual);
     }
 
     [Fact]
@@ -101,8 +101,8 @@ public class ChangedMatchInfoGeneratorUnitTests
             Reporter = "Reporter1",
             Provider = "Provider1",
             League = "VLeague",
-            Home = "Binh Dinh",
-            Away = "Tphcm"
+            Home = "Home name",
+            Away = "away name"
         };
         var newMatch = new MatchInfo
         {
@@ -117,8 +117,8 @@ public class ChangedMatchInfoGeneratorUnitTests
             Reporter = "Reporter2",
             Provider = "Provider2",
             League = "VLeague",
-            Home = "Binh Dinh",
-            Away = "Tphcm"
+            Home = "Home name",
+            Away = "away name"
         };
 
         var assignees = new List<Assignee>
