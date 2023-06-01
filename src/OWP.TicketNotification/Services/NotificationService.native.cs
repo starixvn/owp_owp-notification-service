@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using OWP.Core.Hubs;
+using OWP.Hubs;
 using OWP.TicketNotification.Models;
 
 namespace OWP.TicketNotification.Services;

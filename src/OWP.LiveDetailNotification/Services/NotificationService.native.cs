@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using OWP.Core.Hubs;
 using OWP.Core.Models;
+using OWP.Hubs;
 
 namespace OWP.LiveDetailNotification.Services;
 
