@@ -21,7 +21,7 @@ public class InsertedMatchChangedValueGeneratorImp : InsertedMatchChangedValueGe
         return CreateEnumerable(matchIds, snapshot).SelectMany(v => v).Distinct().ToList();
     }
 
-    public IEnumerable<List<ChangedValue>> CreateEnumerable(List<int> matchIds, AssignmentSnapshot snapshot)
+    public static IEnumerable<IEnumerable<ChangedValue>> CreateEnumerable(IEnumerable<int> matchIds, AssignmentSnapshot snapshot)
     {
         foreach (var matchId in matchIds)
         {
@@ -33,7 +33,7 @@ public class InsertedMatchChangedValueGeneratorImp : InsertedMatchChangedValueGe
         }
     }
 
-    public IEnumerable<ChangedValue> GetInsertedAssignmentChangedValues(Dictionary<int, GeneralMatch> allMatches, List<MatchAssignment> assignments)
+    public static IEnumerable<ChangedValue> GetInsertedAssignmentChangedValues(Dictionary<int, GeneralMatch> allMatches, List<MatchAssignment> assignments)
     {
         foreach (var assignment in assignments)
         {

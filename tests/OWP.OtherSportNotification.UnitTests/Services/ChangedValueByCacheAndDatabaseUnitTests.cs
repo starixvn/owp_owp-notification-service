@@ -15,7 +15,7 @@ public class ChangedValueByCacheAndDatabaseUnitTests
     }
 
     [Fact]
-    public void Create_Always_ReturnChangedValue()
+    public async Task Create_Always_ReturnChangedValue()
     {
         // Arrange
         var changedValues = new List<ChangedValue>
@@ -27,13 +27,13 @@ public class ChangedValueByCacheAndDatabaseUnitTests
             };
         cacheManipulator.GetAssignmentSnapshot(Arg.Compat.Any<string>()).Returns(new AssignmentSnapshot());
         repository.Query(Arg.Compat.Any<DateTime>(), Arg.Compat.Any<DateTime>()).Returns(new AssignmentSnapshot());
-        cacheManipulator.DeleteAssignmentSnapshot(Arg.Compat.Any<string>());
+        await cacheManipulator.DeleteAssignmentSnapshot(Arg.Compat.Any<string>());
         changedValueBySnapshot.Create(Arg.Compat.Any<AssignmentSnapshot>(), Arg.Compat.Any<AssignmentSnapshot>()).Returns(changedValues);
 
         // Act
-        var actual = services.Create("abc", new DateTime(2022, 06, 10), new DateTime(2022, 06, 11));
+        var actual = await services.Create("abc", new DateTime(2022, 06, 10), new DateTime(2022, 06, 11));
 
         // Assert
-        Equals(changedValues, actual);
+        DeepAssert.Equal(changedValues, actual);
     }
 }

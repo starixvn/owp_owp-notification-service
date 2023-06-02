@@ -8,13 +8,7 @@ using System.Linq;
 
 public interface ChangedValueAggregator
 {
-    List<ChangedValue> Aggregate(List<ChangedValue> changedValues);
-    IEnumerable<ChangedValue> GetAggreatedValueForIndirectOtherAssignments(IEnumerable<ChangedValue> changedValues);
-    ChangedValue GetAggregatedValueForDoubleAssignment(ChangedValue deletingAssignment, ChangedValue insertingChangedValue);
-    IEnumerable<ChangedValue> GetAggregatedValueForIndirectMainAssignments(IEnumerable<ChangedValue> changedValues);
-    IEnumerable<ChangedValue> GetIndirectMainAssignmentChangedValues(List<ChangedValue> changedValues);
-    IEnumerable<ChangedValue> GetIndirectOtherAssignmentChangedValues(List<ChangedValue> changedValues);
-    IEnumerable<ChangedValue> GetNonAggregatedChangedValues(List<ChangedValue> changedValues);
+    IEnumerable<ChangedValue> Aggregate(IEnumerable<ChangedValue> changedValues);
 }
 
 public class ChangedValueAggregatorImp : ChangedValueAggregator
@@ -33,9 +27,9 @@ public class ChangedValueAggregatorImp : ChangedValueAggregator
 
         public override bool Equals(object obj)
         {
-            var other = obj as AssignmentGroup;
+            var other = obj as AssignmentGroup ?? new AssignmentGroup();
 
-            var condition1 = MatchId == other!.MatchId && BetTypeId == other.BetTypeId && AssigneeId == other.AssigneeId;
+            var condition1 = MatchId == other.MatchId && BetTypeId == other.BetTypeId && AssigneeId == other.AssigneeId;
             var condition2 = IsIndirectChanged == other.IsIndirectChanged && IsWatcher == other.IsWatcher;
 
             return condition1 && condition2;
@@ -58,50 +52,49 @@ public class ChangedValueAggregatorImp : ChangedValueAggregator
         this.mapper = mapper;
     }
 
-    public List<ChangedValue> Aggregate(List<ChangedValue> changedValues)
+    public IEnumerable<ChangedValue> Aggregate(IEnumerable<ChangedValue> changedValues)
     {
-        var nonAggregatedChangedValues = GetNonAggregatedChangedValues(changedValues);
-        var indirectMainAssignmentChangedValues = GetIndirectMainAssignmentChangedValues(changedValues);
-        var indirectOtherAssignmentChangedValues = GetIndirectOtherAssignmentChangedValues(changedValues);
+        var changedValueList = changedValues.ToList();
+        var nonAggregatedChangedValues = GetNonAggregatedChangedValues(changedValueList);
+        var indirectMainAssignmentChangedValues = GetIndirectMainAssignmentChangedValues(changedValueList);
+        var indirectOtherAssignmentChangedValues = GetIndirectOtherAssignmentChangedValues(changedValueList);
 
         var aggregatedValueForIndirectMainAssignments = GetAggregatedValueForIndirectMainAssignments(indirectMainAssignmentChangedValues);
-        var aggreatedValueForIndirectOtherAssignments = GetAggreatedValueForIndirectOtherAssignments(indirectOtherAssignmentChangedValues);
+        var aggregatedValueForIndirectOtherAssignments = GetAggregatedValueForIndirectOtherAssignments(indirectOtherAssignmentChangedValues);
 
         return nonAggregatedChangedValues.Union(aggregatedValueForIndirectMainAssignments)
-            .Union(aggreatedValueForIndirectOtherAssignments)
-            .ToList();
+            .Union(aggregatedValueForIndirectOtherAssignments);
     }
 
-    public IEnumerable<ChangedValue> GetNonAggregatedChangedValues(List<ChangedValue> changedValues)
+    public static IEnumerable<ChangedValue> GetNonAggregatedChangedValues(List<ChangedValue> changedValues)
     {
         return changedValues.Where(m =>
         {
             var isDirectChanged = !m.IsIndirectChangedAssignment && !m.IsWatcher;
-            var isMainAssignment = m.MessageTypeId == (int)MsgTemplateCode.AssignmentDelete || m.MessageTypeId == (int)MsgTemplateCode.AssignmentInsert;
-            var isOtherAssignment = m.MessageTypeId == (int)MsgTemplateCode.OtherAssignmentDelete || m.MessageTypeId == (int)MsgTemplateCode.OtherAssignmentInsert;
+            var isMainAssignment = m.MessageTypeId is (int)MsgTemplateCode.AssignmentDelete or (int)MsgTemplateCode.AssignmentInsert;
+            var isOtherAssignment = m.MessageTypeId is (int)MsgTemplateCode.OtherAssignmentDelete or (int)MsgTemplateCode.OtherAssignmentInsert;
 
             return isDirectChanged || !isMainAssignment && !isOtherAssignment;
         });
     }
 
-    public IEnumerable<ChangedValue> GetIndirectOtherAssignmentChangedValues(List<ChangedValue> changedValues)
+    public static IEnumerable<ChangedValue> GetIndirectOtherAssignmentChangedValues(List<ChangedValue> changedValues)
     {
         return changedValues.Where(m =>
         {
             var isIndirectChangedAssignment = m.IsIndirectChangedAssignment || m.IsWatcher;
-            var isOtherAssignment = m.MessageTypeId == (int)MsgTemplateCode.OtherAssignmentDelete ||
-                                    m.MessageTypeId == (int)MsgTemplateCode.OtherAssignmentInsert;
+            var isOtherAssignment = m.MessageTypeId is (int)MsgTemplateCode.OtherAssignmentDelete or (int)MsgTemplateCode.OtherAssignmentInsert;
 
             return isIndirectChangedAssignment && isOtherAssignment;
         });
     }
 
-    public IEnumerable<ChangedValue> GetIndirectMainAssignmentChangedValues(List<ChangedValue> changedValues)
+    public static IEnumerable<ChangedValue> GetIndirectMainAssignmentChangedValues(IEnumerable<ChangedValue> changedValues)
     {
         return changedValues.Where(m =>
         {
             var isIndirectChangedAssignment = m.IsIndirectChangedAssignment || m.IsWatcher;
-            var isMainAssignment = m.MessageTypeId == (int)MsgTemplateCode.AssignmentDelete || m.MessageTypeId == (int)MsgTemplateCode.AssignmentInsert;
+            var isMainAssignment = m.MessageTypeId is (int)MsgTemplateCode.AssignmentDelete or (int)MsgTemplateCode.AssignmentInsert;
 
             return isIndirectChangedAssignment && isMainAssignment;
         });
@@ -158,13 +151,14 @@ public class ChangedValueAggregatorImp : ChangedValueAggregator
         return aggregatedChangedValue;
     }
 
-    public IEnumerable<ChangedValue> GetAggreatedValueForIndirectOtherAssignments(IEnumerable<ChangedValue> changedValues)
+    public static IEnumerable<ChangedValue> GetAggregatedValueForIndirectOtherAssignments(IEnumerable<ChangedValue> changedValues)
     {
-        foreach (var value in changedValues)
+        var changedValueList = changedValues.ToList();
+        foreach (var value in changedValueList)
         {
             value.MessageTypeId = (int)MsgTemplateCode.ChangeOfAssignment;
         }
 
-        return changedValues;
+        return changedValueList;
     }
 }

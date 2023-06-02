@@ -16,7 +16,7 @@ public class ChangedAssignmentGeneratorUnitTests
         var matchSnapshot = GetMatchSnapshot();
 
         // Act
-        var actual = services.GetDeletedAssignmentChangedValues(matchSnapshot).Where(x => x.UserId != 0);
+        var actual = services.GetDeletedAssignmentChangedValues(matchSnapshot).Where(x => x.UserId != 0).ToList();
 
         // Assert
         Assert.Single(actual);
@@ -36,7 +36,7 @@ public class ChangedAssignmentGeneratorUnitTests
         var matchSnapshot = GetMatchSnapshot();
 
         // Act
-        var actual = services.GetInsertedAssignmentChangedValues(matchSnapshot).Where(x => x.UserId != 0);
+        var actual = services.GetInsertedAssignmentChangedValues(matchSnapshot).Where(x => x.UserId != 0).ToList();
 
         // Assert
         Assert.Single(actual);

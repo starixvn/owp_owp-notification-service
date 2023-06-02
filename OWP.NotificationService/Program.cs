@@ -39,7 +39,7 @@ builder.Services.AddHostedService<MessageServer>();
 
 var app = builder.Build();
 
-app.Run(async (context) =>
+app.Run(async context =>
 {
     var request = context.Request.Path.HasValue
     ? context.Request.Path.Value

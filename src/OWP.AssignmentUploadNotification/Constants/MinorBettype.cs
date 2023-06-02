@@ -37,4 +37,4 @@ public static class MinorBettypeConst
     {
         -88, -89, -1, -2, -8, -5
     });
-};
+}

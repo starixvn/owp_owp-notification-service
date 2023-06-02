@@ -25,11 +25,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OWP.OtherSportNotification.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OWP.PreMatchNotification.UnitTests", "tests\OWP.PreMatchNotification.UnitTests\OWP.PreMatchNotification.UnitTests.csproj", "{1A19AED5-6C66-47B1-8758-F372BDFD9166}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWP.LiveDetailNotification", "src\OWP.LiveDetailNotification\OWP.LiveDetailNotification.csproj", "{3C4414B1-CD3C-45E3-9F27-979E4B35423F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OWP.LiveDetailNotification", "src\OWP.LiveDetailNotification\OWP.LiveDetailNotification.csproj", "{3C4414B1-CD3C-45E3-9F27-979E4B35423F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWP.AssignmentUploadNotification", "src\OWP.AssignmentUploadNotification\OWP.AssignmentUploadNotification.csproj", "{317283C3-950E-4254-8D87-E994ECD8BD39}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OWP.AssignmentUploadNotification", "src\OWP.AssignmentUploadNotification\OWP.AssignmentUploadNotification.csproj", "{317283C3-950E-4254-8D87-E994ECD8BD39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWP.AssignmentUploadNotification.UnitTests", "tests\OWP.AssignmentUploadNotification.UnitTests\OWP.AssignmentUploadNotification.UnitTests.csproj", "{FEDA0A3F-8B01-4D9E-86E9-A3915A12E7D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OWP.AssignmentUploadNotification.UnitTests", "tests\OWP.AssignmentUploadNotification.UnitTests\OWP.AssignmentUploadNotification.UnitTests.csproj", "{FEDA0A3F-8B01-4D9E-86E9-A3915A12E7D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

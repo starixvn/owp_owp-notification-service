@@ -10,7 +10,7 @@ public class ChangedValueOuDetectorUnitTests
         var ouDetector = new ChangedValueOuDetectorImp();
         var oldSnapshot = new AssignmentSnapshot
         {
-            LeagueName = "VLeague",
+            LeagueName = "League",
             IsDay = true,
             Ou = "Sa",
             OuUserId = 8
@@ -28,14 +28,14 @@ public class ChangedValueOuDetectorUnitTests
             new ()
             {
                 BetTypeName = "O/U",
-                League = "VLeague",
+                League = "League",
                 MessageTypeId = 201,
                 ReceivedUserIds = new List<int>{121}
             },
             new ()
             {
                 BetTypeName = "O/U",
-                League = "VLeague",
+                League = "League",
                 MessageTypeId = 202,
                 ReceivedUserIds = new List<int>{8}
             }
@@ -50,7 +50,7 @@ public class ChangedValueOuDetectorUnitTests
         var ouDetector = new ChangedValueOuDetectorImp();
         var oldSnapshot = new AssignmentSnapshot
         {
-            LeagueName = "VLeague",
+            LeagueName = "League",
             IsDay = true,
             OtherOu = "Sa",
             OtherOuUserId = 8
@@ -68,14 +68,14 @@ public class ChangedValueOuDetectorUnitTests
             new ()
             {
                 BetTypeName = "O/U",
-                League = "VLeague",
+                League = "League",
                 MessageTypeId = 201,
                 ReceivedUserIds = new List<int>{121}
             },
             new ()
             {
                 BetTypeName = "O/U",
-                League = "VLeague",
+                League = "League",
                 MessageTypeId = 202,
                 ReceivedUserIds = new List<int>{8}
             }

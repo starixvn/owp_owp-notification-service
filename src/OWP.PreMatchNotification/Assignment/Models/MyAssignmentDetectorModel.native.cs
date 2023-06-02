@@ -12,7 +12,7 @@ public class MyAssignmentDetectorModel
 
     public int? UserIdRemoved { get; set; }
 
-    public int? UserIdNewAssign { get; set; }
+    public int UserIdNewAssign { get; set; } = 0;
 
-    public bool? IsDay { get; set; }
+    public bool IsDay { get; set; } = false;
 }

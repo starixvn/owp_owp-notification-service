@@ -70,7 +70,7 @@ public class ChangedMatchChangedValueGeneratorImp : ChangedMatchChangedValueGene
                            .ToList();
     }
 
-    private static List<Assignee> GetAllAssigneesByMatchId(int matchId, AssignmentSnapshot snapshot)
+    private static IEnumerable<Assignee> GetAllAssigneesByMatchId(int matchId, AssignmentSnapshot snapshot)
     {
         var assigneeOfMatch = snapshot.MatchAssignments.GetValue(matchId, new List<MatchAssignment>());
 

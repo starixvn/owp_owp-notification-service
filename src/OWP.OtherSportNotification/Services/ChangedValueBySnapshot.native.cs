@@ -32,13 +32,13 @@ public class ChangedValueBySnapshotImp : ChangedValueBySnapshot
 
         var insertedMatchChangedValues = insertedMatchChangedValueGenerator.Create(changedSnapshot.InsertedMatches, newSnapshot);
         var deletedMatchChangedValues = deletedMatchChangedValueGenerator.Create(changedSnapshot.DeletedMatches, oldSnapshot);
-        var changedMatchChagedValues = changedMatchChangedValueGenerator.Create(changedSnapshot.ChangedMatches, oldSnapshot, newSnapshot);
+        var changedMatchChangedValues = changedMatchChangedValueGenerator.Create(changedSnapshot.ChangedMatches, oldSnapshot, newSnapshot);
 
         return new[]
         {
                 insertedMatchChangedValues,
                 deletedMatchChangedValues,
-                changedMatchChagedValues
+                changedMatchChangedValues
             }
         .SelectMany(v => v)
         .ToList();

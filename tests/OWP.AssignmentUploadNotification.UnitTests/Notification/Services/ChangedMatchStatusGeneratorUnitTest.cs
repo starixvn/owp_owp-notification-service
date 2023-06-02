@@ -34,7 +34,7 @@ public class ChangedMatchStatusGeneratorUnitTest
                 EventName = "LiverPool -vs- Arsenal",
                 AssigneeId = 6789,
                 AssigneeName = "esther",
-                BetTypeName = "Next of Coners"
+                BetTypeName = "Next of Corners"
             }
         };
 
@@ -133,14 +133,14 @@ public class ChangedMatchStatusGeneratorUnitTest
         {
             MatchId = 1234,
             MatchNo = "20000",
-            Home = "LiverPool-Coners",
-            Away = "Arsenal-Coners",
-            LeagueName = "PremierLeague-Coners",
+            Home = "LiverPool-Corners",
+            Away = "Arsenal-Corners",
+            LeagueName = "PremierLeague-Corners",
             MatchStatus = "Cancel",
-            Agent = "Rossi",
+            Agent = "Rose",
             ParentMatchId = 3456,
             MatchType = 1000,
-            MinorBettypeName = "Next of Coners",
+            MinorBettypeName = "Next of Corners",
             Division = "20",
             Remark = "ahihihahah",
             WB = ""
@@ -151,14 +151,14 @@ public class ChangedMatchStatusGeneratorUnitTest
         {
             MatchId = 1234,
             MatchNo = "1234",
-            Home = "LiverPool-Coners",
-            Away = "Arsenal-Coners",
-            LeagueName = "PremierLeague-Coners",
+            Home = "LiverPool-Corners",
+            Away = "Arsenal-Corners",
+            LeagueName = "PremierLeague-Corners",
             MatchStatus = "Live",
             Agent = "Bow",
             ParentMatchId = 3456,
             MatchType = 1000,
-            MinorBettypeName = "Next of Coners",
+            MinorBettypeName = "Next of Corners",
             Division = "10",
             Remark = "",
             WB = "WB@"
@@ -172,7 +172,7 @@ public class ChangedMatchStatusGeneratorUnitTest
             Away = "Arsenal",
             LeagueName = "PremierLeague",
             MatchStatus = "Cancel",
-            Agent = "Rossi"
+            Agent = "Rose"
 
         };
 
@@ -184,7 +184,7 @@ public class ChangedMatchStatusGeneratorUnitTest
             Away = "Arsenal",
             LeagueName = "PremierLeague",
             MatchStatus = "Live",
-            Agent = "Rossi"
+            Agent = "Rose"
 
         };
         var newMatches = new Dictionary<int, GeneralMatch> { { 3456, newMainMatch } };
@@ -215,7 +215,7 @@ public class ChangedMatchStatusGeneratorUnitTest
             Away = "Arsenal",
             LeagueName = "PremierLeague",
             MatchStatus = "Cancel",
-            Agent = "Rossi"
+            Agent = "Rose"
 
         };
 
@@ -227,7 +227,7 @@ public class ChangedMatchStatusGeneratorUnitTest
             Away = "Arsenal",
             LeagueName = "PremierLeague",
             MatchStatus = "Live",
-            Agent = "Rossi"
+            Agent = "Rose"
 
         };
 
@@ -245,7 +245,7 @@ public class ChangedMatchStatusGeneratorUnitTest
             Away = "Arsenal",
             LeagueName = "PremierLeague",
             MatchStatus = "Live",
-            Agent = "Rossi"
+            Agent = "Rose"
 
         };
 
@@ -257,7 +257,7 @@ public class ChangedMatchStatusGeneratorUnitTest
             Away = "Arsenal",
             LeagueName = "PremierLeague",
             MatchStatus = "Cancel",
-            Agent = "Rossi"
+            Agent = "Rose"
 
         };
 
@@ -271,11 +271,11 @@ public class ChangedMatchStatusGeneratorUnitTest
         {
             MatchId = 1234,
             MatchNo = "20000",
-            Home = "LiverPool-Coners",
-            Away = "Arsenal-Coners",
+            Home = "LiverPool-Corners",
+            Away = "Arsenal-Corners",
             LeagueName = "PremierLeague-FAST MARKET",
             MatchStatus = "Cancel",
-            Agent = "Rossi",
+            Agent = "Rose",
             ParentMatchId = 3456,
             MatchType = -88,
             MinorBettypeName = "Fast Market",
@@ -289,8 +289,8 @@ public class ChangedMatchStatusGeneratorUnitTest
         {
             MatchId = 1234,
             MatchNo = "1234",
-            Home = "LiverPool-Coners",
-            Away = "Arsenal-Coners",
+            Home = "LiverPool-Corners",
+            Away = "Arsenal-Corners",
             LeagueName = "PremierLeague-FAST MARKET",
             MatchStatus = "Live",
             Agent = "Bow",
@@ -310,7 +310,7 @@ public class ChangedMatchStatusGeneratorUnitTest
             Away = "Arsenal",
             LeagueName = "PremierLeague",
             MatchStatus = "Cancel",
-            Agent = "Rossi"
+            Agent = "Rose"
 
         };
 
@@ -322,7 +322,7 @@ public class ChangedMatchStatusGeneratorUnitTest
             Away = "Arsenal",
             LeagueName = "PremierLeague",
             MatchStatus = "Live",
-            Agent = "Rossi"
+            Agent = "Rose"
 
         };
         var newMatches = new Dictionary<int, GeneralMatch> { { 3456, newMainMatch } };

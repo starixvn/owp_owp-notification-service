@@ -27,7 +27,7 @@ public class AssignmentHelperUnitTests
             {
                 MessageTypeId = 201,
                 BetTypeName = "Hdp",
-                League = "VLeague",
+                League = "League",
                 ReceivedUserIds = new List<int>{123}
             }
         };
@@ -50,7 +50,7 @@ public class AssignmentHelperUnitTests
             {
                 MessageTypeId = 204,
                 BetTypeName = "Hdp",
-                League = "VLeague",
+                League = "League",
                 ReceivedUserIds = new List<int>{123}
             }
         };
@@ -82,7 +82,7 @@ public class AssignmentHelperUnitTests
             {
                 MessageTypeId = 202,
                 BetTypeName = "Hdp",
-                League = "VLeague",
+                League = "League",
                 ReceivedUserIds = new List<int>{123}
             }
         };
@@ -105,7 +105,7 @@ public class AssignmentHelperUnitTests
             {
                 MessageTypeId = 205,
                 BetTypeName = "Hdp",
-                League = "VLeague",
+                League = "League",
                 ReceivedUserIds = new List<int>{123}
             }
         };
@@ -115,7 +115,7 @@ public class AssignmentHelperUnitTests
     private MyAssignmentDetectorModel BuildMyAssignmentDetectorModel()
         => new()
         {
-            LeagueName = "VLeague",
+            LeagueName = "League",
 
             OldAssignment = "sa",
 

@@ -25,7 +25,7 @@ public class MessageFactoryUnitTest
             new ()
             {
                 IsImportant = false,
-                MessageContent = "Was updated match: #20000 - A-Coners - LiverPool-Coners -vs- Arsenal-Coners updated by sa, previous: [ #1234 - A-Coners - LiverPool-Coners -vs- Arsenal-Coners ]",
+                MessageContent = "Was updated match: #20000 - A-Corners - LiverPool-Corners -vs- Arsenal-Corners updated by sa, previous: [ #1234 - A-Corners - LiverPool-Corners -vs- Arsenal-Corners ]",
                 MessageType = 40,
                 IsWatcher = false,
                 ReceivedUserIds= new List<string>{"6789"},
@@ -36,7 +36,7 @@ public class MessageFactoryUnitTest
             new()
             {
                 IsImportant = false,
-                MessageContent = "Was updated Maxbet of Next of Coners (HDP): [ 300K ]  for the match: #50000 - PremierLeague - LiverPool -vs- Arsenal updated by sa, previous: [ 400K ]",
+                MessageContent = "Was updated Maxbet of Next of Corners (HDP): [ 300K ]  for the match: #50000 - PremierLeague - LiverPool -vs- Arsenal updated by sa, previous: [ 400K ]",
                 MessageType = 29,
                 IsWatcher = false,
                 ReceivedUserIds= new List<string>{"6789"},
@@ -135,9 +135,9 @@ public class MessageFactoryUnitTest
             MessageTypeId = 40,
             NewValue = "20000",
             OldValue = "1234",
-            League = "A-Coners",
+            League = "A-Corners",
             MatchNo = "20000",
-            EventName = "LiverPool-Coners -vs- Arsenal-Coners",
+            EventName = "LiverPool-Corners -vs- Arsenal-Corners",
             AssigneeId = 6789,
             AssigneeName = "esther"
         };
@@ -146,7 +146,7 @@ public class MessageFactoryUnitTest
         {
             OldValue = "400K",
             NewValue = "300K",
-            BetTypeName = "Next of Coners (HDP)",
+            BetTypeName = "Next of Corners (HDP)",
             MatchNo = "50000",
             League = "PremierLeague",
             EventName = "LiverPool -vs- Arsenal",

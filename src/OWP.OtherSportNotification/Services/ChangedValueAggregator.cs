@@ -7,18 +7,6 @@ namespace OWP.OtherSportNotification.Services;
 public interface ChangedValueAggregator
 {
     List<ChangedValue> Aggregate(List<ChangedValue> changedValues);
-
-    IEnumerable<ChangedValue> GetAggreatedValueForIndirectOtherAssignments(IEnumerable<ChangedValue> changedValues);
-
-    ChangedValue GetAggregatedValueForDoubleAssignment(ChangedValue deletingAssignment, ChangedValue insertingChangedValue);
-
-    IEnumerable<ChangedValue> GetAggregatedValueForIndirectMainAssignments(IEnumerable<ChangedValue> changedValues);
-
-    IEnumerable<ChangedValue> GetIndirectMainAssignmentChangedValues(List<ChangedValue> changedValues);
-
-    IEnumerable<ChangedValue> GetIndirectOtherAssignmentChangedValues(List<ChangedValue> changedValues);
-
-    IEnumerable<ChangedValue> GetNonAggregatedChangedValues(List<ChangedValue> changedValues);
 }
 
 public class ChangedValueAggregatorImp : ChangedValueAggregator
@@ -37,10 +25,10 @@ public class ChangedValueAggregatorImp : ChangedValueAggregator
         var indirectOtherAssignmentChangedValues = GetIndirectOtherAssignmentChangedValues(changedValues);
 
         var aggregatedValueForIndirectMainAssignments = GetAggregatedValueForIndirectMainAssignments(indirectMainAssignmentChangedValues);
-        var aggreatedValueForIndirectOtherAssignments = GetAggreatedValueForIndirectOtherAssignments(indirectOtherAssignmentChangedValues);
+        var aggregatedValueForIndirectOtherAssignments = GetAggregatedValueForIndirectOtherAssignments(indirectOtherAssignmentChangedValues);
 
         return nonAggregatedChangedValues.Union(aggregatedValueForIndirectMainAssignments)
-                                        .Union(aggreatedValueForIndirectOtherAssignments)
+                                        .Union(aggregatedValueForIndirectOtherAssignments)
                                         .Distinct(new AssignmentChangedValueComparer())
                                         .ToList();
     }
@@ -49,8 +37,8 @@ public class ChangedValueAggregatorImp : ChangedValueAggregator
     {
         return changedValues.Where(m =>
         {
-            var isMainAssignment = m.MessageTypeId == (int)MsgTemplateCode.AssignmentDelete || m.MessageTypeId == (int)MsgTemplateCode.AssignmentInsert;
-            var isOtherAssignment = m.MessageTypeId == (int)MsgTemplateCode.OtherAssignmentDelete || m.MessageTypeId == (int)MsgTemplateCode.OtherAssignmentInsert;
+            var isMainAssignment = m.MessageTypeId is (int)MsgTemplateCode.AssignmentDelete or (int)MsgTemplateCode.AssignmentInsert;
+            var isOtherAssignment = m.MessageTypeId is (int)MsgTemplateCode.OtherAssignmentDelete or (int)MsgTemplateCode.OtherAssignmentInsert;
 
             return !m.IsIndirectChangedAssignment || !isMainAssignment && !isOtherAssignment;
         });
@@ -60,8 +48,7 @@ public class ChangedValueAggregatorImp : ChangedValueAggregator
     {
         return changedValues.Where(m =>
         {
-            var isOtherAssignment = m.MessageTypeId == (int)MsgTemplateCode.OtherAssignmentDelete ||
-                                    m.MessageTypeId == (int)MsgTemplateCode.OtherAssignmentInsert;
+            var isOtherAssignment = m.MessageTypeId is (int)MsgTemplateCode.OtherAssignmentDelete or (int)MsgTemplateCode.OtherAssignmentInsert;
 
             return m.IsIndirectChangedAssignment && isOtherAssignment;
         });
@@ -71,7 +58,7 @@ public class ChangedValueAggregatorImp : ChangedValueAggregator
     {
         return changedValues.Where(m =>
         {
-            var isMainAssignment = m.MessageTypeId == (int)MsgTemplateCode.AssignmentDelete || m.MessageTypeId == (int)MsgTemplateCode.AssignmentInsert;
+            var isMainAssignment = m.MessageTypeId is (int)MsgTemplateCode.AssignmentDelete or (int)MsgTemplateCode.AssignmentInsert;
 
             return m.IsIndirectChangedAssignment && isMainAssignment;
         });
@@ -127,14 +114,15 @@ public class ChangedValueAggregatorImp : ChangedValueAggregator
         return aggregatedChangedValue;
     }
 
-    public IEnumerable<ChangedValue> GetAggreatedValueForIndirectOtherAssignments(IEnumerable<ChangedValue> changedValues)
+    public static IEnumerable<ChangedValue> GetAggregatedValueForIndirectOtherAssignments(IEnumerable<ChangedValue> changedValues)
     {
-        foreach (var value in changedValues)
+        var changedValuesList = changedValues.ToList();
+        foreach (var value in changedValuesList)
         {
             value.MessageTypeId = (int)MsgTemplateCode.AssignmentUpdate;
         }
 
-        return changedValues;
+        return changedValuesList;
     }
 }
 
@@ -155,7 +143,7 @@ internal class AssignmentGroup
     {
         var other = obj as AssignmentGroup;
 
-        var condition1 = MatchId == other!.MatchId && BetTypeName == other.BetTypeName && AssigneeId == other.AssigneeId;
+        var condition1 = MatchId == other.MatchId && BetTypeName == other.BetTypeName && AssigneeId == other.AssigneeId;
         var condition2 = IsIndirectChanged == other.IsIndirectChanged;
 
         return condition1 && condition2;

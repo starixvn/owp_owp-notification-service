@@ -59,7 +59,7 @@ public class Handler : IRequestHandler<AssignmentUploadNotifyRequest, Unit>
         var watcherChangedValues = await watcherChangedValueGenerator.Create(messages, assigneeChangedValues);
         var allChangedValues = watcherChangedValues.Union(assigneeChangedValues).ToList();
         var aggregatedChangedValues = changedValueAggregator.Aggregate(allChangedValues);
-        var messageModels = messageFactory.Transform(aggregatedChangedValues, request.UserName);
+        var messageModels = messageFactory.Transform(aggregatedChangedValues, request.UserName).ToList();
         await commandRepository.InsertMessage(messageModels, request.SessionId, request.ActorId);
         var messageSender = BuildMessageSender(messageModels);
         await notificationService.Notify(messageSender);
@@ -67,10 +67,10 @@ public class Handler : IRequestHandler<AssignmentUploadNotifyRequest, Unit>
         return Unit.Value;
     }
 
-    private IList<MessageModelCommon<MessageModel>> BuildMessageSender(IList<Models.MessageModel> messageModels)
-        => messageModels.Select(m => new MessageModelCommon<MessageModel>()
+    private static IList<MessageModelCommon<MessageModel>> BuildMessageSender(IEnumerable<Models.MessageModel> messageModels)
+        => messageModels.Select(m => new MessageModelCommon<MessageModel>
         {
-            Message = new()
+            Message = new MessageModel
             {
                 MessageContent = m.MessageContent,
                 MessageType = m.MessageType,

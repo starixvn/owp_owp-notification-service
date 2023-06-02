@@ -1,8 +1,8 @@
 ﻿namespace OWP.AssignmentUploadNotification.Services;
 
+using Models;
 using System.Collections.Generic;
 using System.Linq;
-using Models;
 
 public interface ChangedDetector
 {
@@ -11,12 +11,6 @@ public interface ChangedDetector
     List<MatchAssignment> GetInsertedAssignments(List<MatchAssignment> oldAssignments, List<MatchAssignment> newAssignments);
 
     ChangedSnapshot GetChangedSnapshot(AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot);
-
-    List<int> GetDeletedMatches(AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot);
-
-    List<int> GetInsertedMatches(AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot);
-
-    List<int> GetChangedMatches(AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot);
 }
 
 public class ChangedDetectorImp : ChangedDetector
@@ -63,17 +57,17 @@ public class ChangedDetectorImp : ChangedDetector
         return newAssignments.Except(oldAssignments, new MatchAssignmentComparer()).ToList();
     }
 
-    public List<int> GetDeletedMatches(AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot)
+    public static List<int> GetDeletedMatches(AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot)
     {
         return oldSnapshot.Matches.Keys.Except(newSnapshot.Matches.Keys).ToList();
     }
 
-    public List<int> GetInsertedMatches(AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot)
+    public static List<int> GetInsertedMatches(AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot)
     {
         return newSnapshot.Matches.Keys.Except(oldSnapshot.Matches.Keys).ToList();
     }
 
-    public List<int> GetChangedMatches(AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot)
+    public static List<int> GetChangedMatches(AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot)
     {
         return newSnapshot.Matches.Keys.Intersect(oldSnapshot.Matches.Keys).ToList();
     }

@@ -27,7 +27,7 @@ public class ChangedMatchStatusGeneratorUnitTests
                 new(){MatchId=111, InfoSiteMatchId=111, MatchStatus="Live", LeagueName="LeagueA",Home="HomeA",Away="AwayA"},
                 new(){MatchId=222, InfoSiteMatchId=222, MatchStatus="Cancel", LeagueName="LeagueB",Home="HomeB",Away="AwayB"}
             },
-            ChangedMatches = new List<GeneralMatch>()
+            ChangedMatches = new List<GeneralMatch>
             {
                 new(){MatchId=111, InfoSiteMatchId=111, MatchStatus="Live", LeagueName="LeagueA",Home="HomeA",Away="AwayA"},
                 new(){MatchId=222, InfoSiteMatchId=222, MatchStatus="Cancel", LeagueName="LeagueB",Home="HomeB",Away="AwayB"}
@@ -37,9 +37,9 @@ public class ChangedMatchStatusGeneratorUnitTests
         {
             PrematchInfosites = new Dictionary<int, List<InfositePrematchLeague>>
             {
-                {111, new(){ new(){ PreMatchLeagueId=100, InfoSiteMatchId=111, PrematchAssigneeIds=new List<int>{8,9}, LeagueName="LeagueA",HomeName="HomeA",AwayName="AwayA" },
-                             new(){ PreMatchLeagueId=333, InfoSiteMatchId=111, PrematchAssigneeIds=new List<int>{10,11,8} }} },
-                {222, new(){ new(){ PreMatchLeagueId=200, InfoSiteMatchId=222, PrematchAssigneeIds=new List<int>{}, LeagueName="LeagueB",HomeName="HomeB",AwayName="AwayB" } } }
+                {111, new(){ new InfositePrematchLeague { PreMatchLeagueId=100, InfoSiteMatchId=111, PrematchAssigneeIds=new List<int>{8,9}, LeagueName="LeagueA",HomeName="HomeA",AwayName="AwayA" },
+                             new InfositePrematchLeague { PreMatchLeagueId=333, InfoSiteMatchId=111, PrematchAssigneeIds=new List<int>{10,11,8} }} },
+                {222, new(){ new InfositePrematchLeague { PreMatchLeagueId=200, InfoSiteMatchId=222, PrematchAssigneeIds=new List<int>(), LeagueName="LeagueB",HomeName="HomeB",AwayName="AwayB" } } }
             },
             AllLSTEmployees = new List<int> { 1, 2, 3 }
         };

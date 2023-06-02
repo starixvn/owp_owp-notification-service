@@ -37,20 +37,20 @@ public class ChangedLinkedMatchDetectorUnitTests
             new(){MatchId=666, InfoSiteMatchId=666} // not contain in prematch
         };
 
-        var deletedMatches = new List<GeneralMatch>()
+        var deletedMatches = new List<GeneralMatch>
         {
             new(){MatchId=111, InfoSiteMatchId=111},
             new(){MatchId=222, InfoSiteMatchId=222}
         };
-        var insertedMatches = new List<GeneralMatch>()
+        var insertedMatches = new List<GeneralMatch>
         {
             new(){MatchId=111, InfoSiteMatchId=222}
         };
-        var changedMatches = new List<GeneralMatch>()
+        var changedMatches = new List<GeneralMatch>
         {
             new(){MatchId=444, InfoSiteMatchId=444,MatchStatus="Live"}
         };
-        var employees = new Employee()
+        var employees = new Employee
         {
             PrematchInfosites = new Dictionary<int, List<InfositePrematchLeague>>
             {

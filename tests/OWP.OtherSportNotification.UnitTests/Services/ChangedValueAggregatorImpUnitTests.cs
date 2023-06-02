@@ -23,10 +23,10 @@ public class ChangedValueAggregatorImpUnitTests
         var service = new ChangedValueAggregatorImp(mapper);
 
         // Act
-        var actual = service.GetNonAggregatedChangedValues(changedValues);
+        var actual = service.GetNonAggregatedChangedValues(changedValues).ToList();
 
         // Assert
-        Assert.Equal(5, actual.Count());
+        Assert.Equal(5, actual.Count);
         Assert.Contains(actual, item => item.OSMatchId == 10 & item.BetTypeName == "1H (HDP)");
         Assert.Contains(actual, item => item.OSMatchId == 10 & item.BetTypeName == "1Q & 3Q (HDP)");
         Assert.Contains(actual, item => item.OSMatchId == 10 & item.BetTypeName == "FT (OU/OE)");
@@ -42,10 +42,10 @@ public class ChangedValueAggregatorImpUnitTests
         var service = new ChangedValueAggregatorImp(mapper);
 
         // Act
-        var actual = service.GetIndirectOtherAssignmentChangedValues(changedValues);
+        var actual = service.GetIndirectOtherAssignmentChangedValues(changedValues).ToList();
 
         // Assert
-        Assert.Equal(2, actual.Count());
+        Assert.Equal(2, actual.Count);
         Assert.Contains(actual, item => item.OSMatchId == 20 & item.MessageTypeId == (int)MsgTemplateCode.OtherAssignmentInsert);
         Assert.Contains(actual, item => item.OSMatchId == 20 & item.MessageTypeId == (int)MsgTemplateCode.OtherAssignmentDelete);
     }
@@ -58,10 +58,10 @@ public class ChangedValueAggregatorImpUnitTests
         var service = new ChangedValueAggregatorImp(mapper);
 
         // Act
-        var actual = service.GetIndirectMainAssignmentChangedValues(changedValues);
+        var actual = service.GetIndirectMainAssignmentChangedValues(changedValues).ToList();
 
         // Assert
-        Assert.Equal(4, actual.Count());
+        Assert.Equal(4, actual.Count);
         Assert.Contains(actual, item => item.OSMatchId == 20 & item.MessageTypeId == (int)MsgTemplateCode.AssignmentInsert && item.BetTypeName == "1H (OU)");
         Assert.Contains(actual, item => item.OSMatchId == 20 & item.MessageTypeId == (int)MsgTemplateCode.AssignmentInsert && item.BetTypeName == "1Q & 3Q (OU/OE)");
         Assert.Contains(actual, item => item.OSMatchId == 20 & item.MessageTypeId == (int)MsgTemplateCode.AssignmentDelete && item.BetTypeName == "1Q & 3Q (OU)");

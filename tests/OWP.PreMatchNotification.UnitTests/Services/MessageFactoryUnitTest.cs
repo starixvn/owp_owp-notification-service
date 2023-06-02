@@ -2,7 +2,7 @@
 
 public class MessageFactoryUnitTest
 {
-    private MessageFactory MockService()
+    private static MessageFactory MockService()
     {
         return new MessageFactoryImp();
     }
@@ -18,7 +18,7 @@ public class MessageFactoryUnitTest
             {
                IsBlinking=true,
                IsImportant = true,
-               MessageContent = "New Add VLeague",
+               MessageContent = "New Add League",
                MessageType = (int)MsgTemplateCode.NewLeague,
                ReceivedUserIds = new List<string> { "2","3","5"}
             }
@@ -39,21 +39,21 @@ public class MessageFactoryUnitTest
             new()
             {
                IsImportant = true,
-               MessageContent = "[DayShift] You have NEW ASSIGNMENT <b>O/U</b> in <b>VLeague</b>",
+               MessageContent = "[DayShift] You have NEW ASSIGNMENT <b>O/U</b> in <b>League</b>",
                MessageType = (int)MsgTemplateCode.DayShiftAssignmentInsert,
                ReceivedUserIds = new List<string> { "12","1"}
             },
             new()
             {
                IsImportant = true,
-               MessageContent = "[DayShift] You have been REMOVED from <b>O/U</b> in <b>VLeague</b>",
+               MessageContent = "[DayShift] You have been REMOVED from <b>O/U</b> in <b>League</b>",
                MessageType = (int)MsgTemplateCode.DayShiftAssignmentDelete,
                ReceivedUserIds = new List<string> { "2"}
             },
             new()
             {
                IsImportant = true,
-               MessageContent = "[DayShift] O/U's Assignee has been updated from <b>Sa</b> to <b>Starix15</b> in your assignment <b>VLeague</b>",
+               MessageContent = "[DayShift] O/U's Assignee has been updated from <b>Sa</b> to <b>Starix15</b> in your assignment <b>League</b>",
                MessageType = (int)MsgTemplateCode.DayShiftOtherAssignmentUpdate,
                ReceivedUserIds = new List<string> { "13"}
             },
@@ -112,7 +112,7 @@ public class MessageFactoryUnitTest
             {
                IsBlinking=true,
                IsImportant = true,
-               MessageContent = "CANCEL LIVE for 04:02 AM - VLeague - HomeA -vs- AwayA",
+               MessageContent = "CANCEL LIVE for 04:02 AM - League - HomeA -vs- AwayA",
                MessageType = (int)MsgTemplateCode.LGACancelLiveMatch,
                ReceivedUserIds = new List<string> { "1","2"}
             }
@@ -164,13 +164,13 @@ public class MessageFactoryUnitTest
         {
             new()
             {
-                League = "VLeague",
+                League = "League",
                 ReceivedUserIds = new List<int> { 2, 3 },
                 MessageTypeId= (int) MsgTemplateCode.NewLeague
             },
             new()
             {
-                League = "VLeague",
+                League = "League",
                 ReceivedUserIds = new List<int> { 3, 5 },
                 MessageTypeId= (int) MsgTemplateCode.NewLeague
             }
@@ -184,20 +184,20 @@ public class MessageFactoryUnitTest
             new()
             {
                 BetTypeName = "O/U",
-                League = "VLeague",
+                League = "League",
                 MessageTypeId = (int)MsgTemplateCode.DayShiftAssignmentInsert,
                 ReceivedUserIds = new List<int>{12,1}
             },
             new()
             {
                 BetTypeName = "O/U",
-                League = "VLeague",
+                League = "League",
                 MessageTypeId = (int)MsgTemplateCode.DayShiftAssignmentDelete,
                 ReceivedUserIds = new List<int>{2}
             },
             new()
             {
-                League = "VLeague",
+                League = "League",
                 BetTypeName = "O/U",
                 OldValue = "Sa",
                 NewValue = "Starix15",
@@ -256,7 +256,7 @@ public class MessageFactoryUnitTest
             new()
             {
                 MessageTypeId=(int)MsgTemplateCode.LGACancelLiveMatch,
-                League="VLeague",
+                League="League",
                 Home="HomeA",
                 Away="AwayA",
                 KoTime = "04:02 AM",

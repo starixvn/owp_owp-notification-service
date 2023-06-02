@@ -50,7 +50,7 @@ public class OtherAssignmentDetectorImp : OtherAssignmentDetector
             return;
         }
 
-        var userId = newSnapshot.HdpUserId.Value;
+        var userId = newSnapshot.HdpUserId;
         changedValueHdpTakeOverDetector.DetectMain(oldSnapshot, newSnapshot, changedValues, userId);
         changedValueHdpTakeOverDetector.DetectOther(oldSnapshot, newSnapshot, changedValues, userId);
         changedValueOuDetector.DetectOther(oldSnapshot, newSnapshot, changedValues, userId);
@@ -68,7 +68,7 @@ public class OtherAssignmentDetectorImp : OtherAssignmentDetector
             return;
         }
 
-        var userId = newSnapshot.HdpTakeOverUserId.Value;
+        var userId = newSnapshot.HdpTakeOverUserId;
         changedValueHdpDetector.DetectMain(oldSnapshot, newSnapshot, changedValues, userId);
         changedValueHdpDetector.DetectOther(oldSnapshot, newSnapshot, changedValues, userId);
         changedValueOuDetector.DetectOther(oldSnapshot, newSnapshot, changedValues, userId);
@@ -86,7 +86,7 @@ public class OtherAssignmentDetectorImp : OtherAssignmentDetector
             return;
         }
 
-        var userId = newSnapshot.OtherHdpUserId.Value;
+        var userId = newSnapshot.OtherHdpUserId;
         changedValueHdpDetector.DetectMain(oldSnapshot, newSnapshot, changedValues, userId);
         changedValueHdpTakeOverDetector.DetectMain(oldSnapshot, newSnapshot, changedValues, userId);
         changedValueHdpTakeOverDetector.DetectOther(oldSnapshot, newSnapshot, changedValues, userId);
@@ -104,7 +104,7 @@ public class OtherAssignmentDetectorImp : OtherAssignmentDetector
             return;
         }
 
-        var userId = newSnapshot.OtherHdpTakeOverUserId!.Value;
+        var userId = newSnapshot.OtherHdpTakeOverUserId;
         changedValueHdpDetector.DetectMain(oldSnapshot, newSnapshot, changedValues, userId);
         changedValueHdpDetector.DetectOther(oldSnapshot, newSnapshot, changedValues, userId);
         changedValueHdpTakeOverDetector.DetectMain(oldSnapshot, newSnapshot, changedValues, userId);
@@ -122,7 +122,7 @@ public class OtherAssignmentDetectorImp : OtherAssignmentDetector
             return;
         }
 
-        var userId = newSnapshot.OtherOuUserId.Value;
+        var userId = newSnapshot.OtherOuUserId;
         changedValueHdpDetector.DetectMain(oldSnapshot, newSnapshot, changedValues, userId);
         changedValueHdpTakeOverDetector.DetectMain(oldSnapshot, newSnapshot, changedValues, userId);
         changedValueHdpDetector.DetectOther(oldSnapshot, newSnapshot, changedValues, userId);
@@ -140,7 +140,7 @@ public class OtherAssignmentDetectorImp : OtherAssignmentDetector
             return;
         }
 
-        var userId = newSnapshot.OtherOuTakeOverUserId.Value;
+        var userId = newSnapshot.OtherOuTakeOverUserId;
         changedValueHdpDetector.DetectMain(oldSnapshot, newSnapshot, changedValues, userId);
         changedValueHdpTakeOverDetector.DetectMain(oldSnapshot, newSnapshot, changedValues, userId);
         changedValueHdpDetector.DetectOther(oldSnapshot, newSnapshot, changedValues, userId);
@@ -156,7 +156,7 @@ public class OtherAssignmentDetectorImp : OtherAssignmentDetector
         {
             return;
         }
-        var userId = newSnapshot.OuUserId.Value;
+        var userId = newSnapshot.OuUserId;
         changedValueHdpDetector.DetectMain(oldSnapshot, newSnapshot, changedValues, userId);
         changedValueHdpTakeOverDetector.DetectMain(oldSnapshot, newSnapshot, changedValues, userId);
         changedValueHdpDetector.DetectOther(oldSnapshot, newSnapshot, changedValues, userId);
@@ -174,7 +174,7 @@ public class OtherAssignmentDetectorImp : OtherAssignmentDetector
             return;
         }
 
-        var userId = newSnapshot.OuTakeOverUserId.Value;
+        var userId = newSnapshot.OuTakeOverUserId;
         changedValueHdpDetector.DetectMain(oldSnapshot, newSnapshot, changedValues, userId);
         changedValueHdpTakeOverDetector.DetectMain(oldSnapshot, newSnapshot, changedValues, userId);
         changedValueHdpDetector.DetectOther(oldSnapshot, newSnapshot, changedValues, userId);

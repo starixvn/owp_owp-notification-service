@@ -21,7 +21,7 @@ public class ChangedAssignmentGeneratorUnitTests
         var matchSnapshot = GetMatchSnapshot();
 
         // Act
-        var actual = services.GetDeletedAssignmentChangedValues(matchSnapshot).Where(x => x.AssigneeId != 0);
+        var actual = services.GetDeletedAssignmentChangedValues(matchSnapshot).Where(x => x.AssigneeId != 0).ToList();
 
         // Assert
         Assert.Single(actual);
@@ -41,7 +41,7 @@ public class ChangedAssignmentGeneratorUnitTests
         var matchSnapshot = GetMatchSnapshot();
 
         // Act
-        var actual = services.GetInsertedAssignmentChangedValues(matchSnapshot).Where(x => x.AssigneeId != 0);
+        var actual = services.GetInsertedAssignmentChangedValues(matchSnapshot).Where(x => x.AssigneeId != 0).ToList();
 
         // Assert
         Assert.Single(actual);
@@ -84,7 +84,7 @@ public class ChangedAssignmentGeneratorUnitTests
     public void GetAssignmentsOfMatchWhichIsChangedToLive_Always_ReturnEmpty()
     {
         // Arrange
-        var matchSnapshot = GetMatchSnapshot("POSTPONED", "Live");
+        var matchSnapshot = GetMatchSnapshot("POSTPONED");
 
         // Act
         var actual = ChangedAssignmentGeneratorImp.GetAssignmentsOfMatchWhichIsChangedToLive(matchSnapshot);

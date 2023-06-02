@@ -28,11 +28,11 @@ public class AssigneeChangedValueFilterUnitTest
             new()
             {
                 MessageTypeId = 25,
-                NewValue = "Rossi",
+                NewValue = "Rose",
                 OldValue = "Bow",
-                League = "PremierLeague-Coners",
+                League = "PremierLeague-Corners",
                 MatchNo = "20000",
-                EventName = "LiverPool-Coners -vs- Arsenal-Coners",
+                EventName = "LiverPool-Corners -vs- Arsenal-Corners",
                 AssigneeId = 6789,
                 AssigneeName = "esther",
                 NotificationSettingId = 11
@@ -58,9 +58,9 @@ public class AssigneeChangedValueFilterUnitTest
                 MessageTypeId = 40,
                 NewValue = "20000",
                 OldValue = "1234",
-                League = "PremierLeague-Coners",
+                League = "PremierLeague-Corners",
                 MatchNo = "20000",
-                EventName = "LiverPool-Coners -vs- Arsenal-Coners",
+                EventName = "LiverPool-Corners -vs- Arsenal-Corners",
                 AssigneeId = 6789,
                 AssigneeName = "esther",
                 NotificationSettingId = 5
@@ -80,9 +80,9 @@ public class AssigneeChangedValueFilterUnitTest
             MessageTypeId = 40,
             NewValue = "20000",
             OldValue = "1234",
-            League = "PremierLeague-Coners",
+            League = "PremierLeague-Corners",
             MatchNo = "20000",
-            EventName = "LiverPool-Coners -vs- Arsenal-Coners",
+            EventName = "LiverPool-Corners -vs- Arsenal-Corners",
             AssigneeId = 6789,
             AssigneeName = "esther"
         };
@@ -90,11 +90,11 @@ public class AssigneeChangedValueFilterUnitTest
         var valueChanged2 = new ChangedValue
         {
             MessageTypeId = 25,
-            NewValue = "Rossi",
+            NewValue = "Rose",
             OldValue = "Bow",
-            League = "PremierLeague-Coners",
+            League = "PremierLeague-Corners",
             MatchNo = "20000",
-            EventName = "LiverPool-Coners -vs- Arsenal-Coners",
+            EventName = "LiverPool-Corners -vs- Arsenal-Corners",
             AssigneeId = 6789,
             AssigneeName = "esther"
         };

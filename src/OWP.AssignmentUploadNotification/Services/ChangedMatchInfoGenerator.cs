@@ -63,7 +63,7 @@ public class ChangedMatchInfoGeneratorImp : ChangedMatchInfoGenerator
                 AssigneeName = a.AssigneeName
             });
 
-            changedValueList.AddRange(changedValues);
+            changedValueList.AddRange(changedValues.ToList());
         }
 
         return changedValueList;

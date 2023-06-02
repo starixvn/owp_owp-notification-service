@@ -100,7 +100,7 @@ public class ChangedMatchInfoGeneratorUnitTests
             Remark = "remark1",
             Reporter = "Reporter1",
             Provider = "Provider1",
-            League = "VLeague",
+            League = "League",
             Home = "Home name",
             Away = "away name"
         };
@@ -116,7 +116,7 @@ public class ChangedMatchInfoGeneratorUnitTests
             Remark = "remark2",
             Reporter = "Reporter2",
             Provider = "Provider2",
-            League = "VLeague",
+            League = "League",
             Home = "Home name",
             Away = "away name"
         };
@@ -139,7 +139,7 @@ public class ChangedMatchInfoGeneratorUnitTests
                     OldValue="AB2",
                     UserId=8,
                     Username="sa",
-                    League="VLeague",
+                    League="League",
                     EventName= "Home name -vs- away name"
                 },new()
                 {
@@ -149,7 +149,7 @@ public class ChangedMatchInfoGeneratorUnitTests
                     OldValue="offer",
                     UserId=8,
                     Username="sa",
-                    League="VLeague",
+                    League="League",
                     EventName= "Home name -vs- away name"
                 },new()
                 {
@@ -159,7 +159,7 @@ public class ChangedMatchInfoGeneratorUnitTests
                     OldValue="Yes",
                     UserId=8,
                     Username="sa",
-                    League="VLeague",
+                    League="League",
                     EventName= "Home name -vs- away name"
                 },new()
                 {
@@ -169,7 +169,7 @@ public class ChangedMatchInfoGeneratorUnitTests
                     OldValue="Other1",
                     UserId=8,
                     Username="sa",
-                    League="VLeague",
+                    League="League",
                     EventName= "Home name -vs- away name"
                 },new()
                 {
@@ -179,7 +179,7 @@ public class ChangedMatchInfoGeneratorUnitTests
                     OldValue="TV1",
                     UserId=8,
                     Username="sa",
-                    League="VLeague",
+                    League="League",
                     EventName= "Home name -vs- away name"
                 },new()
                 {
@@ -189,7 +189,7 @@ public class ChangedMatchInfoGeneratorUnitTests
                     OldValue="Streaming1",
                     UserId=8,
                     Username="sa",
-                    League="VLeague",
+                    League="League",
                     EventName= "Home name -vs- away name"
                 },new()
                 {
@@ -199,7 +199,7 @@ public class ChangedMatchInfoGeneratorUnitTests
                     OldValue="remark1",
                     UserId=8,
                     Username="sa",
-                    League="VLeague",
+                    League="League",
                     EventName= "Home name -vs- away name"
                 },new()
                 {
@@ -209,7 +209,7 @@ public class ChangedMatchInfoGeneratorUnitTests
                     NewValue="Reporter2",
                     UserId=8,
                     Username="sa",
-                    League="VLeague",
+                    League="League",
                     EventName= "Home name -vs- away name"
                 },new()
                 {
@@ -219,7 +219,7 @@ public class ChangedMatchInfoGeneratorUnitTests
                     NewValue="Provider2",
                     UserId=8,
                     Username="sa",
-                    League="VLeague",
+                    League="League",
                     EventName= "Home name -vs- away name"
                 }
             };

@@ -37,7 +37,7 @@ public class ChangedLiveMatchGeneratorImp : ChangedLiveMatchGenerator
         foreach (var match in matches)
         {
             var prematchInfosite = employees.PrematchInfosites.GetValue(match.InfoSiteMatchId);
-            var prematchAssigneeIds = prematchInfosite.SelectMany(x => x.PrematchAssigneeIds);
+            var prematchAssigneeIds = prematchInfosite.SelectMany(x => x.PrematchAssigneeIds).ToList();
             var infositeInfo = prematchInfosite[0];
 
             yield return new ChangedValue

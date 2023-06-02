@@ -2,6 +2,7 @@
 using OWP.AssignmentUploadNotification.Models;
 using OWP.AssignmentUploadNotification.Services;
 using Xunit;
+using Xunit.Asserts.Compare;
 
 namespace OWP.AssignmentUploadNotification.UnitTests.Notification.Services;
 
@@ -21,7 +22,7 @@ public class ChangedValueByCacheAndDatabaseUnitTests
     }
 
     [Fact]
-    public void Create_Always_ReturnChangedValue()
+    public async Task Create_Always_ReturnChangedValue()
     {
         // Arrange
         var changedValues = new List<ChangedValue>
@@ -36,9 +37,9 @@ public class ChangedValueByCacheAndDatabaseUnitTests
         changedValueBySnapshot.Create(Arg.Compat.Any<AssignmentSnapshot>(), Arg.Compat.Any<AssignmentSnapshot>()).Returns(changedValues);
 
         // Act
-        var actual = services.Create("abc", new DateTime(2020, 12, 10));
+        var actual = await services.Create("abc", new DateTime(2020, 12, 10));
 
         // Assert
-        Equals(changedValues, actual);
+        DeepAssert.Equal(changedValues, actual);
     }
 }

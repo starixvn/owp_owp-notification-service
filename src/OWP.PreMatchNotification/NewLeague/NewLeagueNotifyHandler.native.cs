@@ -25,7 +25,7 @@ public class NewLeagueNotifyHandler : IRequestHandler<PrematchNewLeagueNotifyReq
 
     private readonly NotificationService notificationService;
 
-    private const string OLD_PREMATCHLEAGUES_SNAPSHOT_KEY = "OWP-Old-PreMatchLeagues";
+    private const string OldPrematchLeaguesSnapshotKey = "OWP-Old-PreMatchLeagues";
 
     public NewLeagueNotifyHandler(
         CacheManipulatorCommon cacheManipulator,
@@ -57,7 +57,7 @@ public class NewLeagueNotifyHandler : IRequestHandler<PrematchNewLeagueNotifyReq
 
     private async Task<IList<ChangedValue>> GenerateMessages(PrematchNewLeagueNotifyRequest request)
     {
-        var cacheKey = $"{OLD_PREMATCHLEAGUES_SNAPSHOT_KEY}-{request.SessionId}";
+        var cacheKey = $"{OldPrematchLeaguesSnapshotKey}-{request.SessionId}";
         var oldSnapshot = await cacheManipulator.GetMultipleData<PreMatchLeague>(cacheKey);
         await cacheManipulator.RemoveData(cacheKey);
 

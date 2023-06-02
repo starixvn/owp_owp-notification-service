@@ -1,10 +1,10 @@
 ﻿namespace OWP.AssignmentUploadNotification.Services;
 
+using Constants;
+using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Constants;
-using Models;
 
 public interface ChangedMatchStatusGenerator
 {
@@ -44,33 +44,35 @@ public class ChangedMatchStatusGeneratorImp : ChangedMatchStatusGenerator
         }
 
         var ignored = IsIgnoredMinorMatch(snapshot.NewMatch.MatchType);
-        if (!ignored && isMinorMatch)
+        if (ignored || !isMinorMatch)
         {
-            var mainMatch = snapshot.NewSnapshot.Matches[snapshot.NewMatch.ParentMatchId];
-            var messages = existingAssignees.Select(a => new ChangedValue
-            {
-                MessageTypeId = (int)MsgTemplateCode.MinorMatchStatus,
-                OldValue = snapshot.OldMatch.MatchStatus,
-                NewValue = snapshot.NewMatch.MatchStatus,
-                MatchNo = mainMatch.MatchNo,
-                League = mainMatch.LeagueName,
-                BetTypeName = snapshot.NewMatch.MinorBettypeName,
-                EventName = mainMatch.Home + EVENT_VS + mainMatch.Away,
-                AssigneeId = a.AssigneeId,
-                AssigneeName = a.AssigneeName
-            });
-
-            changedValueList.AddRange(messages);
+            return changedValueList;
         }
+
+        var mainMatch = snapshot.NewSnapshot.Matches[snapshot.NewMatch.ParentMatchId];
+        var messages = existingAssignees.Select(a => new ChangedValue
+        {
+            MessageTypeId = (int)MsgTemplateCode.MinorMatchStatus,
+            OldValue = snapshot.OldMatch.MatchStatus,
+            NewValue = snapshot.NewMatch.MatchStatus,
+            MatchNo = mainMatch.MatchNo,
+            League = mainMatch.LeagueName,
+            BetTypeName = snapshot.NewMatch.MinorBettypeName,
+            EventName = mainMatch.Home + EVENT_VS + mainMatch.Away,
+            AssigneeId = a.AssigneeId,
+            AssigneeName = a.AssigneeName
+        });
+
+        changedValueList.AddRange(messages);
 
         return changedValueList;
     }
 
     public static bool IsCancelSuspendedPostponedStatus(string matchStatus)
     {
-        return matchStatus.IndexOf("CANCEL", StringComparison.CurrentCultureIgnoreCase) >= 0
-               || matchStatus.IndexOf("SUSPENDED", StringComparison.CurrentCultureIgnoreCase) >= 0
-               || matchStatus.IndexOf("POSTPONED", StringComparison.CurrentCultureIgnoreCase) >= 0;
+        return matchStatus.Contains("CANCEL", StringComparison.CurrentCultureIgnoreCase)
+               || matchStatus.Contains("SUSPENDED", StringComparison.CurrentCultureIgnoreCase)
+               || matchStatus.Contains("POSTPONED", StringComparison.CurrentCultureIgnoreCase);
     }
 
     public static bool IsIgnoredMinorMatch(int matchType)

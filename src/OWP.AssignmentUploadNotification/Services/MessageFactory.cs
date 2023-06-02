@@ -1,15 +1,15 @@
 ﻿namespace OWP.AssignmentUploadNotification.Services;
 
+using Constants;
+using Models;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Constants;
-using Models;
 
 public interface MessageFactory
 {
-    List<MessageModel> Transform(List<ChangedValue> changedValues, string userName);
+    IEnumerable<MessageModel> Transform(IEnumerable<ChangedValue> changedValues, string userName);
 }
 
 public class MessageFactoryImp : MessageFactory
@@ -227,7 +227,8 @@ public class MessageFactoryImp : MessageFactory
         }
 
         public string AssignmentNote { get; set; }
-        public int BetTypeId { get; set; }
+
+        private int BetTypeId { get; set; }
 
         public string BetTypeName { get; set; }
 
@@ -277,7 +278,7 @@ public class MessageFactoryImp : MessageFactory
 
     #region MessageModelRaw
 
-    private class MessageModelRaw
+    private sealed class MessageModelRaw
     {
         public string MessageContent { get; set; }
 
@@ -294,13 +295,13 @@ public class MessageFactoryImp : MessageFactory
 
     private static readonly Dictionary<int, MessageTemplate> messageTemplateMap = messageTemplates.ToDictionary(m => m.MessageType, m => m);
 
-    public List<MessageModel> Transform(List<ChangedValue> changedValues, string userName)
+    public IEnumerable<MessageModel> Transform(IEnumerable<ChangedValue> changedValues, string userName)
     {
         var messageModels = TransformChangedValueToMessageModel(changedValues, userName);
         return Reduce(messageModels);
     }
 
-    private List<MessageModelRaw> TransformChangedValueToMessageModel(List<ChangedValue> changedValues, string userName)
+    private static IEnumerable<MessageModelRaw> TransformChangedValueToMessageModel(IEnumerable<ChangedValue> changedValues, string userName)
     {
         return changedValues.GroupBy(v => new MessageGroup(v))
             .Select(g =>
@@ -339,7 +340,7 @@ public class MessageFactoryImp : MessageFactory
         return content;
     }
 
-    private static List<MessageModel> Reduce(List<MessageModelRaw> messageModels)
+    private static IEnumerable<MessageModel> Reduce(IEnumerable<MessageModelRaw> messageModels)
     {
         return messageModels.GroupBy(m => new { m.MessageContent, m.IsImportant, m.IsWatcher, m.MessageType })
             .Select(m =>

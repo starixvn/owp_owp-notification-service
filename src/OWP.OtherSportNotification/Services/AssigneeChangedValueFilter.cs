@@ -21,7 +21,7 @@ public class AssigneeMessageFilterImp : AssigneeChangedValueFilter
     {
         changedValues.ForEach(c => c.NotificationSettingId = NotificationSettingHelper.GetNotificationSettingIdForAssignee(c.MessageTypeId, c.IsIndirectChangedAssignment));
 
-        var unsubcribeSettings = await repository.GetUnsubscribeSettings();
-        return changedValues.Where(m => !unsubcribeSettings.Contains($"{m.UserId}-{m.NotificationSettingId}")).ToList();
+        var unsubscribeSettings = await repository.GetUnsubscribeSettings();
+        return changedValues.Where(m => !unsubscribeSettings.Contains($"{m.UserId}-{m.NotificationSettingId}")).ToList();
     }
 }

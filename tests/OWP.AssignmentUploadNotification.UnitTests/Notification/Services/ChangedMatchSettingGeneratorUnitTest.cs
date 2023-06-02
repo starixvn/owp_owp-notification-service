@@ -55,7 +55,7 @@ public class ChangedMatchSettingGeneratorUnitTest
         DeepAssert.Equal(expected, actual);
     }
 
-    private List<ChangedValue> DataExpected()
+    private static List<ChangedValue> DataExpected()
     {
         var valueChanged = new ChangedValue
         {
@@ -96,53 +96,11 @@ public class ChangedMatchSettingGeneratorUnitTest
             MessageTypeId = 29
         };
 
-        var valueChanged4 = new ChangedValue
-        {
-            OldValue = "20K",
-            NewValue = "",
-            BetTypeName = "Next of Coners (1H HDP)",
-            MatchNo = "50000",
-            League = "PremierLeague",
-            EventName = "LiverPool -vs- Arsenal",
-            AssigneeId = 6789,
-            AssigneeName = "esther",
-            MessageTypeId = 33
-        };
-
-        var valueChanged5 = new ChangedValue
-        {
-            OldValue = "",
-            NewValue = "40K",
-            BetTypeName = "Next of Coners (FM)",
-            MatchNo = "50000",
-            League = "PremierLeague",
-            EventName = "LiverPool -vs- Arsenal",
-            AssigneeId = 6789,
-            AssigneeName = "esther",
-            MessageTypeId = 33
-        };
-
-        var valueChanged6 = new ChangedValue
-        {
-            OldValue = "",
-            NewValue = "50%",
-            BetTypeName = "Next of Coners (FM)",
-            MatchNo = "50000",
-            League = "PremierLeague",
-            EventName = "LiverPool -vs- Arsenal",
-            AssigneeId = 6789,
-            AssigneeName = "esther",
-            MessageTypeId = 34
-        };
-
         var changedValueList = new List<ChangedValue>
         {
             valueChanged,
             valueChanged2,
             valueChanged3
-            //valueChanged4,
-            //valueChanged5,
-            //valueChanged6
         };
 
         return changedValueList;

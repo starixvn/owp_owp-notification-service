@@ -152,9 +152,7 @@ public class MessageFactoryImp : MessageFactory
 
         content = content.Replace("<newvalue>", "<b><newvalue></b>");
 
-        if (value.MessageTypeId == (int)MsgTemplateCode.UpdateHome ||
-            value.MessageTypeId == (int)MsgTemplateCode.UpdateAway ||
-            value.MessageTypeId == (int)MsgTemplateCode.UpdateKOTime)
+        if (value.MessageTypeId is (int)MsgTemplateCode.UpdateHome or (int)MsgTemplateCode.UpdateAway or (int)MsgTemplateCode.UpdateKOTime)
         {
             content = content.Replace("<oldvalue>", "<b><oldvalue></b>");
         }

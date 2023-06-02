@@ -1,7 +1,7 @@
-﻿using OWP.PreMatchNotification.LinkedMatch.Models;
-using OWP.PreMatchNotification.LinkedMatch.Services;
+﻿using OWP.Core.NotificationRequests.Prematch;
 using OWP.PreMatchNotification.LinkedMatch;
-using OWP.Core.NotificationRequests.Prematch;
+using OWP.PreMatchNotification.LinkedMatch.Models;
+using OWP.PreMatchNotification.LinkedMatch.Services;
 
 namespace OWP.PreMatchNotification.UnitTests.LinkedMatch;
 
@@ -11,18 +11,16 @@ public class LinkedMatchNotifyHandlerUnitTests
     private readonly CacheManipulator cacheManipulator;
     private readonly Repository queryRepository;
     private readonly ChangedLinkedMatchDetector changedValueBySnapshot;
-    private readonly MessageFactory messageFactory;
     private readonly CommandRepository commandRepository;
-    private readonly NotificationService notify;
 
     public LinkedMatchNotifyHandlerUnitTests()
     {
         cacheManipulator = Substitute.For<CacheManipulator>();
         queryRepository = Substitute.For<Repository>();
         changedValueBySnapshot = Substitute.For<ChangedLinkedMatchDetector>();
-        messageFactory = Substitute.For<MessageFactory>();
+        var messageFactory = Substitute.For<MessageFactory>();
         commandRepository = Substitute.For<CommandRepository>();
-        notify = Substitute.For<NotificationService>();
+        var notify = Substitute.For<NotificationService>();
 
         service = new LinkedMatchNotifyHandler(
             cacheManipulator,
@@ -52,7 +50,7 @@ public class LinkedMatchNotifyHandlerUnitTests
         {
             new(){InfoSiteMatchId=111, PreMatchLeagueId=100, PrematchAssigneeIds=new List<int>{1} },
             new(){InfoSiteMatchId=222, PreMatchLeagueId=200, PrematchAssigneeIds=new List<int>{3,4} },
-            new(){InfoSiteMatchId=333, PreMatchLeagueId=300, PrematchAssigneeIds=new List<int>{} }
+            new(){InfoSiteMatchId=333, PreMatchLeagueId=300, PrematchAssigneeIds=new List<int>() }
         };
 
         LinkedMatchNotifyHandler.MapAssignmentWithInfositeId(prematchLeague, prematchAssignees);

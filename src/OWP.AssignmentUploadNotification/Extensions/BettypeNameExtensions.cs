@@ -1,7 +1,7 @@
 ﻿namespace OWP.AssignmentUploadNotification.Extensions;
 
-using System.Collections.Generic;
 using Constants;
+using System.Collections.Generic;
 
 public static class BettypeNameExtensions
 {
@@ -28,16 +28,12 @@ public static class BettypeNameExtensions
 
     public static string GetBettypeNameForMatchSetting(int bettypeId, int minorBettypeId, string minorBettypeName)
     {
-        switch (minorBettypeId)
+        return minorBettypeId switch
         {
-            case 0:
-                return MajorBettypeShortName.GetMajorBetTypeShortName(bettypeId);
-            case (int)MinorBettype.Specific15Mins:
-                return "X MIN";
-            case (int)MinorBettype.FastMarket:
-                return "Fast Market";
-            default:
-                return $"{minorBettypeName} ({MajorBettypeShortName.GetMajorBetTypeShortName(bettypeId)})";
-        }
+            0 => MajorBettypeShortName.GetMajorBetTypeShortName(bettypeId),
+            (int)MinorBettype.Specific15Mins => "X MIN",
+            (int)MinorBettype.FastMarket => "Fast Market",
+            _ => $"{minorBettypeName} ({MajorBettypeShortName.GetMajorBetTypeShortName(bettypeId)})"
+        };
     }
 }

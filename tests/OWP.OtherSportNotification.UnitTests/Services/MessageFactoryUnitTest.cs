@@ -18,7 +18,7 @@ public class MessageFactoryUnitTest
                 new()
                 {
                    IsImportant = false,
-                   MessageContent = "<b>Match No.</b> Updated from 1234 to <b>20000</b> for #20000 - A-Coners - LiverPool-Coners -vs- Arsenal-Coners updated by sa",
+                   MessageContent = "<b>Match No.</b> Updated from 1234 to <b>20000</b> for #20000 - A-Corners - LiverPool-Corners -vs- Arsenal-Corners updated by sa",
                    MessageType = (int)MsgTemplateCode.EditMatchNo,
                    ReceivedUserIds = new List<string> { "6789" }
                 },
@@ -72,19 +72,19 @@ public class MessageFactoryUnitTest
             {
                 new()
                 {
-                   MessageContent = "<b>Max Bet</b> of <b>FT (HDP)</b> Updated from 12000 to <b>11000</b> for #1234 - Vleague - Binh Dinh -vs- Ha Noi updated by sa",
+                   MessageContent = "<b>Max Bet</b> of <b>FT (HDP)</b> Updated from 12000 to <b>11000</b> for #1234 - League - United -vs- Ha Noi updated by sa",
                    MessageType = (int)MsgTemplateCode.EditMaxbet,
                    ReceivedUserIds = new List<string> { "8" }
                 },
                 new()
                 {
-                   MessageContent = "<b>Max Bet</b> of <b>FT (HDP)</b> Updated from 12000 to <b>11000</b> for #1234 - Vleague - Binh Dinh -vs- Ha Noi updated by sa",
+                   MessageContent = "<b>Max Bet</b> of <b>FT (HDP)</b> Updated from 12000 to <b>11000</b> for #1234 - League - United -vs- Ha Noi updated by sa",
                    MessageType = (int)MsgTemplateCode.EditMaxbet,
                    ReceivedUserIds = new List<string> { "11" }
                 },
                  new()
                  {
-                   MessageContent = "<b>Spread</b> of <b>FT (HDP)</b> Updated from 12% to <b>11%</b> for #1234 - Vleague - Binh Dinh -vs- Ha Noi updated by sa",
+                   MessageContent = "<b>Spread</b> of <b>FT (HDP)</b> Updated from 12% to <b>11%</b> for #1234 - League - United -vs- Ha Noi updated by sa",
                    MessageType = (int)MsgTemplateCode.EditSpread,
                    ReceivedUserIds = new List<string> { "8" }
                 }
@@ -147,9 +147,9 @@ public class MessageFactoryUnitTest
             MessageTypeId = (int)MsgTemplateCode.EditMatchNo,
             NewValue = "20000",
             OldValue = "1234",
-            League = "A-Coners",
+            League = "A-Corners",
             MatchNo = "20000",
-            EventName = "LiverPool-Coners -vs- Arsenal-Coners",
+            EventName = "LiverPool-Corners -vs- Arsenal-Corners",
             UserId = 6789,
             Username = "esther"
         };
@@ -183,8 +183,8 @@ public class MessageFactoryUnitTest
                     UserId = 8,
                     Username = "Liam",
                     BetTypeName = "FT (HDP)",
-                    EventName = "Binh Dinh -vs- Ha Noi",
-                    League = "Vleague",
+                    EventName = "United -vs- Ha Noi",
+                    League = "League",
                     MatchNo = "1234",
                     MessageTypeId = (int)MsgTemplateCode.EditMaxbet,
                     NewValue = "11000",
@@ -195,8 +195,8 @@ public class MessageFactoryUnitTest
                     UserId = 11,
                     Username = "Starix1",
                     BetTypeName = "FT (HDP)",
-                    EventName = "Binh Dinh -vs- Ha Noi",
-                    League = "Vleague",
+                    EventName = "United -vs- Ha Noi",
+                    League = "League",
                     MatchNo = "1234",
                     MessageTypeId = (int)MsgTemplateCode.EditMaxbet,
                     NewValue = "11000",
@@ -207,8 +207,8 @@ public class MessageFactoryUnitTest
                     UserId = 8,
                     Username = "Liam",
                     BetTypeName = "FT (HDP)",
-                    EventName = "Binh Dinh -vs- Ha Noi",
-                    League = "Vleague",
+                    EventName = "United -vs- Ha Noi",
+                    League = "League",
                     MatchNo = "1234",
                     MessageTypeId = (int)MsgTemplateCode.EditSpread,
                     NewValue = "11%",

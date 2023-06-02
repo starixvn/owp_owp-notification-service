@@ -24,4 +24,4 @@ public enum MsgTemplateCode
     EditAssignmentNote = 120,
     EditSpread = 121,
     EditNeutral = 122
-};
+}

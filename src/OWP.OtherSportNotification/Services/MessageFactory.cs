@@ -2,6 +2,7 @@
 using OWP.OtherSportNotification.Constants;
 using OWP.OtherSportNotification.Models;
 using System.Collections.Immutable;
+// ReSharper disable All
 
 namespace OWP.OtherSportNotification.Services;
 
@@ -201,7 +202,7 @@ public class MessageFactoryImp : MessageFactory
         return Reduce(messageModels);
     }
 
-    private List<MessageModelRaw> TransformChangedValueToMessageModel(List<ChangedValue> changedValues, string actor)
+    private static List<MessageModelRaw> TransformChangedValueToMessageModel(List<ChangedValue> changedValues, string actor)
     {
         return changedValues.GroupBy(v => new MessageGroup(v))
             .Select(g =>

@@ -10,7 +10,7 @@ public class ChangedValueOuTakeOverDetectorUnitTests
         var hdpTakeOverDetector = new ChangedValueOuTakeOverDetectorImp();
         var oldSnapshot = new AssignmentSnapshot
         {
-            LeagueName = "VLeague",
+            LeagueName = "League",
             IsDay = true,
             OuTakeOver = "Sa",
             OuTakeOverUserId = 8
@@ -28,14 +28,14 @@ public class ChangedValueOuTakeOverDetectorUnitTests
             new ()
             {
                 BetTypeName = "O/U T.OVER",
-                League = "VLeague",
+                League = "League",
                 MessageTypeId = 201,
                 ReceivedUserIds = new List<int>{121}
             },
             new ()
             {
                 BetTypeName = "O/U T.OVER",
-                League = "VLeague",
+                League = "League",
                 MessageTypeId = 202,
                 ReceivedUserIds = new List<int>{8}
             }
@@ -50,7 +50,7 @@ public class ChangedValueOuTakeOverDetectorUnitTests
         var hdpTakeOverDetector = new ChangedValueOuTakeOverDetectorImp();
         var oldSnapshot = new AssignmentSnapshot
         {
-            LeagueName = "VLeague",
+            LeagueName = "League",
             IsDay = true,
             OtherOuTakeOver = "Sa",
             OtherOuTakeOverUserId = 8
@@ -68,14 +68,14 @@ public class ChangedValueOuTakeOverDetectorUnitTests
             new ()
             {
                 BetTypeName = "O/U T.OVER",
-                League = "VLeague",
+                League = "League",
                 MessageTypeId = 201,
                 ReceivedUserIds = new List<int>{121}
             },
             new ()
             {
                 BetTypeName = "O/U T.OVER",
-                League = "VLeague",
+                League = "League",
                 MessageTypeId = 202,
                 ReceivedUserIds = new List<int>{8}
             }
