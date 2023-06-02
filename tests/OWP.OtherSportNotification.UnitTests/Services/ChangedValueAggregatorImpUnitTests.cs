@@ -20,10 +20,9 @@ public class ChangedValueAggregatorImpUnitTests
     {
         // Arrange
         var changedValues = GetChangedValues();
-        var service = new ChangedValueAggregatorImp(mapper);
 
         // Act
-        var actual = service.GetNonAggregatedChangedValues(changedValues).ToList();
+        var actual = ChangedValueAggregatorImp.GetNonAggregatedChangedValues(changedValues).ToList();
 
         // Assert
         Assert.Equal(5, actual.Count);
@@ -39,10 +38,9 @@ public class ChangedValueAggregatorImpUnitTests
     {
         // Arrange
         var changedValues = GetChangedValues();
-        var service = new ChangedValueAggregatorImp(mapper);
 
         // Act
-        var actual = service.GetIndirectOtherAssignmentChangedValues(changedValues).ToList();
+        var actual = ChangedValueAggregatorImp.GetIndirectOtherAssignmentChangedValues(changedValues).ToList();
 
         // Assert
         Assert.Equal(2, actual.Count);
@@ -55,10 +53,9 @@ public class ChangedValueAggregatorImpUnitTests
     {
         // Arrange
         var changedValues = GetChangedValues();
-        var service = new ChangedValueAggregatorImp(mapper);
 
         // Act
-        var actual = service.GetIndirectMainAssignmentChangedValues(changedValues).ToList();
+        var actual = ChangedValueAggregatorImp.GetIndirectMainAssignmentChangedValues(changedValues).ToList();
 
         // Assert
         Assert.Equal(4, actual.Count);
@@ -107,7 +104,7 @@ public class ChangedValueAggregatorImpUnitTests
         Assert.Single(actual, item => item.MessageTypeId == (int)MsgTemplateCode.EditWB);
     }
 
-    private List<ChangedValue> GetChangedValues()
+    private static List<ChangedValue> GetChangedValues()
     {
         const int mainAssignment = 1;
         const int otherAssignment = 2;

@@ -33,7 +33,7 @@ public class ChangedValueAggregatorImp : ChangedValueAggregator
                                         .ToList();
     }
 
-    public IEnumerable<ChangedValue> GetNonAggregatedChangedValues(List<ChangedValue> changedValues)
+    public static IEnumerable<ChangedValue> GetNonAggregatedChangedValues(List<ChangedValue> changedValues)
     {
         return changedValues.Where(m =>
         {
@@ -44,7 +44,7 @@ public class ChangedValueAggregatorImp : ChangedValueAggregator
         });
     }
 
-    public IEnumerable<ChangedValue> GetIndirectOtherAssignmentChangedValues(List<ChangedValue> changedValues)
+    public static IEnumerable<ChangedValue> GetIndirectOtherAssignmentChangedValues(List<ChangedValue> changedValues)
     {
         return changedValues.Where(m =>
         {
@@ -54,7 +54,7 @@ public class ChangedValueAggregatorImp : ChangedValueAggregator
         });
     }
 
-    public IEnumerable<ChangedValue> GetIndirectMainAssignmentChangedValues(List<ChangedValue> changedValues)
+    public static IEnumerable<ChangedValue> GetIndirectMainAssignmentChangedValues(List<ChangedValue> changedValues)
     {
         return changedValues.Where(m =>
         {
