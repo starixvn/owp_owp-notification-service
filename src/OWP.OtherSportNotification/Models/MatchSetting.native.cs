@@ -36,8 +36,8 @@ public class MatchAssignment
         get => BettypeOrder.GetValue(BetTypeName, 0);
     }
 
-    private readonly Dictionary<string, int> BettypeOrder = new Dictionary<string, int>
-        {
+    private readonly Dictionary<string, int> BettypeOrder = new()
+    {
             { Bettype.MatchWinner, -1 },
             { Bettype.FTHDP, 1 },
             { Bettype.FirstHHDP, 2 },

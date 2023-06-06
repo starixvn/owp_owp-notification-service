@@ -27,7 +27,7 @@ public class CacheManipulatorCommonImp : CacheManipulatorCommon
 
     public async Task<IList<T>> GetMultipleData<T>(string key)
     {
-        (_, var value) = await cache.TryGetAsync<string>(key);
+        var (_, value) = await cache.TryGetAsync<string>(key);
         var assignmentSnapshot = string.IsNullOrEmpty(value)
             ? new List<T>()
             : JsonConvert.DeserializeObject<List<T>>(value);
@@ -37,7 +37,7 @@ public class CacheManipulatorCommonImp : CacheManipulatorCommon
 
     public async Task<T> GetSingleData<T>(string key, T defaultValue)
     {
-        (_, var value) = await cache.TryGetAsync<string>(key);
+        var (_, value) = await cache.TryGetAsync<string>(key);
         var assignmentSnapshot = string.IsNullOrEmpty(value)
             ? defaultValue
             : JsonConvert.DeserializeObject<T>(value);

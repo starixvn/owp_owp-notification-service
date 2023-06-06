@@ -9,12 +9,6 @@ public interface ChangedDetector
     List<MatchAssignment> GetInsertedAssignments(List<MatchAssignment> oldAssignments, List<MatchAssignment> newAssignments);
 
     ChangedSnapshot GetChangedSnapshot(AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot);
-
-    List<int> GetDeletedMatches(AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot);
-
-    List<int> GetInsertedMatches(AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot);
-
-    List<int> GetChangedMatches(AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot);
 }
 
 public class ChangedDetectorImp : ChangedDetector

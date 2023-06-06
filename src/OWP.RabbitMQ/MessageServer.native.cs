@@ -13,16 +13,16 @@ public class MessageServer : IHostedService
 {
     private readonly RabbitMQSetting setting;
     private readonly ILogger logger;
-    private readonly NotificationHandler notificationHander;
+    private readonly NotificationHandler notificationHandler;
 
     public MessageServer(
         IOptions<RabbitMQSetting> options,
         ILogger logger,
-        NotificationHandler notificationHander)
+        NotificationHandler notificationHandler)
     {
         setting = options.Value;
         this.logger = logger;
-        this.notificationHander = notificationHander;
+        this.notificationHandler = notificationHandler;
     }
 
     public void ConsumeRequestQueue()
@@ -66,19 +66,19 @@ public class MessageServer : IHostedService
             var body = eventArgs.Body.ToArray();
             var requestMessage = Encoding.UTF8.GetString(body);
 
-            await notificationHander.Handle(props.Type, requestMessage);
+            await notificationHandler.Handle(props.Type, requestMessage);
 
         }
         catch (Exception ex)
         {
-            logger.Error(ex.Message, ex);
+            await logger.ErrorAsync(ex.Message, ex);
         }
 
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        this.ConsumeRequestQueue();
+        ConsumeRequestQueue();
         await Task.CompletedTask;
     }
 

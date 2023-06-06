@@ -4,7 +4,7 @@ using OWP.PreMatchNotification.Assignment;
 using OWP.PreMatchNotification.LinkedMatch;
 using OWP.PreMatchNotification.NewLeague;
 using InfoSiteMatchInfos = OWP.PreMatchNotification.InfoSiteMatchInfo.Services;
-using LinkedMatchs = OWP.PreMatchNotification.LinkedMatch.Services;
+using LinkedMatches = OWP.PreMatchNotification.LinkedMatch.Services;
 using MyAssignment = OWP.PreMatchNotification.Assignment.Services.MyAssignment;
 using NewLeagues = OWP.PreMatchNotification.NewLeague.Services;
 using OtherAssignment = OWP.PreMatchNotification.Assignment.Services.OtherAssignment;
@@ -40,11 +40,11 @@ public static class DependenceInjection
 
         // LinkedMatch
         services.AddMediatR(typeof(LinkedMatchNotifyHandler).Assembly);
-        services.AddTransient<LinkedMatchs.CacheManipulator, LinkedMatchs.CacheManipulatorImp>();
-        services.AddTransient<LinkedMatchs.ChangedLinkedMatchDetector, LinkedMatchs.ChangedLinkedMatchDetectorImp>();
-        services.AddTransient<LinkedMatchs.ChangedLiveMatchGenerator, LinkedMatchs.ChangedLiveMatchGeneratorImp>();
-        services.AddTransient<LinkedMatchs.ChangedMatchStatusGenerator, LinkedMatchs.ChangedMatchStatusGeneratorImp>();
-        services.AddTransient<LinkedMatchs.Repository, LinkedMatchs.RepositoryImp>();
+        services.AddTransient<LinkedMatches.CacheManipulator, LinkedMatches.CacheManipulatorImp>();
+        services.AddTransient<LinkedMatches.ChangedLinkedMatchDetector, LinkedMatches.ChangedLinkedMatchDetectorImp>();
+        services.AddTransient<LinkedMatches.ChangedLiveMatchGenerator, LinkedMatches.ChangedLiveMatchGeneratorImp>();
+        services.AddTransient<LinkedMatches.ChangedMatchStatusGenerator, LinkedMatches.ChangedMatchStatusGeneratorImp>();
+        services.AddTransient<LinkedMatches.Repository, LinkedMatches.RepositoryImp>();
 
         // InfoSiteMatchInfo
         services.AddMediatR(typeof(MathInfoNotifyHandler).Assembly);

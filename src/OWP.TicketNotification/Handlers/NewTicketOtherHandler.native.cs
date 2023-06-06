@@ -4,47 +4,46 @@ using OWP.TicketNotification.Constants;
 using OWP.TicketNotification.Models;
 using OWP.TicketNotification.Services;
 
-namespace OWP.TicketNotification.Handlers
+namespace OWP.TicketNotification.Handlers;
+
+internal class NewTicketOtherHandler : IRequestHandler<NewTicketOtherNotificationRequest, Unit>
 {
-    internal class NewTicketOtherHandler : IRequestHandler<NewTicketOtherNotificationRequest, Unit>
+    private readonly NewTicketOtherMessageDBWriter writer;
+    private readonly MessageNotificationService messageNotificationService;
+    private readonly NotificationService notificationService;
+
+
+    public NewTicketOtherHandler(
+        NewTicketOtherMessageDBWriter writer,
+        MessageNotificationService messageNotificationService,
+        NotificationService notificationService)
     {
-        private readonly NewTicketOtherMessageDBWriter writer;
-        private readonly MessageNotificationService messageNotificationService;
-        private readonly NotificationService notificationService;
+        this.writer = writer;
+        this.messageNotificationService = messageNotificationService;
+        this.notificationService = notificationService;
+    }
 
-
-        public NewTicketOtherHandler(
-            NewTicketOtherMessageDBWriter writer,
-            MessageNotificationService messageNotificationService,
-            NotificationService notificationService)
+    public async Task<Unit> Handle(NewTicketOtherNotificationRequest request, CancellationToken cancellationToken)
+    {
+        var notificationMessage = new NewTicketModel
         {
-            this.writer = writer;
-            this.messageNotificationService = messageNotificationService;
-            this.notificationService = notificationService;
-        }
+            TicketId = request.TicketId,
+            Comment = request.Comment,
+            ActorId = request.ActorId
+        };
+        var messageId = await writer.Execute(notificationMessage, NotificationTemplateCode.NewTicket);
 
-        public async Task<Unit> Handle(NewTicketOtherNotificationRequest request, CancellationToken cancellationToken)
+        var notificationSource = new NotificationSource
         {
-            var notificationMessage = new NewTicketModel
-            {
-                TicketId = request.TicketId,
-                Comment = request.Comment,
-                ActorId = request.ActorId
-            };
-            var messageId = await writer.Execute(notificationMessage, NotificationTemplateCode.NewTicket);
+            SessionId = messageId,
+            TicketId = request.TicketId,
+            EventType = (int)EventType.Other
+        };
 
-            var notificationSource = new NotificationSource
-            {
-                SessionId = messageId,
-                TicketId = request.TicketId,
-                EventType = (int)EventType.Other,
-            };
+        var messages = await messageNotificationService.CreateMessageNotification(notificationSource);
 
-            var messages = await messageNotificationService.CreateMessageNotification(notificationSource);
+        await notificationService.Notify(messages);
 
-            await notificationService.Notify(messages);
-
-            return Unit.Value;
-        }
+        return Unit.Value;
     }
 }

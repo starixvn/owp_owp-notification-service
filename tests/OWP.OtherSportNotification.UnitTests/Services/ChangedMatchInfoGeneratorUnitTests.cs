@@ -34,54 +34,54 @@ public class ChangedMatchInfoGeneratorUnitTests
         var actual = changedMatchInfoGeneratorImp.GetListValueChanged(oldMatch, newMatch);
         var expected = new List<ChangedValue>
             {
-                new ChangedValue
+                new()
                 {
                     MessageTypeId=(int)MsgTemplateCode.EditCategory,
                     NewValue="AB22",
                     OldValue="AB2"
-                },new ChangedValue
+                },new()
                 {
                     MessageTypeId=(int)MsgTemplateCode.EditMatchOffer,
                     NewValue="offer1",
                     OldValue="offer"
-                },new ChangedValue
+                },new()
                 {
                     MessageTypeId=(int)MsgTemplateCode.EditAutoLink,
                     NewValue="No",
                     OldValue="Yes"
-                },new ChangedValue
+                },new()
                 {
                     MessageTypeId=(int)MsgTemplateCode.EditOtherProvider,
                     NewValue="Other2",
                     OldValue="Other1"
-                },new ChangedValue
+                },new()
                 {
                     MessageTypeId=(int)MsgTemplateCode.EditIPTV,
                     NewValue="TV2",
                     OldValue="TV1"
-                },new ChangedValue
+                },new()
                 {
                     MessageTypeId=(int)MsgTemplateCode.EditWB,
                     NewValue="Streaming2",
                     OldValue="Streaming1"
-                },new ChangedValue
+                },new()
                 {
                     MessageTypeId=(int)MsgTemplateCode.EditRemark,
                     NewValue="remark2",
                     OldValue="remark1"
-                },new ChangedValue
+                },new()
                 {
                     MessageTypeId=(int)MsgTemplateCode.EditReporter,
                     OldValue="Reporter1",
                     NewValue="Reporter2"
-                },new ChangedValue
+                },new()
                 {
                     MessageTypeId=(int)MsgTemplateCode.EditProvider,
                     OldValue="Provider1",
                     NewValue="Provider2"
-                },
+                }
             };
-        DeepAssert.Equals(expected, actual);
+        DeepAssert.Equal(expected, actual);
     }
 
     [Fact]
@@ -100,9 +100,9 @@ public class ChangedMatchInfoGeneratorUnitTests
             Remark = "remark1",
             Reporter = "Reporter1",
             Provider = "Provider1",
-            League = "VLeague",
-            Home = "Binh Dinh",
-            Away = "Tphcm"
+            League = "League",
+            Home = "Home name",
+            Away = "away name"
         };
         var newMatch = new MatchInfo
         {
@@ -116,14 +116,14 @@ public class ChangedMatchInfoGeneratorUnitTests
             Remark = "remark2",
             Reporter = "Reporter2",
             Provider = "Provider2",
-            League = "VLeague",
-            Home = "Binh Dinh",
-            Away = "Tphcm"
+            League = "League",
+            Home = "Home name",
+            Away = "away name"
         };
 
         var assignees = new List<Assignee>
             {
-                new Assignee
+                new()
                 {
                     AssigneeId=8,
                     AssigneeName="sa"
@@ -131,7 +131,7 @@ public class ChangedMatchInfoGeneratorUnitTests
             };
         var expected = new List<ChangedValue>
             {
-                new ChangedValue
+                new()
                 {
                     MatchNo = "123",
                     MessageTypeId=(int)MsgTemplateCode.EditCategory,
@@ -139,9 +139,9 @@ public class ChangedMatchInfoGeneratorUnitTests
                     OldValue="AB2",
                     UserId=8,
                     Username="sa",
-                    League="VLeague",
-                    EventName= "Binh Dinh -vs- Tphcm"
-                },new ChangedValue
+                    League="League",
+                    EventName= "Home name -vs- away name"
+                },new()
                 {
                      MatchNo = "123",
                     MessageTypeId=(int)MsgTemplateCode.EditMatchOffer,
@@ -149,9 +149,9 @@ public class ChangedMatchInfoGeneratorUnitTests
                     OldValue="offer",
                     UserId=8,
                     Username="sa",
-                    League="VLeague",
-                    EventName= "Binh Dinh -vs- Tphcm"
-                },new ChangedValue
+                    League="League",
+                    EventName= "Home name -vs- away name"
+                },new()
                 {
                      MatchNo = "123",
                     MessageTypeId=(int)MsgTemplateCode.EditAutoLink,
@@ -159,9 +159,9 @@ public class ChangedMatchInfoGeneratorUnitTests
                     OldValue="Yes",
                     UserId=8,
                     Username="sa",
-                    League="VLeague",
-                    EventName= "Binh Dinh -vs- Tphcm"
-                },new ChangedValue
+                    League="League",
+                    EventName= "Home name -vs- away name"
+                },new()
                 {
                      MatchNo = "123",
                     MessageTypeId=(int)MsgTemplateCode.EditOtherProvider,
@@ -169,9 +169,9 @@ public class ChangedMatchInfoGeneratorUnitTests
                     OldValue="Other1",
                     UserId=8,
                     Username="sa",
-                    League="VLeague",
-                    EventName= "Binh Dinh -vs- Tphcm"
-                },new ChangedValue
+                    League="League",
+                    EventName= "Home name -vs- away name"
+                },new()
                 {
                      MatchNo = "123",
                     MessageTypeId=(int)MsgTemplateCode.EditIPTV,
@@ -179,9 +179,9 @@ public class ChangedMatchInfoGeneratorUnitTests
                     OldValue="TV1",
                     UserId=8,
                     Username="sa",
-                    League="VLeague",
-                    EventName= "Binh Dinh -vs- Tphcm"
-                },new ChangedValue
+                    League="League",
+                    EventName= "Home name -vs- away name"
+                },new()
                 {
                      MatchNo = "123",
                     MessageTypeId=(int)MsgTemplateCode.EditWB,
@@ -189,9 +189,9 @@ public class ChangedMatchInfoGeneratorUnitTests
                     OldValue="Streaming1",
                     UserId=8,
                     Username="sa",
-                    League="VLeague",
-                    EventName= "Binh Dinh -vs- Tphcm"
-                },new ChangedValue
+                    League="League",
+                    EventName= "Home name -vs- away name"
+                },new()
                 {
                      MatchNo = "123",
                     MessageTypeId=(int)MsgTemplateCode.EditRemark,
@@ -199,9 +199,9 @@ public class ChangedMatchInfoGeneratorUnitTests
                     OldValue="remark1",
                     UserId=8,
                     Username="sa",
-                    League="VLeague",
-                    EventName= "Binh Dinh -vs- Tphcm"
-                },new ChangedValue
+                    League="League",
+                    EventName= "Home name -vs- away name"
+                },new()
                 {
                      MatchNo = "123",
                     MessageTypeId=(int)MsgTemplateCode.EditReporter,
@@ -209,9 +209,9 @@ public class ChangedMatchInfoGeneratorUnitTests
                     NewValue="Reporter2",
                     UserId=8,
                     Username="sa",
-                    League="VLeague",
-                    EventName= "Binh Dinh -vs- Tphcm"
-                },new ChangedValue
+                    League="League",
+                    EventName= "Home name -vs- away name"
+                },new()
                 {
                      MatchNo = "123",
                     MessageTypeId=(int)MsgTemplateCode.EditProvider,
@@ -219,9 +219,9 @@ public class ChangedMatchInfoGeneratorUnitTests
                     NewValue="Provider2",
                     UserId=8,
                     Username="sa",
-                    League="VLeague",
-                    EventName= "Binh Dinh -vs- Tphcm"
-                },
+                    League="League",
+                    EventName= "Home name -vs- away name"
+                }
             };
         var actual = changedMatchInfoGeneratorImp.Create(oldMatch, newMatch, assignees);
         DeepAssert.Equal(expected, actual);

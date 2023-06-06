@@ -16,7 +16,7 @@ public class ChangedAssignmentGeneratorUnitTests
         var matchSnapshot = GetMatchSnapshot();
 
         // Act
-        var actual = services.GetDeletedAssignmentChangedValues(matchSnapshot).Where(x => x.UserId != 0);
+        var actual = services.GetDeletedAssignmentChangedValues(matchSnapshot).Where(x => x.UserId != 0).ToList();
 
         // Assert
         Assert.Single(actual);
@@ -36,7 +36,7 @@ public class ChangedAssignmentGeneratorUnitTests
         var matchSnapshot = GetMatchSnapshot();
 
         // Act
-        var actual = services.GetInsertedAssignmentChangedValues(matchSnapshot).Where(x => x.UserId != 0);
+        var actual = services.GetInsertedAssignmentChangedValues(matchSnapshot).Where(x => x.UserId != 0).ToList();
 
         // Assert
         Assert.Single(actual);
@@ -56,9 +56,9 @@ public class ChangedAssignmentGeneratorUnitTests
         var matchSnapshot = GetMatchSnapshot();
         var existingAssignees = new List<Assignee>
             {
-                new Assignee { AssigneeId = 15, AssigneeName = "starix15" },
-                new Assignee { AssigneeId = 3, AssigneeName = "starix3" },
-                new Assignee { AssigneeId = 4, AssigneeName = "starix4" }
+                new() { AssigneeId = 15, AssigneeName = "starix15" },
+                new() { AssigneeId = 3, AssigneeName = "starix3" },
+                new() { AssigneeId = 4, AssigneeName = "starix4" }
             };
 
         // Act
@@ -95,7 +95,8 @@ public class ChangedAssignmentGeneratorUnitTests
     private AssignmentSnapshot GetSnapshot(int userId, string userName, string note)
     {
         var assignmentList = new List<MatchAssignment> {
-                new MatchAssignment {
+                new()
+                {
                     OSMatchId = 1,
                     BetTypeName = "a",
                     AssignmentType = 2,
@@ -103,7 +104,8 @@ public class ChangedAssignmentGeneratorUnitTests
                     UserId = 0,
                     Username = null
                 },
-                new MatchAssignment {
+                new()
+                {
                     OSMatchId = 1,
                     BetTypeName = "a",
                     AssignmentType = 1,
@@ -111,7 +113,8 @@ public class ChangedAssignmentGeneratorUnitTests
                     UserId = 15,
                     Username = "starix15"
                 },
-                new MatchAssignment {
+                new()
+                {
                     OSMatchId = 1,
                     BetTypeName = "b",
                     AssignmentType = 1,
@@ -119,7 +122,8 @@ public class ChangedAssignmentGeneratorUnitTests
                     UserId = userId,
                     Username = userName
                 },
-                new MatchAssignment {
+                new()
+                {
                     OSMatchId = 1,
                     BetTypeName = "c",
                     AssignmentType = 1,
@@ -129,7 +133,8 @@ public class ChangedAssignmentGeneratorUnitTests
                 }
             };
         var assignmentList2 = new List<MatchAssignment> {
-                new MatchAssignment {
+                new()
+                {
                     OSMatchId = 10,
                     BetTypeName = "d",
                     AssignmentType = 1,

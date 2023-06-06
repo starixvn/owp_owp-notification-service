@@ -9,8 +9,8 @@ public class ChangedMatchChangedValueGeneratorUnitTests
         var newSnapshot = GetSnapshot(1, "starix1", "newNote");
         var expected = new List<Assignee>
             {
-                new Assignee { AssigneeId = 15, AssigneeName = "starix15" },
-                new Assignee { AssigneeId = 3, AssigneeName = "starix3" }
+                new() { AssigneeId = 15, AssigneeName = "starix15" },
+                new() { AssigneeId = 3, AssigneeName = "starix3" }
             };
 
         // Act
@@ -28,7 +28,7 @@ public class ChangedMatchChangedValueGeneratorUnitTests
         var newSnapshot = GetSnapshot(1, "starix1", "newNote");
         var expected = new List<Assignee>
             {
-                new Assignee { AssigneeId = 4, AssigneeName = "starix4" },
+                new() { AssigneeId = 4, AssigneeName = "starix4" }
             };
 
         // Act
@@ -41,7 +41,8 @@ public class ChangedMatchChangedValueGeneratorUnitTests
     private AssignmentSnapshot GetSnapshot(int userId, string userName, string note)
     {
         var assignmentList = new List<MatchAssignment> {
-                new MatchAssignment {
+                new()
+                {
                     OSMatchId = 1,
                     BetTypeName = "a",
                     AssignmentType = 2,
@@ -49,7 +50,8 @@ public class ChangedMatchChangedValueGeneratorUnitTests
                     UserId = 0,
                     Username = null
                 },
-                new MatchAssignment {
+                new()
+                {
                     OSMatchId = 1,
                     BetTypeName = "a",
                     AssignmentType = 1,
@@ -57,7 +59,8 @@ public class ChangedMatchChangedValueGeneratorUnitTests
                     UserId = 15,
                     Username = "starix15"
                 },
-                new MatchAssignment {
+                new()
+                {
                     OSMatchId = 1,
                     BetTypeName = "b",
                     AssignmentType = 1,
@@ -65,7 +68,8 @@ public class ChangedMatchChangedValueGeneratorUnitTests
                     UserId = userId,
                     Username = userName
                 },
-                new MatchAssignment {
+                new()
+                {
                     OSMatchId = 1,
                     BetTypeName = "c",
                     AssignmentType = 1,
@@ -75,7 +79,8 @@ public class ChangedMatchChangedValueGeneratorUnitTests
                 }
             };
         var assignmentList2 = new List<MatchAssignment> {
-                new MatchAssignment {
+                new()
+                {
                     OSMatchId = 10,
                     BetTypeName = "d",
                     AssignmentType = 1,

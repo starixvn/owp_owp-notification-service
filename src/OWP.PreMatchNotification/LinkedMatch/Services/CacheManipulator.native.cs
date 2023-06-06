@@ -12,7 +12,7 @@ public interface CacheManipulator
 public class CacheManipulatorImp : CacheManipulator
 {
     private readonly CacheManipulatorCommon cacheManipulator;
-    private const string OLD_LGAMATCHES_SNAPSHOT_KEY = "OWP-ASSIGNMENT-SNAPSHOT";
+    private const string OldLgaMatchesSnapshotKey = "OWP-ASSIGNMENT-SNAPSHOT";
 
     public CacheManipulatorImp(CacheManipulatorCommon cacheManipulator)
     {
@@ -21,7 +21,7 @@ public class CacheManipulatorImp : CacheManipulator
 
     public async Task<List<GeneralMatch>> GetOldLGAMatchSnapshot(string sessionId)
     {
-        var cacheKey = $"{OLD_LGAMATCHES_SNAPSHOT_KEY}-{sessionId}";
+        var cacheKey = $"{OldLgaMatchesSnapshotKey}-{sessionId}";
         var assignmentSnapshot = await cacheManipulator.GetSingleData(cacheKey, new AssignmentSnapshot());
 
         return assignmentSnapshot.Matches.Values.ToList();
@@ -29,7 +29,7 @@ public class CacheManipulatorImp : CacheManipulator
 
     public async Task DeleteAssignmentSnapshot(string sessionId)
     {
-        var cacheKey = $"{OLD_LGAMATCHES_SNAPSHOT_KEY}-{sessionId}";
+        var cacheKey = $"{OldLgaMatchesSnapshotKey}-{sessionId}";
         await cacheManipulator.RemoveData(cacheKey);
     }
 }

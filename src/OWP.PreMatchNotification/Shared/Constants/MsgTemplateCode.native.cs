@@ -15,4 +15,4 @@ public enum MsgTemplateCode
     UpdateHome = 211,
     UpdateAway = 212,
     UpdateKOTime = 213
-};
+}

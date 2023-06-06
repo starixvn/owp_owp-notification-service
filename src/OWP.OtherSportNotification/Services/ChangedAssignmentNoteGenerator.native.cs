@@ -62,7 +62,7 @@ public class ChangedAssignmentNoteGeneratorImp : ChangedAssignmentNoteGenerator
         }
     }
 
-    private static List<MatchAssignment> GetChangedAssignments(List<MatchAssignment> oldAssignments, List<MatchAssignment> newAssignments)
+    private static IEnumerable<MatchAssignment> GetChangedAssignments(IEnumerable<MatchAssignment> oldAssignments, IEnumerable<MatchAssignment> newAssignments)
         => newAssignments.Intersect(oldAssignments, new MatchAssignmentComparer()).ToList();
 
     private static bool IsSameAssignment(MatchAssignment x, MatchAssignment y)

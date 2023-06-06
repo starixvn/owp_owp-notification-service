@@ -15,7 +15,7 @@ public class NewLeagueValueGeneratorUnitTests
         var receivedUserIds = MockAssignees().Select(x => x.AssigneeId).ToList();
         var expected = new List<ChangedValue>
         {
-            new ChangedValue
+            new()
             {
                 League = "E",
                 ReceivedUserIds = receivedUserIds,
@@ -31,23 +31,23 @@ public class NewLeagueValueGeneratorUnitTests
     private IList<InfoSiteMatch> MockInfoSiteMatches()
         => new List<InfoSiteMatch>
         {
-            new InfoSiteMatch
+            new()
             {
                 EventDateTime = new DateTime(2021, 06, 21, 02, 00, 00),
                 OWPLeagueId = 1
             },
-            new InfoSiteMatch
+            new()
             {
                 EventDateTime = new DateTime(2021, 06, 21, 03, 00, 00),
                 OWPLeagueId = 4
             },
-            new InfoSiteMatch
+            new()
             {
                 EventDateTime = new DateTime(2021, 06, 21, 08, 30, 00),
                 OWPLeagueId = 4
             }
             ,
-            new InfoSiteMatch
+            new()
             {
                 EventDateTime = new DateTime(2021, 06, 21, 21, 30, 00),
                 OWPLeagueId = 5
@@ -57,12 +57,12 @@ public class NewLeagueValueGeneratorUnitTests
     private IList<Assignee> MockAssignees()
         => new List<Assignee>
         {
-            new Assignee
+            new()
             {
                 AssigneeId = 1,
                 AssigneeName = "sa"
             },
-            new Assignee
+            new()
             {
                 AssigneeId = 2,
                 AssigneeName = "starix1"
@@ -72,35 +72,35 @@ public class NewLeagueValueGeneratorUnitTests
     private IList<PreMatchLeague> MockOldSnapshot()
         => new List<PreMatchLeague>
         {
-            new PreMatchLeague
+            new()
             {
                 PreMatchLeagueId = 1,
                 OWPLeagueId = 1,
                 IsDay = true,
                 OWPLeagueName = "A"
             },
-            new PreMatchLeague
+            new()
             {
                 PreMatchLeagueId = 2,
                 OWPLeagueId = 1,
                 IsDay = false,
                 OWPLeagueName = "A"
             },
-            new PreMatchLeague
+            new()
             {
                 PreMatchLeagueId = 3,
                 OWPLeagueId = 2,
                 IsDay = true,
                 OWPLeagueName = "B"
             },
-            new PreMatchLeague
+            new()
             {
                 PreMatchLeagueId = 4,
                 OWPLeagueId = 2,
                 IsDay = false,
                 OWPLeagueName = "B"
             },
-            new PreMatchLeague
+            new()
             {
                 PreMatchLeagueId = 5,
                 OWPLeagueId = 3,
@@ -112,63 +112,63 @@ public class NewLeagueValueGeneratorUnitTests
     private IList<PreMatchLeague> MockNewSnapshot()
         => new List<PreMatchLeague>
         {
-            new PreMatchLeague
+            new()
             {
                 PreMatchLeagueId = 1,
                 OWPLeagueId = 1,
                 IsDay = true,
                 OWPLeagueName = "A"
             },
-            new PreMatchLeague
+            new()
             {
                 PreMatchLeagueId = 2,
                 OWPLeagueId = 1,
                 IsDay = false,
                 OWPLeagueName = "A"
             },
-            new PreMatchLeague
+            new()
             {
                 PreMatchLeagueId = 3,
                 OWPLeagueId = 2,
                 IsDay = true,
                 OWPLeagueName = "B"
             },
-            new PreMatchLeague
+            new()
             {
                 PreMatchLeagueId = 4,
                 OWPLeagueId = 2,
                 IsDay = false,
                 OWPLeagueName = "B"
             },
-            new PreMatchLeague
+            new()
             {
                 PreMatchLeagueId = 5,
                 OWPLeagueId = 3,
                 IsDay = false,
                 OWPLeagueName = "C"
             },
-            new PreMatchLeague
+            new()
             {
                 PreMatchLeagueId = 6,
                 OWPLeagueId = 3,
                 IsDay = true,
                 OWPLeagueName = "C"
             },
-            new PreMatchLeague
+            new()
             {
                 PreMatchLeagueId = 7,
                 OWPLeagueId = 4,
                 IsDay = false,
                 OWPLeagueName = "D"
             },
-            new PreMatchLeague
+            new()
             {
                 PreMatchLeagueId = 8,
                 OWPLeagueId = 4,
                 IsDay = true,
                 OWPLeagueName = "D"
             },
-            new PreMatchLeague
+            new()
             {
                 PreMatchLeagueId = 9,
                 OWPLeagueId = 5,

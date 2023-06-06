@@ -17,12 +17,12 @@ public class ChangedLiveMatchGeneratorUnitTests
     {
         var changedSnapshot = new ChangedSnapshot
         {
-            DeletedMatches = new List<GeneralMatch>()
+            DeletedMatches = new List<GeneralMatch>
             {
                 new(){MatchId=111, InfoSiteMatchId=111},
                 new(){MatchId=222, InfoSiteMatchId=222}
             },
-            InsertedMatches = new List<GeneralMatch>()
+            InsertedMatches = new List<GeneralMatch>
             {
                 new(){MatchId=300, InfoSiteMatchId=333}
             }
@@ -31,13 +31,16 @@ public class ChangedLiveMatchGeneratorUnitTests
         {
             PrematchInfosites = new Dictionary<int, List<InfositePrematchLeague>>
             {
-                {111, new(){ new(){ PreMatchLeagueId=100, InfoSiteMatchId=111, PrematchAssigneeIds=new List<int>{8,9},
+                {111, new(){ new InfositePrematchLeague
+                    { PreMatchLeagueId=100, InfoSiteMatchId=111, PrematchAssigneeIds=new List<int>{8,9},
                                 LeagueName="LeagueA",HomeName="HomeA",AwayName="AwayA",EventDateTime=new DateTime(2021,6,18,14,12,20)},
-                             new(){ PreMatchLeagueId=100, InfoSiteMatchId=111, PrematchAssigneeIds=new List<int>{12,13,9} } } },
-                {222, new(){ new(){ PreMatchLeagueId=200, InfoSiteMatchId=222, PrematchAssigneeIds=new List<int>{},
+                             new InfositePrematchLeague { PreMatchLeagueId=100, InfoSiteMatchId=111, PrematchAssigneeIds=new List<int>{12,13,9} } } },
+                {222, new(){ new InfositePrematchLeague
+                { PreMatchLeagueId=200, InfoSiteMatchId=222, PrematchAssigneeIds=new List<int>(),
                                 LeagueName="LeagueB",HomeName="HomeB",AwayName="AwayB",EventDateTime=new DateTime(2021,6,18,02,10,20) } } },
-                {333, new(){ new(){ PreMatchLeagueId=300, InfoSiteMatchId=222, PrematchAssigneeIds=new List<int>{10,11},
-                                LeagueName="LeagueC",HomeName="HomeC",AwayName="AwayC",EventDateTime=new DateTime(2021,6,18,5,12,20) } } },
+                {333, new(){ new InfositePrematchLeague
+                { PreMatchLeagueId=300, InfoSiteMatchId=222, PrematchAssigneeIds=new List<int>{10,11},
+                                LeagueName="LeagueC",HomeName="HomeC",AwayName="AwayC",EventDateTime=new DateTime(2021,6,18,5,12,20) } } }
             },
             AllLSTEmployees = new List<int> { 1, 2, 3 },
             AllPrematchEmployees = new List<int> { 4, 5, 6 }

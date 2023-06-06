@@ -20,13 +20,12 @@ public class ChangedValueAggregatorImpUnitTests
     {
         // Arrange
         var changedValues = GetChangedValues();
-        var service = new ChangedValueAggregatorImp(mapper);
 
         // Act
-        var actual = service.GetNonAggregatedChangedValues(changedValues);
+        var actual = ChangedValueAggregatorImp.GetNonAggregatedChangedValues(changedValues).ToList();
 
         // Assert
-        Assert.Equal(5, actual.Count());
+        Assert.Equal(5, actual.Count);
         Assert.Contains(actual, item => item.OSMatchId == 10 & item.BetTypeName == "1H (HDP)");
         Assert.Contains(actual, item => item.OSMatchId == 10 & item.BetTypeName == "1Q & 3Q (HDP)");
         Assert.Contains(actual, item => item.OSMatchId == 10 & item.BetTypeName == "FT (OU/OE)");
@@ -39,13 +38,12 @@ public class ChangedValueAggregatorImpUnitTests
     {
         // Arrange
         var changedValues = GetChangedValues();
-        var service = new ChangedValueAggregatorImp(mapper);
 
         // Act
-        var actual = service.GetIndirectOtherAssignmentChangedValues(changedValues);
+        var actual = ChangedValueAggregatorImp.GetIndirectOtherAssignmentChangedValues(changedValues).ToList();
 
         // Assert
-        Assert.Equal(2, actual.Count());
+        Assert.Equal(2, actual.Count);
         Assert.Contains(actual, item => item.OSMatchId == 20 & item.MessageTypeId == (int)MsgTemplateCode.OtherAssignmentInsert);
         Assert.Contains(actual, item => item.OSMatchId == 20 & item.MessageTypeId == (int)MsgTemplateCode.OtherAssignmentDelete);
     }
@@ -55,13 +53,12 @@ public class ChangedValueAggregatorImpUnitTests
     {
         // Arrange
         var changedValues = GetChangedValues();
-        var service = new ChangedValueAggregatorImp(mapper);
 
         // Act
-        var actual = service.GetIndirectMainAssignmentChangedValues(changedValues);
+        var actual = ChangedValueAggregatorImp.GetIndirectMainAssignmentChangedValues(changedValues).ToList();
 
         // Assert
-        Assert.Equal(4, actual.Count());
+        Assert.Equal(4, actual.Count);
         Assert.Contains(actual, item => item.OSMatchId == 20 & item.MessageTypeId == (int)MsgTemplateCode.AssignmentInsert && item.BetTypeName == "1H (OU)");
         Assert.Contains(actual, item => item.OSMatchId == 20 & item.MessageTypeId == (int)MsgTemplateCode.AssignmentInsert && item.BetTypeName == "1Q & 3Q (OU/OE)");
         Assert.Contains(actual, item => item.OSMatchId == 20 & item.MessageTypeId == (int)MsgTemplateCode.AssignmentDelete && item.BetTypeName == "1Q & 3Q (OU)");
@@ -107,7 +104,7 @@ public class ChangedValueAggregatorImpUnitTests
         Assert.Single(actual, item => item.MessageTypeId == (int)MsgTemplateCode.EditWB);
     }
 
-    private List<ChangedValue> GetChangedValues()
+    private static List<ChangedValue> GetChangedValues()
     {
         const int mainAssignment = 1;
         const int otherAssignment = 2;

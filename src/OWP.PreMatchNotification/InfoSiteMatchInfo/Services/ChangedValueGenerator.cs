@@ -32,14 +32,14 @@ public class ChangedValueGeneratorImp : ChangedValueGenerator
         }
     }
 
-    private static readonly List<string> infoSiteMatchPropertyNames = new List<string>
+    private static readonly List<string> infoSiteMatchPropertyNames = new()
     {
         "EventDateTime",
         "HomeName",
-        "AwayName",
+        "AwayName"
     };
 
-    private static readonly Dictionary<string, int> messageTypeDictionary = new Dictionary<string, int>
+    private static readonly Dictionary<string, int> messageTypeDictionary = new()
     {
         { "EventDateTime" , (int)MsgTemplateCode.UpdateKOTime },
         { "HomeName" , (int)MsgTemplateCode.UpdateHome },

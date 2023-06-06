@@ -5,7 +5,7 @@ namespace OWP.OtherSportNotification.Services;
 
 public interface ChangedMatchChangedValueGenerator
 {
-    List<ChangedValue> Create(List<int> matcheIds, AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot);
+    List<ChangedValue> Create(List<int> matchIds, AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot);
 }
 
 public class ChangedMatchChangedValueGeneratorImp : ChangedMatchChangedValueGenerator
@@ -30,16 +30,16 @@ public class ChangedMatchChangedValueGeneratorImp : ChangedMatchChangedValueGene
         this.changedAssignmentNoteGenerator = changedAssignmentNoteGenerator;
     }
 
-    public List<ChangedValue> Create(List<int> matcheIds, AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot)
+    public List<ChangedValue> Create(List<int> matchIds, AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot)
     {
-        var changedValues = CreateEnumerableChangeValues(matcheIds, oldSnapshot, newSnapshot);
+        var changedValues = CreateEnumerableChangeValues(matchIds, oldSnapshot, newSnapshot);
 
         return changedValues.SelectMany(v => v).ToList();
     }
 
-    public IEnumerable<List<ChangedValue>> CreateEnumerableChangeValues(List<int> matcheIds, AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot)
+    public IEnumerable<List<ChangedValue>> CreateEnumerableChangeValues(List<int> matchIds, AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot)
     {
-        foreach (var matchId in matcheIds)
+        foreach (var matchId in matchIds)
         {
             var changedMatchSnapshot = new ChangedMatchSnapshot
             {
@@ -70,7 +70,7 @@ public class ChangedMatchChangedValueGeneratorImp : ChangedMatchChangedValueGene
                            .ToList();
     }
 
-    private static List<Assignee> GetAllAssigneesByMatchId(int matchId, AssignmentSnapshot snapshot)
+    private static IEnumerable<Assignee> GetAllAssigneesByMatchId(int matchId, AssignmentSnapshot snapshot)
     {
         var assigneeOfMatch = snapshot.MatchAssignments.GetValue(matchId, new List<MatchAssignment>());
 

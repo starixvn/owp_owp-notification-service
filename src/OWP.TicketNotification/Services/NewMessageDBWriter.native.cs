@@ -37,7 +37,7 @@ public class NewMessageDBWriterImp : NewMessageDBWriter
             IsImportant = template.IsImportant,
             IsWatcher = template.IsWatcher,
             TicketId = newMessage.TicketId,
-            ActorId = newMessage.ActorId,
+            ActorId = newMessage.ActorId
         };
 
         await repository.InsertNewMessageNotification(criteria);

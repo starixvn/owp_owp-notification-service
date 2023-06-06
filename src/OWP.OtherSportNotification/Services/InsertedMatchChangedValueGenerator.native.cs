@@ -8,19 +8,19 @@ namespace OWP.OtherSportNotification.Services;
 
 public interface InsertedMatchChangedValueGenerator
 {
-    IEnumerable<ChangedValue> Create(List<int> matcheIds, AssignmentSnapshot snapshot);
+    IEnumerable<ChangedValue> Create(List<int> matchIds, AssignmentSnapshot snapshot);
 }
 
 public class InsertedMatchChangedValueGeneratorImp : InsertedMatchChangedValueGenerator
 {
-    public IEnumerable<ChangedValue> Create(List<int> matcheIds, AssignmentSnapshot snapshot)
+    public IEnumerable<ChangedValue> Create(List<int> matchIds, AssignmentSnapshot snapshot)
     {
-        return CreateEnumerable(matcheIds, snapshot).SelectMany(v => v).Distinct().ToList();
+        return CreateEnumerable(matchIds, snapshot).SelectMany(v => v).Distinct().ToList();
     }
 
-    public static IEnumerable<List<ChangedValue>> CreateEnumerable(List<int> matcheIds, AssignmentSnapshot snapshot)
+    public static IEnumerable<List<ChangedValue>> CreateEnumerable(List<int> matchIds, AssignmentSnapshot snapshot)
     {
-        foreach (var matchId in matcheIds)
+        foreach (var matchId in matchIds)
         {
             var assignments = snapshot.MatchAssignments.GetValue(matchId, new List<MatchAssignment>())
                                       .Where(x => x.UserId != 0)

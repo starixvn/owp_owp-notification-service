@@ -2,6 +2,7 @@
 using OWP.OtherSportNotification.Constants;
 using OWP.OtherSportNotification.Models;
 using System.Collections.Immutable;
+// ReSharper disable All
 
 namespace OWP.OtherSportNotification.Services;
 
@@ -30,7 +31,7 @@ public class MessageFactoryImp : MessageFactory
             new MessageTemplate
             {
                 MessageType = (int)MsgTemplateCode.EditCategory,
-                MessageContent = "<b>Category</b> Updated from <oldvalue> to <newvalue> for <Match.No> - <League> - <Event> updated by <User>",
+                MessageContent = "<b>Category</b> Updated from <oldvalue> to <newvalue> for <Match.No> - <League> - <Event> updated by <User>"
             },
             new MessageTemplate
             {
@@ -201,7 +202,7 @@ public class MessageFactoryImp : MessageFactory
         return Reduce(messageModels);
     }
 
-    private List<MessageModelRaw> TransformChangedValueToMessageModel(List<ChangedValue> changedValues, string actor)
+    private static List<MessageModelRaw> TransformChangedValueToMessageModel(List<ChangedValue> changedValues, string actor)
     {
         return changedValues.GroupBy(v => new MessageGroup(v))
             .Select(g =>

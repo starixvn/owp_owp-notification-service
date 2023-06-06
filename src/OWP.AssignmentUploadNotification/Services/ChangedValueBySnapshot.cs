@@ -1,49 +1,48 @@
-﻿namespace OWP.AssignmentUploadNotification.Services
-{
-    using System.Collections.Generic;
-    using System.Linq;
-    using Models;
+﻿namespace OWP.AssignmentUploadNotification.Services;
 
-    public interface ChangedValueBySnapshot
+using Models;
+using System.Collections.Generic;
+using System.Linq;
+
+public interface ChangedValueBySnapshot
+{
+    List<ChangedValue> Create(AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot);
+}
+
+public class ChangedValueBySnapshotImp : ChangedValueBySnapshot
+{
+    private readonly ChangedDetector changedDetector;
+    private readonly InsertedMatchChangedValueGenerator insertedMatchChangedValueGenerator;
+    private readonly DeletedMatchChangedValueGenerator deletedMatchChangedValueGenerator;
+    private readonly ChangedMatchChangedValueGenerator changedMatchChangedValueGenerator;
+
+    public ChangedValueBySnapshotImp(
+        ChangedDetector changedDetector,
+        InsertedMatchChangedValueGenerator insertedMatchChangedValueGenerator,
+        DeletedMatchChangedValueGenerator deletedMatchChangedValueGenerator,
+        ChangedMatchChangedValueGenerator changedMatchChangedValueGenerator)
     {
-        List<ChangedValue> Create(AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot);
+        this.changedDetector = changedDetector;
+        this.insertedMatchChangedValueGenerator = insertedMatchChangedValueGenerator;
+        this.deletedMatchChangedValueGenerator = deletedMatchChangedValueGenerator;
+        this.changedMatchChangedValueGenerator = changedMatchChangedValueGenerator;
     }
 
-    public class ChangedValueBySnapshotImp : ChangedValueBySnapshot
+    public List<ChangedValue> Create(AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot)
     {
-        private readonly ChangedDetector changedDetector;
-        private readonly InsertedMatchChangedValueGenerator insertedMatchChangedValueGenerator;
-        private readonly DeletedMatchChangedValueGenerator deletedMatchChangedValueGenerator;
-        private readonly ChangedMatchChangedValueGenerator changedMatchChangedValueGenerator;
+        var changedSnapshot = changedDetector.GetChangedSnapshot(oldSnapshot, newSnapshot);
 
-        public ChangedValueBySnapshotImp(
-            ChangedDetector changedDetector,
-            InsertedMatchChangedValueGenerator insertedMatchChangedValueGenerator,
-            DeletedMatchChangedValueGenerator deletedMatchChangedValueGenerator,
-            ChangedMatchChangedValueGenerator changedMatchChangedValueGenerator)
-        {
-            this.changedDetector = changedDetector;
-            this.insertedMatchChangedValueGenerator = insertedMatchChangedValueGenerator;
-            this.deletedMatchChangedValueGenerator = deletedMatchChangedValueGenerator;
-            this.changedMatchChangedValueGenerator = changedMatchChangedValueGenerator;
-        }
+        var insertedMatchChangedValues = insertedMatchChangedValueGenerator.Create(changedSnapshot.InsertedMatches, newSnapshot);
+        var deletedMatchChangedValues = deletedMatchChangedValueGenerator.Create(changedSnapshot.DeletedMatches, oldSnapshot);
+        var changedMatchChangedValues = changedMatchChangedValueGenerator.Create(changedSnapshot.ChangedMatches, oldSnapshot, newSnapshot);
 
-        public List<ChangedValue> Create(AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot)
-        {
-            var changedSnapshot = changedDetector.GetChangedSnapshot(oldSnapshot, newSnapshot);
-
-            var insertedMatchChangedValues = insertedMatchChangedValueGenerator.Create(changedSnapshot.InsertedMatches, newSnapshot);
-            var deletedMatchChangedValues = deletedMatchChangedValueGenerator.Create(changedSnapshot.DeletedMatches, oldSnapshot);
-            var changedMatchChagedValues = changedMatchChangedValueGenerator.Create(changedSnapshot.ChangedMatches, oldSnapshot, newSnapshot);
-
-            return new[]
+        return new[]
             {
                 insertedMatchChangedValues,
                 deletedMatchChangedValues,
-                changedMatchChagedValues
+                changedMatchChangedValues
             }
             .SelectMany(v => v)
             .ToList();
-        }
     }
 }

@@ -1,11 +1,11 @@
 ﻿using Fanex.Data.Repository;
 using MediatR;
 using OWP.Core.NotificationRequests.Prematch;
-using OWP.PreMatchNotification.Criteria;
 using OWP.PreMatchNotification.NewLeague.Criteria;
 using OWP.PreMatchNotification.NewLeague.Models;
 using OWP.PreMatchNotification.NewLeague.Services;
 using OWP.PreMatchNotification.Shared.Constants;
+using OWP.PreMatchNotification.Shared.Criteria;
 using OWP.PreMatchNotification.Shared.Models;
 using OWP.PreMatchNotification.Shared.Services;
 
@@ -25,7 +25,7 @@ public class NewLeagueNotifyHandler : IRequestHandler<PrematchNewLeagueNotifyReq
 
     private readonly NotificationService notificationService;
 
-    private const string OLD_PREMATCHLEAGUES_SNAPSHOT_KEY = "OWP-Old-PreMatchLeagues";
+    private const string OldPrematchLeaguesSnapshotKey = "OWP-Old-PreMatchLeagues";
 
     public NewLeagueNotifyHandler(
         CacheManipulatorCommon cacheManipulator,
@@ -57,7 +57,7 @@ public class NewLeagueNotifyHandler : IRequestHandler<PrematchNewLeagueNotifyReq
 
     private async Task<IList<ChangedValue>> GenerateMessages(PrematchNewLeagueNotifyRequest request)
     {
-        var cacheKey = $"{OLD_PREMATCHLEAGUES_SNAPSHOT_KEY}-{request.SessionId}";
+        var cacheKey = $"{OldPrematchLeaguesSnapshotKey}-{request.SessionId}";
         var oldSnapshot = await cacheManipulator.GetMultipleData<PreMatchLeague>(cacheKey);
         await cacheManipulator.RemoveData(cacheKey);
 

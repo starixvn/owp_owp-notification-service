@@ -14,7 +14,7 @@ public class ChangedMatchInfoGeneratorImp : ChangedMatchInfoGenerator
 {
     private const string EVENT_VS = " -vs- ";
 
-    private static readonly List<string> MatchInfoPropertyNames = new List<string>
+    private static readonly List<string> MatchInfoPropertyNames = new()
     {
         "MatchNo",
         "Category",
@@ -64,7 +64,7 @@ public class ChangedMatchInfoGeneratorImp : ChangedMatchInfoGenerator
 
         if (changed.MessageTypeId == MessageType.GetMessageTypeIdForChangedMatchInfo("IsNeutral"))
         {
-            return (changed.NewValue == "False" ? newMatch.Home : (newMatch.Home + " (N)")) + EVENT_VS + newMatch.Away;
+            return (changed.NewValue == "False" ? newMatch.Home : newMatch.Home + " (N)") + EVENT_VS + newMatch.Away;
         }
 
         return changed.NewValue;
@@ -79,7 +79,7 @@ public class ChangedMatchInfoGeneratorImp : ChangedMatchInfoGenerator
 
         if (changed.MessageTypeId == MessageType.GetMessageTypeIdForChangedMatchInfo("IsNeutral"))
         {
-            return (changed.OldValue == "False" ? newMatch.Home : (newMatch.Home + " (N)")) + EVENT_VS + newMatch.Away;
+            return (changed.OldValue == "False" ? newMatch.Home : newMatch.Home + " (N)") + EVENT_VS + newMatch.Away;
         }
 
         return changed.OldValue;

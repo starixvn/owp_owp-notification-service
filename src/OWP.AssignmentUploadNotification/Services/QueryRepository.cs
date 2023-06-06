@@ -2,33 +2,32 @@ using Fanex.Data.Repository;
 using OWP.AssignmentUploadNotification.Criteria;
 using OWP.AssignmentUploadNotification.Models;
 
-namespace OWP.AssignmentUploadNotification.Services
+namespace OWP.AssignmentUploadNotification.Services;
+
+public interface QueryRepository
 {
-    public interface QueryRepository
+    Task<AssignmentSnapshot> Query(DateTime eventDate);
+}
+
+public class QueryRepositoryImp : QueryRepository
+{
+    private readonly IDynamicRepository repository;
+
+    public QueryRepositoryImp(IDynamicRepository repository)
     {
-        Task<AssignmentSnapshot> Query(DateTime eventDate);
+        this.repository = repository;
     }
-
-    public class QueryRepositoryImp : QueryRepository
+    public async Task<AssignmentSnapshot> Query(DateTime eventDate)
     {
-        private readonly IDynamicRepository repository;
+        var matchesTask = repository.FetchAsync<GeneralMatch>(new GetAllMatchesByTimeRangeCriteria { EventDate = eventDate });
+        var assignmentsTask = repository.FetchAsync<MatchAssignment>(new GetAllAssignmentsByTimeRangeCriteria { EventDate = eventDate });
+        var matchSettingsTask = repository.FetchAsync<MatchSetting>(new GetAllMatchSettingsByTimeRangeCriteria { EventDate = eventDate });
 
-        public QueryRepositoryImp(IDynamicRepository repository)
+        return new AssignmentSnapshot
         {
-            this.repository = repository;
-        }
-        public async Task<AssignmentSnapshot> Query(DateTime eventDate)
-        {
-            var matchesTask = repository.FetchAsync<GeneralMatch>(new GetAllMatchesByTimeRangeCriteria { EventDate = eventDate });
-            var assignmentsTask = repository.FetchAsync<MatchAssignment>(new GetAllAssignmentsByTimeRangeCriteria { EventDate = eventDate });
-            var matchSettingsTask = repository.FetchAsync<MatchSetting>(new GetAllMatcheSettingsByTimeRangeCriteria { EventDate = eventDate });
-
-            return new AssignmentSnapshot
-            {
-                Matches = (await matchesTask).ToDictionary(m => m.MatchId),
-                Assignments = (await assignmentsTask).GroupBy(a => a.MatchId).ToDictionary(a => a.Key, a => a.ToList()),
-                MatchSettings = (await matchSettingsTask).GroupBy(a => a.MatchId).ToDictionary(a => a.Key, a => a.ToList())
-            };
-        }
+            Matches = (await matchesTask).ToDictionary(m => m.MatchId),
+            Assignments = (await assignmentsTask).GroupBy(a => a.MatchId).ToDictionary(a => a.Key, a => a.ToList()),
+            MatchSettings = (await matchSettingsTask).GroupBy(a => a.MatchId).ToDictionary(a => a.Key, a => a.ToList())
+        };
     }
 }

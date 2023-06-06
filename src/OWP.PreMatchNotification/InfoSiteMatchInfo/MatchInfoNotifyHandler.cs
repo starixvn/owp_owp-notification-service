@@ -20,7 +20,7 @@ public class MatchInfoNotifyHandler : IRequestHandler<MatchInfoNotifyRequest, Un
 
     private readonly CommandRepository commandRepository;
 
-    private const string OLD_INFOSITEMATCHES_SNAPSHOT_KEY = "OWP-Old-InfoSiteMatches";
+    private const string OldInfositeMatchesSnapshotKey = "OWP-Old-InfoSiteMatches";
 
     private readonly NotificationService notificationService;
 
@@ -54,7 +54,7 @@ public class MatchInfoNotifyHandler : IRequestHandler<MatchInfoNotifyRequest, Un
 
     public async Task<IList<ChangedValue>> GenerateMessages(MatchInfoNotifyRequest request)
     {
-        var snapShotKey = $"{OLD_INFOSITEMATCHES_SNAPSHOT_KEY}-{request.SessionId}";
+        var snapShotKey = $"{OldInfositeMatchesSnapshotKey}-{request.SessionId}";
         var oldSnapshot = await cacheManipulator.GetMultipleData<InfoSiteMatch>(snapShotKey);
         var newSnapshot = await queryRepository.GetInfoSiteMatchNewSnapshot(request.FromDate, request.ToDate);
 

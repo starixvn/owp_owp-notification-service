@@ -6,11 +6,10 @@ namespace OWP.PreMatchNotification.UnitTests.InfoSiteMatchInfo;
 public class ChangedValueGeneratorUnitTests
 {
     private readonly ChangedValueGenerator service;
-    private readonly DateTimeHelper dateTimeHelper;
 
     public ChangedValueGeneratorUnitTests()
     {
-        dateTimeHelper = Substitute.For<DateTimeHelper>();
+        var dateTimeHelper = Substitute.For<DateTimeHelper>();
         dateTimeHelper.GetCurrentDate().Returns(new DateTime(2021, 06, 23));
         service = new ChangedValueGeneratorImp(dateTimeHelper);
     }
@@ -30,7 +29,7 @@ public class ChangedValueGeneratorUnitTests
     {
         var expected = GetExpectedLSTMessages();
 
-        var actual = service.CreateLSTMessages(GetExpectedAssigneeMessages(), MockAssigneeLST(), MockLinkedMatches());
+        var actual = service.CreateLSTMessages(GetExpectedAssigneeMessages(), MockAssigneeLST(), MockLinkedMatHome());
 
         DeepAssert.Equal(expected, actual);
     }
@@ -39,7 +38,7 @@ public class ChangedValueGeneratorUnitTests
     {
         return new List<ChangedValue>
         {
-            new ChangedValue
+            new()
             {
                 InfoSiteMatchId = 2,
                 League="Premier League",
@@ -50,7 +49,7 @@ public class ChangedValueGeneratorUnitTests
                 ReceivedUserIds = new List<int> { 1,4,5 },
                 MessageTypeId = (int)MsgTemplateCode.UpdateKOTime
             },
-            new ChangedValue
+            new()
             {
                 InfoSiteMatchId = 2,
                 League="Premier League",
@@ -61,7 +60,7 @@ public class ChangedValueGeneratorUnitTests
                 ReceivedUserIds = new List<int> { 1,4,5 },
                 MessageTypeId = (int)MsgTemplateCode.UpdateHome
             },
-            new ChangedValue
+            new()
             {
                 InfoSiteMatchId = 2,
                 League="Premier League",
@@ -72,11 +71,11 @@ public class ChangedValueGeneratorUnitTests
                 ReceivedUserIds = new List<int> { 1,4,5 },
                 MessageTypeId = (int)MsgTemplateCode.UpdateAway
             },
-            new ChangedValue
+            new()
             {
                 InfoSiteMatchId = 4,
                 League="Premier League",
-                Home = "CHES",
+                Home = "Home",
                 Away = "TOT",
                 OldValue = "TOT",
                 NewValue = "TOT changed",
@@ -90,7 +89,7 @@ public class ChangedValueGeneratorUnitTests
     {
         return new List<InfoSiteMatch>
         {
-            new InfoSiteMatch
+            new()
             {
                 InfoSiteMatchId = 1,
                 HomeName = "MC",
@@ -99,7 +98,7 @@ public class ChangedValueGeneratorUnitTests
                 OWPLeagueId = 101,
                 LeagueName="Premier League"
             },
-            new InfoSiteMatch
+            new()
             {
                 InfoSiteMatchId = 2,
                 HomeName = "Liv",
@@ -108,7 +107,7 @@ public class ChangedValueGeneratorUnitTests
                 OWPLeagueId = 101,
                 LeagueName="Premier League"
             },
-            new InfoSiteMatch
+            new()
             {
                 InfoSiteMatchId = 3,
                 HomeName = "BVB",
@@ -117,16 +116,16 @@ public class ChangedValueGeneratorUnitTests
                 OWPLeagueId = 101,
                 LeagueName="Premier League"
             },
-            new InfoSiteMatch
+            new()
             {
                 InfoSiteMatchId = 4,
-                HomeName = "CHES",
+                HomeName = "Home",
                 AwayName = "TOT",
                 EventDateTime = new DateTime(2021, 06, 24, 02, 00, 00),
                 OWPLeagueId = 102,
                 LeagueName="Premier League"
             },
-            new InfoSiteMatch
+            new()
             {
                 InfoSiteMatchId = 7,
                 HomeName = "THAI",
@@ -142,7 +141,7 @@ public class ChangedValueGeneratorUnitTests
     {
         return new List<InfoSiteMatch>
         {
-            new InfoSiteMatch
+            new()
             {
                 InfoSiteMatchId = 1,
                 HomeName = "MC",
@@ -151,7 +150,7 @@ public class ChangedValueGeneratorUnitTests
                 OWPLeagueId = 101,
                 LeagueName="Premier League"
             },
-            new InfoSiteMatch
+            new()
             {
                 InfoSiteMatchId = 2,
                 HomeName = "Liv changed",
@@ -160,7 +159,7 @@ public class ChangedValueGeneratorUnitTests
                 OWPLeagueId = 101,
                 LeagueName="Premier League change"
             },
-            new InfoSiteMatch
+            new()
             {
                 InfoSiteMatchId = 3,
                 HomeName = "BVB",
@@ -169,16 +168,16 @@ public class ChangedValueGeneratorUnitTests
                 OWPLeagueId = 101,
                 LeagueName = "Premier League"
             },
-            new InfoSiteMatch
+            new()
             {
                 InfoSiteMatchId = 4,
-                HomeName = "CHES",
+                HomeName = "Home",
                 AwayName = "TOT changed",
                 EventDateTime = new DateTime(2021, 06, 24, 02, 00, 00),
                 OWPLeagueId = 102,
                 LeagueName = "Premier League "
             },
-            new InfoSiteMatch
+            new()
             {
                 InfoSiteMatchId = 6,
                 HomeName = "TOT changed",
@@ -186,7 +185,7 @@ public class ChangedValueGeneratorUnitTests
                 EventDateTime = new DateTime(2021, 06, 23, 07, 30, 00),
                 OWPLeagueId = 102,
                 LeagueName = "Premier League"
-            },
+            }
         };
     }
 
@@ -194,27 +193,27 @@ public class ChangedValueGeneratorUnitTests
     {
         return new List<Assignee>
         {
-            new Assignee
+            new()
             {
                 AssigneeId = 1,
                 OWPLeagueId = 101
             },
-            new Assignee
+            new()
             {
                 AssigneeId = 2,
                 OWPLeagueId = 102
             },
-            new Assignee
+            new()
             {
                 AssigneeId = 3,
                 OWPLeagueId = 102
             },
-            new Assignee
+            new()
             {
                 AssigneeId = 4,
                 OWPLeagueId = 101
             },
-            new Assignee
+            new()
             {
                 AssigneeId = 5,
                 OWPLeagueId = 101
@@ -226,7 +225,7 @@ public class ChangedValueGeneratorUnitTests
     {
         return new List<ChangedValue>
         {
-            new ChangedValue
+            new()
             {
                 InfoSiteMatchId = 2,
                 League = "Premier League",
@@ -237,7 +236,7 @@ public class ChangedValueGeneratorUnitTests
                 ReceivedUserIds = new List<int> { 2, 3, 4, 5, 6 },
                 MessageTypeId = (int)MsgTemplateCode.UpdateKOTime
             },
-            new ChangedValue
+            new()
             {
                 InfoSiteMatchId = 2,
                 League = "Premier League",
@@ -248,7 +247,7 @@ public class ChangedValueGeneratorUnitTests
                 ReceivedUserIds = new List<int> { 2, 3, 4, 5, 6 },
                 MessageTypeId = (int)MsgTemplateCode.UpdateHome
             },
-            new ChangedValue
+            new()
             {
                 InfoSiteMatchId = 2,
                 League = "Premier League",
@@ -266,46 +265,46 @@ public class ChangedValueGeneratorUnitTests
     {
         return new List<Assignee>
         {
-            new Assignee
+            new()
             {
                 AssigneeId = 2
             },
-            new Assignee
+            new()
             {
                 AssigneeId = 3
             },
-            new Assignee
+            new()
             {
                 AssigneeId = 4
             },
-            new Assignee
+            new()
             {
                 AssigneeId = 5
             },
-            new Assignee
+            new()
             {
                 AssigneeId = 6
-            },
+            }
         };
     }
 
-    private IList<InfoSiteMatch> MockLinkedMatches()
+    private IList<InfoSiteMatch> MockLinkedMatHome()
     {
         return new List<InfoSiteMatch>
         {
-            new InfoSiteMatch
+            new()
             {
                 InfoSiteMatchId = 1
             },
-            new InfoSiteMatch
+            new()
             {
                 InfoSiteMatchId = 2
             },
-            new InfoSiteMatch
+            new()
             {
                 InfoSiteMatchId = 3
             },
-            new InfoSiteMatch
+            new()
             {
                 InfoSiteMatchId = 5
             }

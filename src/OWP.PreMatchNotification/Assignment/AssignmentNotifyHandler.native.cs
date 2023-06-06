@@ -1,5 +1,4 @@
 ﻿using Fanex.Data.Repository;
-using Fanex.Logging;
 using MediatR;
 using OWP.Core.NotificationRequests.Prematch;
 using OWP.PreMatchNotification.Assignment.Criteria;

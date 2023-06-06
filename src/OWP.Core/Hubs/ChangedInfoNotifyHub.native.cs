@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 
-namespace OWP.Hubs;
+// ReSharper disable once CheckNamespace
+namespace OWP.Hubs; // using the same namespace for RedisBackPlane
 
 
 public interface ChangedInfoNotifyHub

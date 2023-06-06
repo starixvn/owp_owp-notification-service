@@ -1,48 +1,47 @@
-﻿namespace OWP.AssignmentUploadNotification.Services
+﻿namespace OWP.AssignmentUploadNotification.Services;
+
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Criteria;
+using Fanex.Data.Repository;
+using Models;
+
+public interface NotificationSettingQueryRepository
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using Criteria;
-    using Fanex.Data.Repository;
-    using Models;
+    Task<HashSet<string>> GetUnsubscribeSettings();
 
-    public interface NotificationSettingQueryRepository
+    Task<Dictionary<string, List<Assignee>>> GetSessionWatcherSettings();
+}
+
+public class NotificationSettingQueryRepositoryImp : NotificationSettingQueryRepository
+{
+    private readonly IDynamicRepository repository;
+
+    public NotificationSettingQueryRepositoryImp(IDynamicRepository repository)
     {
-        Task<HashSet<string>> GetUnsubscribeSettings();
-
-        Task<Dictionary<string, List<Assignee>>> GetSessionWatcherSettings();
+        this.repository = repository;
     }
 
-    public class NotificationSettingQueryRepositoryImp : NotificationSettingQueryRepository
+    public async Task<HashSet<string>> GetUnsubscribeSettings()
     {
-        private readonly IDynamicRepository repository;
+        var criteria = new GetNotificationSettingCommand();
+        var notificationSettings = await repository.FetchAsync<NotificationSetting>(criteria);
 
-        public NotificationSettingQueryRepositoryImp(IDynamicRepository repository)
-        {
-            this.repository = repository;
-        }
+        return new HashSet<string>(notificationSettings.Select(a => $"{a.UserId}-{a.NotificationSettingId}"));
+    }
 
-        public async Task<HashSet<string>> GetUnsubscribeSettings()
-        {
-            var criteria = new GetNotificationSettingCommand();
-            var notificationSettings = await repository.FetchAsync<NotificationSetting>(criteria);
+    public async Task<Dictionary<string, List<Assignee>>> GetSessionWatcherSettings()
+    {
+        var criteria = new GetSessionReceivedWatcherCommand();
 
-            return new HashSet<string>(notificationSettings.Select(a => $"{a.UserId}-{a.NotificationSettingId}"));
-        }
+        var watchers = (await repository.FetchAsync<SessionWatcher>(criteria)).ToList();
 
-        public async Task<Dictionary<string, List<Assignee>>> GetSessionWatcherSettings()
-        {
-            var criteria = new GetSessionReceivedWatcherCommand();
-
-            var watchers = (await repository.FetchAsync<SessionWatcher>(criteria)).ToList();
-
-            return watchers.GroupBy(a => $"{a.UserId}-{a.NotificationSettingId}")
-                         .ToDictionary(key => key.Key, value => value.Select(i => new Assignee
-                         {
-                             AssigneeId = i.UserWatcherId,
-                             AssigneeName = i.UserWatcherName
-                         }).ToList());
-        }
+        return watchers.GroupBy(a => $"{a.UserId}-{a.NotificationSettingId}")
+            .ToDictionary(key => key.Key, value => value.Select(i => new Assignee
+            {
+                AssigneeId = i.UserWatcherId,
+                AssigneeName = i.UserWatcherName
+            }).ToList());
     }
 }

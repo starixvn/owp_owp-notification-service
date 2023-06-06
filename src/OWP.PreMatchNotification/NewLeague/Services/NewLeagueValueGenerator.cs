@@ -29,16 +29,14 @@ public class NewLeagueValueGeneratorImp : NewLeagueValueGenerator
         IList<InfoSiteMatch> infoSiteMatches)
     {
         var newLeagues = GetNewPreMatchLeagues(oldSnapshot, newSnapshot, infoSiteMatches);
-        var changedValue = new List<ChangedValue>();
-        foreach (var league in newLeagues)
-        {
-            changedValue.Add(new ChangedValue
+        var changedValue = newLeagues.Select(league =>
+            new ChangedValue
             {
                 League = league.OWPLeagueName,
                 ReceivedUserIds = assignees.Select(x => x.AssigneeId).ToList(),
                 MessageTypeId = (int)MsgTemplateCode.NewLeague
-            });
-        }
+            }).ToList();
+
         return changedValue.ToList();
     }
 

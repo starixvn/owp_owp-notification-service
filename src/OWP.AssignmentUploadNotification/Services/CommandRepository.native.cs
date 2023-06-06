@@ -1,37 +1,36 @@
-﻿namespace OWP.AssignmentUploadNotification.Services
-{
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using Criteria;
-    using Fanex.Data.Repository;
-    using Models;
-    using Olympus.Xml;
+﻿namespace OWP.AssignmentUploadNotification.Services;
 
-    public interface CommandRepository
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Criteria;
+using Fanex.Data.Repository;
+using Models;
+using Olympus.Xml;
+
+public interface CommandRepository
+{
+    Task InsertMessage(List<MessageModel> messages, string sessionId, int userId);
+}
+
+public class CommandRepositoryImp : CommandRepository
+{
+    private readonly IDynamicRepository repository;
+
+    public CommandRepositoryImp(
+        IDynamicRepository repository)
     {
-        Task InsertMessage(List<MessageModel> messages, string sessionId, int userId);
+        this.repository = repository;
     }
 
-    public class CommandRepositoryImp : CommandRepository
+    public async Task InsertMessage(List<MessageModel> messages, string sessionId, int userId)
     {
-        private readonly IDynamicRepository repository;
-
-        public CommandRepositoryImp(
-            IDynamicRepository repository)
+        var criteria = new InsertMessageCommand
         {
-            this.repository = repository;
-        }
+            Messages = XmlConverter.Serialize(messages),
+            CreatedByUserId = userId,
+            SessionId = sessionId
+        };
 
-        public async Task InsertMessage(List<MessageModel> messages, string sessionId, int userId)
-        {
-            var criteria = new InsertMessageCommand
-            {
-                Messages = XmlConverter.Serialize(messages),
-                CreatedByUserId = userId,
-                SessionId = sessionId
-            };
-
-            await repository.ExecuteAsync(criteria);
-        }
+        await repository.ExecuteAsync(criteria);
     }
 }

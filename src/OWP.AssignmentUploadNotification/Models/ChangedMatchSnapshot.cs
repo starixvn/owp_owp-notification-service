@@ -1,13 +1,12 @@
-﻿namespace OWP.AssignmentUploadNotification.Models
+﻿namespace OWP.AssignmentUploadNotification.Models;
+
+public class ChangedMatchSnapshot
 {
-    public class ChangedMatchSnapshot
-    {
-        public GeneralMatch OldMatch { get; set; }
+    public GeneralMatch OldMatch { get; set; }
 
-        public GeneralMatch NewMatch { get; set; }
+    public GeneralMatch NewMatch { get; set; }
 
-        public AssignmentSnapshot OldSnapshot { get; set; }
+    public AssignmentSnapshot OldSnapshot { get; set; }
 
-        public AssignmentSnapshot NewSnapshot { get; set; }
-    }
+    public AssignmentSnapshot NewSnapshot { get; set; }
 }

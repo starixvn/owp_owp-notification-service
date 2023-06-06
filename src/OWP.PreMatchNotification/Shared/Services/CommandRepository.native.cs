@@ -1,6 +1,6 @@
 ﻿using Fanex.Data.Repository;
 using Olympus.Xml;
-using OWP.PreMatchNotification.Criteria;
+using OWP.PreMatchNotification.Shared.Criteria;
 using OWP.PreMatchNotification.Shared.Models;
 
 namespace OWP.PreMatchNotification.Shared.Services;

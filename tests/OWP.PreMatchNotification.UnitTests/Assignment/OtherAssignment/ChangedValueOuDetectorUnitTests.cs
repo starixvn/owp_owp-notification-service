@@ -10,7 +10,7 @@ public class ChangedValueOuDetectorUnitTests
         var hdpDetector = new ChangedValueOuDetectorImp();
         var oldSnapshot = new AssignmentSnapshot
         {
-            LeagueName = "VLeague",
+            LeagueName = "League",
             IsDay = true,
             Ou = "Sa",
             OuUserId = 8
@@ -18,7 +18,7 @@ public class ChangedValueOuDetectorUnitTests
 
         var newSnapshot = new AssignmentSnapshot
         {
-            LeagueName = "VLeague",
+            LeagueName = "League",
             Ou = "Starix15",
             OuUserId = 121,
             IsDay = true
@@ -29,7 +29,7 @@ public class ChangedValueOuDetectorUnitTests
         {
             new ()
             {
-                League = "VLeague",
+                League = "League",
                 BetTypeName = "O/U",
                 OldValue = "Sa",
                 NewValue = "Starix15",
@@ -47,7 +47,7 @@ public class ChangedValueOuDetectorUnitTests
         var hdpDetector = new ChangedValueOuDetectorImp();
         var oldSnapshot = new AssignmentSnapshot
         {
-            LeagueName = "VLeague",
+            LeagueName = "League",
             IsDay = true,
             OtherOu = "Sa",
             OtherOuUserId = 8
@@ -55,7 +55,7 @@ public class ChangedValueOuDetectorUnitTests
 
         var newSnapshot = new AssignmentSnapshot
         {
-            LeagueName = "VLeague",
+            LeagueName = "League",
             OtherOu = "Starix15",
             OtherOuUserId = 121,
             IsDay = true
@@ -66,7 +66,7 @@ public class ChangedValueOuDetectorUnitTests
         {
             new ()
             {
-                League = "VLeague",
+                League = "League",
                 BetTypeName = "O/U",
                 OldValue = "Sa",
                 NewValue = "Starix15",

@@ -46,7 +46,7 @@ public class ChangedMatchSettingGeneratorImp : ChangedMatchSettingGenerator
 
     public static IEnumerable<ChangedValue> GetListValueChangedWithDifferentBettype(List<MatchSetting> oldMatchSettings, List<MatchSetting> newMatchSettings, int matchId)
     {
-        var bettypes = new List<string> {
+        var betTypes = new List<string> {
              Bettype.FTHDP,
              Bettype.FirstHHDP,
              Bettype.FirstQ3QHDP ,
@@ -103,7 +103,7 @@ public class ChangedMatchSettingGeneratorImp : ChangedMatchSettingGenerator
         };
 
         var changedValues = new List<ChangedValue>();
-        foreach (var bettype in bettypes)
+        foreach (var bettype in betTypes)
         {
             var oldMatchWithBettype = oldMatchSettings.SingleOrDefault(a => string.Equals(a.BetTypeName, bettype)) ?? new MatchSetting();
             var newMatchWithBettype = newMatchSettings.SingleOrDefault(a => string.Equals(a.BetTypeName, bettype)) ?? new MatchSetting();
@@ -146,7 +146,7 @@ public class ChangedMatchSettingGeneratorImp : ChangedMatchSettingGenerator
         => value?.ToString().TrimEnd('0').TrimEnd('.');
     public static string ToOWPSpreadFormatPercent(decimal? spread)
              => spread.HasValue
-             ? string.Format("{0}{1}", ToOWPSpreadFormat(spread), "%")
+             ? $"{ToOWPSpreadFormat(spread)}%"
              : string.Empty;
     public static string ToOWPSpreadFormat(decimal? spread)
     {

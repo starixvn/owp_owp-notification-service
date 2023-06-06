@@ -12,8 +12,8 @@ public class ChangedMatchStatusGeneratorUnitTests
                 MatchNo = 123,
                 OSMatchId = 123,
                 OfferLive = "CANCEL",
-                League = "Vleague",
-                Home = "Binh Dinh",
+                League = "League",
+                Home = "United",
                 Away = "Ha Noi"
             },
             NewMatch = new MatchInfo
@@ -21,14 +21,14 @@ public class ChangedMatchStatusGeneratorUnitTests
                 MatchNo = 123,
                 OSMatchId = 123,
                 OfferLive = "LIVE",
-                League = "Vleague",
-                Home = "Binh Dinh",
+                League = "League",
+                Home = "United",
                 Away = "Ha Noi"
-            },
+            }
         };
         var assignees = new List<Assignee>
             {
-                new Assignee
+                new()
                 {
                     AssigneeId=8,
                     AssigneeName="sa"
@@ -37,18 +37,18 @@ public class ChangedMatchStatusGeneratorUnitTests
         var actual = changedMatchStatusGeneratorImp.Create(snapshot, assignees);
         var expected = new List<ChangedValue>
             {
-                new ChangedValue
+                new()
                 {
                     UserId=8,
                     Username="sa",
-                    EventName="Binh Dinh -vs- Ha Noi",
-                    League="Vleague",
-                    MatchNo="1234",
-                    MessageTypeId=10,
+                    EventName="United -vs- Ha Noi",
+                    League="League",
+                    MatchNo="123",
+                    MessageTypeId=108,
                     NewValue="LIVE",
-                    OldValue="CANCEL",
+                    OldValue="CANCEL"
                 }
             };
-        DeepAssert.Equals(expected, actual);
+        DeepAssert.Equal(expected, actual);
     }
 }

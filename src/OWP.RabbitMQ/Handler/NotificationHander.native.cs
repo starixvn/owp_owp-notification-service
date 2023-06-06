@@ -7,7 +7,6 @@ using OWP.Core.NotificationRequests.LiveDetail;
 using OWP.Core.NotificationRequests.OtherSport;
 using OWP.Core.NotificationRequests.Prematch;
 using OWP.Core.NotificationRequests.TicketCenter;
-using Fanex.Logging;
 
 namespace OWP.RabbitMQ.Handler;
 
@@ -20,21 +19,14 @@ public class SendNotificationHandlerImp : NotificationHandler
 {
     private readonly IMediator mediator;
 
-    private readonly ILogger logger;
-
-    public SendNotificationHandlerImp(IMediator mediator, ILogger logger)
+    public SendNotificationHandlerImp(IMediator mediator)
     {
         this.mediator = mediator;
-        this.logger = logger;
     }
 
     public async Task Handle(string key, string message)
     {
         var request = MapRequest(key, message);
-        if (key == "assignment-upload")
-        {
-            logger.Info(key + "=>" + message);
-        }
 
         await mediator.Send(request);
     }
@@ -43,15 +35,13 @@ public class SendNotificationHandlerImp : NotificationHandler
     {
         RoutingKey.AssignmentUpload => JsonConvert.DeserializeObject<AssignmentUploadNotifyRequest>(message),
 
-        RoutingKey.TicketCenter => JsonConvert.DeserializeObject<NewTicketEventNotificationRequest>(message),
-
         RoutingKey.LinkedLgaMatch => JsonConvert.DeserializeObject<LinkedMatchNotifyRequest>(message),
 
-        RoutingKey.InfositeMatchInfo => JsonConvert.DeserializeObject<MatchInfoNotifyRequest>(message),
+        RoutingKey.InfoSiteMatchInfo => JsonConvert.DeserializeObject<MatchInfoNotifyRequest>(message),
 
-        RoutingKey.PrematchAssignment => JsonConvert.DeserializeObject<PrematchAssignmentNotifyRequest>(message),
+        RoutingKey.PreMatchAssignment => JsonConvert.DeserializeObject<PrematchAssignmentNotifyRequest>(message),
 
-        RoutingKey.PrematchNewLeague => JsonConvert.DeserializeObject<PrematchNewLeagueNotifyRequest>(message),
+        RoutingKey.PreMatchNewLeague => JsonConvert.DeserializeObject<PrematchNewLeagueNotifyRequest>(message),
 
         RoutingKey.OtherSport => JsonConvert.DeserializeObject<OtherSportNotificationRequest>(message),
 
@@ -67,7 +57,7 @@ public class SendNotificationHandlerImp : NotificationHandler
 
         RoutingKey.TicketCenterNewTicketOther => JsonConvert.DeserializeObject<NewTicketOtherNotificationRequest>(message),
 
-        RoutingKey.TicketCenterNewTicketSupport => JsonConvert.DeserializeObject<NewTicketSupportNoticationRequest>(message),
+        RoutingKey.TicketCenterNewTicketSupport => JsonConvert.DeserializeObject<NewTicketSupportNotificationRequest>(message),
 
         RoutingKey.LiveDetail => JsonConvert.DeserializeObject<LiveDetailNotifyRequest>(message),
 

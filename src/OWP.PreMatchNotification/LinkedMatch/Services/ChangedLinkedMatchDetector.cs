@@ -50,10 +50,10 @@ public class ChangedLinkedMatchDetectorImp : ChangedLinkedMatchDetector
         };
     }
 
-    public static IEnumerable<GeneralMatch> FilterExistPrematches(List<GeneralMatch> matches, Dictionary<int, List<InfositePrematchLeague>> prematchLeagues)
+    public static List<GeneralMatch> FilterExistPrematches(List<GeneralMatch> matches, Dictionary<int, List<InfositePrematchLeague>> prematchLeagues)
     {
         var existInfositePrematch = prematchLeagues.Keys.Distinct();
-        return matches.Where(x => x.InfoSiteMatchId != 0 && existInfositePrematch.Contains(x.InfoSiteMatchId));
+        return matches.Where(x => x.InfoSiteMatchId != 0 && existInfositePrematch.Contains(x.InfoSiteMatchId)).ToList();
     }
 
     public static List<GeneralMatch> GetDeletedLinkedMatches(IEnumerable<GeneralMatch> oldMatches, IEnumerable<GeneralMatch> newMatches)

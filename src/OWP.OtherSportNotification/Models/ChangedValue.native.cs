@@ -44,9 +44,10 @@ public class AssignmentChangedValueComparer : ChangedValue, IEqualityComparer<Ch
 {
     public bool Equals(ChangedValue x, ChangedValue y)
     {
-        var condition1 = x.OSMatchId == y.OSMatchId && x.BetTypeName == y.BetTypeName && x.AssignmentType == y.AssignmentType;
-        var condition2 = x.MessageTypeId == y.MessageTypeId && x.UserId == y.UserId && x.IsIndirectChangedAssignment == y.IsIndirectChangedAssignment;
-        var condition3 = x.OldValue == y.OldValue && x.NewValue == y.NewValue && x.AssignmentNote == y.AssignmentNote;
+        var condition = y != null && x != null;
+        var condition1 = condition && x.OSMatchId == y.OSMatchId && x.BetTypeName == y.BetTypeName && x.AssignmentType == y.AssignmentType;
+        var condition2 = condition && x.MessageTypeId == y.MessageTypeId && x.UserId == y.UserId && x.IsIndirectChangedAssignment == y.IsIndirectChangedAssignment;
+        var condition3 = condition && x.OldValue == y.OldValue && x.NewValue == y.NewValue && x.AssignmentNote == y.AssignmentNote;
 
         return condition1 && condition2 && condition3;
     }

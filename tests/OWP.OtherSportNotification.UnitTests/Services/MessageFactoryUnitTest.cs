@@ -15,14 +15,14 @@ public class MessageFactoryUnitTest
 
         var expected = new List<MessageModel>
             {
-                new MessageModel
+                new()
                 {
                    IsImportant = false,
-                   MessageContent = "<b>Match No.</b> Updated from 1234 to <b>20000</b> for #20000 - A-Coners - LiverPool-Coners -vs- Arsenal-Coners updated by sa",
+                   MessageContent = "<b>Match No.</b> Updated from 1234 to <b>20000</b> for #20000 - A-Corners - LiverPool-Corners -vs- Arsenal-Corners updated by sa",
                    MessageType = (int)MsgTemplateCode.EditMatchNo,
                    ReceivedUserIds = new List<string> { "6789" }
                 },
-                new MessageModel
+                new()
                 {
                    IsImportant = false,
                    MessageContent = "<b>Max Bet</b> of <b>Next of Corners (HDP)</b> Updated from 400K to <b>300K</b> for #50000 - PremierLeague - LiverPool -vs- Arsenal updated by sa",
@@ -43,14 +43,14 @@ public class MessageFactoryUnitTest
 
         var expected = new List<MessageModel>
             {
-                new MessageModel
+                new()
                 {
                     IsImportant = true,
                     MessageContent = "You have been REMOVED from <b>1H (HDP)</b> in #1324 - Jo - Spur -vs- MC - 08/08/2021 12:00 AM updated by sa",
                     MessageType = (int)MsgTemplateCode.OtherAssignmentDelete,
                     ReceivedUserIds = new List<string> { "2542" }
                 },
-                new MessageModel
+                new()
                 {
                     IsImportant = true,
                     MessageContent = "You have NEW ASSIGNMENT <b>1H (HDP)</b> in #5000 - Jo - Spur -vs- MC - 07/08/2021 12:00 AM updated by sa",
@@ -70,24 +70,24 @@ public class MessageFactoryUnitTest
         var changedValueList = GetListMatchSettingChanged();
         var expected = new List<MessageModel>
             {
-                new MessageModel
+                new()
                 {
-                   MessageContent = "<b>Max Bet</b> of <b>FT (HDP)</b> Updated from 12000 to <b>11000</b> for #1234 - Vleague - Binh Dinh -vs- Ha Noi updated by sa",
+                   MessageContent = "<b>Max Bet</b> of <b>FT (HDP)</b> Updated from 12000 to <b>11000</b> for #1234 - League - United -vs- Ha Noi updated by sa",
                    MessageType = (int)MsgTemplateCode.EditMaxbet,
                    ReceivedUserIds = new List<string> { "8" }
                 },
-                new MessageModel
+                new()
                 {
-                   MessageContent = "<b>Max Bet</b> of <b>FT (HDP)</b> Updated from 12000 to <b>11000</b> for #1234 - Vleague - Binh Dinh -vs- Ha Noi updated by sa",
+                   MessageContent = "<b>Max Bet</b> of <b>FT (HDP)</b> Updated from 12000 to <b>11000</b> for #1234 - League - United -vs- Ha Noi updated by sa",
                    MessageType = (int)MsgTemplateCode.EditMaxbet,
                    ReceivedUserIds = new List<string> { "11" }
                 },
-                 new MessageModel
-                {
-                   MessageContent = "<b>Spread</b> of <b>FT (HDP)</b> Updated from 12% to <b>11%</b> for #1234 - Vleague - Binh Dinh -vs- Ha Noi updated by sa",
+                 new()
+                 {
+                   MessageContent = "<b>Spread</b> of <b>FT (HDP)</b> Updated from 12% to <b>11%</b> for #1234 - League - United -vs- Ha Noi updated by sa",
                    MessageType = (int)MsgTemplateCode.EditSpread,
                    ReceivedUserIds = new List<string> { "8" }
-                },
+                }
             };
 
         var actual = messageFactory.Transform(changedValueList, "sa");
@@ -111,7 +111,7 @@ public class MessageFactoryUnitTest
             EventName = "Spur -vs- MC",
             UserId = 2542,
             Username = "esther",
-            EventDateTime = DateTime.Parse("08/08/2021 12:00 AM"),
+            EventDateTime = DateTime.Parse("08/08/2021 12:00 AM")
         };
 
         var valueChanged2 = new ChangedValue
@@ -128,7 +128,7 @@ public class MessageFactoryUnitTest
             EventName = "Spur -vs- MC",
             UserId = 2542,
             Username = "esther",
-            EventDateTime = DateTime.Parse("07/08/2021 12:00 AM"),
+            EventDateTime = DateTime.Parse("07/08/2021 12:00 AM")
         };
 
         var changedValueList = new List<ChangedValue>
@@ -147,9 +147,9 @@ public class MessageFactoryUnitTest
             MessageTypeId = (int)MsgTemplateCode.EditMatchNo,
             NewValue = "20000",
             OldValue = "1234",
-            League = "A-Coners",
+            League = "A-Corners",
             MatchNo = "20000",
-            EventName = "LiverPool-Coners -vs- Arsenal-Coners",
+            EventName = "LiverPool-Corners -vs- Arsenal-Corners",
             UserId = 6789,
             Username = "esther"
         };
@@ -176,43 +176,43 @@ public class MessageFactoryUnitTest
     }
 
     private List<ChangedValue> GetListMatchSettingChanged()
-    => new List<ChangedValue>
-        {
+    => new()
+    {
                 new ChangedValue
                 {
                     UserId = 8,
                     Username = "Liam",
                     BetTypeName = "FT (HDP)",
-                    EventName = "Binh Dinh -vs- Ha Noi",
-                    League = "Vleague",
+                    EventName = "United -vs- Ha Noi",
+                    League = "League",
                     MatchNo = "1234",
                     MessageTypeId = (int)MsgTemplateCode.EditMaxbet,
                     NewValue = "11000",
-                    OldValue = "12000",
+                    OldValue = "12000"
                 },
                 new ChangedValue
                 {
                     UserId = 11,
                     Username = "Starix1",
                     BetTypeName = "FT (HDP)",
-                    EventName = "Binh Dinh -vs- Ha Noi",
-                    League = "Vleague",
+                    EventName = "United -vs- Ha Noi",
+                    League = "League",
                     MatchNo = "1234",
                     MessageTypeId = (int)MsgTemplateCode.EditMaxbet,
                     NewValue = "11000",
-                    OldValue = "12000",
+                    OldValue = "12000"
                 },
                 new ChangedValue
                 {
                     UserId = 8,
                     Username = "Liam",
                     BetTypeName = "FT (HDP)",
-                    EventName = "Binh Dinh -vs- Ha Noi",
-                    League = "Vleague",
+                    EventName = "United -vs- Ha Noi",
+                    League = "League",
                     MatchNo = "1234",
                     MessageTypeId = (int)MsgTemplateCode.EditSpread,
                     NewValue = "11%",
-                    OldValue = "12%",
-                },
+                    OldValue = "12%"
+                }
         };
 }

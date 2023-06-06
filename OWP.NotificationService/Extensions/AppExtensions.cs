@@ -9,7 +9,7 @@ public static class AppExtensions
         var rabbitService = app.ApplicationServices.GetService<MessageServer>();
 
         var lifetime = app.ApplicationServices.GetService<IHostApplicationLifetime>();
-        lifetime!.ApplicationStarted.Register(() => rabbitService!.ConsumeRequestQueue());
+        lifetime.ApplicationStarted.Register(() => rabbitService.ConsumeRequestQueue());
 
         return app;
     }

@@ -1,4 +1,5 @@
-﻿namespace OWP.OtherSportNotification.Constants;
+﻿// ReSharper disable All
+namespace OWP.OtherSportNotification.Constants;
 public static class Bettype
 {
     public const string FTHDP = "FT (HDP)";
