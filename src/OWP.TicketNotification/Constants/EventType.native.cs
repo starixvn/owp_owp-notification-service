@@ -6,5 +6,6 @@ public enum EventType
     Match = 2,
     Other = 3,
     Support = 4,
-    LiveIncident = 5
+    LiveIncident = 5,
+    LogWork = 6
 }

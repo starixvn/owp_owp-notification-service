@@ -26,6 +26,7 @@ public class MessageNotificationServiceImp : MessageNotificationService
         var userIds = userTuple.Item1.Select(x => x.UserId).ToList();
 
         var awaiter = ticketRepository.GetMessageUnreadByMultipleUserId(userIds).ConfigureAwait(true);
+
         var messageUnread = awaiter.GetAwaiter().GetResult();
 
         var messages = userTuple.Item2.Select(x => new NotificationModel
