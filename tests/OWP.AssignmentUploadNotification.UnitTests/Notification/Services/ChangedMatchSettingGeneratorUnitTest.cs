@@ -121,7 +121,7 @@ public class ChangedMatchSettingGeneratorUnitTest
             MatchType = -2,
             MinorBettypeName = "Specific 10 Mins",
             Division = "20",
-            Remark = "ahihihahah",
+            Remark = "New Remark",
             WB = ""
         };
 
@@ -191,7 +191,7 @@ public class ChangedMatchSettingGeneratorUnitTest
             MatchType = 1000,
             MinorBettypeName = "Next of Coners",
             Division = "20",
-            Remark = "ahihihahah",
+            Remark = "New Remark",
             WB = ""
         };
 

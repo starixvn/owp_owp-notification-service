@@ -62,7 +62,7 @@ public class ChangedMatchInfoGeneratorUnitTest
             MatchType = 1000,
             MinorBettypeName = "Next of Coners",
             Division = "20",
-            Remark = "ahihihahah",
+            Remark = "New Value",
             WB = ""
 
         };
@@ -152,7 +152,7 @@ public class ChangedMatchInfoGeneratorUnitTest
         var valueChanged4 = new ChangedValue
         {
             MessageTypeId = 26,
-            NewValue = "ahihihahah",
+            NewValue = "New Value",
             OldValue = "",
             League = "PremierLeague-Coners",
             MatchNo = "20000",
