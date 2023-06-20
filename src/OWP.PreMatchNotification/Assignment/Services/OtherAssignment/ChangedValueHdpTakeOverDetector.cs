@@ -33,7 +33,7 @@ public class ChangedValueHdpTakeOverDetectorImp : ChangedValueHdpTakeOverDetecto
                 BetTypeName = Bettype.HDP_TAKEOVER,
                 OldValue = oldSnapshot.HdpTakeOver,
                 NewValue = newSnapshot.HdpTakeOver,
-                MessageTypeId = AssignmentHelper.DetectMessageType(newSnapshot.IsDay)
+                MessageTypeId = AssignmentHelper.DetectMessageType(newSnapshot.IsDay != null && newSnapshot.IsDay.Value)
             });
         }
     }
@@ -50,7 +50,7 @@ public class ChangedValueHdpTakeOverDetectorImp : ChangedValueHdpTakeOverDetecto
                 BetTypeName = Bettype.HDP_TAKEOVER,
                 OldValue = oldSnapshot.OtherHdpTakeOver,
                 NewValue = newSnapshot.OtherHdpTakeOver,
-                MessageTypeId = AssignmentHelper.DetectMessageType(newSnapshot.IsDay)
+                MessageTypeId = AssignmentHelper.DetectMessageType(newSnapshot.IsDay != null && newSnapshot.IsDay.Value)
             });
         }
     }

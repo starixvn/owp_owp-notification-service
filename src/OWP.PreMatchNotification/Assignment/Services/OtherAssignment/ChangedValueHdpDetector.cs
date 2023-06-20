@@ -33,7 +33,7 @@ public class ChangedValueHdpDetectorImp : ChangedValueHdpDetector
                 BetTypeName = Bettype.HDP,
                 OldValue = oldSnapshot.Hdp,
                 NewValue = newSnapshot.Hdp,
-                MessageTypeId = AssignmentHelper.DetectMessageType(newSnapshot.IsDay)
+                MessageTypeId = AssignmentHelper.DetectMessageType(newSnapshot.IsDay != null && newSnapshot.IsDay.Value)
             });
         }
     }
@@ -50,7 +50,7 @@ public class ChangedValueHdpDetectorImp : ChangedValueHdpDetector
                 BetTypeName = Bettype.HDP,
                 OldValue = oldSnapshot.OtherHdp,
                 NewValue = newSnapshot.OtherHdp,
-                MessageTypeId = AssignmentHelper.DetectMessageType(newSnapshot.IsDay)
+                MessageTypeId = AssignmentHelper.DetectMessageType(newSnapshot.IsDay != null && newSnapshot.IsDay.Value)
             });
         }
     }

@@ -40,8 +40,8 @@ public class NewLeagueValueGeneratorImp : NewLeagueValueGenerator
         return changedValue.ToList();
     }
 
-    private IEnumerable<PreMatchLeague> GetNewPreMatchLeagues(IList<PreMatchLeague> oldSnapshot,
-        IList<PreMatchLeague> newSnapshot, IList<InfoSiteMatch> infoSiteMatches)
+    private IEnumerable<PreMatchLeague> GetNewPreMatchLeagues(IEnumerable<PreMatchLeague> oldSnapshot,
+        IEnumerable<PreMatchLeague> newSnapshot, IList<InfoSiteMatch> infoSiteMatches)
     {
         var newLeagues = newSnapshot.Except(oldSnapshot, new PreMatchLeague()).ToList();
         var currentDate = dateTimeHelper.GetCurrentDate();

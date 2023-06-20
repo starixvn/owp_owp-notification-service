@@ -126,7 +126,7 @@ public class MessageFactoryImp : MessageFactory
         return Reduce(messageModels);
     }
 
-    private List<MessageModelRaw> TransformChangedValueToMessageModel(IList<ChangedValue> changedValues)
+    private static IEnumerable<MessageModelRaw> TransformChangedValueToMessageModel(IEnumerable<ChangedValue> changedValues)
     {
         return changedValues
             .Select(g =>
@@ -169,7 +169,7 @@ public class MessageFactoryImp : MessageFactory
         return content;
     }
 
-    private static List<MessageModel> Reduce(List<MessageModelRaw> messageModels)
+    private static List<MessageModel> Reduce(IEnumerable<MessageModelRaw> messageModels)
     {
         return messageModels.GroupBy(m => new { m.MessageContent, m.IsImportant, m.MessageType, m.IsBlinking })
             .Select(m =>

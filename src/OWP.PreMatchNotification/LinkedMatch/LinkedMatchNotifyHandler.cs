@@ -51,18 +51,19 @@ public class LinkedMatchNotifyHandler : IRequestHandler<LinkedMatchNotifyRequest
     {
         var oldMatches = await cacheManipulator.GetOldLGAMatchSnapshot(request.SessionId);
 
-        if (oldMatches.Count > 0)
+        if (oldMatches.Count <= 0)
         {
-            var newMatches = await queryRepository.GetLGAMatchNewSnapshot(request.EventDate);
-
-            var employees = await GetEmployees(request.EventDate);
-
-            var messages = changedValueBySnapshot.Create(oldMatches, newMatches, employees);
-
-            return messages;
+            return new List<ChangedValue>();
         }
 
-        return new List<ChangedValue>();
+        var newMatches = await queryRepository.GetLGAMatchNewSnapshot(request.EventDate);
+
+        var employees = await GetEmployees(request.EventDate);
+
+        var messages = changedValueBySnapshot.Create(oldMatches, newMatches, employees);
+
+        return messages;
+
     }
 
     public async Task<Employee> GetEmployees(DateTime eventDate)

@@ -10,10 +10,6 @@ public interface CacheManipulatorCommon
     Task<T> GetSingleData<T>(string key, T defaultValue);
 
     Task RemoveData(string key);
-
-    void Cache(string key, string value);
-
-    bool ContainKey(string key);
 }
 
 public class CacheManipulatorCommonImp : CacheManipulatorCommon
