@@ -57,17 +57,20 @@ public class ChangedValueGeneratorImp : ChangedValueGenerator
     {
         var changedValueList = new List<ChangedValue>();
         var changedMatches = newSnapshot.Except(oldSnapshot, new InfoSiteMatchComparer()).ToList();
-        var oldSnapshotTimeRange = GetOldSnapshotTimeRange(oldSnapshot);
+        var oldSnapshotTimeRange = GetOldSnapshotTimeRange(oldSnapshot).ToList();
 
         foreach (var item in changedMatches)
         {
             var oldInfositeMatch = oldSnapshotTimeRange.FirstOrDefault(x => x.InfoSiteMatchId == item.InfoSiteMatchId);
 
-            if (oldInfositeMatch != null)
+            if (oldInfositeMatch == null)
             {
-                var assigneeIds = preMatchAssignees.Where(i => i.OWPLeagueId == item.OWPLeagueId).Select(x => x.AssigneeId).ToList();
-                changedValueList.AddRange(GetListValueChangedByProperty(oldInfositeMatch, item, assigneeIds));
+                continue;
             }
+
+            var assigneeIds = preMatchAssignees.Where(i => i.OWPLeagueId == item.OWPLeagueId).Select(x => x.AssigneeId)
+                .ToList();
+            changedValueList.AddRange(GetListValueChangedByProperty(oldInfositeMatch, item, assigneeIds));
         }
 
         return changedValueList;
@@ -136,7 +139,7 @@ public class ChangedValueGeneratorImp : ChangedValueGenerator
         return match.GetType().GetProperties().Single(p => p.Name == propertyName);
     }
 
-    private IList<InfoSiteMatch> GetOldSnapshotTimeRange(IList<InfoSiteMatch> oldSnapshot)
+    private IEnumerable<InfoSiteMatch> GetOldSnapshotTimeRange(IEnumerable<InfoSiteMatch> oldSnapshot)
     {
         var currentDate = dateTimeHelper.GetCurrentDate();
         var fromDate = currentDate.AddHours(12);

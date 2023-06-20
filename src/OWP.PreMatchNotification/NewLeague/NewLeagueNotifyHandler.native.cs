@@ -81,7 +81,7 @@ public class NewLeagueNotifyHandler : IRequestHandler<PrematchNewLeagueNotifyReq
         return result.ToList();
     }
 
-    private async Task<IList<InfoSiteMatch>> GetInfoSiteMatch(List<int> owpLeagueIds, DateTime fromDate)
+    private async Task<IList<InfoSiteMatch>> GetInfoSiteMatch(IEnumerable<int> owpLeagueIds, DateTime fromDate)
     {
         var criteria = new QueryInfoSiteMatchByOWPLeagueIdsCriteria
         {

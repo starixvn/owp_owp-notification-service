@@ -33,7 +33,7 @@ public class ChangedValueOuDetectorImp : ChangedValueOuDetector
                 BetTypeName = Bettype.OU,
                 OldValue = oldSnapshot.Ou,
                 NewValue = newSnapshot.Ou,
-                MessageTypeId = AssignmentHelper.DetectMessageType(newSnapshot.IsDay)
+                MessageTypeId = AssignmentHelper.DetectMessageType(newSnapshot.IsDay != null && newSnapshot.IsDay.Value)
             });
         }
     }
@@ -50,7 +50,7 @@ public class ChangedValueOuDetectorImp : ChangedValueOuDetector
                 BetTypeName = Bettype.OU,
                 OldValue = oldSnapshot.OtherOu,
                 NewValue = newSnapshot.OtherOu,
-                MessageTypeId = AssignmentHelper.DetectMessageType(newSnapshot.IsDay)
+                MessageTypeId = AssignmentHelper.DetectMessageType(newSnapshot.IsDay != null && newSnapshot.IsDay.Value)
             });
         }
     }

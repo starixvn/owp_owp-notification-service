@@ -63,7 +63,7 @@ public class MathInfoNotifyHandler : IRequestHandler<PrematchAssignmentNotifyReq
         await cacheManipulator.RemoveData(request.RedisKey);
 
         var preMatchLeagueIdUpdated = oldSnapshot.Select(item => item.PreMatchLeagueId).ToList();
-        var newSnapshot = await GetAssignmentNewSnapshot(preMatchLeagueIdUpdated);
+        var newSnapshot = (await GetAssignmentNewSnapshot(preMatchLeagueIdUpdated)).ToList();
         var prematchIdUpdated = newSnapshot.Select(p => p.PreMatchLeagueId);
 
         foreach (var prematchId in prematchIdUpdated)
@@ -80,7 +80,7 @@ public class MathInfoNotifyHandler : IRequestHandler<PrematchAssignmentNotifyReq
         return changedValuesResult;
     }
 
-    private async Task<IList<AssignmentSnapshot>> GetAssignmentNewSnapshot(IList<int> prematchIds)
+    private async Task<IEnumerable<AssignmentSnapshot>> GetAssignmentNewSnapshot(IEnumerable<int> prematchIds)
     {
         var assignmentOldValue = new List<AssignmentSnapshot>();
         foreach (var id in prematchIds)

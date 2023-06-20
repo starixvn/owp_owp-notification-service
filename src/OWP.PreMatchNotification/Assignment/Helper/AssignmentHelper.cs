@@ -26,8 +26,8 @@ public static class AssignmentHelper
             {
                 League = model.LeagueName,
                 BetTypeName = model.BettypeName,
-                ReceivedUserIds = new List<int> { model.UserIdNewAssign },
-                MessageTypeId = model.IsDay
+                ReceivedUserIds = new List<int> { model.UserIdNewAssign ?? 0 },
+                MessageTypeId = model.IsDay != null && model.IsDay.Value
                 ? (int)MsgTemplateCode.DayShiftAssignmentInsert
                 : (int)MsgTemplateCode.NightShiftAssignmentInsert
             });
@@ -44,7 +44,7 @@ public static class AssignmentHelper
                 League = model.LeagueName,
                 BetTypeName = model.BettypeName,
                 ReceivedUserIds = new List<int> { model.UserIdRemoved ?? 0 },
-                MessageTypeId = model.IsDay
+                MessageTypeId = model.IsDay != null && model.IsDay.Value
                 ? (int)MsgTemplateCode.DayShiftAssignmentDelete
                 : (int)MsgTemplateCode.NightShiftAssignmentDelete
             });
