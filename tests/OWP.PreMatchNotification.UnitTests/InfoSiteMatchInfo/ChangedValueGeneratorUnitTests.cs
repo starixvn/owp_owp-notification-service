@@ -129,7 +129,7 @@ public class ChangedValueGeneratorUnitTests
             {
                 InfoSiteMatchId = 7,
                 HomeName = "THAI",
-                AwayName = "VIET",
+                AwayName = "China",
                 EventDateTime = new DateTime(2021, 06, 24, 10, 00, 00),
                 OWPLeagueId = 102,
                 LeagueName="AFF"

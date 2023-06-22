@@ -53,14 +53,14 @@ public class ChangedMatchInfoGeneratorUnitTest
         {
             MatchId = 1234,
             MatchNo = "20000",
-            Home = "LiverPool-Coners",
-            Away = "Arsenal-Coners",
-            LeagueName = "PremierLeague-Coners",
+            Home = "LiverPool-Corners",
+            Away = "Arsenal-Corners",
+            LeagueName = "PremierLeague-Corners",
             MatchStatus = "Live",
-            Agent = "Rossi",
+            Agent = "Ross",
             ParentMatchId = 3456,
             MatchType = 1000,
-            MinorBettypeName = "Next of Coners",
+            MinorBettypeName = "Next of Corners",
             Division = "20",
             Remark = "New Value",
             WB = ""
@@ -71,14 +71,14 @@ public class ChangedMatchInfoGeneratorUnitTest
         {
             MatchId = 1234,
             MatchNo = "1234",
-            Home = "LiverPool-Coners",
-            Away = "Arsenal-Coners",
-            LeagueName = "PremierLeague-Coners",
+            Home = "LiverPool-Corners",
+            Away = "Arsenal-Corners",
+            LeagueName = "PremierLeague-Corners",
             MatchStatus = "",
             Agent = "Bow",
             ParentMatchId = 3456,
             MatchType = 1000,
-            MinorBettypeName = "Next of Coners",
+            MinorBettypeName = "Next of Corners",
             Division = "10",
             Remark = "",
             WB = "WB@"
@@ -92,7 +92,7 @@ public class ChangedMatchInfoGeneratorUnitTest
             Away = "Arsenal",
             LeagueName = "PremierLeague",
             MatchStatus = "Live",
-            Agent = "Rossi"
+            Agent = "Ross"
 
         };
         var matches = new Dictionary<int, GeneralMatch> { { 3456, mainMatch } };
@@ -118,9 +118,9 @@ public class ChangedMatchInfoGeneratorUnitTest
             MessageTypeId = 40,
             NewValue = "20000",
             OldValue = "1234",
-            League = "PremierLeague-Coners",
+            League = "PremierLeague-Corners",
             MatchNo = "20000",
-            EventName = "LiverPool-Coners -vs- Arsenal-Coners",
+            EventName = "LiverPool-Corners -vs- Arsenal-Corners",
             AssigneeId = 6789,
             AssigneeName = "esther"
         };
@@ -128,11 +128,11 @@ public class ChangedMatchInfoGeneratorUnitTest
         var valueChanged2 = new ChangedValue
         {
             MessageTypeId = 25,
-            NewValue = "Rossi",
+            NewValue = "Ross",
             OldValue = "Bow",
-            League = "PremierLeague-Coners",
+            League = "PremierLeague-Corners",
             MatchNo = "20000",
-            EventName = "LiverPool-Coners -vs- Arsenal-Coners",
+            EventName = "LiverPool-Corners -vs- Arsenal-Corners",
             AssigneeId = 6789,
             AssigneeName = "esther"
         };
@@ -142,9 +142,9 @@ public class ChangedMatchInfoGeneratorUnitTest
             MessageTypeId = 22,
             NewValue = "20",
             OldValue = "10",
-            League = "PremierLeague-Coners",
+            League = "PremierLeague-Corners",
             MatchNo = "20000",
-            EventName = "LiverPool-Coners -vs- Arsenal-Coners",
+            EventName = "LiverPool-Corners -vs- Arsenal-Corners",
             AssigneeId = 6789,
             AssigneeName = "esther"
         };
@@ -154,9 +154,9 @@ public class ChangedMatchInfoGeneratorUnitTest
             MessageTypeId = 26,
             NewValue = "New Value",
             OldValue = "",
-            League = "PremierLeague-Coners",
+            League = "PremierLeague-Corners",
             MatchNo = "20000",
-            EventName = "LiverPool-Coners -vs- Arsenal-Coners",
+            EventName = "LiverPool-Corners -vs- Arsenal-Corners",
             AssigneeId = 6789,
             AssigneeName = "esther"
         };
@@ -166,9 +166,9 @@ public class ChangedMatchInfoGeneratorUnitTest
             MessageTypeId = 16,
             NewValue = "",
             OldValue = "WB@",
-            League = "PremierLeague-Coners",
+            League = "PremierLeague-Corners",
             MatchNo = "20000",
-            EventName = "LiverPool-Coners -vs- Arsenal-Coners",
+            EventName = "LiverPool-Corners -vs- Arsenal-Corners",
             AssigneeId = 6789,
             AssigneeName = "esther"
         };

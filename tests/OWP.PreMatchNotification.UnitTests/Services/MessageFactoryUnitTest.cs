@@ -30,7 +30,7 @@ public class MessageFactoryUnitTest
     }
 
     [Fact]
-    public void Transform_WithAssimentChanged_ReturnMessageList()
+    public void Transform_WithAssignmentChanged_ReturnMessageList()
     {
         var service = MockService();
         var changedValueList = GetListAssignmentChanged();
@@ -60,21 +60,21 @@ public class MessageFactoryUnitTest
             new()
             {
                IsImportant = true,
-               MessageContent = "[NightShift] You have NEW ASSIGNMENT <b>O/U</b> in <b>ThaidLeague</b>",
+               MessageContent = "[NightShift] You have NEW ASSIGNMENT <b>O/U</b> in <b>ThaiLeague</b>",
                MessageType = (int)MsgTemplateCode.NightShiftAssignmentInsert,
                ReceivedUserIds = new List<string> {"1"}
             },
             new()
             {
                IsImportant = true,
-               MessageContent = "[NightShift] You have been REMOVED from <b>O/U</b> in <b>ThaidLeague</b>",
+               MessageContent = "[NightShift] You have been REMOVED from <b>O/U</b> in <b>ThaiLeague</b>",
                MessageType = (int)MsgTemplateCode.NightShiftAssignmentDelete,
                ReceivedUserIds = new List<string> { "12"}
             },
             new()
             {
                IsImportant = true,
-               MessageContent = "[NightShift] O/U's Assignee has been updated from <b>Sa</b> to <b>Starix15</b> in your assignment <b>ThaidLeague</b>",
+               MessageContent = "[NightShift] O/U's Assignee has been updated from <b>Sa</b> to <b>Starix15</b> in your assignment <b>ThaiLeague</b>",
                MessageType = (int)MsgTemplateCode.NightShiftOtherAssignmentUpdate,
                ReceivedUserIds = new List<string> { "13"}
             }
@@ -207,20 +207,20 @@ public class MessageFactoryUnitTest
             new()
             {
                 BetTypeName = "O/U",
-                League = "ThaidLeague",
+                League = "ThaiLeague",
                 MessageTypeId = (int)MsgTemplateCode.NightShiftAssignmentInsert,
                 ReceivedUserIds = new List<int>{1}
             },
             new()
             {
                 BetTypeName = "O/U",
-                League = "ThaidLeague",
+                League = "ThaiLeague",
                 MessageTypeId = (int)MsgTemplateCode.NightShiftAssignmentDelete,
                 ReceivedUserIds = new List<int>{12}
             },
             new()
             {
-                League = "ThaidLeague",
+                League = "ThaiLeague",
                 BetTypeName = "O/U",
                 OldValue = "Sa",
                 NewValue = "Starix15",

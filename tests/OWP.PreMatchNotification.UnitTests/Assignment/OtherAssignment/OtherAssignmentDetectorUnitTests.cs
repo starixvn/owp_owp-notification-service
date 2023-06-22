@@ -147,7 +147,7 @@ public class OtherAssignmentDetectorUnitTests : IClassFixture<OtherAssignmentDet
     }
 
     [Fact]
-    public void DetectChangeOtherAssignmentExceptOtherHdp_NotChangeAssignmentOtherHdp_OtherhdpNotEmpty_ReturnDefaultValue()
+    public void DetectChangeOtherAssignmentExceptOtherHdp_NotChangeAssignmentOtherHdp_OtherHdpNotEmpty_ReturnDefaultValue()
     {
         var actual = new List<ChangedValue>();
         otherAssignment.DetectChangeAssignmentExceptOtherHdp(setUp.OldSnapshot, setUp.NewSnapshot, actual);
@@ -155,7 +155,7 @@ public class OtherAssignmentDetectorUnitTests : IClassFixture<OtherAssignmentDet
     }
 
     [Fact]
-    public void DetectChangeOtherAssignmentExceptOtherHdp_NotChangeAssignmentOtherHdp_OtherhdpEmpty_ReturnDefaultValue()
+    public void DetectChangeOtherAssignmentExceptOtherHdp_NotChangeAssignmentOtherHdp_OtherHdpEmpty_ReturnDefaultValue()
     {
         setUp.OldSnapshot.OtherHdp = string.Empty;
         setUp.OldSnapshot.OtherHdpUserId = 0;
@@ -209,7 +209,7 @@ public class OtherAssignmentDetectorUnitTests : IClassFixture<OtherAssignmentDet
     }
 
     [Fact]
-    public void DetectChangeOtherAssignmentExcepHdpTOver_NotChangeAssignmentHdpTOver_HdpTOverEmpty_ReturnDefaultValue()
+    public void DetectChangeOtherAssignmentExceptHdpTOver_NotChangeAssignmentHdpTOver_HdpTOverEmpty_ReturnDefaultValue()
     {
         setUp.OldSnapshot.HdpTakeOver = string.Empty;
         setUp.OldSnapshot.HdpTakeOverUserId = 0;

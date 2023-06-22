@@ -2,7 +2,7 @@
 public class ChangedMatchChangedValueGeneratorUnitTests
 {
     [Fact]
-    public void GetAllIndirectAssignees_MainMatch_ReturnAllExistingAssigneesContainMinormatch()
+    public void GetAllIndirectAssignees_MainMatch_ReturnAllExistingAssigneesContainMinorMatch()
     {
         // Arrange
         var oldSnapshot = GetSnapshot(15, "starix15", "oldNote");
@@ -21,7 +21,7 @@ public class ChangedMatchChangedValueGeneratorUnitTests
     }
 
     [Fact]
-    public void GetAllIndirectAssignees_ReturnAllExistingAssigneesContainMainmatch()
+    public void GetAllIndirectAssignees_ReturnAllExistingAssigneesContainMainMatch()
     {
         // Arrange
         var oldSnapshot = GetSnapshot(15, "starix15", "oldNote");

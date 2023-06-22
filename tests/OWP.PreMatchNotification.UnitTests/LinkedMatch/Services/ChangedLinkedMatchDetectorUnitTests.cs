@@ -68,7 +68,7 @@ public class ChangedLinkedMatchDetectorUnitTests
     }
 
     [Fact]
-    public void Create_Always_ReturnListUninonChangeValue()
+    public void Create_Always_ReturnListUnionChangeValue()
     {
         var liveMatchChangedValue = new List<ChangedValue>
         {

@@ -86,7 +86,7 @@ public class OtherAssignmentDetectorImp : OtherAssignmentDetector
             return;
         }
 
-        var userId = newSnapshot.OtherHdpUserId.Value;
+        var userId = newSnapshot.OtherHdpUserId ?? 0;
         changedValueHdpDetector.DetectMain(oldSnapshot, newSnapshot, changedValues, userId);
         changedValueHdpTakeOverDetector.DetectMain(oldSnapshot, newSnapshot, changedValues, userId);
         changedValueHdpTakeOverDetector.DetectOther(oldSnapshot, newSnapshot, changedValues, userId);
@@ -104,7 +104,7 @@ public class OtherAssignmentDetectorImp : OtherAssignmentDetector
             return;
         }
 
-        var userId = newSnapshot.OtherHdpTakeOverUserId.Value;
+        var userId = newSnapshot.OtherHdpTakeOverUserId ?? 0;
         changedValueHdpDetector.DetectMain(oldSnapshot, newSnapshot, changedValues, userId);
         changedValueHdpDetector.DetectOther(oldSnapshot, newSnapshot, changedValues, userId);
         changedValueHdpTakeOverDetector.DetectMain(oldSnapshot, newSnapshot, changedValues, userId);
@@ -122,7 +122,7 @@ public class OtherAssignmentDetectorImp : OtherAssignmentDetector
             return;
         }
 
-        var userId = newSnapshot.OtherOuUserId.Value;
+        var userId = newSnapshot.OtherOuUserId ?? 0;
         changedValueHdpDetector.DetectMain(oldSnapshot, newSnapshot, changedValues, userId);
         changedValueHdpTakeOverDetector.DetectMain(oldSnapshot, newSnapshot, changedValues, userId);
         changedValueHdpDetector.DetectOther(oldSnapshot, newSnapshot, changedValues, userId);
@@ -140,7 +140,7 @@ public class OtherAssignmentDetectorImp : OtherAssignmentDetector
             return;
         }
 
-        var userId = newSnapshot.OtherOuTakeOverUserId.Value;
+        var userId = newSnapshot.OtherOuTakeOverUserId ?? 0;
         changedValueHdpDetector.DetectMain(oldSnapshot, newSnapshot, changedValues, userId);
         changedValueHdpTakeOverDetector.DetectMain(oldSnapshot, newSnapshot, changedValues, userId);
         changedValueHdpDetector.DetectOther(oldSnapshot, newSnapshot, changedValues, userId);
@@ -156,7 +156,7 @@ public class OtherAssignmentDetectorImp : OtherAssignmentDetector
         {
             return;
         }
-        var userId = newSnapshot.OuUserId.Value;
+        var userId = newSnapshot.OuUserId ?? 0;
         changedValueHdpDetector.DetectMain(oldSnapshot, newSnapshot, changedValues, userId);
         changedValueHdpTakeOverDetector.DetectMain(oldSnapshot, newSnapshot, changedValues, userId);
         changedValueHdpDetector.DetectOther(oldSnapshot, newSnapshot, changedValues, userId);
@@ -174,7 +174,7 @@ public class OtherAssignmentDetectorImp : OtherAssignmentDetector
             return;
         }
 
-        var userId = newSnapshot.OuTakeOverUserId.Value;
+        var userId = newSnapshot.OuTakeOverUserId ?? 0;
         changedValueHdpDetector.DetectMain(oldSnapshot, newSnapshot, changedValues, userId);
         changedValueHdpTakeOverDetector.DetectMain(oldSnapshot, newSnapshot, changedValues, userId);
         changedValueHdpDetector.DetectOther(oldSnapshot, newSnapshot, changedValues, userId);

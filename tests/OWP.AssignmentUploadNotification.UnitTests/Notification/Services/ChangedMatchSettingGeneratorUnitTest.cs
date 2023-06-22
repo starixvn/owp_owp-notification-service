@@ -61,7 +61,7 @@ public class ChangedMatchSettingGeneratorUnitTest
         {
             OldValue = "400K",
             NewValue = "300K",
-            BetTypeName = "Next of Coners (HDP)",
+            BetTypeName = "Next of Corners (HDP)",
             MatchNo = "50000",
             League = "PremierLeague",
             EventName = "LiverPool -vs- Arsenal",
@@ -74,7 +74,7 @@ public class ChangedMatchSettingGeneratorUnitTest
         {
             OldValue = "50%",
             NewValue = "70%",
-            BetTypeName = "Next of Coners (HDP)",
+            BetTypeName = "Next of Corners (HDP)",
             MatchNo = "50000",
             League = "PremierLeague",
             EventName = "LiverPool -vs- Arsenal",
@@ -87,7 +87,7 @@ public class ChangedMatchSettingGeneratorUnitTest
         {
             OldValue = "",
             NewValue = "30K",
-            BetTypeName = "Next of Coners (1H HDP)",
+            BetTypeName = "Next of Corners (1H HDP)",
             MatchNo = "50000",
             League = "PremierLeague",
             EventName = "LiverPool -vs- Arsenal",
@@ -112,11 +112,11 @@ public class ChangedMatchSettingGeneratorUnitTest
         {
             MatchId = 1234,
             MatchNo = "20000",
-            Home = "LiverPool-Coners",
-            Away = "Arsenal-Coners",
-            LeagueName = "PremierLeague-Coners",
+            Home = "LiverPool-Corners",
+            Away = "Arsenal-Corners",
+            LeagueName = "PremierLeague-Corners",
             MatchStatus = "Cancel",
-            Agent = "Rossi",
+            Agent = "Ross",
             ParentMatchId = 3456,
             MatchType = -2,
             MinorBettypeName = "Specific 10 Mins",
@@ -129,9 +129,9 @@ public class ChangedMatchSettingGeneratorUnitTest
         {
             MatchId = 1234,
             MatchNo = "1234",
-            Home = "LiverPool-Coners",
-            Away = "Arsenal-Coners",
-            LeagueName = "PremierLeague-Coners",
+            Home = "LiverPool-Corners",
+            Away = "Arsenal-Corners",
+            LeagueName = "PremierLeague-Corners",
             MatchStatus = "",
             Agent = "Bow",
             ParentMatchId = 3456,
@@ -150,7 +150,7 @@ public class ChangedMatchSettingGeneratorUnitTest
             Away = "Arsenal",
             LeagueName = "PremierLeague",
             MatchStatus = "Cancel",
-            Agent = "Rossi"
+            Agent = "Ross"
         };
         var matches = new Dictionary<int, GeneralMatch> { { 3456, mainMatch } };
 
@@ -182,14 +182,14 @@ public class ChangedMatchSettingGeneratorUnitTest
         {
             MatchId = 1234,
             MatchNo = "20000",
-            Home = "LiverPool-Coners",
-            Away = "Arsenal-Coners",
-            LeagueName = "PremierLeague-Coners",
+            Home = "LiverPool-Corners",
+            Away = "Arsenal-Corners",
+            LeagueName = "PremierLeague-Corners",
             MatchStatus = "Cancel",
-            Agent = "Rossi",
+            Agent = "Ross",
             ParentMatchId = 3456,
             MatchType = 1000,
-            MinorBettypeName = "Next of Coners",
+            MinorBettypeName = "Next of Corners",
             Division = "20",
             Remark = "New Remark",
             WB = ""
@@ -199,14 +199,14 @@ public class ChangedMatchSettingGeneratorUnitTest
         {
             MatchId = 1234,
             MatchNo = "1234",
-            Home = "LiverPool-Coners",
-            Away = "Arsenal-Coners",
-            LeagueName = "PremierLeague-Coners",
+            Home = "LiverPool-Corners",
+            Away = "Arsenal-Corners",
+            LeagueName = "PremierLeague-Corners",
             MatchStatus = "",
             Agent = "Bow",
             ParentMatchId = 3456,
             MatchType = 1000,
-            MinorBettypeName = "Next of Coners",
+            MinorBettypeName = "Next of Corners",
             Division = "10",
             Remark = "",
             WB = "WB@"
@@ -220,7 +220,7 @@ public class ChangedMatchSettingGeneratorUnitTest
             Away = "Arsenal",
             LeagueName = "PremierLeague",
             MatchStatus = "Cancel",
-            Agent = "Rossi"
+            Agent = "Ross"
         };
         var matches = new Dictionary<int, GeneralMatch> { { 3456, mainMatch } };
 
