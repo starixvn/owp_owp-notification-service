@@ -239,7 +239,7 @@ public class ChangedMatchInfoGeneratorUnitTests
     }
 
     [Fact]
-    public void GetOldValue_ChangeIsNeutralAndOldValueisFalse_ReturnHomeOldValue()
+    public void GetOldValue_ChangeIsNeutralAndOldValueIsFalse_ReturnHomeOldValue()
     {
         var actual = ChangedMatchInfoGeneratorImp.GetOldValue(
             new MatchInfo { Away = "away", Home = "home" },
@@ -250,7 +250,7 @@ public class ChangedMatchInfoGeneratorUnitTests
     }
 
     [Fact]
-    public void GetOldValue_ChangeIsNeutralAndOldValueisTrue_ReturnHomeOldValue()
+    public void GetOldValue_ChangeIsNeutralAndOldValueIsTrue_ReturnHomeOldValue()
     {
         var actual = ChangedMatchInfoGeneratorImp.GetOldValue(
             new MatchInfo { Away = "away", Home = "home" },
@@ -272,7 +272,7 @@ public class ChangedMatchInfoGeneratorUnitTests
     }
 
     [Fact]
-    public void GetNewValue_ChangeIsNeutralAndOldValueisTrue_ReturnHomeOldValue()
+    public void GetNewValue_ChangeIsNeutralAndOldValueIsTrue_ReturnHomeOldValue()
     {
         var actual = ChangedMatchInfoGeneratorImp.GetNewValue(
             new MatchInfo { Away = "away", Home = "home" },
@@ -283,7 +283,7 @@ public class ChangedMatchInfoGeneratorUnitTests
     }
 
     [Fact]
-    public void GetNewValue_ChangeIsNeutralAndOldValueisFalse_ReturnHomeOldValue()
+    public void GetNewValue_ChangeIsNeutralAndOldValueIsFalse_ReturnHomeOldValue()
     {
         var actual = ChangedMatchInfoGeneratorImp.GetNewValue(
             new MatchInfo { Away = "away", Home = "home" },

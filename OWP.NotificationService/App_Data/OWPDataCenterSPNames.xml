@@ -9,10 +9,11 @@
 		<Setting Key="OWP_TicketCenter_InsertNewTicketLeagueNotification" SpName="OWP_TicketCenter_InsertNewTicketLeagueNotification" DbName="DBOWP.bodb_OWP.bodbOWPNet" />
 		<Setting Key="OWP_TicketCenter_InsertNewTicketMatchNotification" SpName="OWP_TicketCenter_InsertNewTicketMatchNotification" DbName="DBOWP.bodb_OWP.bodbOWPNet" />
 		<Setting Key="OWP_TicketCenter_InsertNewTicketOtherNotification" SpName="OWP_TicketCenter_InsertNewTicketOtherNotification" DbName="DBOWP.bodb_OWP.bodbOWPNet" />
+    <Setting Key="OWP_TicketCenter_InsertNewTicketLogWorkNotification" SpName="OWP_TicketCenter_InsertNewTicketLogWorkNotification" DbName="DBOWP.bodb_OWP.bodbOWPNet" />
 		<Setting Key="OWP_TicketCenter_InsertNewTicketSupportNotification" SpName="OWP_TicketCenter_InsertNewTicketSupportNotification" DbName="DBOWP.bodb_OWP.bodbOWPNet" />
 		<Setting Key="OWP_TicketCenter_InsertNewRecipientNotification" SpName="OWP_TicketCenter_InsertNewRecipientNotification" DbName="DBOWP.bodb_OWP.bodbOWPNet" />
 		<Setting Key="OWP_TicketCenter_InsertNewMessageNotification" SpName="OWP_TicketCenter_InsertNewMessageNotification" DbName="DBOWP.bodb_OWP.bodbOWPNet" />
-		<Function Name="PreMatchNotification">
+    <Function Name="PreMatchNotification">
 			<Setting Key="OWP_PreMatchNotification_QueryLeague" SpName="OWP_PreMatchNotification_QueryLeague" DbName="DBOWP.bodb_OWP.bodbOWPNet" />
 			<Setting Key="OWP_PreMatchNotification_QueryEmployeeBySection" SpName="OWP_PreMatchNotification_QueryEmployeeBySection" DbName="DBOWP.bodb_OWP.bodbOWPNet" />
 			<Setting Key="OWP_PreMatchNotification_QueryLeagueAssignee" SpName="OWP_PreMatchNotification_QueryLeagueAssignee" DbName="DBOWP.bodb_OWP.bodbOWPNet" />

@@ -55,9 +55,7 @@ app.Run(async context =>
     }
 });
 
-#if DEBUG
 app.Run();
-#endif
-await app.RunAsync("http://0.0.0.0:5000");
+
 
 

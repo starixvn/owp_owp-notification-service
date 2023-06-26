@@ -59,6 +59,8 @@ public class SendNotificationHandlerImp : NotificationHandler
 
         RoutingKey.TicketCenterNewTicketSupport => JsonConvert.DeserializeObject<NewTicketSupportNotificationRequest>(message),
 
+        RoutingKey.TicketCenterNewTicketLogWork => JsonConvert.DeserializeObject<NewTicketLogWorkNotificationRequest>(message),
+
         RoutingKey.LiveDetail => JsonConvert.DeserializeObject<LiveDetailNotifyRequest>(message),
 
         _ => new NotificationRequest()

@@ -11,7 +11,7 @@ public class MatchInfoNotifyHandlerUnitTests
     public async Task GenerateMessages_ReturnChangedValues()
     {
         var service = MockService();
-        var expected = MockexpectedAssigneeMessages().Union(MockExpectedLSTMessages()).ToList();
+        var expected = MockExpectedAssigneeMessages().Union(MockExpectedLSTMessages()).ToList();
 
         var actual = await service.GenerateMessages(new MatchInfoNotifyRequest());
 
@@ -35,7 +35,7 @@ public class MatchInfoNotifyHandlerUnitTests
         commandRepository.GetEmployeesBySection(Arg.Any<string>()).Returns(MockAssigneeLST());
         changedValueGenerator
             .CreateAssigneeMessages(Arg.Any<List<InfoSiteMatch>>(), Arg.Any<List<InfoSiteMatch>>(), Arg.Any<List<Assignee>>())
-            .Returns(MockexpectedAssigneeMessages());
+            .Returns(MockExpectedAssigneeMessages());
         changedValueGenerator
             .CreateLSTMessages(Arg.Any<List<ChangedValue>>(), Arg.Any<List<Assignee>>(), Arg.Any<List<InfoSiteMatch>>())
             .Returns(MockExpectedLSTMessages());
@@ -48,7 +48,7 @@ public class MatchInfoNotifyHandlerUnitTests
                                             notify);
     }
 
-    private IList<ChangedValue> MockexpectedAssigneeMessages()
+    private IList<ChangedValue> MockExpectedAssigneeMessages()
     {
         return new List<ChangedValue>
         {

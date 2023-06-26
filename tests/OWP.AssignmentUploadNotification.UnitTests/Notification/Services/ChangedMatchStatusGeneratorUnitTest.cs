@@ -142,7 +142,7 @@ public class ChangedMatchStatusGeneratorUnitTest
             MatchType = 1000,
             MinorBettypeName = "Next of Corners",
             Division = "20",
-            Remark = "ahihihahah",
+            Remark = "check",
             WB = ""
 
         };
@@ -280,7 +280,7 @@ public class ChangedMatchStatusGeneratorUnitTest
             MatchType = -88,
             MinorBettypeName = "Fast Market",
             Division = "20",
-            Remark = "ahihihahah",
+            Remark = "check",
             WB = ""
 
         };

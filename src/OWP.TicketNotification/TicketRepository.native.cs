@@ -18,6 +18,8 @@ public interface TicketRepository
 
     Task InsertNewTicketSupportNotification(InsertNewTicketSupportNotificationCriteria criteria);
 
+    Task InsertNewTicketLogWorkNotification(InsertNewTicketLogWorkNotificationCriteria criteria);
+
     Task InsertNewRecipientNotification(InsertNewRecipientNotificationCriteria criteria);
 
     Task InsertNewMessageNotification(InsertNewMessageNotificationCriteria criteria);
@@ -66,6 +68,9 @@ public class TicketRepositoryImp : TicketRepository
 
     public async Task InsertNewTicketSupportNotification(InsertNewTicketSupportNotificationCriteria criteria)
         => await dynamicRepository.ExecuteAsync(criteria);
+
+    public async Task InsertNewTicketLogWorkNotification(InsertNewTicketLogWorkNotificationCriteria criteria)
+       => await dynamicRepository.ExecuteAsync(criteria);
 
     public async Task InsertNewRecipientNotification(InsertNewRecipientNotificationCriteria criteria)
         => await dynamicRepository.ExecuteAsync(criteria);

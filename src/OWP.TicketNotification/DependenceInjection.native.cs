@@ -21,6 +21,7 @@ public static class DependenceInjection
         services.AddTransient<NewTicketMatchMessageDBWriter, NewTicketMatchMessageDBWriterImp>();
         services.AddTransient<NewTicketOtherMessageDBWriter, NewTicketOtherMessageDBWriterImp>();
         services.AddTransient<NewTicketSupportMessageDBWriter, NewTicketSupportMessageDBWriterImp>();
+        services.AddTransient<NewTicketLogWorkMessageDBWriter, NewTicketLogWorkMessageDBWriterImp>();
 
         return services;
     }
