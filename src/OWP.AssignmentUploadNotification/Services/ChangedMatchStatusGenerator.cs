@@ -76,16 +76,5 @@ public class ChangedMatchStatusGeneratorImp : ChangedMatchStatusGenerator
     }
 
     public static bool IsIgnoredMinorMatch(int matchType)
-    {
-        var minorGenerateList = new List<int> {
-            (int)MinorBettype.Specific15Mins,
-            (int)MinorBettype.Specific10Mins,
-            (int)MinorBettype.FastMarket,
-            (int)MinorBettype.AllInOne,
-            (int)MinorBettype.Specific15MinsCorners,
-            (int)MinorBettype.Specific15MinsTotalBookings
-        };
-
-        return minorGenerateList.Contains(matchType);
-    }
+        => MinorBettypeConst.GenerateMinorBettypeId.Contains(matchType);
 }

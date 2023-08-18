@@ -1,7 +1,7 @@
 ﻿namespace OWP.AssignmentUploadNotification.Constants;
 
-using System.Collections.Generic;
 using OWP.Core.Extensions;
+using System.Collections.Generic;
 
 public static class MajorBettypeShortName
 {
