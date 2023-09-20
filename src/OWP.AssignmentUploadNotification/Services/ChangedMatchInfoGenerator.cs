@@ -110,21 +110,8 @@ public class ChangedMatchInfoGeneratorImp : ChangedMatchInfoGenerator
     }
 
     private static PropertyInfo GetProperty(GeneralMatch match, string propertyName)
-    {
-        return match.GetType().GetProperties().Single(p => p.Name == propertyName);
-    }
+        => match.GetType().GetProperties().Single(p => p.Name == propertyName);
 
     public static bool IsIgnoredMinorMatch(int matchType)
-    {
-        var minorGenerateList = new List<int> {
-            (int)MinorBettype.Specific15Mins,
-            (int)MinorBettype.Specific10Mins,
-            (int)MinorBettype.FastMarket,
-            (int)MinorBettype.AllInOne,
-            (int)MinorBettype.Specific15MinsCorners,
-            (int)MinorBettype.Specific15MinsTotalBookings
-        };
-
-        return minorGenerateList.Contains(matchType);
-    }
+        => MinorBettypeConst.GenerateMinorBettypeId.Contains(matchType);
 }
