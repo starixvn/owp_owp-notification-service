@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using OWP.PreMatchNotification.Assignment;
 using OWP.PreMatchNotification.LinkedMatch;
 using OWP.PreMatchNotification.NewLeague;
@@ -16,7 +15,7 @@ public static class DependenceInjection
 {
     public static void AddPrematchNotificationServices(this IServiceCollection services)
     {
-        services.AddMediatR(typeof(MathInfoNotifyHandler).Assembly);
+        services.AddMediatR(x=>x.RegisterServicesFromAssemblies(typeof(MathInfoNotifyHandler).Assembly));
         services.AddTransient<PreMatchNotificationServices.CommandRepository, PreMatchNotificationServices.CommandRepositoryImp>();
         services.AddTransient<PreMatchNotificationServices.MessageFactory, PreMatchNotificationServices.MessageFactoryImp>();
         services.AddTransient<PreMatchNotificationServices.CacheManipulatorCommon, PreMatchNotificationServices.CacheManipulatorCommonImp>();
@@ -39,7 +38,7 @@ public static class DependenceInjection
         services.AddTransient<OtherAssignment.ChangedValueOuTakeOverDetector, OtherAssignment.ChangedValueOuTakeOverDetectorImp>();
 
         // LinkedMatch
-        services.AddMediatR(typeof(LinkedMatchNotifyHandler).Assembly);
+        services.AddMediatR(x => x.RegisterServicesFromAssemblies(typeof(LinkedMatchNotifyHandler).Assembly));
         services.AddTransient<LinkedMatches.CacheManipulator, LinkedMatches.CacheManipulatorImp>();
         services.AddTransient<LinkedMatches.ChangedLinkedMatchDetector, LinkedMatches.ChangedLinkedMatchDetectorImp>();
         services.AddTransient<LinkedMatches.ChangedLiveMatchGenerator, LinkedMatches.ChangedLiveMatchGeneratorImp>();
@@ -47,13 +46,13 @@ public static class DependenceInjection
         services.AddTransient<LinkedMatches.Repository, LinkedMatches.RepositoryImp>();
 
         // InfoSiteMatchInfo
-        services.AddMediatR(typeof(MathInfoNotifyHandler).Assembly);
+        services.AddMediatR(x => x.RegisterServicesFromAssemblies(typeof(MathInfoNotifyHandler).Assembly));
 
         services.AddTransient<InfoSiteMatchInfos.Repository, InfoSiteMatchInfos.RepositoryImp>();
         services.AddTransient<InfoSiteMatchInfos.ChangedValueGenerator, InfoSiteMatchInfos.ChangedValueGeneratorImp>();
 
         // NewLeague
-        services.AddMediatR(typeof(NewLeagueNotifyHandler).Assembly);
+        services.AddMediatR(x => x.RegisterServicesFromAssemblies(typeof(NewLeagueNotifyHandler).Assembly));
 
         services.AddTransient<NewLeagues.NewLeagueValueGenerator, NewLeagues.NewLeagueValueGeneratorImp>();
     }

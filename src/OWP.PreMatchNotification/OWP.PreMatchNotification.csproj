@@ -5,12 +5,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
   </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="Fanex.NAP.Client.AspNetCore" Version="2.0.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
+    <PackageReference Include="Fanex.Caching" Version="2.2.4" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Olympus.Xml" Version="1.0.0.5" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\OWP.Core\OWP.Core.csproj" />
   </ItemGroup>

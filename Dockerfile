@@ -1,10 +1,5 @@
 FROM hub.nexdev.net/base/dotnet/core/sdk:7.0-alpine AS builder
 
-# Install the tools
-RUN dotnet tool install --tool-path /tools dotnet-trace
-RUN dotnet tool install --tool-path /tools dotnet-dump
-RUN dotnet tool install --tool-path /tools dotnet-counters
-#
 WORKDIR /src
 
 COPY ./src/OWP.Core/. src/OWP.Core
@@ -17,26 +12,27 @@ COPY ./src/OWP.RabbitMQ/. ./src/OWP.RabbitMQ
 COPY ./OWP.NotificationService/OWP.NotificationService.csproj ./OWP.NotificationService/OWP.NotificationService.csproj
 
 WORKDIR /src/OWP.NotificationService
-RUN dotnet nuget add source http://nuget.nexdev.net/api/v2
-RUN dotnet restore -v diag
+RUN dotnet nuget add source https://nuget.nexdev.net/api/v2
+RUN --mount=type=cache,target=/root/.nuget/packages \
+    dotnet restore -v n
 
 COPY ./OWP.NotificationService .
-
-RUN dotnet publish -r linux-x64 --self-contained false -c Release -o /app
+RUN --mount=type=cache,target=/root/.nuget/packages \
+    dotnet publish -r linux-x64 --self-contained false -c Release -o /app
 
 FROM hub.nexdev.net/base/dotnet/core/aspnet:7.0-alpine AS base
 
 # Don’t run as root
 RUN adduser --disabled-password \
     --home /app \
-    --gecos '' dotnetuser && chown -R dotnetuser /app
+    --gecos '' dotnetuser && chown -R dotnetuser /app && chown -R dotnetuser /tmp
 USER dotnetuser
 #
 
 WORKDIR /app
 COPY --from=builder /app .
-COPY --from=builder /tools /tools
 
 ENV TZ="America/La_Paz" 
+ENV COMPlus_EnableDiagnostics=0
 
 ENTRYPOINT ["dotnet", "OWP.NotificationService.dll"]

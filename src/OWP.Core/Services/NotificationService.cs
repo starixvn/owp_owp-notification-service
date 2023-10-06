@@ -1,8 +1,9 @@
-using Microsoft.AspNetCore.SignalR;
 using OWP.Core.Models;
 using OWP.Hubs;
 
 namespace OWP.Core.Services;
+
+using Microsoft.AspNetCore.SignalR;
 
 public interface NotificationService
 {

@@ -1,3 +1,4 @@
+using Fanex.Data.SqlServer;
 using OWP.AssignmentUploadNotification;
 using OWP.LiveDetailNotification;
 using OWP.NotificationService.Extensions;
@@ -12,16 +13,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddSignalRedis(builder.Configuration);
-builder.Services.AddFanexServices(builder.Configuration);
+builder.Services.AddFanexSql(builder.Configuration);
 builder.Services.AddRedisServices(builder.Configuration);
 
 builder.Services.AddNapServices(builder.Configuration);
 
 // AutoMapper
-builder.Services.AddAutoMapper(mapper =>
-{
-    mapper.AddProfile(new OWP.AssignmentUploadNotification.AutoMapperProfile());
-});
+builder.Services.AddAutoMapper();
 
 // Add config
 builder.Services.Configure<RabbitMQSetting>(builder.Configuration.GetSection(RabbitMQSetting.RabbitMQ));
