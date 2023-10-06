@@ -105,7 +105,7 @@ public class ChangedMatchChangedValueGeneratorImp : ChangedMatchChangedValueGene
             { (int)MinorBettype.NoOfCorner, (int)MinorBettype.Specific15MinsCorners },
             { (int)MinorBettype.Specific15MinsCorners, (int)MinorBettype.NoOfCorner },
             { (int)MinorBettype.TotalBooking, (int)MinorBettype.Specific15MinsTotalBookings },
-            { (int)MinorBettype.Specific15MinsTotalBookings, (int)MinorBettype.TotalBooking },
+            { (int)MinorBettype.Specific15MinsTotalBookings, (int)MinorBettype.TotalBooking }
         };
 
         var bettypeId = snapshot.Matches[matchId].MatchType;

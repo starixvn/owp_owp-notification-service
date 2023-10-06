@@ -39,7 +39,7 @@ public enum MinorBettype
     FastMarketTotalBookings = -188,
 
     [Description("Fast Market Number Of Corners")]
-    FastMarketCorners = -288,
+    FastMarketCorners = -288
 }
 
 public static class MinorBettypeConst
