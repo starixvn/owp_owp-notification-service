@@ -1,8 +1,7 @@
-﻿using Fanex.Caching;
+﻿using AutoMapper;
+using Fanex.Caching;
 using Fanex.Caching.Redis;
-using Fanex.Data;
 using Fanex.Data.Repository;
-using Fanex.Data.SqlServer;
 using Fanex.Logging;
 using Fanex.Logging.Sentry.RavenClient;
 using OWP.Core.Models;
@@ -13,25 +12,19 @@ namespace OWP.NotificationService.Extensions;
 
 public static class ServicesExtensions
 {
-    public static IServiceCollection AddFanexServices(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddAutoMapper(this IServiceCollection services)
     {
-        var connections = configuration.GetSection("ConnectionStrings")
-            .GetChildren()
-            .AsEnumerable()
-            .ToDictionary(
-                x => x.GetValue<string>("Name"),
-                y => new ConnectionConfiguration(y.GetValue<string>("Name"), y.GetValue<string>("ConnectionString"), y.GetValue<string>("ProviderName"))
-            );
+        var mapperConfig = new MapperConfiguration(mc =>
+        {
+            mc.AddProfile(new OWP.AssignmentUploadNotification.AutoMapperProfile());
+        });
 
-        DbSettingProviderManager
-            .StartNewSession()
-            .Use(connections)
-            .WithSqlServer()
-            .UseDefaultDbSettingProvider(resourcePath: "~/App_Data")
-            .Run();
+        var mapper = mapperConfig.CreateMapper();
+        services.AddSingleton(mapper);
 
         return services;
     }
+
 
     public static IServiceCollection AddRedisServices(this IServiceCollection services, IConfiguration configuration)
     {

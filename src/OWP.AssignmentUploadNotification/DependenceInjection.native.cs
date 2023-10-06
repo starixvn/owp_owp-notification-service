@@ -1,4 +1,3 @@
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using OWP.AssignmentUploadNotification.Services;
 
@@ -8,8 +7,8 @@ public static class DependenceInjection
 {
     public static IServiceCollection AddAssignmentUpload(this IServiceCollection services)
     {
-        services.AddMediatR(typeof(Handler).Assembly);
-
+        services.AddMediatR(x => x.RegisterServicesFromAssemblies(typeof(Handler).Assembly));
+        
         services.Add(new ServiceDescriptor(typeof(AssigneeChangedValueFilter), typeof(AssigneeMessageFilterImp), ServiceLifetime.Transient));
         services.Add(new ServiceDescriptor(typeof(CommandRepository), typeof(CommandRepositoryImp), ServiceLifetime.Transient));
         services.Add(new ServiceDescriptor(typeof(CacheManipulator), typeof(CacheManipulatorImp), ServiceLifetime.Transient));

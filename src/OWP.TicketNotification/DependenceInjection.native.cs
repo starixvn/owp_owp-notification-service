@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using OWP.TicketNotification.Handlers;
 using OWP.TicketNotification.Services;
 
@@ -9,7 +8,7 @@ public static class DependenceInjection
 {
     public static IServiceCollection AddTicket(this IServiceCollection services)
     {
-        services.AddMediatR(typeof(NewMessageHandler).Assembly);
+        services.AddMediatR(x => x.RegisterServicesFromAssemblies(typeof(NewMessageHandler).Assembly));
 
         services.AddTransient<TicketRepository, TicketRepositoryImp>();
         services.AddTransient<MessageNotificationService, MessageNotificationServiceImp>();

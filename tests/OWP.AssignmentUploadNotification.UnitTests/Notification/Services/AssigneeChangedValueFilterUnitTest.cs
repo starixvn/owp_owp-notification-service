@@ -18,7 +18,7 @@ public class AssigneeChangedValueFilterUnitTest
     }
 
     [Fact]
-    public void Filter_AssigneeUnSubscribeForMatchInfoUpdatedId_ReturnAssigneeChangedValues()
+    public async Task Filter_AssigneeUnSubscribeForMatchInfoUpdatedId_ReturnAssigneeChangedValues()
     {
         var changedValueList = GetListValueChanged();
         var unsubscribeSettings = new HashSet<string> { "6789-5" };
@@ -40,13 +40,13 @@ public class AssigneeChangedValueFilterUnitTest
         };
 
         repository.GetUnsubscribeSettings().Returns(unsubscribeSettings);
-        var actual = assigneeMessageFilter.Filter(changedValueList);
+        var actual = await assigneeMessageFilter.Filter(changedValueList);
 
-        DeepAssert.Equal(expected, actual.Result);
+        DeepAssert.Equal(expected, actual);
     }
 
     [Fact]
-    public void Filter_AssigneeUnSubscribeForProviderInfoUpdatedId_ReturnAssigneeChangedValues()
+    public async Task Filter_AssigneeUnSubscribeForProviderInfoUpdatedId_ReturnAssigneeChangedValues()
     {
         var changedValueList = GetListValueChanged();
         var unsubscribeSettings = new HashSet<string> { "6789-11" };
@@ -68,9 +68,9 @@ public class AssigneeChangedValueFilterUnitTest
         };
 
         repository.GetUnsubscribeSettings().Returns(unsubscribeSettings);
-        var actual = assigneeMessageFilter.Filter(changedValueList);
+        var actual = await assigneeMessageFilter.Filter(changedValueList);
 
-        DeepAssert.Equal(expected, actual.Result);
+        DeepAssert.Equal(expected, actual);
     }
 
     private List<ChangedValue> GetListValueChanged()
