@@ -210,7 +210,7 @@ public class MessageFactoryImp : MessageFactory
 
     #region MessageGroup
 
-    private class MessageGroup : IEqualityComparer<MessageGroup>
+    private sealed class MessageGroup : IEqualityComparer<MessageGroup>
     {
         public MessageGroup(ChangedValue value)
         {
@@ -278,7 +278,7 @@ public class MessageFactoryImp : MessageFactory
 
     #region MessageModelRaw
 
-    private sealed class MessageModelRaw
+    public sealed class MessageModelRaw
     {
         public string MessageContent { get; set; }
 

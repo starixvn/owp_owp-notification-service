@@ -127,7 +127,7 @@ public class ChangedValueAggregatorImp : ChangedValueAggregator
 }
 
 
-internal class AssignmentGroup
+public class AssignmentGroup
 {
     public int MatchId { get; set; }
 
