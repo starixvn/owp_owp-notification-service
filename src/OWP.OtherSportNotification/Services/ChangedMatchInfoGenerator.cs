@@ -43,6 +43,7 @@ public class ChangedMatchInfoGeneratorImp : ChangedMatchInfoGenerator
                 OldValue = GetOldValue(oldMatch, changed),
                 League = newMatch.League,
                 MatchNo = $"{newMatch.MatchNo}",
+                AdminsiteMatchID = newMatch.AdminsiteMatchId,
                 EventName = UpdatedValueHelper.CreateEventName(newMatch),
                 UserId = a.AssigneeId,
                 Username = a.AssigneeName,

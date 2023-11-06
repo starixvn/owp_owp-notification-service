@@ -26,6 +26,7 @@ public class ChangedMatchStatusGeneratorImp : ChangedMatchStatusGenerator
             OldValue = snapshot.OldMatch.OfferLive,
             NewValue = snapshot.NewMatch.OfferLive,
             MatchNo = snapshot.NewMatch.MatchNo.ToString(CultureInfo.InvariantCulture),
+            AdminsiteMatchID = snapshot.NewMatch.AdminsiteMatchId,
             League = snapshot.NewMatch.League,
             EventName = UpdatedValueHelper.CreateEventName(snapshot.NewMatch),
             UserId = a.AssigneeId,

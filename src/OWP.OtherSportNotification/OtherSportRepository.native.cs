@@ -11,6 +11,8 @@ public interface OtherSportRepository
     Task<AssignmentSnapshot> Query(DateTime fromDate, DateTime toDate);
     Task<HashSet<string>> GetUnsubscribeSettings();
     Task<Dictionary<string, List<Assignee>>> GetSessionWatcherSettings();
+
+    Task<IList<string>> QuerySectionBBSupportive();
 }
 
 public class OtherSportRepositoryImp : OtherSportRepository
@@ -75,4 +77,7 @@ public class OtherSportRepositoryImp : OtherSportRepository
                          AssigneeName = i.UserWatcherName
                      }).ToList());
     }
+
+    public async Task<IList<string>> QuerySectionBBSupportive()
+    => (await repository.FetchAsync<string>(new GetBBSupportiveSectionCommand())).ToList();
 }
