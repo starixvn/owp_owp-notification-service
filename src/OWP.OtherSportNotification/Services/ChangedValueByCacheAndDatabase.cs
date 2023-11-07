@@ -25,7 +25,7 @@ public class ChangedValueByCacheAndDatabaseImp : ChangedValueByCacheAndDatabase
         var oldSnapshot = await cacheManipulator.GetAssignmentSnapshot(sessionId);
         var newSnapshot = await repository.Query(fromDate, toDate);
 
-        //await cacheManipulator.DeleteAssignmentSnapshot(sessionId);
+        await cacheManipulator.DeleteAssignmentSnapshot(sessionId);
 
         return changedValueBySnapshot.Create(oldSnapshot, newSnapshot);
     }

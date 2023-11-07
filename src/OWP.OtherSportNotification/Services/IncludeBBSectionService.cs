@@ -1,16 +1,22 @@
-﻿using OWP.OtherSportNotification.Constants;
+﻿using Fanex.Logging;
+using OWP.Core.NotificationRequests.OtherSport;
+using OWP.OtherSportNotification.Constants;
 using OWP.OtherSportNotification.Models;
 
 namespace OWP.OtherSportNotification.Services;
 
 public interface IncludeBBSectionService
 {
-    Task Execute(List<MessageModel> messages);
+    Task InsertMessage(List<ChangedValue> changedValues, OtherSportNotificationRequest request);
 }
 
 public class IncludeBBSectionServiceImp : IncludeBBSectionService
 {
     private readonly OtherSportRepository repository;
+
+    private readonly MessageFactory messageFactory;
+
+    private readonly ILogger logger;
 
     private static readonly List<int> ActionsInclude = new(){
        (int)MsgTemplateCode.EditMatchNo      ,
@@ -31,21 +37,29 @@ public class IncludeBBSectionServiceImp : IncludeBBSectionService
        (int)MsgTemplateCode.EditNeutral      ,
     };
 
-    public IncludeBBSectionServiceImp(OtherSportRepository repository)
+    public IncludeBBSectionServiceImp(OtherSportRepository repository, MessageFactory messageFactory, ILogger logger)
     {
         this.repository = repository;
+        this.messageFactory = messageFactory;
+        this.logger = logger;
     }
 
-    public async Task Execute(List<MessageModel> messages)
+    public async Task InsertMessage(List<ChangedValue> changedValues, OtherSportNotificationRequest request)
     {
         var bbSupportiveSection = await repository.QuerySectionBBSupportive();
+        var messageTarget = FilterChangedValues(changedValues);
+        var messages = messageFactory.Transform(messageTarget, request.UserName); 
+
         messages.ForEach(message =>
-         {
-             if (ActionsInclude.Exists(action => action == message.MessageType))
-             {
-                 message.ReceivedUserIds.AddRange(bbSupportiveSection);
-                 message.ReceivedUserIds = message.ReceivedUserIds.Distinct().ToList();
-             }
-         });
+        {
+            message.ReceivedUserIds.Clear();
+            message.ReceivedUserIds.AddRange(bbSupportiveSection);
+        });
+        
+        await logger.InfoAsync("BBSupportive section");
+        await repository.InsertMessage(messages, request.SessionId, request.ActorId);
     }
+
+    private static List<ChangedValue> FilterChangedValues(List<ChangedValue> changedValues)
+        => changedValues.Where(c=>ActionsInclude.Exists(action => action == c.MessageTypeId)).ToList();
 }

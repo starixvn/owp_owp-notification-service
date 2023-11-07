@@ -40,12 +40,12 @@ public class OtherSportNotificationHandler : IRequestHandler<OtherSportNotificat
 
         var messageModels = messageFactory.Transform(aggregatedChangedValues, request.UserName);
 
-        await notificationService.Notify(messageModels);
-
-        await bBSectionService.Execute(messageModels);
         await repository.InsertMessage(messageModels, request.SessionId, request.ActorId);
 
+        await notificationService.Notify(messageModels);
 
+        await bBSectionService.InsertMessage(messages,request);
+        
         return Unit.Value;
     }
 }
