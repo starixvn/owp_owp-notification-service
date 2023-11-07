@@ -44,6 +44,7 @@ public class IncludeBBSectionServiceImp : IncludeBBSectionService
              if (ActionsInclude.Exists(action => action == message.MessageType))
              {
                  message.ReceivedUserIds.AddRange(bbSupportiveSection);
+                 message.ReceivedUserIds = message.ReceivedUserIds.Distinct().ToList();
              }
          });
     }
