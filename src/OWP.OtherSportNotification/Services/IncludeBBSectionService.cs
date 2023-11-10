@@ -32,7 +32,6 @@ public class IncludeBBSectionServiceImp : IncludeBBSectionService
        (int)MsgTemplateCode.EditMaxbet       ,
        (int)MsgTemplateCode.EditReporter     ,
        (int)MsgTemplateCode.EditProvider     ,
-       (int)MsgTemplateCode.EditAssignmentNote ,
        (int)MsgTemplateCode.EditSpread       ,
        (int)MsgTemplateCode.EditNeutral      ,
     };
@@ -48,18 +47,18 @@ public class IncludeBBSectionServiceImp : IncludeBBSectionService
     {
         var bbSupportiveSection = await repository.QuerySectionBBSupportive();
         var messageTarget = FilterChangedValues(changedValues);
-        var messages = messageFactory.Transform(messageTarget, request.UserName); 
+        var messages = messageFactory.Transform(messageTarget, request.UserName);
 
         messages.ForEach(message =>
         {
             message.ReceivedUserIds.Clear();
             message.ReceivedUserIds.AddRange(bbSupportiveSection);
         });
-        
+
         await logger.InfoAsync("BBSupportive section");
         await repository.InsertMessage(messages, request.SessionId, request.ActorId);
     }
 
     private static List<ChangedValue> FilterChangedValues(List<ChangedValue> changedValues)
-        => changedValues.Where(c=>ActionsInclude.Exists(action => action == c.MessageTypeId)).ToList();
+        => changedValues.Where(c => ActionsInclude.Exists(action => action == c.MessageTypeId)).ToList();
 }
