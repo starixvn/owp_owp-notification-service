@@ -140,7 +140,7 @@ public class MessageFactoryImp : MessageFactory
 
     #region MessageGroup
 
-    private class MessageGroup
+    private sealed class MessageGroup
     {
         public MessageGroup(ChangedValue value)
         {
@@ -184,7 +184,7 @@ public class MessageFactoryImp : MessageFactory
 
     #region MessageModelRaw
 
-    private class MessageModelRaw
+    private sealed class MessageModelRaw
     {
         public string MessageContent { get; set; }
 

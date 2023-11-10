@@ -103,7 +103,7 @@ public class MessageFactoryImp : MessageFactory
 
     #region MessageModelRaw
 
-    private class MessageModelRaw
+    private sealed class MessageModelRaw
     {
         public string MessageContent { get; set; }
 
