@@ -13,12 +13,15 @@ public class OtherSportNotificationHandler : IRequestHandler<OtherSportNotificat
     private readonly OtherSportRepository repository;
     private readonly NotificationService notificationService;
 
+    private readonly IncludeBBSectionService bBSectionService;
+
     public OtherSportNotificationHandler(ChangedValueByCacheAndDatabase changedValueByCacheAndDatabase,
         AssigneeChangedValueFilter assigneeChangedValueFilter,
         ChangedValueAggregator changedValueAggregator,
         MessageFactory messageFactory,
         OtherSportRepository repository,
-        NotificationService notificationService)
+        NotificationService notificationService,
+        IncludeBBSectionService bBSectionService)
     {
         this.changedValueByCacheAndDatabase = changedValueByCacheAndDatabase;
         this.assigneeChangedValueFilter = assigneeChangedValueFilter;
@@ -26,6 +29,7 @@ public class OtherSportNotificationHandler : IRequestHandler<OtherSportNotificat
         this.messageFactory = messageFactory;
         this.repository = repository;
         this.notificationService = notificationService;
+        this.bBSectionService = bBSectionService;
     }
 
     public async Task<Unit> Handle(OtherSportNotificationRequest request, CancellationToken cancellationToken)
@@ -40,6 +44,8 @@ public class OtherSportNotificationHandler : IRequestHandler<OtherSportNotificat
 
         await notificationService.Notify(messageModels);
 
+        await bBSectionService.InsertMessage(messages,request);
+        
         return Unit.Value;
     }
 }

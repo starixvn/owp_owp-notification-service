@@ -8,7 +8,7 @@ public static class DependenceInjection
     public static IServiceCollection AddOtherSport(this IServiceCollection services)
     {
         services.AddMediatR(x => x.RegisterServicesFromAssemblies(typeof(OtherSportNotificationHandler).Assembly));
-        
+
         services.AddTransient<OtherSportRepository, OtherSportRepositoryImp>();
         services.AddTransient<CacheManipulator, CacheManipulatorImp>();
         services.AddTransient<ChangedValueByCacheAndDatabase, ChangedValueByCacheAndDatabaseImp>();
@@ -27,6 +27,7 @@ public static class DependenceInjection
         services.AddTransient<ChangedAssignmentGenerator, ChangedAssignmentGeneratorImp>();
         services.AddTransient<ChangedAssignmentNoteGenerator, ChangedAssignmentNoteGeneratorImp>();
         services.AddTransient<NotificationService, NotificationServiceImp>();
+        services.AddTransient<IncludeBBSectionService, IncludeBBSectionServiceImp>();
 
         return services;
     }

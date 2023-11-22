@@ -31,6 +31,7 @@ public class ChangedMatchSettingGeneratorImp : ChangedMatchSettingGenerator
                 OldValue = changed.OldValue,
                 BetTypeName = changed.BetTypeName,
                 MatchNo = $"{matchInfo.MatchNo}",
+                AdminsiteMatchID = matchInfo.AdminsiteMatchId,
                 League = matchInfo.League,
                 EventName = UpdatedValueHelper.CreateEventName(matchInfo),
                 UserId = a.AssigneeId,

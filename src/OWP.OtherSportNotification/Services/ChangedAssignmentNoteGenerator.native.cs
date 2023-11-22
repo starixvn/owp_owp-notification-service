@@ -54,6 +54,7 @@ public class ChangedAssignmentNoteGeneratorImp : ChangedAssignmentNoteGenerator
                 BetTypeName = assignment.BetTypeName,
                 OSMatchId = match.OSMatchId,
                 MatchNo = $"{match.MatchNo}",
+                AdminsiteMatchID = match.AdminsiteMatchId,
                 League = match.League,
                 EventName = UpdatedValueHelper.CreateEventName(match),
                 UserId = assignment.UserId,

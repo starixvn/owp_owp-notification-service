@@ -19,8 +19,8 @@ public class ChangedMatchStatusGeneratorImp : ChangedMatchStatusGenerator
 
     public ChangedValue CreateMatchStatusChangedValue(GeneralMatch changedMatch, ChangedSnapshot changedSnapshot, Employee employees)
     {
-        var oldMatch = changedSnapshot.OldSnapshot.FirstOrDefault(x => x.MatchId == changedMatch.MatchId) ?? new GeneralMatch();
-        var newMatch = changedSnapshot.NewSnapshot.FirstOrDefault(x => x.MatchId == changedMatch.MatchId) ?? new GeneralMatch();
+        var oldMatch = changedSnapshot.OldSnapshot.Find(x => x.MatchId == changedMatch.MatchId) ?? new GeneralMatch();
+        var newMatch = changedSnapshot.NewSnapshot.Find(x => x.MatchId == changedMatch.MatchId) ?? new GeneralMatch();
 
         if (oldMatch.MatchStatus == newMatch.MatchStatus)
         {

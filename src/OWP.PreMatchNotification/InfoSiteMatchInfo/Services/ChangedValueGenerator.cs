@@ -61,7 +61,7 @@ public class ChangedValueGeneratorImp : ChangedValueGenerator
 
         foreach (var item in changedMatches)
         {
-            var oldInfositeMatch = oldSnapshotTimeRange.FirstOrDefault(x => x.InfoSiteMatchId == item.InfoSiteMatchId);
+            var oldInfositeMatch = oldSnapshotTimeRange.Find(x => x.InfoSiteMatchId == item.InfoSiteMatchId);
 
             if (oldInfositeMatch == null)
             {

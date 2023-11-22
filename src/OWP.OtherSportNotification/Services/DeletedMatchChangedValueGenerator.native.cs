@@ -43,6 +43,7 @@ public class DeletedMatchChangedValueGeneratorImp : DeletedMatchChangedValueGene
             BetTypeName = assignment.BetTypeName,
             OSMatchId = match.OSMatchId,
             MatchNo = match.MatchNo.ToString(CultureInfo.CurrentCulture),
+            AdminsiteMatchID = match.AdminsiteMatchId,
             League = match.League,
             EventName = UpdatedValueHelper.CreateEventName(match),
             UserId = assignment.UserId,

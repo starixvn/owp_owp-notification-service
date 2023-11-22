@@ -20,102 +20,102 @@ public class MessageFactoryImp : MessageFactory
             new MessageTemplate
             {
                 MessageType = (int)MsgTemplateCode.EditMatchNo,
-                MessageContent = "<b>Match No.</b> Updated from <oldvalue> to <newvalue> for <Match.No> - <League> - <Event> updated by <User>"
+                MessageContent = "<b>Match No.</b> Updated from <oldvalue> to <newvalue> for <Match.No> - <AdminsiteMatchID> - <League> - <Event> updated by <User>"
             },
             new MessageTemplate
             {
                 MessageType = (int)MsgTemplateCode.EditMatchStatus,
-                MessageContent = "<b>Match Status</b> Updated from <oldvalue> to <newvalue> for <Match.No> - <League> - <Event> updated by <User>",
+                MessageContent = "<b>Match Status</b> Updated from <oldvalue> to <newvalue> for <Match.No> - <AdminsiteMatchID> - <League> - <Event> updated by <User>",
                 IsImportant= true
             },
             new MessageTemplate
             {
                 MessageType = (int)MsgTemplateCode.EditCategory,
-                MessageContent = "<b>Category</b> Updated from <oldvalue> to <newvalue> for <Match.No> - <League> - <Event> updated by <User>"
+                MessageContent = "<b>Category</b> Updated from <oldvalue> to <newvalue> for <Match.No> - <AdminsiteMatchID> - <League> - <Event> updated by <User>"
             },
             new MessageTemplate
             {
                  MessageType=(int)MsgTemplateCode.EditNoOfHDP,
-                 MessageContent="<b>No. HDP</b> Updated from <oldvalue> to <newvalue> for <Match.No> - <League> - <Event> updated by <User>"
+                 MessageContent="<b>No. HDP</b> Updated from <oldvalue> to <newvalue> for <Match.No> - <AdminsiteMatchID> - <League> - <Event> updated by <User>"
             },
             new MessageTemplate
             {
                  MessageType=(int)MsgTemplateCode.EditMatchOffer,
-                 MessageContent="<b>Match Offer</b> Updated from <oldvalue> to <newvalue> for <Match.No> - <League> - <Event> updated by <User>"
+                 MessageContent="<b>Match Offer</b> Updated from <oldvalue> to <newvalue> for <Match.No> - <AdminsiteMatchID> - <League> - <Event> updated by <User>"
             },
             new MessageTemplate
             {
                  MessageType=(int)MsgTemplateCode.EditAutoLink,
-                 MessageContent="<b>Auto Link</b> Updated from <oldvalue> to  <newvalue> for <Match.No> - <League> - <Event> updated by <User>"
+                 MessageContent="<b>Auto Link</b> Updated from <oldvalue> to  <newvalue> for <Match.No> - <AdminsiteMatchID> - <League> - <Event> updated by <User>"
             },
             new MessageTemplate
             {
                  MessageType=(int)MsgTemplateCode.EditProvider,
-                 MessageContent="<b>Provider</b> Updated from <oldvalue> to <newvalue> for <Match.No> - <League> - <Event> updated by <User>"
+                 MessageContent="<b>Provider</b> Updated from <oldvalue> to <newvalue> for <Match.No> - <AdminsiteMatchID> - <League> - <Event> updated by <User>"
             },
             new MessageTemplate
             {
                  MessageType=(int)MsgTemplateCode.EditOtherProvider,
-                 MessageContent="<b>Other Provider</b> Updated from <oldvalue> to <newvalue> for <Match.No> - <League> - <Event> updated by <User>"
+                 MessageContent="<b>Other Provider</b> Updated from <oldvalue> to <newvalue> for <Match.No> - <AdminsiteMatchID> - <League> - <Event> updated by <User>"
             },
              new MessageTemplate
             {
                  MessageType=(int)MsgTemplateCode.EditIPTV,
-                 MessageContent="<b>IPTV</b> Updated from <oldvalue> to <newvalue> for <Match.No> - <League> - <Event> updated by <User>"
+                 MessageContent="<b>IPTV</b> Updated from <oldvalue> to <newvalue> for <Match.No> - <League> - <AdminsiteMatchID> - <Event> updated by <User>"
             },
             new MessageTemplate
             {
                  MessageType=(int)MsgTemplateCode.EditWB,
-                 MessageContent="<b>Streaming</b> Info (WB) Updated from <oldvalue> to <newvalue> for <Match.No> - <League> - <Event> updated by <User>"
+                 MessageContent="<b>Streaming</b> Info (WB) Updated from <oldvalue> to <newvalue> for <Match.No> - <AdminsiteMatchID> - <League> - <Event> updated by <User>"
             },
             new MessageTemplate
             {
                  MessageType=(int)MsgTemplateCode.EditRemark,
-                 MessageContent="<b>Remark</b> Updated from <oldvalue> to <newvalue> for <Match.No> - <League> - <Event> updated by <User>"
+                 MessageContent="<b>Remark</b> Updated from <oldvalue> to <newvalue> for <Match.No> - <AdminsiteMatchID> - <League> - <Event> updated by <User>"
             },
             new MessageTemplate
             {
                  MessageType=(int)MsgTemplateCode.EditMaxbet,
-                 MessageContent="<b>Max Bet</b> of <bettype> Updated from <oldvalue> to <newvalue> for <Match.No> - <League> - <Event> updated by <User>"
+                 MessageContent="<b>Max Bet</b> of <bettype> Updated from <oldvalue> to <newvalue> for <Match.No> - <AdminsiteMatchID> - <League> - <Event> updated by <User>"
             },
             new MessageTemplate
             {
                  MessageType=(int)MsgTemplateCode.EditSpread,
-                 MessageContent="<b>Spread</b> of <bettype> Updated from <oldvalue> to <newvalue> for <Match.No> - <League> - <Event> updated by <User>"
+                 MessageContent="<b>Spread</b> of <bettype> Updated from <oldvalue> to <newvalue> for <Match.No> - <AdminsiteMatchID> - <League> - <Event> updated by <User>"
             },
             new MessageTemplate
             {
                  MessageType=(int)MsgTemplateCode.EditReporter,
-                 MessageContent="<b>Reporter</b> Updated from <oldvalue> to <newvalue> for <Match.No> - <League> - <Event> updated by <User>"
+                 MessageContent="<b>Reporter</b> Updated from <oldvalue> to <newvalue> for <Match.No> - <AdminsiteMatchID> - <League> - <Event> updated by <User>"
             },
             new MessageTemplate
             {
                  MessageType=(int)MsgTemplateCode.AssignmentInsert,
-                 MessageContent="You have NEW ASSIGNMENT <bettype> in <Match.No> - <League> - <Event> - <KOTime> updated by <User>",
+                 MessageContent="You have NEW ASSIGNMENT <bettype> in <Match.No> - <AdminsiteMatchID> - <League> - <Event> - <KOTime> updated by <User>",
                  IsImportant = true
             },
             new MessageTemplate
             {
                  MessageType=(int)MsgTemplateCode.OtherAssignmentInsert,
-                 MessageContent="You have NEW ASSIGNMENT <bettype> in <Match.No> - <League> - <Event> - <KOTime> updated by <User>",
+                 MessageContent="You have NEW ASSIGNMENT <bettype> in <Match.No> - <AdminsiteMatchID> - <League> - <Event> - <KOTime> updated by <User>",
                  IsImportant = true
             },
             new MessageTemplate
             {
                  MessageType=(int)MsgTemplateCode.AssignmentUpdate,
-                 MessageContent="UPDATED ASSIGNEE of <bettype> from <oldvalue> change to <newvalue> for <Match.No> - <League> - <Event> - <KOTime> Updated by <User> ",
+                 MessageContent="UPDATED ASSIGNEE of <bettype> from <oldvalue> change to <newvalue> for <Match.No> - <AdminsiteMatchID> - <League> - <Event> - <KOTime> Updated by <User> ",
                  IsImportant = true
             },
             new MessageTemplate
             {
                  MessageType=(int)MsgTemplateCode.OtherAssignmentUpdate,
-                 MessageContent="UPDATED ASSIGNEE of <bettype> from <oldvalue> change to <newvalue> for <Match.No> - <League> - <Event> - <KOTime> Updated by <User> ",
+                 MessageContent="UPDATED ASSIGNEE of <bettype> from <oldvalue> change to <newvalue> for <Match.No> - <AdminsiteMatchID> - <League> - <Event> - <KOTime> Updated by <User> ",
                  IsImportant = true
             },
             new MessageTemplate
             {
                  MessageType=(int)MsgTemplateCode.AssignmentDelete,
-                 MessageContent="You have been REMOVED from <bettype> in <Match.No> - <League> - <Event> - <KOTime> updated by <User>",
+                 MessageContent="You have been REMOVED from <bettype> in <Match.No> - <AdminsiteMatchID> - <League> - <Event> - <KOTime> updated by <User>",
                  IsImportant = true
             },
             new MessageTemplate
@@ -127,12 +127,12 @@ public class MessageFactoryImp : MessageFactory
             new MessageTemplate
             {
                  MessageType=(int)MsgTemplateCode.EditAssignmentNote,
-                 MessageContent="<b>Your Assignment Note</b> Updated from <oldvalue> to <newvalue> for <Match.No> - <League> - <Event> updated by <User>"
+                 MessageContent="<b>Your Assignment Note</b> Updated from <oldvalue> to <newvalue> for <Match.No> - <AdminsiteMatchID> - <League> - <Event> updated by <User>"
             },
             new MessageTemplate
             {
                 MessageType = (int) MsgTemplateCode.EditNeutral,
-                MessageContent = "<Match.No> - <League> - <newvalue> updated by <User>, previous: [ <Match.No> - <League> - <oldvalue>]"
+                MessageContent = "<Match.No> - <AdminsiteMatchID> - <League> - <newvalue> updated by <User>, previous: [ <Match.No> - <AdminsiteMatchID> - <League> - <oldvalue>]"
             }
         });
 
@@ -140,7 +140,7 @@ public class MessageFactoryImp : MessageFactory
 
     #region MessageGroup
 
-    private class MessageGroup
+    private sealed class MessageGroup
     {
         public MessageGroup(ChangedValue value)
         {
@@ -152,6 +152,7 @@ public class MessageFactoryImp : MessageFactory
             League = value.League;
             EventName = value.EventName;
             MatchNo = value.MatchNo;
+            AdminsiteMatchID = value.AdminsiteMatchID;
             IsWatcher = value.IsWatcher;
             EventDateTime = value.EventDateTime;
         }
@@ -172,6 +173,8 @@ public class MessageFactoryImp : MessageFactory
 
         public string MatchNo { get; set; }
 
+        public int? AdminsiteMatchID { get; set; }
+
         public bool IsWatcher { get; set; }
 
         public DateTime EventDateTime { get; set; }
@@ -181,7 +184,7 @@ public class MessageFactoryImp : MessageFactory
 
     #region MessageModelRaw
 
-    private class MessageModelRaw
+    private sealed class MessageModelRaw
     {
         public string MessageContent { get; set; }
 
@@ -236,6 +239,7 @@ public class MessageFactoryImp : MessageFactory
         content = content.Replace("<User>", actor);
         content = content.Replace("<bettype>", messageGroup.BetTypeName);
         content = content.Replace("<KOTime>", messageGroup.EventDateTime.ToString("MM/dd/yyyy hh:mm tt"));
+        content = content.Replace(" - <AdminsiteMatchID> - ", messageGroup.AdminsiteMatchID is not null ? $" - {messageGroup.AdminsiteMatchID} - " : " - ");
 
         return content;
     }

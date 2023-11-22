@@ -16,6 +16,8 @@ public class ChangedValue
 
     public string MatchNo { get; set; }
 
+    public int? AdminsiteMatchID { get; set; }
+
     public string League { get; set; }
 
     public string EventName { get; set; }
