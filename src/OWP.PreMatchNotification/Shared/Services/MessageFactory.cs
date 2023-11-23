@@ -134,11 +134,6 @@ public class MessageFactoryImp : MessageFactory
 
         content = content.Replace("<newvalue>", "<b><newvalue></b>");
 
-        if (value.MessageTypeId is (int)MsgTemplateCode.UpdateHome or (int)MsgTemplateCode.UpdateAway or (int)MsgTemplateCode.UpdateKOTime)
-        {
-            content = content.Replace("<oldvalue>", "<b><oldvalue></b>");
-        }
-
         content = content.Replace("<newvalue>", string.IsNullOrWhiteSpace(value.NewValue) ? "[]" : value.NewValue);
         content = content.Replace("<oldvalue>", string.IsNullOrWhiteSpace(value.OldValue) ? "[]" : value.OldValue);
         content = content.Replace("<League>", value.League);
