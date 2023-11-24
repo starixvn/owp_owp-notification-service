@@ -51,7 +51,7 @@ public class NotificationServiceImp : NotificationService
         {
             var newMessage = GetGroupMessage(message.Value);
 
-            var result = new { notificationId = Guid.NewGuid(), newMessage };
+            var result = new { notificationId = Guid.NewGuid(), message = newMessage };
             var key = message.Key.UserId;
 
             await hubContext.Clients
