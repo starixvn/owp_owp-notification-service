@@ -37,8 +37,6 @@ public class SendNotificationHandlerImp : NotificationHandler
 
         RoutingKey.LinkedLgaMatch => JsonConvert.DeserializeObject<LinkedMatchNotifyRequest>(message),
 
-        RoutingKey.InfoSiteMatchInfo => JsonConvert.DeserializeObject<MatchInfoNotifyRequest>(message),
-
         RoutingKey.PreMatchAssignment => JsonConvert.DeserializeObject<PrematchAssignmentNotifyRequest>(message),
 
         RoutingKey.PreMatchNewLeague => JsonConvert.DeserializeObject<PrematchNewLeagueNotifyRequest>(message),
