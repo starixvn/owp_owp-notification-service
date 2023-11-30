@@ -5,7 +5,6 @@ public static class RoutingKey
     public const string AssignmentUpload = "assignment-upload";
     public const string LinkedLgaMatch = "linked-lga-match";
     public const string PreMatchNewLeague = "prematch-new-league";
-    public const string InfoSiteMatchInfo = "infosite-match-info";
     public const string PreMatchAssignment = "prematch-assignment";
     public const string TicketCenterNewMessage = "ticket-center-new-message";
     public const string TicketCenterNewRecipient = "ticket-center-new-recipient";

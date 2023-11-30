@@ -42,7 +42,7 @@ public class LinkedMatchNotifyHandler : IRequestHandler<LinkedMatchNotifyRequest
 
         await cacheManipulator.DeleteAssignmentSnapshot(request.SessionId);
 
-        await notificationService.Notify(messageModels);
+        await notificationService.NotifyGroupMessageForLinkMatch(messageModels);
 
         return Unit.Value;
     }

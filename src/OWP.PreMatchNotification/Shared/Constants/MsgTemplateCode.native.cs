@@ -11,8 +11,5 @@ public enum MsgTemplateCode
     NewLeague = 207,
     LGAAddLiveMatch = 208,
     LGACancelLiveMatch = 209,
-    LGAChangeMatchStatus = 210,
-    UpdateHome = 211,
-    UpdateAway = 212,
-    UpdateKOTime = 213
+    LGAChangeMatchStatus = 210
 }

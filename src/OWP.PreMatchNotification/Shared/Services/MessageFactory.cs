@@ -78,24 +78,6 @@ public class MessageFactoryImp : MessageFactory
              MessageContent="Has been <newvalue> for match: <League> - <Home> -vs- <Away>; Previous <oldvalue>",
              IsImportant = true,
              IsBlinking = true
-        },
-        new MessageTemplate
-        {
-             MessageType=(int)MsgTemplateCode.UpdateHome,
-             MessageContent="<b>Home Team</b> Update from <League> - <oldvalue> -vs- <Away> to <League> - <newvalue> -vs- <Away>",
-             IsImportant = true
-        },
-        new MessageTemplate
-        {
-             MessageType=(int)MsgTemplateCode.UpdateAway,
-             MessageContent="<b>Away Team</b> Update from <League> - <Home> -vs- <oldvalue> to <League> - <Home> -vs- <newvalue>",
-             IsImportant = true
-        },
-        new MessageTemplate
-        {
-             MessageType=(int)MsgTemplateCode.UpdateKOTime,
-             MessageContent="<b>K.O time</b> Update from <oldvalue> to <newvalue> for <League> - <Home> -vs- <Away>",
-             IsImportant = true
         }
     });
 
@@ -151,11 +133,6 @@ public class MessageFactoryImp : MessageFactory
         var content = messageTemplate.MessageContent;
 
         content = content.Replace("<newvalue>", "<b><newvalue></b>");
-
-        if (value.MessageTypeId is (int)MsgTemplateCode.UpdateHome or (int)MsgTemplateCode.UpdateAway or (int)MsgTemplateCode.UpdateKOTime)
-        {
-            content = content.Replace("<oldvalue>", "<b><oldvalue></b>");
-        }
 
         content = content.Replace("<newvalue>", string.IsNullOrWhiteSpace(value.NewValue) ? "[]" : value.NewValue);
         content = content.Replace("<oldvalue>", string.IsNullOrWhiteSpace(value.OldValue) ? "[]" : value.OldValue);
