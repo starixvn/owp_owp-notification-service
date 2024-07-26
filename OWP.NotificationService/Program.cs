@@ -1,4 +1,5 @@
-using Fanex.Data.SqlServer;
+
+using Fanex.Data;
 using OWP.AssignmentUploadNotification;
 using OWP.LiveDetailNotification;
 using OWP.NotificationService.Extensions;
@@ -13,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddSignalRedis(builder.Configuration);
-builder.Services.AddFanexSql(builder.Configuration);
+builder.Services.AddFanexData(builder.Configuration);
 builder.Services.AddRedisServices(builder.Configuration);
 
 builder.Services.AddNapServices(builder.Configuration);
