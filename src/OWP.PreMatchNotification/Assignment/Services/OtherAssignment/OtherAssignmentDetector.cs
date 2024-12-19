@@ -22,27 +22,13 @@ public interface OtherAssignmentDetector
     void DetectChangeAssignmentExceptOtherOuTOver(AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot, List<ChangedValue> changedValues);
 }
 
-public class OtherAssignmentDetectorImp : OtherAssignmentDetector
-{
-    private readonly ChangedValueHdpDetector changedValueHdpDetector;
-
-    private readonly ChangedValueHdpTakeOverDetector changedValueHdpTakeOverDetector;
-
-    private readonly ChangedValueOuDetector changedValueOuDetector;
-
-    private readonly ChangedValueOuTakeOverDetector changedValueOuTakeOverDetector;
-
-    public OtherAssignmentDetectorImp(ChangedValueHdpDetector changedValueHdpDetector,
+public class OtherAssignmentDetectorImp(
+    ChangedValueHdpDetector changedValueHdpDetector,
     ChangedValueHdpTakeOverDetector changedValueHdpTakeOverDetector,
     ChangedValueOuDetector changedValueOuDetector,
     ChangedValueOuTakeOverDetector changedValueOuTakeOverDetector)
-    {
-        this.changedValueHdpDetector = changedValueHdpDetector;
-        this.changedValueHdpTakeOverDetector = changedValueHdpTakeOverDetector;
-        this.changedValueOuDetector = changedValueOuDetector;
-        this.changedValueOuTakeOverDetector = changedValueOuTakeOverDetector;
-    }
-
+    : OtherAssignmentDetector
+{
     public void DetectChangeOtherAssignmentExceptHdp(AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot, List<ChangedValue> changedValues)
     {
         if (!string.Equals(oldSnapshot.Hdp, newSnapshot.Hdp) || string.IsNullOrWhiteSpace(newSnapshot.Hdp))

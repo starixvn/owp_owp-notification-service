@@ -9,15 +9,9 @@ public interface CacheManipulator
     Task DeleteAssignmentSnapshot(string sessionId);
 }
 
-public class CacheManipulatorImp : CacheManipulator
+public class CacheManipulatorImp(CacheManipulatorCommon cacheManipulator) : CacheManipulator
 {
-    private readonly CacheManipulatorCommon cacheManipulator;
     private const string OldLgaMatchesSnapshotKey = "OWP-ASSIGNMENT-SNAPSHOT";
-
-    public CacheManipulatorImp(CacheManipulatorCommon cacheManipulator)
-    {
-        this.cacheManipulator = cacheManipulator;
-    }
 
     public async Task<List<GeneralMatch>> GetOldLGAMatchSnapshot(string sessionId)
     {

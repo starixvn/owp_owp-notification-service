@@ -8,28 +8,14 @@ public interface ChangedMatchChangedValueGenerator
     List<ChangedValue> Create(List<int> matchIds, AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot);
 }
 
-public class ChangedMatchChangedValueGeneratorImp : ChangedMatchChangedValueGenerator
+public class ChangedMatchChangedValueGeneratorImp(
+    ChangedMatchInfoGenerator changedMatchInfoGenerator,
+    ChangedAssignmentGenerator changedAssignmentGenerator,
+    ChangedMatchSettingGenerator changedMatchSettingGenerator,
+    ChangedMatchStatusGenerator changedMatchStatusGenerator,
+    ChangedAssignmentNoteGenerator changedAssignmentNoteGenerator)
+    : ChangedMatchChangedValueGenerator
 {
-    private readonly ChangedMatchStatusGenerator changedMatchStatusGenerator;
-    private readonly ChangedMatchInfoGenerator changedMatchInfoGenerator;
-    private readonly ChangedAssignmentGenerator changedAssignmentGenerator;
-    private readonly ChangedMatchSettingGenerator changedMatchSettingGenerator;
-    private readonly ChangedAssignmentNoteGenerator changedAssignmentNoteGenerator;
-
-    public ChangedMatchChangedValueGeneratorImp(
-        ChangedMatchInfoGenerator changedMatchInfoGenerator,
-        ChangedAssignmentGenerator changedAssignmentGenerator,
-        ChangedMatchSettingGenerator changedMatchSettingGenerator,
-        ChangedMatchStatusGenerator changedMatchStatusGenerator,
-        ChangedAssignmentNoteGenerator changedAssignmentNoteGenerator)
-    {
-        this.changedMatchStatusGenerator = changedMatchStatusGenerator;
-        this.changedMatchInfoGenerator = changedMatchInfoGenerator;
-        this.changedAssignmentGenerator = changedAssignmentGenerator;
-        this.changedMatchSettingGenerator = changedMatchSettingGenerator;
-        this.changedAssignmentNoteGenerator = changedAssignmentNoteGenerator;
-    }
-
     public List<ChangedValue> Create(List<int> matchIds, AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot)
     {
         var changedValues = CreateEnumerableChangeValues(matchIds, oldSnapshot, newSnapshot);
@@ -72,7 +58,7 @@ public class ChangedMatchChangedValueGeneratorImp : ChangedMatchChangedValueGene
 
     private static IEnumerable<Assignee> GetAllAssigneesByMatchId(int matchId, AssignmentSnapshot snapshot)
     {
-        var assigneeOfMatch = snapshot.MatchAssignments.GetValue(matchId, new List<MatchAssignment>());
+        var assigneeOfMatch = snapshot.MatchAssignments.GetValue(matchId, []);
 
         return assigneeOfMatch.Select(a => new Assignee
         {

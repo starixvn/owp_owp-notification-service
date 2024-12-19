@@ -2,12 +2,7 @@
 
 public class AssignmentSnapshot
 {
-    public Dictionary<int, GeneralMatch> Matches { get; set; }
-
-    public AssignmentSnapshot()
-    {
-        Matches = new Dictionary<int, GeneralMatch>();
-    }
+    public Dictionary<int, GeneralMatch> Matches { get; set; } = new();
 }
 
 public class GeneralMatch

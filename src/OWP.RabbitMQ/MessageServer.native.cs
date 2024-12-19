@@ -9,23 +9,15 @@ using System.Text;
 
 namespace OWP.RabbitMQ;
 
-public class MessageServer : IHostedService
+public class MessageServer(
+    IOptions<RabbitMQSetting> options,
+    ILogger logger,
+    NotificationHandler notificationHandler)
+    : IHostedService
 {
-    private readonly RabbitMQSetting setting;
-    private readonly ILogger logger;
-    private readonly NotificationHandler notificationHandler;
+    private readonly RabbitMQSetting setting = options.Value;
 
-    public MessageServer(
-        IOptions<RabbitMQSetting> options,
-        ILogger logger,
-        NotificationHandler notificationHandler)
-    {
-        setting = options.Value;
-        this.logger = logger;
-        this.notificationHandler = notificationHandler;
-    }
-
-    public void ConsumeRequestQueue()
+    public async Task<bool> ConsumeRequestQueue()
     {
         try
         {
@@ -35,26 +27,28 @@ public class MessageServer : IHostedService
                 Password = setting.Password,
                 HostName = setting.Hosting,
                 Port = setting.Port,
-                VirtualHost = setting.VirtualHost,
-                DispatchConsumersAsync = true
+                VirtualHost = setting.VirtualHost
             };
 
-            var connection = factory.CreateConnection();
-            var channel = connection.CreateModel();
+            var connection = await factory.CreateConnectionAsync();
+            var channel = await connection.CreateChannelAsync();
 
-            channel.QueueDeclare(queue: setting.RequestQueue, durable: true, exclusive: false, autoDelete: false);
+           await channel.QueueDeclareAsync(queue: setting.RequestQueue, durable: true, exclusive: false, autoDelete: false);
 
-            channel.BasicQos(0, 1, false);
+            await channel.BasicQosAsync(0, 1, false);
 
             var consumer = new AsyncEventingBasicConsumer(channel);
-            channel.BasicConsume(queue: setting.RequestQueue, autoAck: true, consumer: consumer);
+            await channel.BasicConsumeAsync(queue: setting.RequestQueue, autoAck: true, consumer: consumer);
 
-            consumer.Received += OnReceived;
+            consumer.ReceivedAsync += OnReceived;
         }
         catch (Exception ex)
         {
-            logger.Error(ex.Message, ex);
+           await logger.ErrorAsync(ex.Message, ex);
+           return false;
         }
+
+        return true;
     }
 
     private async Task OnReceived(object model, BasicDeliverEventArgs eventArgs)
@@ -78,8 +72,7 @@ public class MessageServer : IHostedService
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        ConsumeRequestQueue();
-        await Task.CompletedTask;
+        await ConsumeRequestQueue();
     }
 
     public async Task StopAsync(CancellationToken cancellationToken)

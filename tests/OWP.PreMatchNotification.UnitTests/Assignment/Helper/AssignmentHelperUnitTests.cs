@@ -28,7 +28,7 @@ public class AssignmentHelperUnitTests
                 MessageTypeId = 201,
                 BetTypeName = "Hdp",
                 League = "League",
-                ReceivedUserIds = new List<int>{123}
+                ReceivedUserIds = [123]
             }
         };
         DeepAssert.Equal(changedValuesExpected, changedValues);
@@ -51,7 +51,7 @@ public class AssignmentHelperUnitTests
                 MessageTypeId = 204,
                 BetTypeName = "Hdp",
                 League = "League",
-                ReceivedUserIds = new List<int>{123}
+                ReceivedUserIds = [123]
             }
         };
         DeepAssert.Equal(changedValuesExpected, changedValues);
@@ -83,7 +83,7 @@ public class AssignmentHelperUnitTests
                 MessageTypeId = 202,
                 BetTypeName = "Hdp",
                 League = "League",
-                ReceivedUserIds = new List<int>{123}
+                ReceivedUserIds = [123]
             }
         };
         DeepAssert.Equal(changedValuesExpected, changedValues);
@@ -106,7 +106,7 @@ public class AssignmentHelperUnitTests
                 MessageTypeId = 205,
                 BetTypeName = "Hdp",
                 League = "League",
-                ReceivedUserIds = new List<int>{123}
+                ReceivedUserIds = [123]
             }
         };
         DeepAssert.Equal(changedValuesExpected, changedValues);

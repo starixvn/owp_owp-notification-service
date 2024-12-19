@@ -2,18 +2,11 @@
 
 public class AssignmentSnapshot
 {
-    public Dictionary<int, MatchInfo> Matches { get; set; }
+    public Dictionary<int, MatchInfo> Matches { get; set; } = new();
 
-    public Dictionary<int, List<MatchSetting>> MatchSettings { get; set; }
+    public Dictionary<int, List<MatchSetting>> MatchSettings { get; set; } = new();
 
-    public Dictionary<int, List<MatchAssignment>> MatchAssignments { get; set; }
-
-    public AssignmentSnapshot()
-    {
-        Matches = new Dictionary<int, MatchInfo>();
-        MatchSettings = new Dictionary<int, List<MatchSetting>>();
-        MatchAssignments = new Dictionary<int, List<MatchAssignment>>();
-    }
+    public Dictionary<int, List<MatchAssignment>> MatchAssignments { get; set; } = new();
 }
 
 public class MatchInfo

@@ -14,17 +14,9 @@ public interface WatcherChangedValueGenerator
     Task<List<ChangedValue>> Create(List<ChangedValue> changedValues, List<ChangedValue> assigneeChangedValues);
 }
 
-public class WatcherChangedValueGeneratorImp : WatcherChangedValueGenerator
+public class WatcherChangedValueGeneratorImp(NotificationSettingQueryRepository repository, IMapper mapper)
+    : WatcherChangedValueGenerator
 {
-    private readonly NotificationSettingQueryRepository repository;
-    private readonly IMapper mapper;
-
-    public WatcherChangedValueGeneratorImp(NotificationSettingQueryRepository repository, IMapper mapper)
-    {
-        this.repository = repository;
-        this.mapper = mapper;
-    }
-
     public async Task<List<ChangedValue>> Create(List<ChangedValue> changedValues, List<ChangedValue> assigneeChangedValues)
     {
         var settings = await repository.GetSessionWatcherSettings();
@@ -42,8 +34,8 @@ public class WatcherChangedValueGeneratorImp : WatcherChangedValueGenerator
         {
             var notificationSettingId = NotificationSettingHelper.GetNotificationSettingIdForWatcher(changedValue.MessageTypeId, changedValue.BetTypeId);
 
-            var watchers = settings.GetValue($"{changedValue.AssigneeId}-{notificationSettingId}", new List<Assignee>());
-            var assignees = assigneesOfMatches.GetValue(changedValue.MatchId, new List<Assignee>());
+            var watchers = settings.GetValue($"{changedValue.AssigneeId}-{notificationSettingId}", []);
+            var assignees = assigneesOfMatches.GetValue(changedValue.MatchId, []);
             var watchersIgnoredAssignees = watchers.Where(x => x.AssigneeId != changedValue.AssigneeId)
                 .Except(assignees, new Assignee())
                 .Distinct(new Assignee())

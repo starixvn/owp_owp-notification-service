@@ -11,7 +11,7 @@ public interface ChangedValueAggregator
     IEnumerable<ChangedValue> Aggregate(IEnumerable<ChangedValue> changedValues);
 }
 
-public class ChangedValueAggregatorImp : ChangedValueAggregator
+public class ChangedValueAggregatorImp(IMapper mapper) : ChangedValueAggregator
 {
     internal class AssignmentGroup
     {
@@ -43,13 +43,6 @@ public class ChangedValueAggregatorImp : ChangedValueAggregator
                    + (IsWatcher ? 31 : 0)
                    + (IsIndirectChanged ? 37 : 0);
         }
-    }
-
-    private readonly IMapper mapper;
-
-    public ChangedValueAggregatorImp(IMapper mapper)
-    {
-        this.mapper = mapper;
     }
 
     public IEnumerable<ChangedValue> Aggregate(IEnumerable<ChangedValue> changedValues)

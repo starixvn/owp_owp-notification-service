@@ -11,25 +11,13 @@ public interface ChangedMatchChangedValueGenerator
     List<ChangedValue> Create(List<int> matchIds, AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot);
 }
 
-public class ChangedMatchChangedValueGeneratorImp : ChangedMatchChangedValueGenerator
+public class ChangedMatchChangedValueGeneratorImp(
+    ChangedMatchInfoGenerator changedMatchInfoGenerator,
+    ChangedAssignmentGenerator changedAssignmentGenerator,
+    ChangedMatchSettingGenerator changedMatchSettingGenerator,
+    ChangedMatchStatusGenerator changedMatchStatusGenerator)
+    : ChangedMatchChangedValueGenerator
 {
-    private readonly ChangedMatchStatusGenerator changedMatchStatusGenerator;
-    private readonly ChangedMatchInfoGenerator changedMatchInfoGenerator;
-    private readonly ChangedAssignmentGenerator changedAssignmentGenerator;
-    private readonly ChangedMatchSettingGenerator changedMatchSettingGenerator;
-
-    public ChangedMatchChangedValueGeneratorImp(
-        ChangedMatchInfoGenerator changedMatchInfoGenerator,
-        ChangedAssignmentGenerator changedAssignmentGenerator,
-        ChangedMatchSettingGenerator changedMatchSettingGenerator,
-        ChangedMatchStatusGenerator changedMatchStatusGenerator)
-    {
-        this.changedMatchStatusGenerator = changedMatchStatusGenerator;
-        this.changedMatchInfoGenerator = changedMatchInfoGenerator;
-        this.changedAssignmentGenerator = changedAssignmentGenerator;
-        this.changedMatchSettingGenerator = changedMatchSettingGenerator;
-    }
-
     public List<ChangedValue> Create(List<int> matchIds, AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot)
     {
         var changedValues = CreateEnumerableChangeValues(matchIds, oldSnapshot, newSnapshot);
@@ -140,6 +128,6 @@ public class ChangedMatchChangedValueGeneratorImp : ChangedMatchChangedValueGene
 
     private static IEnumerable<MatchAssignment> GetAssignmentByMatchId(int matchId, AssignmentSnapshot snapshot)
     {
-        return snapshot.Assignments.GetValue(matchId, new List<MatchAssignment>());
+        return snapshot.Assignments.GetValue(matchId, []);
     }
 }

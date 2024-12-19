@@ -8,15 +8,8 @@ public interface MyAssignmentGenerator
     IEnumerable<ChangedValue> Create(AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot);
 }
 
-public class MyAssignmentGeneratorImp : MyAssignmentGenerator
+public class MyAssignmentGeneratorImp(MyAssignmentDetector myAssignmentDetector) : MyAssignmentGenerator
 {
-    private readonly MyAssignmentDetector myAssignmentDetector;
-
-    public MyAssignmentGeneratorImp(MyAssignmentDetector myAssignmentDetector)
-    {
-        this.myAssignmentDetector = myAssignmentDetector;
-    }
-
     public IEnumerable<ChangedValue> Create(AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot)
     {
         var changedValues = new List<ChangedValue>();

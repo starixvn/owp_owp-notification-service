@@ -16,15 +16,8 @@ public interface CommandRepository
     Task<IList<Assignee>> GetPreMatchLeagueAssigneesByOWPLeagueIds(IList<int> owpLeagueIds, DateTime eventDate);
 }
 
-public class CommandRepositoryImp : CommandRepository
+public class CommandRepositoryImp(IDynamicRepository dynamicRepository) : CommandRepository
 {
-    private readonly IDynamicRepository dynamicRepository;
-
-    public CommandRepositoryImp(IDynamicRepository dynamicRepository)
-    {
-        this.dynamicRepository = dynamicRepository;
-    }
-
     public async Task InsertMessage(List<MessageModel> messages, string sessionId, int ActorId = 0)
     {
         messages.ForEach(x => x.ReceivedUserIdList = string.Join(",", x.ReceivedUserIds));

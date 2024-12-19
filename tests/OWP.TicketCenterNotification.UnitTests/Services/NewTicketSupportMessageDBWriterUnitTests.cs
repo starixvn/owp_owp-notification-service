@@ -13,7 +13,7 @@ public class NewTicketSupportMessageDBWriterUnitTests
     }
 
     [Fact]
-    public async void WriteMessageToDB_MessageModel_ReturnSectionId()
+    public async Task WriteMessageToDB_MessageModel_ReturnSectionId()
     {
         // Arrange
         await repository

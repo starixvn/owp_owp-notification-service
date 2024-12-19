@@ -9,15 +9,8 @@ public interface NewTicketMatchMessageDBWriter
     public Task<string> Execute(NewTicketModel message, NotificationTemplateCode code);
 }
 
-public class NewTicketMatchMessageDBWriterImp : NewTicketMatchMessageDBWriter
+public class NewTicketMatchMessageDBWriterImp(TicketRepository repository) : NewTicketMatchMessageDBWriter
 {
-    private readonly TicketRepository repository;
-
-    public NewTicketMatchMessageDBWriterImp(TicketRepository repository)
-    {
-        this.repository = repository;
-    }
-
     public async Task<string> Execute(NewTicketModel message, NotificationTemplateCode code)
     {
         var template = MessageTemplate.NotificationTemplateMap[(int)code];

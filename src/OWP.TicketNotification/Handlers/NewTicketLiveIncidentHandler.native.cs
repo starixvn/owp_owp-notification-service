@@ -6,23 +6,12 @@ using OWP.TicketNotification.Services;
 
 namespace OWP.TicketNotification.Handlers;
 
-public class NewTicketLiveIncidentHandler: IRequestHandler<NewTicketLiveIncidentNotificationRequest, Unit>
+public class NewTicketLiveIncidentHandler(
+    NewTicketLiveIncidentMessageDbWriter writer,
+    MessageNotificationService messageNotificationService,
+    NotificationService notificationService)
+    : IRequestHandler<NewTicketLiveIncidentNotificationRequest, Unit>
 {
-    private readonly NewTicketLiveIncidentMessageDbWriter writer;
-    private readonly MessageNotificationService messageNotificationService;
-    private readonly NotificationService notificationService;
-
-
-    public NewTicketLiveIncidentHandler(
-        NewTicketLiveIncidentMessageDbWriter writer,
-        MessageNotificationService messageNotificationService,
-        NotificationService notificationService)
-    {
-        this.writer = writer;
-        this.messageNotificationService = messageNotificationService;
-        this.notificationService = notificationService;
-    }
-
     public async Task<Unit> Handle(NewTicketLiveIncidentNotificationRequest request, CancellationToken cancellationToken)
     {
         var notificationMessage = new NewTicketLiveIncidentModel

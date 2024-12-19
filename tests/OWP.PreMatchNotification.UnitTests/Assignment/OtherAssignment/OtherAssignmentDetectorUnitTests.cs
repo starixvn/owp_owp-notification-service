@@ -133,7 +133,7 @@ public class OtherAssignmentDetectorUnitTests : IClassFixture<OtherAssignmentDet
     {
         var actual = new List<ChangedValue>();
         otherAssignment.DetectChangeOtherAssignmentExceptHdp(setUp.OldSnapshot, setUp.NewSnapshot, actual);
-        DeepAssert.Equal(new List<ChangedValue>(), actual);
+        DeepAssert.Equal([], actual);
     }
 
     [Fact]
@@ -143,7 +143,7 @@ public class OtherAssignmentDetectorUnitTests : IClassFixture<OtherAssignmentDet
         setUp.OldSnapshot.HdpUserId = 0;
         var actual = new List<ChangedValue>();
         otherAssignment.DetectChangeOtherAssignmentExceptHdp(setUp.OldSnapshot, setUp.NewSnapshot, actual);
-        DeepAssert.Equal(new List<ChangedValue>(), actual);
+        DeepAssert.Equal([], actual);
     }
 
     [Fact]
@@ -151,7 +151,7 @@ public class OtherAssignmentDetectorUnitTests : IClassFixture<OtherAssignmentDet
     {
         var actual = new List<ChangedValue>();
         otherAssignment.DetectChangeAssignmentExceptOtherHdp(setUp.OldSnapshot, setUp.NewSnapshot, actual);
-        DeepAssert.Equal(new List<ChangedValue>(), actual);
+        DeepAssert.Equal([], actual);
     }
 
     [Fact]
@@ -161,7 +161,7 @@ public class OtherAssignmentDetectorUnitTests : IClassFixture<OtherAssignmentDet
         setUp.OldSnapshot.OtherHdpUserId = 0;
         var actual = new List<ChangedValue>();
         otherAssignment.DetectChangeAssignmentExceptOtherHdp(setUp.OldSnapshot, setUp.NewSnapshot, actual);
-        DeepAssert.Equal(new List<ChangedValue>(), actual);
+        DeepAssert.Equal([], actual);
     }
 
     [Fact]
@@ -169,7 +169,7 @@ public class OtherAssignmentDetectorUnitTests : IClassFixture<OtherAssignmentDet
     {
         var actual = new List<ChangedValue>();
         otherAssignment.DetectChangeAssignmentExceptOu(setUp.OldSnapshot, setUp.NewSnapshot, actual);
-        DeepAssert.Equal(new List<ChangedValue>(), actual);
+        DeepAssert.Equal([], actual);
     }
 
     [Fact]
@@ -179,7 +179,7 @@ public class OtherAssignmentDetectorUnitTests : IClassFixture<OtherAssignmentDet
         setUp.OldSnapshot.OuUserId = 0;
         var actual = new List<ChangedValue>();
         otherAssignment.DetectChangeAssignmentExceptOu(setUp.OldSnapshot, setUp.NewSnapshot, actual);
-        DeepAssert.Equal(new List<ChangedValue>(), actual);
+        DeepAssert.Equal([], actual);
     }
 
     [Fact]
@@ -187,7 +187,7 @@ public class OtherAssignmentDetectorUnitTests : IClassFixture<OtherAssignmentDet
     {
         var actual = new List<ChangedValue>();
         otherAssignment.DetectChangeAssignmentExceptOtherOu(setUp.OldSnapshot, setUp.NewSnapshot, actual);
-        DeepAssert.Equal(new List<ChangedValue>(), actual);
+        DeepAssert.Equal([], actual);
     }
 
     [Fact]
@@ -197,7 +197,7 @@ public class OtherAssignmentDetectorUnitTests : IClassFixture<OtherAssignmentDet
         setUp.OldSnapshot.OtherOuUserId = 0;
         var actual = new List<ChangedValue>();
         otherAssignment.DetectChangeAssignmentExceptOtherOu(setUp.OldSnapshot, setUp.NewSnapshot, actual);
-        DeepAssert.Equal(new List<ChangedValue>(), actual);
+        DeepAssert.Equal([], actual);
     }
 
     [Fact]
@@ -205,7 +205,7 @@ public class OtherAssignmentDetectorUnitTests : IClassFixture<OtherAssignmentDet
     {
         var actual = new List<ChangedValue>();
         otherAssignment.DetectChangeAssignmentExceptHdpTOver(setUp.OldSnapshot, setUp.NewSnapshot, actual);
-        DeepAssert.Equal(new List<ChangedValue>(), actual);
+        DeepAssert.Equal([], actual);
     }
 
     [Fact]
@@ -215,7 +215,7 @@ public class OtherAssignmentDetectorUnitTests : IClassFixture<OtherAssignmentDet
         setUp.OldSnapshot.HdpTakeOverUserId = 0;
         var actual = new List<ChangedValue>();
         otherAssignment.DetectChangeAssignmentExceptHdpTOver(setUp.OldSnapshot, setUp.NewSnapshot, actual);
-        DeepAssert.Equal(new List<ChangedValue>(), actual);
+        DeepAssert.Equal([], actual);
     }
 
     [Fact]
@@ -223,7 +223,7 @@ public class OtherAssignmentDetectorUnitTests : IClassFixture<OtherAssignmentDet
     {
         var actual = new List<ChangedValue>();
         otherAssignment.DetectChangeAssignmentExceptOtherHdpTOver(setUp.OldSnapshot, setUp.NewSnapshot, actual);
-        DeepAssert.Equal(new List<ChangedValue>(), actual);
+        DeepAssert.Equal([], actual);
     }
 
     [Fact]
@@ -233,7 +233,7 @@ public class OtherAssignmentDetectorUnitTests : IClassFixture<OtherAssignmentDet
         setUp.OldSnapshot.OtherHdpTakeOverUserId = 0;
         var actual = new List<ChangedValue>();
         otherAssignment.DetectChangeAssignmentExceptOtherHdpTOver(setUp.OldSnapshot, setUp.NewSnapshot, actual);
-        DeepAssert.Equal(new List<ChangedValue>(), actual);
+        DeepAssert.Equal([], actual);
     }
 
     [Fact]
@@ -241,7 +241,7 @@ public class OtherAssignmentDetectorUnitTests : IClassFixture<OtherAssignmentDet
     {
         var actual = new List<ChangedValue>();
         otherAssignment.DetectChangeAssignmentExceptOuTOver(setUp.OldSnapshot, setUp.NewSnapshot, actual);
-        DeepAssert.Equal(new List<ChangedValue>(), actual);
+        DeepAssert.Equal([], actual);
     }
 
     [Fact]
@@ -251,7 +251,7 @@ public class OtherAssignmentDetectorUnitTests : IClassFixture<OtherAssignmentDet
         setUp.OldSnapshot.OuTakeOverUserId = 0;
         var actual = new List<ChangedValue>();
         otherAssignment.DetectChangeAssignmentExceptOuTOver(setUp.OldSnapshot, setUp.NewSnapshot, actual);
-        DeepAssert.Equal(new List<ChangedValue>(), actual);
+        DeepAssert.Equal([], actual);
     }
 
     [Fact]
@@ -259,7 +259,7 @@ public class OtherAssignmentDetectorUnitTests : IClassFixture<OtherAssignmentDet
     {
         var actual = new List<ChangedValue>();
         otherAssignment.DetectChangeAssignmentExceptOtherOuTOver(setUp.OldSnapshot, setUp.NewSnapshot, actual);
-        DeepAssert.Equal(new List<ChangedValue>(), actual);
+        DeepAssert.Equal([], actual);
     }
 
     [Fact]
@@ -269,6 +269,6 @@ public class OtherAssignmentDetectorUnitTests : IClassFixture<OtherAssignmentDet
         setUp.OldSnapshot.OtherOuTakeOverUserId = 0;
         var actual = new List<ChangedValue>();
         otherAssignment.DetectChangeAssignmentExceptOtherOuTOver(setUp.OldSnapshot, setUp.NewSnapshot, actual);
-        DeepAssert.Equal(new List<ChangedValue>(), actual);
+        DeepAssert.Equal([], actual);
     }
 }

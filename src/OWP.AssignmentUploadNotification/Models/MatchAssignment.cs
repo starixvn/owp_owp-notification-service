@@ -12,10 +12,5 @@ public class MatchAssignment
 
     public string UserName { get; set; }
 
-    public string AssignmentNote { get; set; }
-
-    public MatchAssignment()
-    {
-        AssignmentNote = string.Empty;
-    }
+    public string AssignmentNote { get; set; } = string.Empty;
 }

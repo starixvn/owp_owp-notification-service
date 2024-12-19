@@ -12,23 +12,16 @@ public interface CacheManipulatorCommon
     Task RemoveData(string key);
 }
 
-public class CacheManipulatorCommonImp : CacheManipulatorCommon
+public class CacheManipulatorCommonImp(ICache cache) : CacheManipulatorCommon
 {
-    private readonly ICache cache;
-
-    public CacheManipulatorCommonImp(ICache cache)
-    {
-        this.cache = cache;
-    }
-
     public async Task<IList<T>> GetMultipleData<T>(string key)
     {
         var (_, value) = await cache.TryGetAsync<string>(key);
         var assignmentSnapshot = string.IsNullOrEmpty(value)
-            ? new List<T>()
+            ? []
             : JsonConvert.DeserializeObject<List<T>>(value);
 
-        return assignmentSnapshot ?? new List<T>();
+        return assignmentSnapshot ?? [];
     }
 
     public async Task<T> GetSingleData<T>(string key, T defaultValue)

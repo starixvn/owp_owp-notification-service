@@ -29,7 +29,7 @@ public class ChangedValueHdpDetectorImp : ChangedValueHdpDetector
             changedValues.Add(new ChangedValue
             {
                 League = newSnapshot.LeagueName,
-                ReceivedUserIds = new List<int> { receivedUserId },
+                ReceivedUserIds = [receivedUserId],
                 BetTypeName = Bettype.HDP,
                 OldValue = oldSnapshot.Hdp,
                 NewValue = newSnapshot.Hdp,
@@ -46,7 +46,7 @@ public class ChangedValueHdpDetectorImp : ChangedValueHdpDetector
             changedValues.Add(new ChangedValue
             {
                 League = newSnapshot.LeagueName,
-                ReceivedUserIds = new List<int> { receivedUserId },
+                ReceivedUserIds = [receivedUserId],
                 BetTypeName = Bettype.HDP,
                 OldValue = oldSnapshot.OtherHdp,
                 NewValue = newSnapshot.OtherHdp,

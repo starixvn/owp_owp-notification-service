@@ -10,15 +10,8 @@ public interface NewTicketLogWorkMessageDBWriter
     public Task<string> Execute(NewTicketModel message, NotificationTemplateCode code);
 }
 
-public class NewTicketLogWorkMessageDBWriterImp : NewTicketLogWorkMessageDBWriter
+public class NewTicketLogWorkMessageDBWriterImp(TicketRepository repository) : NewTicketLogWorkMessageDBWriter
 {
-    private readonly TicketRepository repository;
-
-    public NewTicketLogWorkMessageDBWriterImp(TicketRepository repository)
-    {
-        this.repository = repository;
-    }
-
     public async Task<string> Execute(NewTicketModel message, NotificationTemplateCode code)
     {
         var template = MessageTemplate.NotificationTemplateMap[(int)code];

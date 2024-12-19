@@ -12,7 +12,7 @@ public class NewRecipientMessageDBWriterUnitTests
     }
 
     [Fact]
-    public async void WriteMessageToDB_InsertSingleRecipientRequest_ReturnSectionId()
+    public async Task WriteMessageToDB_InsertSingleRecipientRequest_ReturnSectionId()
     {
         // Arrange
         await repository

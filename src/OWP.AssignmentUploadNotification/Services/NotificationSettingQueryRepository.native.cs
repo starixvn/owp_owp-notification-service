@@ -14,21 +14,14 @@ public interface NotificationSettingQueryRepository
     Task<Dictionary<string, List<Assignee>>> GetSessionWatcherSettings();
 }
 
-public class NotificationSettingQueryRepositoryImp : NotificationSettingQueryRepository
+public class NotificationSettingQueryRepositoryImp(IDynamicRepository repository) : NotificationSettingQueryRepository
 {
-    private readonly IDynamicRepository repository;
-
-    public NotificationSettingQueryRepositoryImp(IDynamicRepository repository)
-    {
-        this.repository = repository;
-    }
-
     public async Task<HashSet<string>> GetUnsubscribeSettings()
     {
         var criteria = new GetNotificationSettingCommand();
         var notificationSettings = await repository.FetchAsync<NotificationSetting>(criteria);
 
-        return new HashSet<string>(notificationSettings.Select(a => $"{a.UserId}-{a.NotificationSettingId}"));
+        return [..notificationSettings.Select(a => $"{a.UserId}-{a.NotificationSettingId}")];
     }
 
     public async Task<Dictionary<string, List<Assignee>>> GetSessionWatcherSettings()

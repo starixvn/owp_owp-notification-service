@@ -10,15 +10,8 @@ public interface QueryMessageService
     Task<Tuple<IList<User>, IList<MessageModel>>> QueryBySession(string sessionId);
 }
 
-public class QueryMessageServiceImp : QueryMessageService
+public class QueryMessageServiceImp(IDynamicRepository repository) : QueryMessageService
 {
-    private readonly IDynamicRepository repository;
-
-    public QueryMessageServiceImp(IDynamicRepository repository)
-    {
-        this.repository = repository;
-    }
-
     public async Task<Tuple<IList<User>, IList<MessageModel>>> QueryBySession(string sessionId)
     {
         var criteria = new GetMessageBySessionCriteria

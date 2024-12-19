@@ -12,7 +12,7 @@ public class NewMessageDBWriterUnitTests
     }
 
     [Fact]
-    public async void WriteMessageToDB_NewMessageRequest_ReturnSectionId()
+    public async Task WriteMessageToDB_NewMessageRequest_ReturnSectionId()
     {
         // Arrange
         await repository.InsertNewMessageNotification(new InsertNewMessageNotificationCriteria());

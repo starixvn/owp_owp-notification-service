@@ -15,8 +15,8 @@ public class ChangedMatchSettingGeneratorImp : ChangedMatchSettingGenerator
 {
     public List<ChangedValue> Create(ChangedMatchSnapshot snapshot, int matchId, List<Assignee> existingAssignees)
     {
-        var newMatchSettings = snapshot.NewSnapshot.MatchSettings.GetValue(matchId, new List<MatchSetting>());
-        var oldMatchSettings = snapshot.OldSnapshot.MatchSettings.GetValue(matchId, new List<MatchSetting>());
+        var newMatchSettings = snapshot.NewSnapshot.MatchSettings.GetValue(matchId, []);
+        var oldMatchSettings = snapshot.OldSnapshot.MatchSettings.GetValue(matchId, []);
         var changedList = GetListValueChangedWithDifferentBettype(oldMatchSettings, newMatchSettings, matchId);
 
         var changedValueList = new List<ChangedValue>();

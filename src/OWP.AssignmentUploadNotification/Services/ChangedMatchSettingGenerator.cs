@@ -22,11 +22,11 @@ public class ChangedMatchSettingGeneratorImp : ChangedMatchSettingGenerator
     {
         if (IsSpecific10Mins(snapshot.NewMatch.MinorBettypeName))
         {
-            return new List<ChangedValue>();
+            return [];
         }
 
-        var newMatchSettings = snapshot.NewSnapshot.MatchSettings.GetValue(matchId, new List<MatchSetting>());
-        var oldMatchSettings = snapshot.OldSnapshot.MatchSettings.GetValue(matchId, new List<MatchSetting>());
+        var newMatchSettings = snapshot.NewSnapshot.MatchSettings.GetValue(matchId, []);
+        var oldMatchSettings = snapshot.OldSnapshot.MatchSettings.GetValue(matchId, []);
         var changedList = GetListValueChangedWithDifferentBettype(oldMatchSettings, newMatchSettings);
 
         var changedValueList = new List<ChangedValue>();

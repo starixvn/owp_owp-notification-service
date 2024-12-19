@@ -32,7 +32,7 @@ public class ChangedLiveMatchGeneratorImp : ChangedLiveMatchGenerator
         var messageTypeId = isDeletedMatches
             ? (int)MsgTemplateCode.LGACancelLiveMatch
             : (int)MsgTemplateCode.LGAAddLiveMatch;
-        var lstEmployees = isDeletedMatches ? new List<int>() : employees.AllLSTEmployees;
+        var lstEmployees = isDeletedMatches ? [] : employees.AllLSTEmployees;
 
         foreach (var match in matches)
         {

@@ -28,18 +28,13 @@ public class ChangedValue
 
     public string BetTypeName { get; set; }
 
-    public string AssignmentNote { get; set; }
+    public string AssignmentNote { get; set; } = string.Empty;
 
     public int AssignmentType { get; set; }
 
     public bool IsIndirectChangedAssignment { get; set; }
 
     public bool IsWatcher { get; set; }
-
-    public ChangedValue()
-    {
-        AssignmentNote = string.Empty;
-    }
 }
 
 public class AssignmentChangedValueComparer : ChangedValue, IEqualityComparer<ChangedValue>

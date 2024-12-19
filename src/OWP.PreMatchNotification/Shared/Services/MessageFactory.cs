@@ -13,73 +13,73 @@ public class MessageFactoryImp : MessageFactory
 {
     #region MessageTemplate
 
-    private static readonly ImmutableList<MessageTemplate> messageTemplates = ImmutableList<MessageTemplate>.Empty.AddRange(new[]
-    {
+    private static readonly ImmutableList<MessageTemplate> messageTemplates = ImmutableList<MessageTemplate>.Empty.AddRange(
+    [
         new MessageTemplate
         {
              MessageType=(int)MsgTemplateCode.DayShiftAssignmentInsert,
              MessageContent="[DayShift] You have NEW ASSIGNMENT <b><bettype></b> in <b><League></b>",
              IsImportant = true
         },
-        new ()
+        new MessageTemplate
         {
              MessageType=(int)MsgTemplateCode.DayShiftAssignmentDelete,
              MessageContent="[DayShift] You have been REMOVED from <b><bettype></b> in <b><League></b>",
              IsImportant = true
         },
-        new ()
+        new MessageTemplate
         {
              MessageType=(int)MsgTemplateCode.DayShiftOtherAssignmentUpdate,
              MessageContent="[DayShift] <bettype>'s Assignee has been updated from <b><oldvalue></b> to <newvalue> in your assignment <b><League></b>",
              IsImportant = true
         },
-        new ()
+        new MessageTemplate
         {
              MessageType=(int)MsgTemplateCode.NightShiftAssignmentInsert,
              MessageContent="[NightShift] You have NEW ASSIGNMENT <b><bettype></b> in <b><League></b>",
              IsImportant = true
         },
-        new ()
+        new MessageTemplate
         {
              MessageType=(int)MsgTemplateCode.NightShiftAssignmentDelete,
              MessageContent="[NightShift] You have been REMOVED from <b><bettype></b> in <b><League></b>",
              IsImportant = true
         },
-        new ()
+        new MessageTemplate
         {
              MessageType=(int)MsgTemplateCode.NightShiftOtherAssignmentUpdate,
              MessageContent="[NightShift] <bettype>'s Assignee has been updated from <b><oldvalue></b> to <newvalue> in your assignment <b><League></b>",
              IsImportant = true
         },
-        new ()
+        new MessageTemplate
         {
             MessageType = (int)MsgTemplateCode.NewLeague,
             MessageContent = "New Add <League>",
             IsImportant = true,
             IsBlinking = true
         },
-        new ()
+        new MessageTemplate
         {
              MessageType=(int)MsgTemplateCode.LGAAddLiveMatch,
              MessageContent="ADD LIVE for <K.O Time> - <League> - <Home> -vs- <Away>",
              IsImportant = true,
              IsBlinking = true
         },
-        new ()
+        new MessageTemplate
         {
              MessageType=(int)MsgTemplateCode.LGACancelLiveMatch,
              MessageContent="CANCEL LIVE for <K.O Time> - <League> - <Home> -vs- <Away>",
              IsImportant = true,
              IsBlinking = true
         },
-        new ()
+        new MessageTemplate
         {
              MessageType=(int)MsgTemplateCode.LGAChangeMatchStatus,
              MessageContent="Has been <newvalue> for match: <League> - <Home> -vs- <Away>; Previous <oldvalue>",
              IsImportant = true,
              IsBlinking = true
         }
-    });
+    ]);
 
     #endregion MessageTemplate
 

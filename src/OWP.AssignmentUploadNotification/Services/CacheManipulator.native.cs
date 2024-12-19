@@ -10,15 +10,9 @@ public interface CacheManipulator
     Task<AssignmentSnapshot> GetAssignmentSnapshot(string sessionId);
 }
 
-public class CacheManipulatorImp : CacheManipulator
+public class CacheManipulatorImp(ICache cache) : CacheManipulator
 {
-    private readonly ICache cache;
     private const string KEY_ASSIGNMENT_SNAPSHOT = "OWP-ASSIGNMENT-SNAPSHOT";
-
-    public CacheManipulatorImp(ICache cache)
-    {
-        this.cache = cache;
-    }
 
     public async Task<AssignmentSnapshot> GetAssignmentSnapshot(string sessionId)
     {

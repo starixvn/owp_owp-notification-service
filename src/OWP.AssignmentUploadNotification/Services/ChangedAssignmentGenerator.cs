@@ -13,16 +13,9 @@ public interface ChangedAssignmentGenerator
     List<ChangedValue> Create(ChangedMatchSnapshot snapshot, List<Assignee> existingAssignees);
 }
 
-public class ChangedAssignmentGeneratorImp : ChangedAssignmentGenerator
+public class ChangedAssignmentGeneratorImp(ChangedDetector changeDetector) : ChangedAssignmentGenerator
 {
     private const string EVENT_VS = " -vs- ";
-
-    private readonly ChangedDetector changeDetector;
-
-    public ChangedAssignmentGeneratorImp(ChangedDetector changeDetector)
-    {
-        this.changeDetector = changeDetector;
-    }
 
     public List<ChangedValue> Create(ChangedMatchSnapshot snapshot, List<Assignee> existingAssignees)
     {
@@ -40,8 +33,8 @@ public class ChangedAssignmentGeneratorImp : ChangedAssignmentGenerator
 
     public IEnumerable<ChangedValue> GetDeletedAssignmentChangedValues(ChangedMatchSnapshot snapshot)
     {
-        var oldAssignments = snapshot.OldSnapshot.Assignments.GetValue(snapshot.OldMatch.MatchId, new List<MatchAssignment>());
-        var newAssignments = snapshot.NewSnapshot.Assignments.GetValue(snapshot.NewMatch.MatchId, new List<MatchAssignment>());
+        var oldAssignments = snapshot.OldSnapshot.Assignments.GetValue(snapshot.OldMatch.MatchId, []);
+        var newAssignments = snapshot.NewSnapshot.Assignments.GetValue(snapshot.NewMatch.MatchId, []);
         var oldMatches = snapshot.OldSnapshot.Matches;
 
         var deletedAssignments = changeDetector.GetDeletedAssignments(oldAssignments, newAssignments);
@@ -78,7 +71,7 @@ public class ChangedAssignmentGeneratorImp : ChangedAssignmentGenerator
     public IEnumerable<ChangedValue> GetInsertedAssignmentChangedValues(ChangedMatchSnapshot snapshot)
     {
         var oldAssignments = GetAssignmentsOfMatchWhichIsChangedToLive(snapshot);
-        var newAssignments = snapshot.NewSnapshot.Assignments.GetValue(snapshot.NewMatch.MatchId, new List<MatchAssignment>());
+        var newAssignments = snapshot.NewSnapshot.Assignments.GetValue(snapshot.NewMatch.MatchId, []);
         var oldMatches = snapshot.OldSnapshot.Matches;
 
         var insertedAssignments = changeDetector.GetInsertedAssignments(oldAssignments, newAssignments);
@@ -116,8 +109,8 @@ public class ChangedAssignmentGeneratorImp : ChangedAssignmentGenerator
     public static List<MatchAssignment> GetAssignmentsOfMatchWhichIsChangedToLive(ChangedMatchSnapshot snapshot)
     {
         return IsChangedToLiveMatchStatus(snapshot)
-            ? new List<MatchAssignment>()
-            : snapshot.OldSnapshot.Assignments.GetValue(snapshot.OldMatch.MatchId, new List<MatchAssignment>());
+            ? []
+            : snapshot.OldSnapshot.Assignments.GetValue(snapshot.OldMatch.MatchId, []);
     }
 
     private static bool IsChangedToLiveMatchStatus(ChangedMatchSnapshot snapshot)

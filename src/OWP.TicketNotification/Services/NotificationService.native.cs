@@ -10,15 +10,9 @@ public interface NotificationService
 }
 
 
-public class NotificationServiceImp : NotificationService
+public class NotificationServiceImp(IHubContext<ChangedInfoNotifyHubImp, ChangedInfoNotifyHub> hubContext)
+    : NotificationService
 {
-    private readonly IHubContext<ChangedInfoNotifyHubImp, ChangedInfoNotifyHub> hubContext;
-
-    public NotificationServiceImp(IHubContext<ChangedInfoNotifyHubImp, ChangedInfoNotifyHub> hubContext)
-    {
-        this.hubContext = hubContext;
-    }
-
     public async Task Notify(List<NotificationModel> sources)
     {
         foreach (var message in sources)

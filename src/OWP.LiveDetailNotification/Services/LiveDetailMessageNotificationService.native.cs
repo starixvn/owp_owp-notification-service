@@ -8,15 +8,9 @@ public interface LiveDetailMessageNotificationService
     Task<List<MessageModel>> HandleMessage(string sessionId);
 }
 
-public class LiveDetailMessageNotificationServiceImp : LiveDetailMessageNotificationService
+public class LiveDetailMessageNotificationServiceImp(QueryMessageService queryMessageService)
+    : LiveDetailMessageNotificationService
 {
-    private readonly QueryMessageService queryMessageService;
-
-    public LiveDetailMessageNotificationServiceImp(QueryMessageService queryMessageService)
-    {
-        this.queryMessageService = queryMessageService;
-    }
-
     public async Task<List<MessageModel>> HandleMessage(string sessionId)
     {
         var tuple = await queryMessageService.QueryBySession(sessionId);

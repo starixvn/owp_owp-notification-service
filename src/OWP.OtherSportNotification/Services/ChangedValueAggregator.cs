@@ -9,15 +9,8 @@ public interface ChangedValueAggregator
     List<ChangedValue> Aggregate(List<ChangedValue> changedValues);
 }
 
-public class ChangedValueAggregatorImp : ChangedValueAggregator
+public class ChangedValueAggregatorImp(IMapper mapper) : ChangedValueAggregator
 {
-    private readonly IMapper mapper;
-
-    public ChangedValueAggregatorImp(IMapper mapper)
-    {
-        this.mapper = mapper;
-    }
-
     public List<ChangedValue> Aggregate(List<ChangedValue> changedValues)
     {
         var nonAggregatedChangedValues = GetNonAggregatedChangedValues(changedValues);

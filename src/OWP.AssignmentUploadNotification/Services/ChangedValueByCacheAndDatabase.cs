@@ -10,22 +10,12 @@ public interface ChangedValueByCacheAndDatabase
     Task<List<ChangedValue>> Create(string sessionId, DateTime eventDate);
 }
 
-public class ChangedValueCacheAndDatabaseImp : ChangedValueByCacheAndDatabase
+public class ChangedValueCacheAndDatabaseImp(
+    CacheManipulator cacheManipulator,
+    QueryRepository queryRepository,
+    ChangedValueBySnapshot changedValueBySnapshot)
+    : ChangedValueByCacheAndDatabase
 {
-    private readonly CacheManipulator cacheManipulator;
-    private readonly QueryRepository queryRepository;
-    private readonly ChangedValueBySnapshot changedValueBySnapshot;
-
-    public ChangedValueCacheAndDatabaseImp(
-        CacheManipulator cacheManipulator,
-        QueryRepository queryRepository,
-        ChangedValueBySnapshot changedValueBySnapshot)
-    {
-        this.cacheManipulator = cacheManipulator;
-        this.queryRepository = queryRepository;
-        this.changedValueBySnapshot = changedValueBySnapshot;
-    }
-
     public async Task<List<ChangedValue>> Create(string sessionId, DateTime eventDate)
     {
         var oldSnapshot = await cacheManipulator.GetAssignmentSnapshot(sessionId);

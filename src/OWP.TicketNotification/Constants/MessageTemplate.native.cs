@@ -7,9 +7,9 @@ public static class MessageTemplate
 {
     #region MessageTemplate
 
-    private static readonly ImmutableList<NotificationTemplate> notificationTemplates = ImmutableList<NotificationTemplate>.Empty.AddRange(new[]
-    {
-            new NotificationTemplate
+    private static readonly ImmutableList<NotificationTemplate> notificationTemplates = ImmutableList<NotificationTemplate>.Empty.AddRange(
+    [
+        new NotificationTemplate
             {
                 NotificationType = (int)NotificationTemplateCode.NewTicket,
                 NotificationContent = "New ticket <b>#<ticketId></b> <Event>: <comment> by <username>",
@@ -34,7 +34,7 @@ public static class MessageTemplate
                 NotificationContent = "New attachment from ticket <b>#<ticketId></b> <Event> by <username>",
                 IsImportant = true
             }
-        });
+    ]);
 
     #endregion MessageTemplate
 

@@ -7,12 +7,7 @@ namespace OWP.AssignmentUploadNotification.UnitTests.Notification.Services;
 
 public class MessageFactoryUnitTest
 {
-    private readonly MessageFactory messageFactory;
-
-    public MessageFactoryUnitTest()
-    {
-        messageFactory = new MessageFactoryImp();
-    }
+    private readonly MessageFactory messageFactory = new MessageFactoryImp();
 
     [Fact]
 
@@ -28,7 +23,7 @@ public class MessageFactoryUnitTest
                 MessageContent = "Was updated match: #20000 - A-Corners - LiverPool-Corners -vs- Arsenal-Corners updated by sa, previous: [ #1234 - A-Corners - LiverPool-Corners -vs- Arsenal-Corners ]",
                 MessageType = 40,
                 IsWatcher = false,
-                ReceivedUserIds= new List<string>{"6789"},
+                ReceivedUserIds= ["6789"],
                 ReceivedUserIdList = "6789",
                 ReceivedUserNameList = "esther"
             },
@@ -39,7 +34,7 @@ public class MessageFactoryUnitTest
                 MessageContent = "Was updated Maxbet of Next of Corners (HDP): [ 300K ]  for the match: #50000 - PremierLeague - LiverPool -vs- Arsenal updated by sa, previous: [ 400K ]",
                 MessageType = 29,
                 IsWatcher = false,
-                ReceivedUserIds= new List<string>{"6789"},
+                ReceivedUserIds= ["6789"],
                 ReceivedUserIdList = "6789",
                 ReceivedUserNameList = "esther"
             }
@@ -63,7 +58,7 @@ public class MessageFactoryUnitTest
                 MessageContent = "You assignment has been REMOVED HDP PK  for the match:  - Jo - Spur -vs- MC updated by sa",
                 MessageType = 9,
                 IsWatcher = false,
-                ReceivedUserIds= new List<string>{"2542"},
+                ReceivedUserIds= ["2542"],
                 ReceivedUserIdList = "2542",
                 ReceivedUserNameList = "esther"
             },
@@ -74,7 +69,7 @@ public class MessageFactoryUnitTest
                 MessageContent = "You have been new ASSIGNED 1H HDP  for the match: #5000 - Jo - Spur -vs- MC updated by sa",
                 MessageType = 8,
                 IsWatcher = false,
-                ReceivedUserIds= new List<string>{"2542"},
+                ReceivedUserIds= ["2542"],
                 ReceivedUserIdList = "2542",
                 ReceivedUserNameList = "esther"
             }

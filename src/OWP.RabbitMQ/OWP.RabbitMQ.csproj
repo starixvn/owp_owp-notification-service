@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Fanex.Logging" Version="2.0.1.1" />
-    <PackageReference Include="RabbitMQ.Client" Version="6.5.0" />
+    <PackageReference Include="Fanex.Logging" Version="2.0.2" />
+    <PackageReference Include="RabbitMQ.Client" Version="7.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
   <ItemGroup>

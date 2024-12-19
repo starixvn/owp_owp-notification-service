@@ -48,9 +48,9 @@ public class LinkedMatchNotifyHandlerUnitTests
         };
         var expected = new List<InfositePrematchLeague>
         {
-            new(){InfoSiteMatchId=111, PreMatchLeagueId=100, PrematchAssigneeIds=new List<int>{1} },
-            new(){InfoSiteMatchId=222, PreMatchLeagueId=200, PrematchAssigneeIds=new List<int>{3,4} },
-            new(){InfoSiteMatchId=333, PreMatchLeagueId=300, PrematchAssigneeIds=new List<int>() }
+            new(){InfoSiteMatchId=111, PreMatchLeagueId=100, PrematchAssigneeIds= [1] },
+            new(){InfoSiteMatchId=222, PreMatchLeagueId=200, PrematchAssigneeIds= [3, 4] },
+            new(){InfoSiteMatchId=333, PreMatchLeagueId=300, PrematchAssigneeIds= [] }
         };
 
         LinkedMatchNotifyHandler.MapAssignmentWithInfositeId(prematchLeague, prematchAssignees);
@@ -62,7 +62,7 @@ public class LinkedMatchNotifyHandlerUnitTests
     public async Task GenerateMessages_OldMatchesIsNull_ReturnEmpty()
     {
         var request = new LinkedMatchNotifyRequest { EventDate = new DateTime(2021, 6, 18), SessionId = "abc" };
-        cacheManipulator.GetOldLGAMatchSnapshot(request.SessionId).Returns(new List<GeneralMatch>());
+        cacheManipulator.GetOldLGAMatchSnapshot(request.SessionId).Returns([]);
 
         var actual = await service.GenerateMessages(request);
         Assert.Empty(actual);
@@ -73,9 +73,9 @@ public class LinkedMatchNotifyHandlerUnitTests
     {
         var request = new LinkedMatchNotifyRequest { EventDate = new DateTime(2021, 6, 18), SessionId = "abc" };
         cacheManipulator.GetOldLGAMatchSnapshot(request.SessionId)
-            .Returns(new List<GeneralMatch> { new() { MatchId = 123 } });
-        queryRepository.GetLGAMatchNewSnapshot(request.EventDate).Returns(new List<GeneralMatch> { new() { MatchId = 456 } });
-        queryRepository.GetInfositePrematch(request.EventDate).Returns(new List<InfositePrematchLeague>());
+            .Returns([new GeneralMatch { MatchId = 123 }]);
+        queryRepository.GetLGAMatchNewSnapshot(request.EventDate).Returns([new GeneralMatch { MatchId = 456 }]);
+        queryRepository.GetInfositePrematch(request.EventDate).Returns([]);
         commandRepository.GetEmployeesBySection("").Returns(new List<Assignee> { new() { AssigneeId = 1 }, new() { AssigneeId = 2 } });
         commandRepository.GetPreMatchLeagueAssignees(new List<int>()).Returns(new List<Assignee>());
 

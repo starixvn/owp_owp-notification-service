@@ -114,46 +114,48 @@ public class ChangedMatchSettingGeneratorUnitTests
         {
             MatchSettings = new Dictionary<int, List<MatchSetting>>
                 {
-                        {123, new List<MatchSetting>
-                        {
-                            new()
-                            {
-                                OSMatchId=123,
-                                BetTypeName= "FT (HDP)",
-                                MaxBet=12000.00m,
-                                Spread=0.21m
-                            },
-                            new()
-                            {
-                                OSMatchId=123,
-                                BetTypeName= "FT (OE)",
-                                MaxBet=17000.00m,
-                                Spread=0.01m
-                            }
-                        } }
+                        {123, [
+                                new MatchSetting
+                                {
+                                    OSMatchId = 123,
+                                    BetTypeName = "FT (HDP)",
+                                    MaxBet = 12000.00m,
+                                    Spread = 0.21m
+                                },
+
+                                new MatchSetting
+                                {
+                                    OSMatchId = 123,
+                                    BetTypeName = "FT (OE)",
+                                    MaxBet = 17000.00m,
+                                    Spread = 0.01m
+                                }
+                            ]
+                        }
                 }
         },
         NewSnapshot = new AssignmentSnapshot
         {
             MatchSettings = new Dictionary<int, List<MatchSetting>>
                 {
-                        {123, new List<MatchSetting>
-                        {
-                            new()
-                            {
-                                OSMatchId=123,
-                                BetTypeName= "FT (HDP)",
-                                MaxBet=11000.00m,
-                                Spread=0.22m
-                            },
-                            new()
-                            {
-                                OSMatchId=123,
-                                BetTypeName= "FT (OE)",
-                                MaxBet=19000.00m,
-                                Spread=0.02m
-                            }
-                        } }
+                        {123, [
+                                new MatchSetting
+                                {
+                                    OSMatchId = 123,
+                                    BetTypeName = "FT (HDP)",
+                                    MaxBet = 11000.00m,
+                                    Spread = 0.22m
+                                },
+
+                                new MatchSetting
+                                {
+                                    OSMatchId = 123,
+                                    BetTypeName = "FT (OE)",
+                                    MaxBet = 19000.00m,
+                                    Spread = 0.02m
+                                }
+                            ]
+                        }
                 },
             Matches = new Dictionary<int, MatchInfo>
                 {
@@ -169,59 +171,62 @@ public class ChangedMatchSettingGeneratorUnitTests
     };
 
     private List<ChangedValue> GetExpect()
-    => new()
-    {
-                new ChangedValue
-                {
-                    UserId=8,
-                    Username="sa",
-                    BetTypeName="FT (HDP)",
-                    EventName="United -vs- Ha Noi",
-                    League="League",
-                    MatchNo="1234",
-                    MessageTypeId=(int)MsgTemplateCode.EditMaxbet,
-                    NewValue="11000",
-                    OldValue="12000",
-                    OSMatchId=123
-                },
-                new ChangedValue
-                {
-                    UserId=8,
-                    Username="sa",
-                    BetTypeName="FT (HDP)",
-                    EventName="United -vs- Ha Noi",
-                    League="League",
-                    MatchNo="1234",
-                    MessageTypeId=(int)MsgTemplateCode.EditSpread,
-                    NewValue="22%",
-                    OldValue="21%",
-                    OSMatchId=123
-                },
-                new ChangedValue
-                {
-                    UserId=8,
-                    Username="sa",
-                    BetTypeName="FT (OE)",
-                    EventName="United -vs- Ha Noi",
-                    League="League",
-                    MatchNo="1234",
-                    MessageTypeId=(int)MsgTemplateCode.EditMaxbet,
-                    NewValue="19000",
-                    OldValue="17000",
-                    OSMatchId=123
-                },
-                new ChangedValue
-                {
-                    UserId=8,
-                    Username="sa",
-                    BetTypeName="FT (OE)",
-                    EventName="United -vs- Ha Noi",
-                    League="League",
-                    MatchNo="1234",
-                    MessageTypeId=(int)MsgTemplateCode.EditSpread,
-                    NewValue="2%",
-                    OldValue="1%",
-                    OSMatchId=123
-                }
-        };
+    =>
+    [
+        new()
+        {
+            UserId = 8,
+            Username = "sa",
+            BetTypeName = "FT (HDP)",
+            EventName = "United -vs- Ha Noi",
+            League = "League",
+            MatchNo = "1234",
+            MessageTypeId = (int)MsgTemplateCode.EditMaxbet,
+            NewValue = "11000",
+            OldValue = "12000",
+            OSMatchId = 123
+        },
+
+        new()
+        {
+            UserId = 8,
+            Username = "sa",
+            BetTypeName = "FT (HDP)",
+            EventName = "United -vs- Ha Noi",
+            League = "League",
+            MatchNo = "1234",
+            MessageTypeId = (int)MsgTemplateCode.EditSpread,
+            NewValue = "22%",
+            OldValue = "21%",
+            OSMatchId = 123
+        },
+
+        new()
+        {
+            UserId = 8,
+            Username = "sa",
+            BetTypeName = "FT (OE)",
+            EventName = "United -vs- Ha Noi",
+            League = "League",
+            MatchNo = "1234",
+            MessageTypeId = (int)MsgTemplateCode.EditMaxbet,
+            NewValue = "19000",
+            OldValue = "17000",
+            OSMatchId = 123
+        },
+
+        new()
+        {
+            UserId = 8,
+            Username = "sa",
+            BetTypeName = "FT (OE)",
+            EventName = "United -vs- Ha Noi",
+            League = "League",
+            MatchNo = "1234",
+            MessageTypeId = (int)MsgTemplateCode.EditSpread,
+            NewValue = "2%",
+            OldValue = "1%",
+            OSMatchId = 123
+        }
+    ];
 }

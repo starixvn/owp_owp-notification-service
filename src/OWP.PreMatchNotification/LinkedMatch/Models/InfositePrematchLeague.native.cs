@@ -14,5 +14,5 @@ public class InfositePrematchLeague
 
     public DateTime EventDateTime { get; set; }
 
-    public List<int> PrematchAssigneeIds { get; set; } = new();
+    public List<int> PrematchAssigneeIds { get; set; } = [];
 }

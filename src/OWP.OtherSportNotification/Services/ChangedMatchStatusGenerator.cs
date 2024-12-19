@@ -17,7 +17,7 @@ public class ChangedMatchStatusGeneratorImp : ChangedMatchStatusGenerator
         var isMatchStatusChanged = !string.Equals(snapshot.OldMatch.OfferLive, snapshot.NewMatch.OfferLive, StringComparison.CurrentCultureIgnoreCase);
         if (!isMatchStatusChanged)
         {
-            return new List<ChangedValue>();
+            return [];
         }
 
         return existingAssignees.Select(a => new ChangedValue

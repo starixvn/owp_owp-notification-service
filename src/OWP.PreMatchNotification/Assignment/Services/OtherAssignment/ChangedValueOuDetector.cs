@@ -29,7 +29,7 @@ public class ChangedValueOuDetectorImp : ChangedValueOuDetector
             changedValues.Add(new ChangedValue
             {
                 League = newSnapshot.LeagueName,
-                ReceivedUserIds = new List<int> { receivedUserId },
+                ReceivedUserIds = [receivedUserId],
                 BetTypeName = Bettype.OU,
                 OldValue = oldSnapshot.Ou,
                 NewValue = newSnapshot.Ou,
@@ -46,7 +46,7 @@ public class ChangedValueOuDetectorImp : ChangedValueOuDetector
             changedValues.Add(new ChangedValue
             {
                 League = newSnapshot.LeagueName,
-                ReceivedUserIds = new List<int> { receivedUserId },
+                ReceivedUserIds = [receivedUserId],
                 BetTypeName = Bettype.OU,
                 OldValue = oldSnapshot.OtherOu,
                 NewValue = newSnapshot.OtherOu,

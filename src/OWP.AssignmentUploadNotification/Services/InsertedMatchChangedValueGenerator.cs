@@ -25,7 +25,7 @@ public class InsertedMatchChangedValueGeneratorImp : InsertedMatchChangedValueGe
     {
         foreach (var matchId in matchIds)
         {
-            var assignments = snapshot.Assignments.GetValue(matchId, new List<MatchAssignment>())
+            var assignments = snapshot.Assignments.GetValue(matchId, [])
                 .Where(x => x.UserId != 0)
                 .ToList();
             var assignmentChangedValues = GetInsertedAssignmentChangedValues(snapshot.Matches, assignments).ToList();

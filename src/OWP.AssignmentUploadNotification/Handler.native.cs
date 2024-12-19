@@ -23,35 +23,16 @@ public class NotifyRequest : IRequest<bool>
     public int ActorId { get; set; }
 }
 
-public class Handler : IRequestHandler<AssignmentUploadNotifyRequest, Unit>
+public class Handler(
+    ChangedValueByCacheAndDatabase changedValueByCacheAndDatabase,
+    AssigneeChangedValueFilter assigneeChangedValueFilter,
+    WatcherChangedValueGenerator watcherChangedValueGenerator,
+    ChangedValueAggregator changedValueAggregator,
+    MessageFactory messageFactory,
+    CommandRepository commandRepository,
+    NotificationService notificationService)
+    : IRequestHandler<AssignmentUploadNotifyRequest, Unit>
 {
-    private readonly ChangedValueByCacheAndDatabase changedValueByCacheAndDatabase;
-    private readonly AssigneeChangedValueFilter assigneeChangedValueFilter;
-    private readonly WatcherChangedValueGenerator watcherChangedValueGenerator;
-    private readonly ChangedValueAggregator changedValueAggregator;
-    private readonly MessageFactory messageFactory;
-    private readonly CommandRepository commandRepository;
-
-    private readonly NotificationService notificationService;
-
-    public Handler(
-        ChangedValueByCacheAndDatabase changedValueByCacheAndDatabase,
-        AssigneeChangedValueFilter assigneeChangedValueFilter,
-        WatcherChangedValueGenerator watcherChangedValueGenerator,
-        ChangedValueAggregator changedValueAggregator,
-        MessageFactory messageFactory,
-        CommandRepository commandRepository,
-        NotificationService notificationService)
-    {
-        this.changedValueByCacheAndDatabase = changedValueByCacheAndDatabase;
-        this.assigneeChangedValueFilter = assigneeChangedValueFilter;
-        this.watcherChangedValueGenerator = watcherChangedValueGenerator;
-        this.changedValueAggregator = changedValueAggregator;
-        this.messageFactory = messageFactory;
-        this.commandRepository = commandRepository;
-        this.notificationService = notificationService;
-    }
-
     public async Task<Unit> Handle(AssignmentUploadNotifyRequest request, CancellationToken cancellationToken)
     {
         var messages = await changedValueByCacheAndDatabase.Create(request.SessionId, request.EventDate);

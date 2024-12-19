@@ -33,7 +33,7 @@ public class ChangedValueOuTakeOverDetectorUnitTests
                 BetTypeName = "O/U T.OVER",
                 OldValue = "Sa",
                 NewValue = "Starix15",
-                ReceivedUserIds = new List<int>{121 },
+                ReceivedUserIds = [121],
                 MessageTypeId = 203
             }
         };
@@ -70,7 +70,7 @@ public class ChangedValueOuTakeOverDetectorUnitTests
                 BetTypeName = "O/U T.OVER",
                 OldValue = "Sa",
                 NewValue = "Starix15",
-                ReceivedUserIds = new List<int>{121 },
+                ReceivedUserIds = [121],
                 MessageTypeId = 203
             }
         };

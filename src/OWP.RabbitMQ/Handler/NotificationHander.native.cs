@@ -15,15 +15,8 @@ public interface NotificationHandler
     Task Handle(string key, string message);
 }
 
-public class SendNotificationHandlerImp : NotificationHandler
+public class SendNotificationHandlerImp(IMediator mediator) : NotificationHandler
 {
-    private readonly IMediator mediator;
-
-    public SendNotificationHandlerImp(IMediator mediator)
-    {
-        this.mediator = mediator;
-    }
-
     public async Task Handle(string key, string message)
     {
         var request = MapRequest(key, message);

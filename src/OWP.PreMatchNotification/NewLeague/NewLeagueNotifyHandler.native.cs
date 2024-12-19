@@ -11,37 +11,16 @@ using OWP.PreMatchNotification.Shared.Services;
 
 namespace OWP.PreMatchNotification.NewLeague;
 
-public class NewLeagueNotifyHandler : IRequestHandler<PrematchNewLeagueNotifyRequest, Unit>
+public class NewLeagueNotifyHandler(
+    CacheManipulatorCommon cacheManipulator,
+    IDynamicRepository dynamicRepository,
+    NewLeagueValueGenerator newLeagueGenerator,
+    MessageFactory messageFactory,
+    CommandRepository commandRepository,
+    NotificationService notificationService)
+    : IRequestHandler<PrematchNewLeagueNotifyRequest, Unit>
 {
-    private readonly CacheManipulatorCommon cacheManipulator;
-
-    private readonly IDynamicRepository dynamicRepository;
-
-    private readonly NewLeagueValueGenerator newLeagueGenerator;
-
-    private readonly MessageFactory messageFactory;
-
-    private readonly CommandRepository commandRepository;
-
-    private readonly NotificationService notificationService;
-
     private const string OldPrematchLeaguesSnapshotKey = "OWP-Old-PreMatchLeagues";
-
-    public NewLeagueNotifyHandler(
-        CacheManipulatorCommon cacheManipulator,
-        IDynamicRepository dynamicRepository,
-        NewLeagueValueGenerator newLeagueGenerator,
-        MessageFactory messageFactory,
-        CommandRepository commandRepository,
-        NotificationService notificationService)
-    {
-        this.cacheManipulator = cacheManipulator;
-        this.dynamicRepository = dynamicRepository;
-        this.newLeagueGenerator = newLeagueGenerator;
-        this.messageFactory = messageFactory;
-        this.commandRepository = commandRepository;
-        this.notificationService = notificationService;
-    }
 
     public async Task<Unit> Handle(PrematchNewLeagueNotifyRequest request, CancellationToken cancellationToken)
     {
