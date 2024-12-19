@@ -25,15 +25,8 @@ public interface TicketRepository
     Task InsertNewMessageNotification(InsertNewMessageNotificationCriteria criteria);
 }
 
-public class TicketRepositoryImp : TicketRepository
+public class TicketRepositoryImp(IDynamicRepository dynamicRepository) : TicketRepository
 {
-    private readonly IDynamicRepository dynamicRepository;
-
-    public TicketRepositoryImp(IDynamicRepository dynamicRepository)
-    {
-        this.dynamicRepository = dynamicRepository;
-    }
-
     public async Task<IEnumerable<MessageUnreadCounter>> GetMessageUnreadByMultipleUserId(IList<int> userIds)
     {
         var messageUnread = new List<MessageUnreadCounter>();

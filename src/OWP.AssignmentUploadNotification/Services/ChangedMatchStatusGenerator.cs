@@ -21,7 +21,7 @@ public class ChangedMatchStatusGeneratorImp : ChangedMatchStatusGenerator
         var isMatchStatusChanged = !string.Equals(snapshot.OldMatch.MatchStatus, snapshot.NewMatch.MatchStatus, StringComparison.CurrentCultureIgnoreCase);
         if (!isMatchStatusChanged || !isCancelSuspendedPostponedStatus)
         {
-            return new List<ChangedValue>();
+            return [];
         }
 
         var changedValueList = new List<ChangedValue>();

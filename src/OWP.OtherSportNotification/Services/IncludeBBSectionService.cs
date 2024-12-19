@@ -10,38 +10,27 @@ public interface IncludeBBSectionService
     Task InsertMessage(List<ChangedValue> changedValues, OtherSportNotificationRequest request);
 }
 
-public class IncludeBBSectionServiceImp : IncludeBBSectionService
+public class IncludeBBSectionServiceImp(OtherSportRepository repository, MessageFactory messageFactory, ILogger logger)
+    : IncludeBBSectionService
 {
-    private readonly OtherSportRepository repository;
-
-    private readonly MessageFactory messageFactory;
-
-    private readonly ILogger logger;
-
-    private static readonly List<int> ActionsInclude = new(){
-       (int)MsgTemplateCode.EditMatchNo      ,
-       (int)MsgTemplateCode.EditMatchStatus  ,
-       (int)MsgTemplateCode.EditCategory     ,
-       (int)MsgTemplateCode.EditNoOfHDP      ,
-       (int)MsgTemplateCode.EditMatchOffer   ,
-       (int)MsgTemplateCode.EditAutoLink     ,
-       (int)MsgTemplateCode.EditOtherProvider,
-       (int)MsgTemplateCode.EditIPTV         ,
-       (int)MsgTemplateCode.EditWB           ,
-       (int)MsgTemplateCode.EditRemark       ,
-       (int)MsgTemplateCode.EditMaxbet       ,
-       (int)MsgTemplateCode.EditReporter     ,
-       (int)MsgTemplateCode.EditProvider     ,
-       (int)MsgTemplateCode.EditSpread       ,
-       (int)MsgTemplateCode.EditNeutral      ,
-    };
-
-    public IncludeBBSectionServiceImp(OtherSportRepository repository, MessageFactory messageFactory, ILogger logger)
-    {
-        this.repository = repository;
-        this.messageFactory = messageFactory;
-        this.logger = logger;
-    }
+    private static readonly List<int> ActionsInclude =
+    [
+        (int)MsgTemplateCode.EditMatchNo,
+        (int)MsgTemplateCode.EditMatchStatus,
+        (int)MsgTemplateCode.EditCategory,
+        (int)MsgTemplateCode.EditNoOfHDP,
+        (int)MsgTemplateCode.EditMatchOffer,
+        (int)MsgTemplateCode.EditAutoLink,
+        (int)MsgTemplateCode.EditOtherProvider,
+        (int)MsgTemplateCode.EditIPTV,
+        (int)MsgTemplateCode.EditWB,
+        (int)MsgTemplateCode.EditRemark,
+        (int)MsgTemplateCode.EditMaxbet,
+        (int)MsgTemplateCode.EditReporter,
+        (int)MsgTemplateCode.EditProvider,
+        (int)MsgTemplateCode.EditSpread,
+        (int)MsgTemplateCode.EditNeutral
+    ];
 
     public async Task InsertMessage(List<ChangedValue> changedValues, OtherSportNotificationRequest request)
     {

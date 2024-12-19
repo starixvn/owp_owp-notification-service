@@ -15,8 +15,8 @@ public class ChangedMatchInfoGeneratorImp : ChangedMatchInfoGenerator
 {
     private const string EVENT_VS = " -vs- ";
 
-    private static readonly List<string> MatchInfoPropertyNames = new()
-    {
+    private static readonly List<string> MatchInfoPropertyNames =
+    [
         "MatchNo",
         "OtherTime",
         "KickOffTime",
@@ -37,14 +37,14 @@ public class ChangedMatchInfoGeneratorImp : ChangedMatchInfoGenerator
         "Website3",
         "Website4",
         "Home"
-    };
+    ];
 
     public List<ChangedValue> Create(GeneralMatch oldMatch, GeneralMatch newMatch, List<Assignee> existingAssignees)
     {
         var ignored = IsIgnoredMinorMatch(newMatch.MatchType);
         if (ignored)
         {
-            return new List<ChangedValue>();
+            return [];
         }
 
         var changedValueList = new List<ChangedValue>();

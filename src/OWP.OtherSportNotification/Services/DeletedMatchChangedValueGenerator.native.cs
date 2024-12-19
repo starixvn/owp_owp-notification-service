@@ -18,7 +18,7 @@ public class DeletedMatchChangedValueGeneratorImp : DeletedMatchChangedValueGene
         foreach (var matchId in matchIds)
         {
             var match = snapshot.Matches.GetValue(matchId);
-            var assignments = snapshot.MatchAssignments.GetValue(matchId, new List<MatchAssignment>())
+            var assignments = snapshot.MatchAssignments.GetValue(matchId, [])
                                       .Where(x => x.UserId != 0)
                                       .ToList();
             foreach (var assignment in assignments)

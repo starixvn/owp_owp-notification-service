@@ -35,7 +35,7 @@ public class WatcherChangedValueGeneratorUnitTests
         repository.GetSessionWatcherSettings().Returns(listWatcherChangeValue);
 
         // Act
-        var actual = await services.Create(changedValue, new List<ChangedValue>());
+        var actual = await services.Create(changedValue, []);
 
         // Assert
         Assert.Equal(4, actual.Count);
@@ -64,11 +64,11 @@ public class WatcherChangedValueGeneratorUnitTests
 
     public List<ChangedValue> GetChangeValue()
     {
-        return new List<ChangedValue>
-        {
+        return
+        [
             GetDirectChangeValue(1, 15477090, 1, (int)MsgTemplateCode.AssignmentInsert),
             GetIndirectChangeValue(1, 169368, 1, (int)MsgTemplateCode.AssignmentDelete)
-        };
+        ];
     }
 
     public ChangedValue GetDirectChangeValue(int matchId, int assigneeId, int betTypeId, int messageTypeId)
@@ -105,20 +105,20 @@ public class WatcherChangedValueGeneratorUnitTests
         {
             {
                 "15477090-6",
-                new List<Assignee> { new() { AssigneeId = 8, AssigneeName = "sa" } }
+                [new Assignee { AssigneeId = 8, AssigneeName = "sa" }]
             },
             {
                 "15477090-13",
-                new List<Assignee> { new() { AssigneeId = 8, AssigneeName = "sa" } }
+                [new Assignee { AssigneeId = 8, AssigneeName = "sa" }]
             },
             {
                 "169368-6",
-                new List<Assignee> {
-                    new() { AssigneeId = 15477084, AssigneeName = "starix14" },
-                    new() { AssigneeId = 8862400, AssigneeName = "starix2" },
-                    new() { AssigneeId = 360418, AssigneeName = "starix1" },
-                    new() { AssigneeId = 169368, AssigneeName = "starix3" }
-                }
+                [
+                    new Assignee { AssigneeId = 15477084, AssigneeName = "starix14" },
+                    new Assignee { AssigneeId = 8862400, AssigneeName = "starix2" },
+                    new Assignee { AssigneeId = 360418, AssigneeName = "starix1" },
+                    new Assignee { AssigneeId = 169368, AssigneeName = "starix3" }
+                ]
             }
         };
     }

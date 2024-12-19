@@ -70,30 +70,31 @@ public class AssigneeChangedValueFilterUnitTest
     }
 
     private static List<ChangedValue> GetListValueChanged()
-    => new()
-    {
-            new ChangedValue
-            {
-                MessageTypeId = (int)MsgTemplateCode.EditMatchNo,
-                NewValue = "20000",
-                OldValue = "1234",
-                League = "PremierLeague-Corners",
-                MatchNo = "20000",
-                EventName = "LiverPool-Corners -vs- Arsenal-Corners",
-                UserId = 6789,
-                Username = "esther"
-            },
-            new ChangedValue
-            {
-                MessageTypeId = (int)MsgTemplateCode.EditOtherProvider,
-                NewValue = "Rose",
-                OldValue = "Bow",
-                League = "PremierLeague-Corners",
-                MatchNo = "20000",
-                EventName = "LiverPool-Corners -vs- Arsenal-Corners",
-                UserId = 6789,
-                Username = "esther"
-            }
-        };
+    =>
+    [
+        new()
+        {
+            MessageTypeId = (int)MsgTemplateCode.EditMatchNo,
+            NewValue = "20000",
+            OldValue = "1234",
+            League = "PremierLeague-Corners",
+            MatchNo = "20000",
+            EventName = "LiverPool-Corners -vs- Arsenal-Corners",
+            UserId = 6789,
+            Username = "esther"
+        },
+
+        new()
+        {
+            MessageTypeId = (int)MsgTemplateCode.EditOtherProvider,
+            NewValue = "Rose",
+            OldValue = "Bow",
+            League = "PremierLeague-Corners",
+            MatchNo = "20000",
+            EventName = "LiverPool-Corners -vs- Arsenal-Corners",
+            UserId = 6789,
+            Username = "esther"
+        }
+    ];
 
 }

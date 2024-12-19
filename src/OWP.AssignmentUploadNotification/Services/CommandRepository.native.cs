@@ -12,16 +12,8 @@ public interface CommandRepository
     Task InsertMessage(List<MessageModel> messages, string sessionId, int userId);
 }
 
-public class CommandRepositoryImp : CommandRepository
+public class CommandRepositoryImp(IDynamicRepository repository) : CommandRepository
 {
-    private readonly IDynamicRepository repository;
-
-    public CommandRepositoryImp(
-        IDynamicRepository repository)
-    {
-        this.repository = repository;
-    }
-
     public async Task InsertMessage(List<MessageModel> messages, string sessionId, int userId)
     {
         var criteria = new InsertMessageCommand

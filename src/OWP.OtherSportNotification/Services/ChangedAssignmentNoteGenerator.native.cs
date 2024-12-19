@@ -33,8 +33,8 @@ public class ChangedAssignmentNoteGeneratorImp : ChangedAssignmentNoteGenerator
 
     public static IEnumerable<ChangedValue> GetChangedAssignmentNotes(ChangedMatchSnapshot snapshot)
     {
-        var oldAssignments = snapshot.OldSnapshot.MatchAssignments.GetValue(snapshot.OldMatch.OSMatchId, new List<MatchAssignment>());
-        var newAssignments = snapshot.NewSnapshot.MatchAssignments.GetValue(snapshot.NewMatch.OSMatchId, new List<MatchAssignment>());
+        var oldAssignments = snapshot.OldSnapshot.MatchAssignments.GetValue(snapshot.OldMatch.OSMatchId, []);
+        var newAssignments = snapshot.NewSnapshot.MatchAssignments.GetValue(snapshot.NewMatch.OSMatchId, []);
         var oldMatches = snapshot.OldSnapshot.Matches;
         var changedAssignments = GetChangedAssignments(oldAssignments, newAssignments);
 

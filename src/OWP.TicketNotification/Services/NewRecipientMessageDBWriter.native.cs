@@ -9,15 +9,8 @@ public interface NewRecipientMessageDBWriter
     Task<string> Execute(NewRecipientModel recipient);
 }
 
-public class NewRecipientMessageDBWriterImp : NewRecipientMessageDBWriter
+public class NewRecipientMessageDBWriterImp(TicketRepository repository) : NewRecipientMessageDBWriter
 {
-    private readonly TicketRepository repository;
-
-    public NewRecipientMessageDBWriterImp(TicketRepository repository)
-    {
-        this.repository = repository;
-    }
-
     public async Task<string> Execute(NewRecipientModel recipient)
     {
         var template = MessageTemplate.NotificationTemplateMap[(int)NotificationTemplateCode.AddRecipient];

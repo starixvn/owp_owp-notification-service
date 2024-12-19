@@ -14,8 +14,8 @@ public class ChangedMatchInfoGeneratorImp : ChangedMatchInfoGenerator
 {
     private const string EVENT_VS = " -vs- ";
 
-    private static readonly List<string> MatchInfoPropertyNames = new()
-    {
+    private static readonly List<string> MatchInfoPropertyNames =
+    [
         "MatchNo",
         "Category",
         "MatchOffer",
@@ -28,7 +28,7 @@ public class ChangedMatchInfoGeneratorImp : ChangedMatchInfoGenerator
         "Reporter",
         "Provider",
         "IsNeutral"
-    };
+    ];
 
     public List<ChangedValue> Create(MatchInfo oldMatch, MatchInfo newMatch, List<Assignee> existingAssignees)
     {

@@ -30,14 +30,14 @@ public class ChangedValueHdpDetectorUnitTests
                 BetTypeName = "HDP",
                 League = "League",
                 MessageTypeId = 201,
-                ReceivedUserIds = new List<int>{121}
+                ReceivedUserIds = [121]
             },
             new ()
             {
                 BetTypeName = "HDP",
                 League = "League",
                 MessageTypeId = 202,
-                ReceivedUserIds = new List<int>{8}
+                ReceivedUserIds = [8]
             }
         };
         hdpDetector.DetectMain(oldSnapshot, newSnapshot, actual);
@@ -70,14 +70,14 @@ public class ChangedValueHdpDetectorUnitTests
                 BetTypeName = "HDP",
                 League = "League",
                 MessageTypeId = 201,
-                ReceivedUserIds = new List<int>{121}
+                ReceivedUserIds = [121]
             },
             new ()
             {
                 BetTypeName = "HDP",
                 League = "League",
                 MessageTypeId = 202,
-                ReceivedUserIds = new List<int>{8}
+                ReceivedUserIds = [8]
             }
         };
         hdpDetector.DetectOther(oldSnapshot, newSnapshot, actual);

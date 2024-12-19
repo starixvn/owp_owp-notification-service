@@ -8,17 +8,9 @@ public interface MessageNotificationService
     Task<List<NotificationModel>> CreateMessageNotification(NotificationSource source);
 }
 
-public class MessageNotificationServiceImp : MessageNotificationService
+public class MessageNotificationServiceImp(QueryMessageService queryMessageService, TicketRepository ticketRepository)
+    : MessageNotificationService
 {
-    private readonly QueryMessageService queryMessageService;
-    private readonly TicketRepository ticketRepository;
-
-    public MessageNotificationServiceImp(QueryMessageService queryMessageService, TicketRepository ticketRepository)
-    {
-        this.queryMessageService = queryMessageService;
-        this.ticketRepository = ticketRepository;
-    }
-
     public async Task<List<NotificationModel>> CreateMessageNotification(NotificationSource source)
     {
         var userTuple = await queryMessageService.QueryBySession(source.SessionId);

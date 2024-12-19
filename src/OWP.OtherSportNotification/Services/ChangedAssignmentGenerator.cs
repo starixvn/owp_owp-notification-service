@@ -10,15 +10,8 @@ public interface ChangedAssignmentGenerator
     List<ChangedValue> Create(ChangedMatchSnapshot snapshot, List<Assignee> existingAssignees);
 }
 
-public class ChangedAssignmentGeneratorImp : ChangedAssignmentGenerator
+public class ChangedAssignmentGeneratorImp(ChangedDetector changeDetector) : ChangedAssignmentGenerator
 {
-    private readonly ChangedDetector changeDetector;
-
-    public ChangedAssignmentGeneratorImp(ChangedDetector changeDetector)
-    {
-        this.changeDetector = changeDetector;
-    }
-
     public List<ChangedValue> Create(ChangedMatchSnapshot snapshot, List<Assignee> existingAssignees)
     {
         var deletedAssignmentChangedValues = GetDeletedAssignmentChangedValues(snapshot).ToList();
@@ -35,8 +28,8 @@ public class ChangedAssignmentGeneratorImp : ChangedAssignmentGenerator
 
     public IEnumerable<ChangedValue> GetDeletedAssignmentChangedValues(ChangedMatchSnapshot snapshot)
     {
-        var oldAssignments = snapshot.OldSnapshot.MatchAssignments.GetValue(snapshot.OldMatch.OSMatchId, new List<MatchAssignment>());
-        var newAssignments = snapshot.NewSnapshot.MatchAssignments.GetValue(snapshot.NewMatch.OSMatchId, new List<MatchAssignment>());
+        var oldAssignments = snapshot.OldSnapshot.MatchAssignments.GetValue(snapshot.OldMatch.OSMatchId, []);
+        var newAssignments = snapshot.NewSnapshot.MatchAssignments.GetValue(snapshot.NewMatch.OSMatchId, []);
         var oldMatches = snapshot.OldSnapshot.Matches;
 
         var deletedAssignments = changeDetector.GetDeletedAssignments(oldAssignments, newAssignments);
@@ -74,8 +67,8 @@ public class ChangedAssignmentGeneratorImp : ChangedAssignmentGenerator
 
     public IEnumerable<ChangedValue> GetInsertedAssignmentChangedValues(ChangedMatchSnapshot snapshot)
     {
-        var oldAssignments = snapshot.OldSnapshot.MatchAssignments.GetValue(snapshot.OldMatch.OSMatchId, new List<MatchAssignment>());
-        var newAssignments = snapshot.NewSnapshot.MatchAssignments.GetValue(snapshot.NewMatch.OSMatchId, new List<MatchAssignment>());
+        var oldAssignments = snapshot.OldSnapshot.MatchAssignments.GetValue(snapshot.OldMatch.OSMatchId, []);
+        var newAssignments = snapshot.NewSnapshot.MatchAssignments.GetValue(snapshot.NewMatch.OSMatchId, []);
         var oldMatches = snapshot.OldSnapshot.Matches;
 
         var insertedAssignments = changeDetector.GetInsertedAssignments(oldAssignments, newAssignments);

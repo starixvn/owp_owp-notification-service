@@ -28,7 +28,7 @@ public class ChangedValue
 
     public string BetTypeName { get; set; }
 
-    public string AssignmentNote { get; set; }
+    public string AssignmentNote { get; set; } = string.Empty;
 
     public int AssignmentType { get; set; }
 
@@ -37,11 +37,6 @@ public class ChangedValue
     public bool IsIndirectChangedAssignment { get; set; }
 
     public bool IsChangedToLiveMatchStatus { get; set; }
-
-    public ChangedValue()
-    {
-        AssignmentNote = string.Empty;
-    }
 }
 
 public class AssignmentChangedValueComparer : ChangedValue, IEqualityComparer<ChangedValue>

@@ -14,15 +14,8 @@ public interface NewLeagueValueGenerator
         IList<InfoSiteMatch> infoSiteMatches);
 }
 
-public class NewLeagueValueGeneratorImp : NewLeagueValueGenerator
+public class NewLeagueValueGeneratorImp(DateTimeHelper dateTimeHelper) : NewLeagueValueGenerator
 {
-    private readonly DateTimeHelper dateTimeHelper;
-
-    public NewLeagueValueGeneratorImp(DateTimeHelper dateTimeHelper)
-    {
-        this.dateTimeHelper = dateTimeHelper;
-    }
-
     public IEnumerable<ChangedValue> Create(IList<PreMatchLeague> oldSnapshot,
         IList<PreMatchLeague> newSnapshot,
         IList<Assignee> assignees,

@@ -9,21 +9,13 @@ using System.Text;
 
 namespace OWP.RabbitMQ;
 
-public class MessageServer : IHostedService
+public class MessageServer(
+    IOptions<RabbitMQSetting> options,
+    ILogger logger,
+    NotificationHandler notificationHandler)
+    : IHostedService
 {
-    private readonly RabbitMQSetting setting;
-    private readonly ILogger logger;
-    private readonly NotificationHandler notificationHandler;
-
-    public MessageServer(
-        IOptions<RabbitMQSetting> options,
-        ILogger logger,
-        NotificationHandler notificationHandler)
-    {
-        setting = options.Value;
-        this.logger = logger;
-        this.notificationHandler = notificationHandler;
-    }
+    private readonly RabbitMQSetting setting = options.Value;
 
     public async Task<bool> ConsumeRequestQueue()
     {
@@ -35,7 +27,7 @@ public class MessageServer : IHostedService
                 Password = setting.Password,
                 HostName = setting.Hosting,
                 Port = setting.Port,
-                VirtualHost = setting.VirtualHost,
+                VirtualHost = setting.VirtualHost
             };
 
             var connection = await factory.CreateConnectionAsync();

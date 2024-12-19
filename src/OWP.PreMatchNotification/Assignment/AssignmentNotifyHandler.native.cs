@@ -10,40 +10,16 @@ using OWP.PreMatchNotification.Shared.Services;
 
 namespace OWP.PreMatchNotification.Assignment;
 
-public class MathInfoNotifyHandler : IRequestHandler<PrematchAssignmentNotifyRequest, Unit>
+public class MathInfoNotifyHandler(
+    CacheManipulatorCommon cacheManipulator,
+    IDynamicRepository dynamicRepository,
+    MyAssignmentGenerator myAssignmentGenerator,
+    MessageFactory messageFactory,
+    CommandRepository commandRepository,
+    OtherAssignmentGenerator otherAssignmentGenerator,
+    NotificationService notificationService)
+    : IRequestHandler<PrematchAssignmentNotifyRequest, Unit>
 {
-    private readonly CacheManipulatorCommon cacheManipulator;
-
-    private readonly IDynamicRepository dynamicRepository;
-
-    private readonly MyAssignmentGenerator myAssignmentGenerator;
-
-    private readonly OtherAssignmentGenerator otherAssignmentGenerator;
-
-    private readonly MessageFactory messageFactory;
-
-    private readonly CommandRepository commandRepository;
-
-    private readonly NotificationService notificationService;
-
-    public MathInfoNotifyHandler(
-        CacheManipulatorCommon cacheManipulator,
-        IDynamicRepository dynamicRepository,
-        MyAssignmentGenerator myAssignmentGenerator,
-        MessageFactory messageFactory,
-        CommandRepository commandRepository,
-        OtherAssignmentGenerator otherAssignmentGenerator,
-        NotificationService notificationService)
-    {
-        this.cacheManipulator = cacheManipulator;
-        this.dynamicRepository = dynamicRepository;
-        this.myAssignmentGenerator = myAssignmentGenerator;
-        this.messageFactory = messageFactory;
-        this.commandRepository = commandRepository;
-        this.otherAssignmentGenerator = otherAssignmentGenerator;
-        this.notificationService = notificationService;
-    }
-
     public async Task<Unit> Handle(PrematchAssignmentNotifyRequest request, CancellationToken cancellationToken)
     {
         var messages = await GenerateMessages(request);

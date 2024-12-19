@@ -8,31 +8,15 @@ using OWP.PreMatchNotification.Shared.Services;
 
 namespace OWP.PreMatchNotification.LinkedMatch;
 
-public class LinkedMatchNotifyHandler : IRequestHandler<LinkedMatchNotifyRequest, Unit>
+public class LinkedMatchNotifyHandler(
+    CacheManipulator cacheManipulator,
+    Repository queryRepository,
+    ChangedLinkedMatchDetector changedValueBySnapshot,
+    MessageFactory messageFactory,
+    CommandRepository commandRepository,
+    NotificationService notificationService)
+    : IRequestHandler<LinkedMatchNotifyRequest, Unit>
 {
-    private readonly CacheManipulator cacheManipulator;
-    private readonly Repository queryRepository;
-    private readonly ChangedLinkedMatchDetector changedValueBySnapshot;
-    private readonly MessageFactory messageFactory;
-    private readonly CommandRepository commandRepository;
-    private readonly NotificationService notificationService;
-
-    public LinkedMatchNotifyHandler(
-        CacheManipulator cacheManipulator,
-        Repository queryRepository,
-        ChangedLinkedMatchDetector changedValueBySnapshot,
-        MessageFactory messageFactory,
-        CommandRepository commandRepository,
-        NotificationService notificationService)
-    {
-        this.cacheManipulator = cacheManipulator;
-        this.queryRepository = queryRepository;
-        this.changedValueBySnapshot = changedValueBySnapshot;
-        this.messageFactory = messageFactory;
-        this.commandRepository = commandRepository;
-        this.notificationService = notificationService;
-    }
-
     public async Task<Unit> Handle(LinkedMatchNotifyRequest request, CancellationToken cancellationToken)
     {
         var messages = await GenerateMessages(request);
@@ -53,7 +37,7 @@ public class LinkedMatchNotifyHandler : IRequestHandler<LinkedMatchNotifyRequest
 
         if (oldMatches.Count <= 0)
         {
-            return new List<ChangedValue>();
+            return [];
         }
 
         var newMatches = await queryRepository.GetLGAMatchNewSnapshot(request.EventDate);

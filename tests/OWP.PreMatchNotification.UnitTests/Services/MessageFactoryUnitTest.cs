@@ -20,7 +20,7 @@ public class MessageFactoryUnitTest
                IsImportant = true,
                MessageContent = "New Add League",
                MessageType = (int)MsgTemplateCode.NewLeague,
-               ReceivedUserIds = new List<string> { "2","3","5"}
+               ReceivedUserIds = ["2", "3", "5"]
             }
         };
 
@@ -41,42 +41,42 @@ public class MessageFactoryUnitTest
                IsImportant = true,
                MessageContent = "[DayShift] You have NEW ASSIGNMENT <b>O/U</b> in <b>League</b>",
                MessageType = (int)MsgTemplateCode.DayShiftAssignmentInsert,
-               ReceivedUserIds = new List<string> { "12","1"}
+               ReceivedUserIds = ["12", "1"]
             },
             new()
             {
                IsImportant = true,
                MessageContent = "[DayShift] You have been REMOVED from <b>O/U</b> in <b>League</b>",
                MessageType = (int)MsgTemplateCode.DayShiftAssignmentDelete,
-               ReceivedUserIds = new List<string> { "2"}
+               ReceivedUserIds = ["2"]
             },
             new()
             {
                IsImportant = true,
                MessageContent = "[DayShift] O/U's Assignee has been updated from <b>Sa</b> to <b>Starix15</b> in your assignment <b>League</b>",
                MessageType = (int)MsgTemplateCode.DayShiftOtherAssignmentUpdate,
-               ReceivedUserIds = new List<string> { "13"}
+               ReceivedUserIds = ["13"]
             },
             new()
             {
                IsImportant = true,
                MessageContent = "[NightShift] You have NEW ASSIGNMENT <b>O/U</b> in <b>ThaiLeague</b>",
                MessageType = (int)MsgTemplateCode.NightShiftAssignmentInsert,
-               ReceivedUserIds = new List<string> {"1"}
+               ReceivedUserIds = ["1"]
             },
             new()
             {
                IsImportant = true,
                MessageContent = "[NightShift] You have been REMOVED from <b>O/U</b> in <b>ThaiLeague</b>",
                MessageType = (int)MsgTemplateCode.NightShiftAssignmentDelete,
-               ReceivedUserIds = new List<string> { "12"}
+               ReceivedUserIds = ["12"]
             },
             new()
             {
                IsImportant = true,
                MessageContent = "[NightShift] O/U's Assignee has been updated from <b>Sa</b> to <b>Starix15</b> in your assignment <b>ThaiLeague</b>",
                MessageType = (int)MsgTemplateCode.NightShiftOtherAssignmentUpdate,
-               ReceivedUserIds = new List<string> { "13"}
+               ReceivedUserIds = ["13"]
             }
         };
 
@@ -98,7 +98,7 @@ public class MessageFactoryUnitTest
                IsImportant = true,
                MessageContent = "Has been <b>Live</b> for match: LeagueA - HomeA -vs- AwayA; Previous Postponed",
                MessageType = (int)MsgTemplateCode.LGAChangeMatchStatus,
-               ReceivedUserIds = new List<string> { "1","3","8"}
+               ReceivedUserIds = ["1", "3", "8"]
             },
             new()
             {
@@ -106,7 +106,7 @@ public class MessageFactoryUnitTest
                IsImportant = true,
                MessageContent = "ADD LIVE for 05:12 AM - LeagueC - HomeA -vs- AwayA",
                MessageType = (int)MsgTemplateCode.LGAAddLiveMatch,
-               ReceivedUserIds = new List<string> { "1","2","3"}
+               ReceivedUserIds = ["1", "2", "3"]
             },
             new()
             {
@@ -114,7 +114,7 @@ public class MessageFactoryUnitTest
                IsImportant = true,
                MessageContent = "CANCEL LIVE for 04:02 AM - League - HomeA -vs- AwayA",
                MessageType = (int)MsgTemplateCode.LGACancelLiveMatch,
-               ReceivedUserIds = new List<string> { "1","2"}
+               ReceivedUserIds = ["1", "2"]
             }
         };
 
@@ -130,13 +130,13 @@ public class MessageFactoryUnitTest
             new()
             {
                 League = "League",
-                ReceivedUserIds = new List<int> { 2, 3 },
+                ReceivedUserIds = [2, 3],
                 MessageTypeId= (int) MsgTemplateCode.NewLeague
             },
             new()
             {
                 League = "League",
-                ReceivedUserIds = new List<int> { 3, 5 },
+                ReceivedUserIds = [3, 5],
                 MessageTypeId= (int) MsgTemplateCode.NewLeague
             }
         };
@@ -151,14 +151,14 @@ public class MessageFactoryUnitTest
                 BetTypeName = "O/U",
                 League = "League",
                 MessageTypeId = (int)MsgTemplateCode.DayShiftAssignmentInsert,
-                ReceivedUserIds = new List<int>{12,1}
+                ReceivedUserIds = [12, 1]
             },
             new()
             {
                 BetTypeName = "O/U",
                 League = "League",
                 MessageTypeId = (int)MsgTemplateCode.DayShiftAssignmentDelete,
-                ReceivedUserIds = new List<int>{2}
+                ReceivedUserIds = [2]
             },
             new()
             {
@@ -166,7 +166,7 @@ public class MessageFactoryUnitTest
                 BetTypeName = "O/U",
                 OldValue = "Sa",
                 NewValue = "Starix15",
-                ReceivedUserIds = new List<int>{13},
+                ReceivedUserIds = [13],
                 MessageTypeId = (int)MsgTemplateCode.DayShiftOtherAssignmentUpdate
             },
             new()
@@ -174,14 +174,14 @@ public class MessageFactoryUnitTest
                 BetTypeName = "O/U",
                 League = "ThaiLeague",
                 MessageTypeId = (int)MsgTemplateCode.NightShiftAssignmentInsert,
-                ReceivedUserIds = new List<int>{1}
+                ReceivedUserIds = [1]
             },
             new()
             {
                 BetTypeName = "O/U",
                 League = "ThaiLeague",
                 MessageTypeId = (int)MsgTemplateCode.NightShiftAssignmentDelete,
-                ReceivedUserIds = new List<int>{12}
+                ReceivedUserIds = [12]
             },
             new()
             {
@@ -189,7 +189,7 @@ public class MessageFactoryUnitTest
                 BetTypeName = "O/U",
                 OldValue = "Sa",
                 NewValue = "Starix15",
-                ReceivedUserIds = new List<int>{13},
+                ReceivedUserIds = [13],
                 MessageTypeId = (int)MsgTemplateCode.NightShiftOtherAssignmentUpdate
             }
         };
@@ -207,7 +207,7 @@ public class MessageFactoryUnitTest
                 Away="AwayA",
                 OldValue = "Postponed",
                 NewValue = "Live",
-                ReceivedUserIds=new List<int>{1,3,8}
+                ReceivedUserIds= [1, 3, 8]
             },
             new()
             {
@@ -216,7 +216,7 @@ public class MessageFactoryUnitTest
                 Home="HomeA",
                 Away="AwayA",
                 KoTime = "05:12 AM",
-                ReceivedUserIds=new List<int>{1,2,3}
+                ReceivedUserIds= [1, 2, 3]
             },
             new()
             {
@@ -225,7 +225,7 @@ public class MessageFactoryUnitTest
                 Home="HomeA",
                 Away="AwayA",
                 KoTime = "04:02 AM",
-                ReceivedUserIds=new List<int>{1,2}
+                ReceivedUserIds= [1, 2]
             }
         };
     }

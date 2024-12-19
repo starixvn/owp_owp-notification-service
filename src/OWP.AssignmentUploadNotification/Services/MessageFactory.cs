@@ -16,8 +16,8 @@ public class MessageFactoryImp : MessageFactory
 {
     #region MessageTemplate
 
-    private static readonly ImmutableList<MessageTemplate> messageTemplates = ImmutableList<MessageTemplate>.Empty.AddRange(new[]
-    {
+    private static readonly ImmutableList<MessageTemplate> messageTemplates = ImmutableList<MessageTemplate>.Empty.AddRange(
+    [
         new MessageTemplate
         {
             MessageType = (int)MsgTemplateCode.AssignmentDelete,
@@ -204,47 +204,33 @@ public class MessageFactoryImp : MessageFactory
             MessageType = (int)MsgTemplateCode.EditHomeName,
             MessageContent = "Was updated match: <Match.No> - <League> - <New> updated by <User>, previous: [ <Match.No> - <League> - <Old> ]"
         }
-    });
+    ]);
 
     #endregion MessageTemplate
 
     #region MessageGroup
 
-    private sealed class MessageGroup : IEqualityComparer<MessageGroup>
+    private sealed class MessageGroup(ChangedValue value) : IEqualityComparer<MessageGroup>
     {
-        public MessageGroup(ChangedValue value)
-        {
-            AssignmentNote = value.AssignmentNote;
-            BetTypeId = value.BetTypeId;
-            BetTypeName = value.BetTypeName;
-            MessageTypeId = value.MessageTypeId;
-            NewValue = value.NewValue;
-            OldValue = value.OldValue;
-            League = value.League;
-            EventName = value.EventName;
-            MatchNo = value.MatchNo;
-            IsWatcher = value.IsWatcher;
-        }
+        public string AssignmentNote { get; set; } = value.AssignmentNote;
 
-        public string AssignmentNote { get; set; }
+        private int BetTypeId { get; set; } = value.BetTypeId;
 
-        private int BetTypeId { get; set; }
+        public string BetTypeName { get; set; } = value.BetTypeName;
 
-        public string BetTypeName { get; set; }
+        public int MessageTypeId { get; set; } = value.MessageTypeId;
 
-        public int MessageTypeId { get; set; }
+        public string NewValue { get; set; } = value.NewValue;
 
-        public string NewValue { get; set; }
+        public string OldValue { get; set; } = value.OldValue;
 
-        public string OldValue { get; set; }
+        public string League { get; set; } = value.League;
 
-        public string League { get; set; }
+        public string EventName { get; set; } = value.EventName;
 
-        public string EventName { get; set; }
+        public string MatchNo { get; set; } = value.MatchNo;
 
-        public string MatchNo { get; set; }
-
-        public bool IsWatcher { get; set; }
+        public bool IsWatcher { get; set; } = value.IsWatcher;
 
         public bool Equals(MessageGroup x, MessageGroup y)
         {

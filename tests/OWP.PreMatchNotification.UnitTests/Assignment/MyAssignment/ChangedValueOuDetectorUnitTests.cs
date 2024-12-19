@@ -30,14 +30,14 @@ public class ChangedValueOuDetectorUnitTests
                 BetTypeName = "O/U",
                 League = "League",
                 MessageTypeId = 201,
-                ReceivedUserIds = new List<int>{121}
+                ReceivedUserIds = [121]
             },
             new ()
             {
                 BetTypeName = "O/U",
                 League = "League",
                 MessageTypeId = 202,
-                ReceivedUserIds = new List<int>{8}
+                ReceivedUserIds = [8]
             }
         };
         ouDetector.DetectMain(oldSnapshot, newSnapshot, actual);
@@ -70,14 +70,14 @@ public class ChangedValueOuDetectorUnitTests
                 BetTypeName = "O/U",
                 League = "League",
                 MessageTypeId = 201,
-                ReceivedUserIds = new List<int>{121}
+                ReceivedUserIds = [121]
             },
             new ()
             {
                 BetTypeName = "O/U",
                 League = "League",
                 MessageTypeId = 202,
-                ReceivedUserIds = new List<int>{8}
+                ReceivedUserIds = [8]
             }
         };
         ouDetector.DetectOther(oldSnapshot, newSnapshot, actual);

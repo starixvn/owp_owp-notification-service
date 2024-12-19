@@ -29,7 +29,7 @@ public class ChangedValueHdpTakeOverDetectorImp : ChangedValueHdpTakeOverDetecto
             changedValues.Add(new ChangedValue
             {
                 League = newSnapshot.LeagueName,
-                ReceivedUserIds = new List<int> { receivedUserId },
+                ReceivedUserIds = [receivedUserId],
                 BetTypeName = Bettype.HDP_TAKEOVER,
                 OldValue = oldSnapshot.HdpTakeOver,
                 NewValue = newSnapshot.HdpTakeOver,
@@ -46,7 +46,7 @@ public class ChangedValueHdpTakeOverDetectorImp : ChangedValueHdpTakeOverDetecto
             changedValues.Add(new ChangedValue
             {
                 League = newSnapshot.LeagueName,
-                ReceivedUserIds = new List<int> { receivedUserId },
+                ReceivedUserIds = [receivedUserId],
                 BetTypeName = Bettype.HDP_TAKEOVER,
                 OldValue = oldSnapshot.OtherHdpTakeOver,
                 NewValue = newSnapshot.OtherHdpTakeOver,

@@ -22,27 +22,13 @@ public interface MyAssignmentDetector
     void DetectChangeAssignmentOtherOuTOver(AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot, List<ChangedValue> changedValues);
 }
 
-public class MyAssignmentDetectorImp : MyAssignmentDetector
+public class MyAssignmentDetectorImp(
+    ChangedValueHdpDetector changedValueHdpDetector,
+    ChangedValueHdpTakeOverDetector changedValueHdpTakeOverDetector,
+    ChangedValueOuDetector changedValueOuDetector,
+    ChangedValueOuTakeOverDetector changedValueOuTakeOverDetector)
+    : MyAssignmentDetector
 {
-    private readonly ChangedValueHdpDetector changedValueHdpDetector;
-
-    private readonly ChangedValueHdpTakeOverDetector changedValueHdpTakeOverDetector;
-
-    private readonly ChangedValueOuDetector changedValueOuDetector;
-
-    private readonly ChangedValueOuTakeOverDetector changedValueOuTakeOverDetector;
-
-    public MyAssignmentDetectorImp(ChangedValueHdpDetector changedValueHdpDetector,
-        ChangedValueHdpTakeOverDetector changedValueHdpTakeOverDetector,
-        ChangedValueOuDetector changedValueOuDetector,
-        ChangedValueOuTakeOverDetector changedValueOuTakeOverDetector)
-    {
-        this.changedValueHdpDetector = changedValueHdpDetector;
-        this.changedValueHdpTakeOverDetector = changedValueHdpTakeOverDetector;
-        this.changedValueOuDetector = changedValueOuDetector;
-        this.changedValueOuTakeOverDetector = changedValueOuTakeOverDetector;
-    }
-
     public void DetectChangeAssignmentHdp(AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot,
         List<ChangedValue> changedValues)
         => changedValueHdpDetector.DetectMain(oldSnapshot, newSnapshot, changedValues);

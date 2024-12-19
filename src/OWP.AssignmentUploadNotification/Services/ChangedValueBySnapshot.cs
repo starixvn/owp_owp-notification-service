@@ -9,25 +9,13 @@ public interface ChangedValueBySnapshot
     List<ChangedValue> Create(AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot);
 }
 
-public class ChangedValueBySnapshotImp : ChangedValueBySnapshot
+public class ChangedValueBySnapshotImp(
+    ChangedDetector changedDetector,
+    InsertedMatchChangedValueGenerator insertedMatchChangedValueGenerator,
+    DeletedMatchChangedValueGenerator deletedMatchChangedValueGenerator,
+    ChangedMatchChangedValueGenerator changedMatchChangedValueGenerator)
+    : ChangedValueBySnapshot
 {
-    private readonly ChangedDetector changedDetector;
-    private readonly InsertedMatchChangedValueGenerator insertedMatchChangedValueGenerator;
-    private readonly DeletedMatchChangedValueGenerator deletedMatchChangedValueGenerator;
-    private readonly ChangedMatchChangedValueGenerator changedMatchChangedValueGenerator;
-
-    public ChangedValueBySnapshotImp(
-        ChangedDetector changedDetector,
-        InsertedMatchChangedValueGenerator insertedMatchChangedValueGenerator,
-        DeletedMatchChangedValueGenerator deletedMatchChangedValueGenerator,
-        ChangedMatchChangedValueGenerator changedMatchChangedValueGenerator)
-    {
-        this.changedDetector = changedDetector;
-        this.insertedMatchChangedValueGenerator = insertedMatchChangedValueGenerator;
-        this.deletedMatchChangedValueGenerator = deletedMatchChangedValueGenerator;
-        this.changedMatchChangedValueGenerator = changedMatchChangedValueGenerator;
-    }
-
     public List<ChangedValue> Create(AssignmentSnapshot oldSnapshot, AssignmentSnapshot newSnapshot)
     {
         var changedSnapshot = changedDetector.GetChangedSnapshot(oldSnapshot, newSnapshot);

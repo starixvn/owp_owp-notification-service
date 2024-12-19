@@ -11,15 +11,8 @@ public interface Repository
     Task<List<InfositePrematchLeague>> GetInfositePrematch(DateTime eventDate);
 }
 
-public class RepositoryImp : Repository
+public class RepositoryImp(IDynamicRepository dynamicRepository) : Repository
 {
-    private readonly IDynamicRepository dynamicRepository;
-
-    public RepositoryImp(IDynamicRepository dynamicRepository)
-    {
-        this.dynamicRepository = dynamicRepository;
-    }
-
     public async Task<List<GeneralMatch>> GetLGAMatchNewSnapshot(DateTime eventDate)
     {
         var criteria = new GetLGAMatchesByTimeRangeCriteria

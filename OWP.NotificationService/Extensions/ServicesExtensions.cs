@@ -6,6 +6,7 @@ using Fanex.Logging;
 using Fanex.Logging.Sentry.RavenClient;
 using OWP.Core.Models;
 using OWP.Core.Services;
+using StackExchange.Redis;
 using Notify = OWP.Core.Services;
 
 namespace OWP.NotificationService.Extensions;
@@ -16,7 +17,7 @@ public static class ServicesExtensions
     {
         var mapperConfig = new MapperConfiguration(mc =>
         {
-            mc.AddProfile(new OWP.AssignmentUploadNotification.AutoMapperProfile());
+            mc.AddProfile(new AssignmentUploadNotification.AutoMapperProfile());
         });
 
         var mapper = mapperConfig.CreateMapper();
@@ -67,7 +68,7 @@ public static class ServicesExtensions
         var redisSetting = configuration.GetSection(RedisSetting.RedisConnectKey).Get<RedisSetting>();
         services.AddSignalR().AddStackExchangeRedis(redisSetting.ConnectionString, options =>
         {
-            options.Configuration.ChannelPrefix = redisSetting.ChannelPrefix;
+            options.Configuration.ChannelPrefix = RedisChannel.Literal(redisSetting.ChannelPrefix);
         });
         return services;
     }

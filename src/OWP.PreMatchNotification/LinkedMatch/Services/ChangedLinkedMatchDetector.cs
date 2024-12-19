@@ -8,19 +8,11 @@ public interface ChangedLinkedMatchDetector
     List<ChangedValue> Create(List<GeneralMatch> oldMatches, List<GeneralMatch> newMatches, Employee employees);
 }
 
-public class ChangedLinkedMatchDetectorImp : ChangedLinkedMatchDetector
+public class ChangedLinkedMatchDetectorImp(
+    ChangedLiveMatchGenerator changedLiveMatchGenerator,
+    ChangedMatchStatusGenerator changedMatchStatusGenerator)
+    : ChangedLinkedMatchDetector
 {
-    private readonly ChangedLiveMatchGenerator changedLiveMatchGenerator;
-    private readonly ChangedMatchStatusGenerator changedMatchStatusGenerator;
-
-    public ChangedLinkedMatchDetectorImp(
-        ChangedLiveMatchGenerator changedLiveMatchGenerator,
-        ChangedMatchStatusGenerator changedMatchStatusGenerator)
-    {
-        this.changedLiveMatchGenerator = changedLiveMatchGenerator;
-        this.changedMatchStatusGenerator = changedMatchStatusGenerator;
-    }
-
     public List<ChangedValue> Create(List<GeneralMatch> oldMatches, List<GeneralMatch> newMatches, Employee employees)
     {
         var changedSnapshot = GetChangedSnapshot(oldMatches, newMatches, employees);

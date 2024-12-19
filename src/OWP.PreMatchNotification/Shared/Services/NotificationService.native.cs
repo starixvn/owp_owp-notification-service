@@ -12,15 +12,9 @@ public interface NotificationService
     Task NotifyGroupMessageForLinkMatch(List<MessageModel> sources);
 }
 
-public class NotificationServiceImp : NotificationService
+public class NotificationServiceImp(IHubContext<ChangedInfoNotifyHubImp, ChangedInfoNotifyHub> hubContext)
+    : NotificationService
 {
-    private readonly IHubContext<ChangedInfoNotifyHubImp, ChangedInfoNotifyHub> hubContext;
-
-    public NotificationServiceImp(IHubContext<ChangedInfoNotifyHubImp, ChangedInfoNotifyHub> hubContext)
-    {
-        this.hubContext = hubContext;
-    }
-
     public async Task Notify(List<MessageModel> sources)
     {
         foreach (var message in sources)
@@ -52,7 +46,6 @@ public class NotificationServiceImp : NotificationService
             var newMessage = GetGroupMessage(message.Value);
 
             var result = new { notificationId = Guid.NewGuid(), message = newMessage };
-            var key = message.Key.UserId;
 
             await hubContext.Clients
 #if DEBUG
@@ -79,7 +72,7 @@ public class NotificationServiceImp : NotificationService
 
         var groupMessageDict = new Dictionary<int, string>
         {
-            { (int)MsgTemplateCode.LGAAddLiveMatch, $"ADD LIVE" },
+            { (int)MsgTemplateCode.LGAAddLiveMatch, "ADD LIVE" },
             { (int)MsgTemplateCode.LGACancelLiveMatch, "CANCEL LIVE" },
             { (int)MsgTemplateCode.LGAChangeMatchStatus, "MATCH STATUS changed" }
         };

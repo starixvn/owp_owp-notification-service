@@ -11,15 +11,8 @@ public interface NewMessageDBWriter
     Task<string> Execute(NewMessageModel newMessage);
 }
 
-public class NewMessageDBWriterImp : NewMessageDBWriter
+public class NewMessageDBWriterImp(TicketRepository repository) : NewMessageDBWriter
 {
-    private readonly TicketRepository repository;
-
-    public NewMessageDBWriterImp(TicketRepository repository)
-    {
-        this.repository = repository;
-    }
-
     public async Task<string> Execute(NewMessageModel newMessage)
     {
         var templateCode = newMessage.FileId.HasValue

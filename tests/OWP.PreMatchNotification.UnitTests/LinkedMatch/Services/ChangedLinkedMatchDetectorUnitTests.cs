@@ -54,10 +54,10 @@ public class ChangedLinkedMatchDetectorUnitTests
         {
             PrematchInfosites = new Dictionary<int, List<InfositePrematchLeague>>
             {
-                {111, new List<InfositePrematchLeague>()},
-                {222, new List<InfositePrematchLeague>()},
-                {333, new List<InfositePrematchLeague>()},
-                {444, new List<InfositePrematchLeague>()}
+                {111, [] },
+                {222, [] },
+                {333, [] },
+                {444, [] }
             }
         };
 
@@ -84,7 +84,7 @@ public class ChangedLinkedMatchDetectorUnitTests
             .Returns(matchStatusChangedValue);
         var expected = liveMatchChangedValue.Union(matchStatusChangedValue).ToList();
 
-        var actual = service.Create(new List<GeneralMatch>(), new List<GeneralMatch>(), new Employee());
+        var actual = service.Create([], [], new Employee());
         DeepAssert.Equal(expected, actual);
     }
 }

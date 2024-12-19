@@ -11,6 +11,4 @@ public interface ChangedInfoNotifyHub
     Task notifyChangedInformationData(dynamic message);
 }
 
-public class ChangedInfoNotifyHubImp : Hub<ChangedInfoNotifyHub>
-{
-}
+public class ChangedInfoNotifyHubImp : Hub<ChangedInfoNotifyHub>;

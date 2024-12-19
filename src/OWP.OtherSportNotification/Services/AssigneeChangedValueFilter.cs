@@ -8,15 +8,8 @@ public interface AssigneeChangedValueFilter
     Task<List<ChangedValue>> Filter(List<ChangedValue> changedValues);
 }
 
-public class AssigneeMessageFilterImp : AssigneeChangedValueFilter
+public class AssigneeMessageFilterImp(OtherSportRepository repository) : AssigneeChangedValueFilter
 {
-    private readonly OtherSportRepository repository;
-
-    public AssigneeMessageFilterImp(OtherSportRepository repository)
-    {
-        this.repository = repository;
-    }
-
     public async Task<List<ChangedValue>> Filter(List<ChangedValue> changedValues)
     {
         changedValues.ForEach(c => c.NotificationSettingId = NotificationSettingHelper.GetNotificationSettingIdForAssignee(c.MessageTypeId, c.IsIndirectChangedAssignment));

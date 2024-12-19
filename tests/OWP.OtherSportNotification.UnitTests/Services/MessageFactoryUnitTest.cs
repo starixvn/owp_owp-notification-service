@@ -1,12 +1,7 @@
 ﻿namespace OWP.OtherSportNotification.UnitTests.Services;
 public class MessageFactoryUnitTest
 {
-    private readonly MessageFactory messageFactory;
-
-    public MessageFactoryUnitTest()
-    {
-        messageFactory = new MessageFactoryImp();
-    }
+    private readonly MessageFactory messageFactory = new MessageFactoryImp();
 
     [Fact]
     public void Transform_Always_ReturnMessageList()
@@ -20,14 +15,14 @@ public class MessageFactoryUnitTest
                    IsImportant = false,
                    MessageContent = "<b>Match No.</b> Updated from 1234 to <b>20000</b> for #20000 - A-Corners - LiverPool-Corners -vs- Arsenal-Corners updated by sa",
                    MessageType = (int)MsgTemplateCode.EditMatchNo,
-                   ReceivedUserIds = new List<string> { "6789" }
+                   ReceivedUserIds = ["6789"]
                 },
                 new()
                 {
                    IsImportant = false,
                    MessageContent = "<b>Max Bet</b> of <b>Next of Corners (HDP)</b> Updated from 400K to <b>300K</b> for #50000 - PremierLeague - LiverPool -vs- Arsenal updated by sa",
                    MessageType = (int)MsgTemplateCode.EditMaxbet,
-                   ReceivedUserIds = new List<string> { "6789" }
+                   ReceivedUserIds = ["6789"]
                 }
             };
 
@@ -48,14 +43,14 @@ public class MessageFactoryUnitTest
                     IsImportant = true,
                     MessageContent = "You have been REMOVED from <b>1H (HDP)</b> in #1324 - Jo - Spur -vs- MC - 08/08/2021 12:00 AM updated by sa",
                     MessageType = (int)MsgTemplateCode.OtherAssignmentDelete,
-                    ReceivedUserIds = new List<string> { "2542" }
+                    ReceivedUserIds = ["2542"]
                 },
                 new()
                 {
                     IsImportant = true,
                     MessageContent = "You have NEW ASSIGNMENT <b>1H (HDP)</b> in #5000 - Jo - Spur -vs- MC - 07/08/2021 12:00 AM updated by sa",
                     MessageType = (int)MsgTemplateCode.OtherAssignmentInsert,
-                    ReceivedUserIds = new List<string> { "2542" }
+                    ReceivedUserIds = ["2542"]
                 }
             };
 
@@ -74,20 +69,20 @@ public class MessageFactoryUnitTest
                 {
                    MessageContent = "<b>Max Bet</b> of <b>FT (HDP)</b> Updated from 12000 to <b>11000</b> for #1234 - League - United -vs- Ha Noi updated by sa",
                    MessageType = (int)MsgTemplateCode.EditMaxbet,
-                   ReceivedUserIds = new List<string> { "8" }
+                   ReceivedUserIds = ["8"]
                 },
                 new()
                 {
                    MessageContent = "<b>Max Bet</b> of <b>FT (HDP)</b> Updated from 12000 to <b>11000</b> for #1234 - League - United -vs- Ha Noi updated by sa",
                    MessageType = (int)MsgTemplateCode.EditMaxbet,
-                   ReceivedUserIds = new List<string> { "11" }
+                   ReceivedUserIds = ["11"]
                 },
                  new()
                  {
                    MessageContent = "<b>Spread</b> of <b>FT (HDP)</b> Updated from 12% to <b>11%</b> for #1234 - League - United -vs- Ha Noi updated by sa",
                    MessageType = (int)MsgTemplateCode.EditSpread,
-                   ReceivedUserIds = new List<string> { "8" }
-                }
+                   ReceivedUserIds = ["8"]
+                 }
             };
 
         var actual = messageFactory.Transform(changedValueList, "sa");
@@ -176,43 +171,45 @@ public class MessageFactoryUnitTest
     }
 
     private List<ChangedValue> GetListMatchSettingChanged()
-    => new()
-    {
-                new ChangedValue
-                {
-                    UserId = 8,
-                    Username = "Liam",
-                    BetTypeName = "FT (HDP)",
-                    EventName = "United -vs- Ha Noi",
-                    League = "League",
-                    MatchNo = "1234",
-                    MessageTypeId = (int)MsgTemplateCode.EditMaxbet,
-                    NewValue = "11000",
-                    OldValue = "12000"
-                },
-                new ChangedValue
-                {
-                    UserId = 11,
-                    Username = "Starix1",
-                    BetTypeName = "FT (HDP)",
-                    EventName = "United -vs- Ha Noi",
-                    League = "League",
-                    MatchNo = "1234",
-                    MessageTypeId = (int)MsgTemplateCode.EditMaxbet,
-                    NewValue = "11000",
-                    OldValue = "12000"
-                },
-                new ChangedValue
-                {
-                    UserId = 8,
-                    Username = "Liam",
-                    BetTypeName = "FT (HDP)",
-                    EventName = "United -vs- Ha Noi",
-                    League = "League",
-                    MatchNo = "1234",
-                    MessageTypeId = (int)MsgTemplateCode.EditSpread,
-                    NewValue = "11%",
-                    OldValue = "12%"
-                }
-        };
+    =>
+    [
+        new()
+        {
+            UserId = 8,
+            Username = "Liam",
+            BetTypeName = "FT (HDP)",
+            EventName = "United -vs- Ha Noi",
+            League = "League",
+            MatchNo = "1234",
+            MessageTypeId = (int)MsgTemplateCode.EditMaxbet,
+            NewValue = "11000",
+            OldValue = "12000"
+        },
+
+        new()
+        {
+            UserId = 11,
+            Username = "Starix1",
+            BetTypeName = "FT (HDP)",
+            EventName = "United -vs- Ha Noi",
+            League = "League",
+            MatchNo = "1234",
+            MessageTypeId = (int)MsgTemplateCode.EditMaxbet,
+            NewValue = "11000",
+            OldValue = "12000"
+        },
+
+        new()
+        {
+            UserId = 8,
+            Username = "Liam",
+            BetTypeName = "FT (HDP)",
+            EventName = "United -vs- Ha Noi",
+            League = "League",
+            MatchNo = "1234",
+            MessageTypeId = (int)MsgTemplateCode.EditSpread,
+            NewValue = "11%",
+            OldValue = "12%"
+        }
+    ];
 }

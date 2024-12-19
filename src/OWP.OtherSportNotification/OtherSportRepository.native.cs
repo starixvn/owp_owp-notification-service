@@ -15,15 +15,8 @@ public interface OtherSportRepository
     Task<IList<string>> QuerySectionBBSupportive();
 }
 
-public class OtherSportRepositoryImp : OtherSportRepository
+public class OtherSportRepositoryImp(IDynamicRepository repository) : OtherSportRepository
 {
-    private readonly IDynamicRepository repository;
-
-    public OtherSportRepositoryImp(IDynamicRepository repository)
-    {
-        this.repository = repository;
-    }
-
     public async Task InsertMessage(List<MessageModel> messages, string sessionId, int createdBy)
     {
         messages.ForEach(x => x.ReceivedUserIdList = string.Join(",", x.ReceivedUserIds));
@@ -61,7 +54,7 @@ public class OtherSportRepositoryImp : OtherSportRepository
         var criteria = new GetNotificationSettingCommand();
         var notificationSettings = await repository.FetchAsync<NotificationSetting>(criteria);
 
-        return new HashSet<string>(notificationSettings.Select(a => $"{a.UserId}-{a.NotificationSettingId}"));
+        return [..notificationSettings.Select(a => $"{a.UserId}-{a.NotificationSettingId}")];
     }
 
     public async Task<Dictionary<string, List<Assignee>>> GetSessionWatcherSettings()
