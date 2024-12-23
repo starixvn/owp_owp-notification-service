@@ -47,22 +47,6 @@ public static class ServicesExtensions
         return services;
     }
 
-    public static IServiceCollection AddNapServices(this IServiceCollection services, IConfiguration configuration)
-    {
-        LogManager
-            .SetDefaultLogCategory(configuration.GetSection("FanexLogCategory").Value)
-            .Use(new List<ILogEngine>
-            {
-                new SentryLogging( new SentryEngineOptions
-                {
-                    Dsn = new SharpRaven.Dsn(configuration.GetSection("SentryToken").Value)
-                })
-            });
-        services.AddSingleton<Fanex.Logging.ILogger, Logger>();
-
-        return services;
-    }
-
     public static IServiceCollection AddSignalRedis(this IServiceCollection services, IConfiguration configuration)
     {
         var redisSetting = configuration.GetSection(RedisSetting.RedisConnectKey).Get<RedisSetting>();

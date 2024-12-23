@@ -1,4 +1,5 @@
 using Fanex.Data.SqlServer;
+using Fanex.Logging.Sentry.RavenClient;
 using OWP.AssignmentUploadNotification;
 using OWP.LiveDetailNotification;
 using OWP.NotificationService;
@@ -10,14 +11,13 @@ using OWP.RabbitMQ.Models;
 using OWP.TicketNotification;
 var builder = WebApplication.CreateBuilder(args);
 var services= builder.Services;
-// Add services to the container.
+var configuration = builder.Configuration;
 
-services.AddControllers();
+// Add services to the container.
 services.AddSignalRedis(builder.Configuration);
 services.AddFanexSql(builder.Configuration);
+services.AddFanexLogSentry(configuration);
 services.AddRedisServices(builder.Configuration);
-
-services.AddNapServices(builder.Configuration);
 
 // AutoMapper
 services.AddAutoMapper();
