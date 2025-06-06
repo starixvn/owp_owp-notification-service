@@ -23,5 +23,13 @@ public enum MsgTemplateCode
     EditProvider = 119,
     EditAssignmentNote = 120,
     EditSpread = 121,
-    EditNeutral = 122
+    EditNeutral = 122,
+
+}
+
+public enum RocketChatMsgTemplateCode
+{
+    AssignmentInsert = 1000,
+    AssignmentDelete = 1001,
+    AssignmentInsertAndDelete = 1003,
 }
