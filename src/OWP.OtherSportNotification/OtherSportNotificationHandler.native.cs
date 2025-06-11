@@ -86,7 +86,7 @@ public class OtherSportNotificationHandler(
         {
             var payload = new
             {
-                text = $"Hi all,\nLC updated (Last updated on **[{ToGmt8(DateTime.Now).ToString("MMMM dd, yyyy hh:mm tt", CultureInfo.InvariantCulture)}] (GMT+8)** by **[{userName}]**).\nPlease download the LC latest version.\nThanks"
+                text = $"Hi all,\nLC updated (Last updated on **{ToGmt8(DateTime.Now).ToString("MMMM dd, yyyy hh:mm tt", CultureInfo.InvariantCulture)} (GMT+8)** by **{userName}**).\nPlease download the LC latest version.\nThanks"
             };
             var webHook = configuration["ChatServer:WebHook"];
             using var client = httpClientFactory.CreateClient("OWPChatAdmin");

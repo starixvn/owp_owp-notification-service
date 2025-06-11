@@ -63,7 +63,6 @@ public static class ServicesExtensions
         {
             var chatUrl = configuration["ChatServer:Url"];
             client.BaseAddress = new Uri(chatUrl);
-            client.DefaultRequestHeaders.Add("Content-Type", "application/json");
             var adminToken = configuration["ChatServer:AdminToken"];
             var adminId = configuration["ChatServer:AdminUserId"];
             client.BaseAddress = new Uri(chatUrl);
@@ -76,7 +75,7 @@ public static class ServicesExtensions
         {
             var chatUrl = configuration["ChatServer:Url"];
             client.BaseAddress = new Uri(chatUrl);
-            client.DefaultRequestHeaders.Add("Content-Type", "application/json");
+           
             var botToken = configuration["ChatServer:BotToken"];
             var botId = configuration["ChatServer:BotUserId"];
             client.BaseAddress = new Uri(chatUrl);
