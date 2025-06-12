@@ -28,6 +28,7 @@ public static class DependenceInjection
         services.AddTransient<ChangedAssignmentNoteGenerator, ChangedAssignmentNoteGeneratorImp>();
         services.AddTransient<NotificationService, NotificationServiceImp>();
         services.AddTransient<IncludeBBSectionService, IncludeBBSectionServiceImp>();
+        services.AddTransient<RocketChatMessageFactory, RocketChatMessageFactoryImp>();
 
         return services;
     }

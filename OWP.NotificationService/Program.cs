@@ -38,6 +38,9 @@ services.AddSingleton<GarbageCollectorJob>();
 services.AddHostedService<MessageServer>();
 services.AddHostedService<GarbageCollectorJob>();
 
+services.AddHttpClientFactory(configuration);
+
+
 var app = builder.Build();
 
 app.Run(async context =>

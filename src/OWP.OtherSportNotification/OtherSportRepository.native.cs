@@ -2,6 +2,8 @@
 using Olympus.Xml;
 using OWP.OtherSportNotification.Criteria;
 using OWP.OtherSportNotification.Models;
+using System;
+using Olympus.OWP.Log.Data.Repository.Criteria;
 
 namespace OWP.OtherSportNotification;
 
@@ -13,6 +15,8 @@ public interface OtherSportRepository
     Task<Dictionary<string, List<Assignee>>> GetSessionWatcherSettings();
 
     Task<IList<string>> QuerySectionBBSupportive();
+
+    Task WriteLog(OwpLogCriteria owpLogCriteria);
 }
 
 public class OtherSportRepositoryImp(IDynamicRepository repository) : OtherSportRepository
@@ -73,4 +77,9 @@ public class OtherSportRepositoryImp(IDynamicRepository repository) : OtherSport
 
     public async Task<IList<string>> QuerySectionBBSupportive()
     => (await repository.FetchAsync<string>(new GetBBSupportiveSectionCommand())).ToList();
+
+    public async Task WriteLog(OwpLogCriteria owpLogCriteria)
+    {
+        await repository.ExecuteAsync(owpLogCriteria);
+    }
 }

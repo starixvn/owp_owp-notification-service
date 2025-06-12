@@ -56,4 +56,33 @@ public static class ServicesExtensions
         });
         return services;
     }
+
+    public static IServiceCollection AddHttpClientFactory(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddHttpClient("OWPChatAdmin", client =>
+        {
+            var chatUrl = configuration["ChatServer:Url"];
+            client.BaseAddress = new Uri(chatUrl);
+            var adminToken = configuration["ChatServer:AdminToken"];
+            var adminId = configuration["ChatServer:AdminUserId"];
+            client.BaseAddress = new Uri(chatUrl);
+            client.DefaultRequestHeaders.Add("Accept", "application/json");
+            client.DefaultRequestHeaders.Add("X-Auth-Token", adminToken);
+            client.DefaultRequestHeaders.Add("X-User-Id", adminId);
+        });
+
+        services.AddHttpClient("OWPChatBot", client =>
+        {
+            var chatUrl = configuration["ChatServer:Url"];
+            client.BaseAddress = new Uri(chatUrl);
+           
+            var botToken = configuration["ChatServer:BotToken"];
+            var botId = configuration["ChatServer:BotUserId"];
+            client.BaseAddress = new Uri(chatUrl);
+            client.DefaultRequestHeaders.Add("Accept", "application/json");
+            client.DefaultRequestHeaders.Add("X-Auth-Token", botToken);
+            client.DefaultRequestHeaders.Add("X-User-Id", botId);
+        });
+        return services;
+    }
 }

@@ -13,5 +13,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OWP.Core\OWP.Core.csproj" />
+    <PackageReference Include="Olympus.OWP.Log.Data.Repository" Version="9.0.0" />
   </ItemGroup>
 </Project>
