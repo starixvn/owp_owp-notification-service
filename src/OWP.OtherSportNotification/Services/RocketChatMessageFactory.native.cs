@@ -45,6 +45,7 @@ namespace OWP.OtherSportNotification.Services
             try
             {
                 var changedValueMapUsername = changedValues
+                    .Where(c=> CanSendMessageToTraderCaseInsert(c) || CanSendMessageToTraderCaseRemove(c))
                     .GroupBy(c => c.Username)
                     .ToDictionary(x => x.Key, x => x.ToList());
 
@@ -58,8 +59,13 @@ namespace OWP.OtherSportNotification.Services
                             .Replace("<tradername>", changeValue.Key),
                         Recipient = changeValue.Key
                     }).ToList();
-
                 return message;
+
+            }
+            catch (Exception ex)
+            {
+                await LogDetailedPayload(ToGmt8(DateTime.Now), $"[RocketChatMessageModel] - Exception", ex.Message);
+                return [];
             }
             finally
             {
@@ -67,7 +73,7 @@ namespace OWP.OtherSportNotification.Services
                     System.Text.Json.JsonSerializer.Serialize(message));
             }
         }
-
+       
         private static RocketChatMsgTemplateCode DetectChatMsgTemplateCode(bool existsInsertAssignee, bool existsDeleteAssignee)
         {
             if (existsInsertAssignee && existsDeleteAssignee)
@@ -82,20 +88,31 @@ namespace OWP.OtherSportNotification.Services
             {
                 return RocketChatMsgTemplateCode.AssignmentDelete;
             }
+
             throw new InvalidOperationException("No valid message type found.");
         }
 
         private static bool ExistsInsertAssignee(IList<ChangedValue> changedValues)
-            => changedValues.Any(c => c.MessageTypeId is
-                (int)MsgTemplateCode.AssignmentInsert
-                or (int)MsgTemplateCode.OtherAssignmentInsert
-                or (int)MsgTemplateCode.AssignmentUpdate
-                or (int)MsgTemplateCode.OtherAssignmentUpdate);
+            => changedValues.Any(CanSendMessageToTraderCaseInsert);
 
         private static bool ExistsDeleteAssignee(IList<ChangedValue> changedValues)
-            => changedValues.Any(c => c.MessageTypeId is
+            => changedValues.Any(CanSendMessageToTraderCaseRemove);
+
+        private static bool CanSendMessageToTraderCaseInsert(ChangedValue changedValue)
+        {
+            return changedValue.MessageTypeId is
+                (int)MsgTemplateCode.AssignmentInsert
+                or (int)MsgTemplateCode.OtherAssignmentInsert;
+
+        }
+
+        private static bool CanSendMessageToTraderCaseRemove(ChangedValue changedValue)
+        {
+            return changedValue.MessageTypeId is
                 (int)MsgTemplateCode.AssignmentDelete
-                or (int)MsgTemplateCode.OtherAssignmentDelete);
+                or (int)MsgTemplateCode.OtherAssignmentDelete;
+
+        }
 
         private async Task LogDetailedPayload(DateTime CreatedDate, string Action, string Payload)
         {
