@@ -45,6 +45,8 @@ services.AddHttpClientFactory(configuration);
 
 var app = builder.Build();
 
+var logger = app.Services.GetRequiredService<Fanex.Logging.ILogger>();
+await logger.InfoAsync("Environment: "+ configuration["Env"]);
 app.Run(async context =>
 {
     var request = context.Request.Path.HasValue
