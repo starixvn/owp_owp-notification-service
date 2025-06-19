@@ -30,13 +30,6 @@ RUN dotnet publish -r linux-x64 --self-contained false -c Release -o /app
 
 FROM hub.nexdev.net/base/dotnet/core/aspnet:9.0-alpine AS base
 
-# Don’t run as root
-RUN adduser --disabled-password \
-    --home /app \
-    --gecos '' dotnetuser && chown -R dotnetuser /app && chown -R dotnetuser /tmp
-USER dotnetuser
-#
-
 WORKDIR /app
 COPY --from=builder /app .
 
