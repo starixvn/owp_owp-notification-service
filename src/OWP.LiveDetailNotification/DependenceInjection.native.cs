@@ -11,6 +11,7 @@ public static class DependenceInjection
 
         services.AddTransient<LiveDetailMessageNotificationService, LiveDetailMessageNotificationServiceImp>();
         services.AddTransient<NotificationService, NotificationServiceImp>();
+        services.AddTransient<LiveDetailRepository, LiveDetailRepositoryImp>();
 
         return services;
     }

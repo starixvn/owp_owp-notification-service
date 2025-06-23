@@ -9,4 +9,6 @@ public class MessageModel
     public int MessageType { get; set; }
 
     public string MessageContent { get; set; }
+
+    public string Recipient { get; set; }
 }
