@@ -4,6 +4,7 @@ using OWP.AssignmentUploadNotification;
 using OWP.LiveDetailNotification;
 using OWP.NotificationService;
 using OWP.NotificationService.Extensions;
+using OWP.OddsCompilerNotification;
 using OWP.OtherSportNotification;
 using OWP.PreMatchNotification;
 using OWP.RabbitMQ;
@@ -33,6 +34,7 @@ services.AddOtherSport();
 services.AddLiveDetail();
 services.AddPrematchNotificationServices();
 services.AddAssignmentUpload();
+services.AddOddsCompiler();
 services.AddSingleton<GarbageCollectorJob>();
 
 services.AddHostedService<MessageServer>();

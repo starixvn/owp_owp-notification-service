@@ -4,6 +4,7 @@ using OWP.Core.Constants;
 using OWP.Core.NotificationRequests;
 using OWP.Core.NotificationRequests.AssignmentUpload;
 using OWP.Core.NotificationRequests.LiveDetail;
+using OWP.Core.NotificationRequests.OddsCompiler;
 using OWP.Core.NotificationRequests.OtherSport;
 using OWP.Core.NotificationRequests.Prematch;
 using OWP.Core.NotificationRequests.TicketCenter;
@@ -53,6 +54,8 @@ public class SendNotificationHandlerImp(IMediator mediator) : NotificationHandle
         RoutingKey.TicketCenterNewTicketLogWork => JsonConvert.DeserializeObject<NewTicketLogWorkNotificationRequest>(message),
 
         RoutingKey.LiveDetail => JsonConvert.DeserializeObject<LiveDetailNotifyRequest>(message),
+        
+        RoutingKey.OddsCompiler => JsonConvert.DeserializeObject<OddsCompilerNotifyRequest>(message),
 
         _ => new NotificationRequest()
     };

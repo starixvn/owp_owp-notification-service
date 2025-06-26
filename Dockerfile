@@ -16,7 +16,9 @@ COPY ./src/OWP.PreMatchNotification/. ./src/OWP.PreMatchNotification
 COPY ./src/OWP.OtherSportNotification/. ./src/OWP.OtherSportNotification
 COPY ./src/OWP.AssignmentUploadNotification/. ./src/OWP.AssignmentUploadNotification
 COPY ./src/OWP.RabbitMQ/. ./src/OWP.RabbitMQ
+COPY ./src/OWP.OddsCompilerNotification/. ./src/OWP.OddsCompilerNotification
 COPY ./OWP.NotificationService/OWP.NotificationService.csproj ./OWP.NotificationService/OWP.NotificationService.csproj
+
 
 WORKDIR /src/OWP.NotificationService
 

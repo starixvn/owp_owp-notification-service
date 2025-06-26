@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using Criteria;
 using Fanex.Data.Repository;
 using Models;
+using Olympus.OWP.Log.Data.Repository.Criteria;
 using Olympus.Xml;
 
 public interface CommandRepository
 {
     Task InsertMessage(List<MessageModel> messages, string sessionId, int userId);
+    Task WriteLog(OwpLogCriteria owpLogCriteria);
 }
 
 public class CommandRepositoryImp(IDynamicRepository repository) : CommandRepository
@@ -24,5 +26,10 @@ public class CommandRepositoryImp(IDynamicRepository repository) : CommandReposi
         };
 
         await repository.ExecuteAsync(criteria);
+    }
+
+    public async Task WriteLog(OwpLogCriteria owpLogCriteria)
+    {
+        await repository.ExecuteAsync(owpLogCriteria);
     }
 }

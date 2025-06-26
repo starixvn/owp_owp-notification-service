@@ -16,4 +16,5 @@ public static class RoutingKey
     public const string TicketCenterNewTicketLogWork = "ticket-center-new-ticket-log-work";
     public const string OtherSport = "other-sport";
     public const string LiveDetail = "live-detail";
+    public const string OddsCompiler = "odds-compiler";
 }
