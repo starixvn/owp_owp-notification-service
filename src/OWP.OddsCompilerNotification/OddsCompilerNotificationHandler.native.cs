@@ -19,7 +19,7 @@ public class OddsCompilerNotificationHandler(
     public async Task<Unit> Handle(OddsCompilerNotifyRequest request, CancellationToken cancellationToken)
     {
         var messages = await oddsCompilerMessage.HandleMessage(request.SessionId);
-        await MessageToTrader(messages, cancellationToken);
+        //await MessageToTrader(messages, cancellationToken);
 
         return Unit.Value;
     }

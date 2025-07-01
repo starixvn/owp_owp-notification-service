@@ -69,10 +69,11 @@ public class OtherSportNotificationHandler(
                 var response = await client.PostAsync("api/v1/chat.postMessage", content, cancellationToken);
                 if (!response.IsSuccessStatusCode)
                 {
-                    throw new Exception($"Failed to send message to chat server: {System.Text.Json.JsonSerializer.Serialize(response)}");
+                    await LogDetailedPayload(ToGmt8(DateTime.Now), "[OsNotification] - Failed to send message to chat server: ", System.Text.Json.JsonSerializer.Serialize(response));
                 }
                 var responseBody = await response.Content.ReadAsStringAsync(cancellationToken);
                 await LogDetailedPayload(ToGmt8(DateTime.Now), $"[OsNotification]-MessageToTrader {msg.Recipient}-Success", responseBody);
+                await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
             }
         }
         catch (Exception e)

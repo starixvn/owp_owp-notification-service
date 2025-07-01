@@ -50,7 +50,7 @@ public class Handler(
         await commandRepository.InsertMessage(messageModels, request.SessionId, request.ActorId);
         var messageSender = BuildMessageSender(messageModels);
         await notificationService.Notify(messageSender);
-        await MessageToTrader(messageModels, cancellationToken);
+        //await MessageToTrader(messageModels, cancellationToken);
 
         return Unit.Value;
     }

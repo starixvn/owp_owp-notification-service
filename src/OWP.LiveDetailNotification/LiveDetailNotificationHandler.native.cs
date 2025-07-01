@@ -20,7 +20,7 @@ public class LiveDetailNotificationHandler(
     {
         var messages = await liveDetailMessage.HandleMessage(request.SessionId);
         await notificationService.Notify(messages);
-        await MessageToTrader(messages, cancellationToken);
+        //await MessageToTrader(messages, cancellationToken);
 
         return Unit.Value;
     }
