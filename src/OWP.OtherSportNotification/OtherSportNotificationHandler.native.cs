@@ -80,16 +80,17 @@ public class OtherSportNotificationHandler(
         }
     }
 
-    private async Task<bool> SendMessageWithRetry(HttpClient client, dynamic message, CancellationToken cancellationToken)
+    private async Task<bool> SendMessageWithRetry(HttpClient client, RocketChatMessageModel message, CancellationToken cancellationToken)
     {
         const int maxRetries = 3;
         const int retryDelaySeconds = 2;
 
-        for (int attempt = 1; attempt <= maxRetries; attempt++)
+        var payload = CreateMessagePayload(message);
+
+        for (var attempt = 1; attempt <= maxRetries; attempt++)
         {
             try
             {
-                var payload = CreateMessagePayload(message);
                 var content = CreateHttpContent(payload);
 
                 var response = await client.PostAsync("api/v1/chat.postMessage", content, cancellationToken);
@@ -103,12 +104,13 @@ public class OtherSportNotificationHandler(
                 }
 
                 await LogDetailedPayload(ToGmt8(DateTime.Now),
-                    $"[OsNotification] - Attempt {attempt} failed to send message", responseBody);
+                    $"[OsNotification]-MessageToTrader - Attempt {attempt} failed to send message", responseBody);
             }
             catch (Exception ex)
             {
+                var logMessage = $"Exception: {ex.ToString()}, Payload: {JsonSerializer.Serialize(payload)}";
                 await LogDetailedPayload(ToGmt8(DateTime.Now),
-                    $"[OsNotification] - Attempt {attempt} exception during message send", ex.ToString());
+                    $"[OsNotification]-MessageToTrader - Attempt {attempt} exception during message send", logMessage);
             }
 
             if (attempt < maxRetries)
@@ -120,7 +122,7 @@ public class OtherSportNotificationHandler(
         return false;
     }
 
-    private static object CreateMessagePayload(dynamic message)
+    private static object CreateMessagePayload(RocketChatMessageModel message)
     {
         return new
         {
@@ -163,7 +165,7 @@ public class OtherSportNotificationHandler(
         const int maxRetries = 3;
         const int retryDelaySeconds = 2;
 
-        for (int attempt = 1; attempt <= maxRetries; attempt++)
+        for (var attempt = 1; attempt <= maxRetries; attempt++)
         {
             try
             {

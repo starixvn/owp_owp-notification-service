@@ -70,7 +70,12 @@ namespace OWP.OtherSportNotification.Services
             finally
             {
                 await LogDetailedPayload(ToGmt8(DateTime.Now), $"[RocketChatMessageModel] - msgModel",
-                    System.Text.Json.JsonSerializer.Serialize(message));
+                    System.Text.Json.JsonSerializer.Serialize(new
+                    {
+                        count=message.Count,
+                        message= message
+
+                    }));
             }
         }
        
