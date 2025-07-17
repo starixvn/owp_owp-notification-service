@@ -66,6 +66,7 @@ public static class ServicesExtensions
             var adminToken = configuration["ChatServer:AdminToken"];
             var adminId = configuration["ChatServer:AdminUserId"];
             client.BaseAddress = new Uri(chatUrl);
+            client.Timeout = TimeSpan.FromMinutes(5);
             client.DefaultRequestHeaders.Add("Accept", "application/json");
             client.DefaultRequestHeaders.Add("X-Auth-Token", adminToken);
             client.DefaultRequestHeaders.Add("X-User-Id", adminId);
@@ -79,6 +80,7 @@ public static class ServicesExtensions
             var botToken = configuration["ChatServer:BotToken"];
             var botId = configuration["ChatServer:BotUserId"];
             client.BaseAddress = new Uri(chatUrl);
+            client.Timeout = TimeSpan.FromMinutes(5);
             client.DefaultRequestHeaders.Add("Accept", "application/json");
             client.DefaultRequestHeaders.Add("X-Auth-Token", botToken);
             client.DefaultRequestHeaders.Add("X-User-Id", botId);
