@@ -5,6 +5,7 @@ using OWP.Core.NotificationRequests.OtherSport;
 using OWP.OtherSportNotification.Models;
 using OWP.OtherSportNotification.Services;
 using System.Text;
+using System.Text.Json;
 using Olympus.OWP.Log.Data.Repository.Criteria;
 
 namespace OWP.OtherSportNotification;
@@ -34,78 +35,174 @@ public class OtherSportNotificationHandler(
 
         await notificationService.Notify(messageModels);
 
-        await bBSectionService.InsertMessage(messages,request);
+        await bBSectionService.InsertMessage(messages, request);
         await MessageToChannel(request.UserName, cancellationToken);
         await MessageToTrader(aggregatedChangedValues, cancellationToken);
         return Unit.Value;
     }
 
-
-
-    private async Task MessageToTrader(IList<ChangedValue> changedValue,
-        CancellationToken cancellationToken)
+    private async Task MessageToTrader(IList<ChangedValue> changedValues, CancellationToken cancellationToken)
     {
         try
         {
-            if (!changedValue.Any())
+            if (!changedValues.Any())
             {
-                await LogDetailedPayload(ToGmt8(DateTime.Now), $"[OsNotification]-MessageToTrader - Success", "Nothing change");
-
+                await LogDetailedPayload(ToGmt8(DateTime.Now), "[OsNotification]-MessageToTrader - Success", "Nothing changed");
                 return;
             }
-            var msgModel= await rocketChatMessageFactory.BuildMessage(changedValue);
 
-            foreach (var msg in msgModel)
+            var messageModels = await rocketChatMessageFactory.BuildMessage(changedValues);
+            var failedMessages = new List<object>();
+
+            using var client = httpClientFactory.CreateClient("OWPChatBot");
+
+            foreach (var message in messageModels)
             {
-                var payload = new
-                {
-                    channel = $"@{msg.Recipient}",
-                    text = msg.Message
-                };
+                var wasSent = await SendMessageWithRetry(client, message, cancellationToken);
 
-                using var client = httpClientFactory.CreateClient("OWPChatBot");
-                var json = System.Text.Json.JsonSerializer.Serialize(payload);
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
-                var response = await client.PostAsync("api/v1/chat.postMessage", content, cancellationToken);
-                if (!response.IsSuccessStatusCode)
+                if (!wasSent)
                 {
-                    await LogDetailedPayload(ToGmt8(DateTime.Now), "[OsNotification] - Failed to send message to chat server: ", System.Text.Json.JsonSerializer.Serialize(response));
+                    failedMessages.Add(CreateMessagePayload(message));
                 }
-                var responseBody = await response.Content.ReadAsStringAsync(cancellationToken);
-                await LogDetailedPayload(ToGmt8(DateTime.Now), $"[OsNotification]-MessageToTrader {msg.Recipient}-Success", responseBody);
+
                 await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
             }
+
+            if (failedMessages.Any())
+            {
+                await LogDetailedPayload(ToGmt8(DateTime.Now), "[OsNotification]-MessageToTrader - Failed messages",
+                    JsonSerializer.Serialize(failedMessages));
+            }
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            await LogDetailedPayload(ToGmt8(DateTime.Now), $"[OsNotification]-MessageToTrader - fail", e.Message);
+            await LogDetailedPayload(ToGmt8(DateTime.Now), "[OsNotification]-MessageToTrader - Fatal error", ex.ToString());
         }
     }
+
+    private async Task<bool> SendMessageWithRetry(HttpClient client, RocketChatMessageModel message, CancellationToken cancellationToken)
+    {
+        const int maxRetries = 3;
+        const int retryDelaySeconds = 2;
+
+        var payload = CreateMessagePayload(message);
+
+        for (var attempt = 1; attempt <= maxRetries; attempt++)
+        {
+            try
+            {
+                var content = CreateHttpContent(payload);
+
+                var response = await client.PostAsync("api/v1/chat.postMessage", content, cancellationToken);
+                var responseBody = await response.Content.ReadAsStringAsync(cancellationToken);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    await LogDetailedPayload(ToGmt8(DateTime.Now),
+                        $"[OsNotification]-MessageToTrader {message.Recipient}-Success", responseBody);
+                    return true;
+                }
+
+                await LogDetailedPayload(ToGmt8(DateTime.Now),
+                    $"[OsNotification]-MessageToTrader - Attempt {attempt} failed to send message", responseBody);
+            }
+            catch (Exception ex)
+            {
+                var logMessage = $"Exception: {ex.ToString()}, Payload: {JsonSerializer.Serialize(payload)}";
+                await LogDetailedPayload(ToGmt8(DateTime.Now),
+                    $"[OsNotification]-MessageToTrader - Attempt {attempt} exception during message send", logMessage);
+            }
+
+            if (attempt < maxRetries)
+            {
+                await Task.Delay(TimeSpan.FromSeconds(retryDelaySeconds), cancellationToken);
+            }
+        }
+
+        return false;
+    }
+
+    private static object CreateMessagePayload(RocketChatMessageModel message)
+    {
+        return new
+        {
+            channel = $"@{message.Recipient}",
+            text = message.Message
+        };
+    }
+
+    private static StringContent CreateHttpContent(object payload)
+    {
+        var json = JsonSerializer.Serialize(payload);
+        return new StringContent(json, Encoding.UTF8, "application/json");
+    }
+
     private async Task MessageToChannel(string userName, CancellationToken cancellationToken)
     {
         try
         {
-            var payload = new
-            {
-                text = $"Hi all,\nLC updated (Last updated on **{ToGmt8(DateTime.Now).ToString("MMMM dd, yyyy hh:mm tt", CultureInfo.InvariantCulture)} (GMT+8)** by **{userName}**).\nPlease download the LC latest version.\nThanks"
-            };
+            var payload = CreateChannelMessagePayload(userName);
             var webHook = configuration["ChatServer:WebHook"];
+
             using var client = httpClientFactory.CreateClient("OWPChatAdmin");
-            var json = System.Text.Json.JsonSerializer.Serialize(payload);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await client.PostAsync(webHook, content,cancellationToken);
-            if (!response.IsSuccessStatusCode)
+
+            var wasSent = await SendChannelMessageWithRetry(client, webHook, payload, cancellationToken);
+
+            if (!wasSent)
             {
-                throw new Exception($"Failed to send message to channel LC_Update_Notification: {System.Text.Json.JsonSerializer.Serialize(response)}");
+                await LogDetailedPayload(ToGmt8(DateTime.Now), "[OsNotification]-MessageToChannel: LC_Update_Notification-Failed",
+                    "All retry attempts failed");
             }
-            var responseBody = await response.Content.ReadAsStringAsync(cancellationToken);
-            await LogDetailedPayload(ToGmt8(DateTime.Now), "[OsNotification]-MessageToChannel: LC_Update_Notification-Success", responseBody);
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            await LogDetailedPayload(ToGmt8(DateTime.Now), "[OsNotification]-MessageToChannel: LC_Update_Notification-fail", e.Message);
+            await LogDetailedPayload(ToGmt8(DateTime.Now), "[OsNotification]-MessageToChannel: LC_Update_Notification-Fatal error", ex.ToString());
+        }
+    }
+
+    private async Task<bool> SendChannelMessageWithRetry(HttpClient client, string webHook, object payload, CancellationToken cancellationToken)
+    {
+        const int maxRetries = 3;
+        const int retryDelaySeconds = 2;
+
+        for (var attempt = 1; attempt <= maxRetries; attempt++)
+        {
+            try
+            {
+                var content = CreateHttpContent(payload);
+                var response = await client.PostAsync(webHook, content, cancellationToken);
+                var responseBody = await response.Content.ReadAsStringAsync(cancellationToken);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    await LogDetailedPayload(ToGmt8(DateTime.Now), "[OsNotification]-MessageToChannel: LC_Update_Notification-Success", responseBody);
+                    return true;
+                }
+
+                await LogDetailedPayload(ToGmt8(DateTime.Now),
+                    $"[OsNotification]-MessageToChannel: LC_Update_Notification - Attempt {attempt} failed", responseBody);
+            }
+            catch (Exception ex)
+            {
+                await LogDetailedPayload(ToGmt8(DateTime.Now),
+                    $"[OsNotification]-MessageToChannel: LC_Update_Notification - Attempt {attempt} exception", ex.ToString());
+            }
+
+            if (attempt < maxRetries)
+            {
+                await Task.Delay(TimeSpan.FromSeconds(retryDelaySeconds), cancellationToken);
+            }
         }
 
+        return false;
+    }
+
+    private static object CreateChannelMessagePayload(string userName)
+    {
+        return new
+        {
+            text = $"Hi all,\nLC updated (Last updated on **{ToGmt8(DateTime.Now).ToString("MMMM dd, yyyy hh:mm tt", CultureInfo.InvariantCulture)} (GMT+8)** by **{userName}**).\nPlease download the LC latest version.\nThanks"
+        };
     }
 
     private async Task LogDetailedPayload(DateTime CreatedDate, string Action, string Payload)
