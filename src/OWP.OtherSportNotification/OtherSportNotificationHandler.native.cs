@@ -8,6 +8,8 @@ using System.Text.Json;
 using Olympus.OWP.Log.Data.Repository.Criteria;
 using System.Net.Http.Json;
 using Fanex.Logging;
+using Fanex.Caching;
+using Newtonsoft.Json;
 
 namespace OWP.OtherSportNotification;
 
@@ -29,6 +31,13 @@ public class RCResponse
     public List<string> Message { get; set; } = [];
 }
 
+public class LastUpdateInfo
+{
+    public DateTime Date { get; set; }
+
+    public string Username { get; set; }
+}
+
 public class OtherSportNotificationHandler(
     ChangedValueByCacheAndDatabase changedValueByCacheAndDatabase,
     AssigneeChangedValueFilter assigneeChangedValueFilter,
@@ -40,12 +49,15 @@ public class OtherSportNotificationHandler(
     IncludeBBSectionService bBSectionService,
     IHttpClientFactory httpClientFactory,
     IConfiguration configuration,
-    ILogger logger)
+    ILogger logger,
+    ICache cache)
     : IRequestHandler<OtherSportNotificationRequest, Unit>
 {
     private const string ChannelName = "#LC_Update_Notification";
     private const int maxRetries = 3;
     private const int retryDelaySeconds = 2;
+    private const string KEY_OS_UPLOAD_LAST_UPDATED = "OWP-OS-AssignmentUpload-Last-Updated";
+
     public async Task<Unit> Handle(OtherSportNotificationRequest request, CancellationToken cancellationToken)
     {
         var messages = await changedValueByCacheAndDatabase.Create(request.SessionId, request.FromDate, request.ToDate);
@@ -95,6 +107,17 @@ public class OtherSportNotificationHandler(
         await client.PostAsync("api/v1/logout", null);
     }
 
+    public async Task<string> GetLastUpdate()
+    {
+        var (_, value) = await cache.TryGetAsync<string>(KEY_OS_UPLOAD_LAST_UPDATED);
+
+        var lastUpdated = string.IsNullOrEmpty(value)
+            ? new LastUpdateInfo()
+            : JsonConvert.DeserializeObject<LastUpdateInfo>(value);
+
+        return lastUpdated.Date.ToString("MMMM dd, yyyy hh:mm tt");
+    }
+
     private async Task LoginToRc(HttpClient client)
     {
         try
@@ -119,7 +142,7 @@ public class OtherSportNotificationHandler(
         }
        
     }
-    private async Task MessageToTrader(HttpClient client, IList<ChangedValue> changedValues, string uplodBy)
+    private async Task MessageToTrader(HttpClient client, IList<ChangedValue> changedValues, string uploadBy)
     {
         try
         {
@@ -138,7 +161,7 @@ public class OtherSportNotificationHandler(
 
                 rcResponse.Add(new
                 {
-                    uploadBy= uplodBy,
+                    uploadBy= uploadBy,
                     user = message.Recipient,
                     message = messageResponse,
                 });
@@ -147,7 +170,7 @@ public class OtherSportNotificationHandler(
             }
 
             await LogDetailedPayload(ToGmt8(DateTime.Now), "[OsNotification]-MessageToTrader",
-                JsonSerializer.Serialize(rcResponse));
+                System.Text.Json.JsonSerializer.Serialize(rcResponse));
         }
         catch (Exception ex)
         {
@@ -185,7 +208,7 @@ public class OtherSportNotificationHandler(
             }
             catch (Exception ex)
             {
-                var exMessage = $"Exception: {ex.ToString()}, message info: {JsonSerializer.Serialize(message)}";
+                var exMessage = $"Exception: {ex.ToString()}, message info: {System.Text.Json.JsonSerializer.Serialize(message)}";
                 rcResponse.Success = false;
                 rcResponse.Message.Add($"Attempt {attempt} exception during message send reason: {exMessage}");
             }
@@ -211,7 +234,7 @@ public class OtherSportNotificationHandler(
                 message = messageResponse
             });
             await LogDetailedPayload(ToGmt8(DateTime.Now), "[OsNotification]-MessageToChannel: LC_Update_Notification-Fatal",
-                JsonSerializer.Serialize(rcResponse));
+                System.Text.Json.JsonSerializer.Serialize(rcResponse));
         }
         catch (Exception ex)
         {
@@ -220,7 +243,7 @@ public class OtherSportNotificationHandler(
         }
     }
 
-    private static async Task<RCResponse> SendChannelMessageWithRetry(
+    private async Task<RCResponse> SendChannelMessageWithRetry(
         HttpClient client,
         string userName)
     {
@@ -230,7 +253,7 @@ public class OtherSportNotificationHandler(
             var message = new
             {
                 channel = ChannelName,
-                text = $"Hi all,\nLC updated (Last updated on **{ToGmt8(DateTime.Now).ToString("MMMM dd, yyyy hh:mm tt", CultureInfo.InvariantCulture)} (GMT+8)** by **{userName}**).\nPlease download the LC latest version.\nThanks"
+                text = $"Hi all,\nLC updated (Last updated on **{await GetLastUpdate()} (GMT+8)** by **{userName}**).\nPlease download the LC latest version.\nThanks"
             };
 
             try
@@ -251,7 +274,7 @@ public class OtherSportNotificationHandler(
             }
             catch (Exception ex)
             {
-                var exMessage = $"Exception: {ex.ToString()}, message info: {JsonSerializer.Serialize(message)}";
+                var exMessage = $"Exception: {ex.ToString()}, message info: {System.Text.Json.JsonSerializer.Serialize(message)}";
                 rcResponse.Success = false;
                 rcResponse.Message.Add($"Attempt {attempt} exception during message send reason: {exMessage}");
             }
