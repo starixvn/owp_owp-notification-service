@@ -72,6 +72,7 @@ public class OtherSportNotificationHandler(
             await LoginToRc(client);
             await MessageToChannel(client, userName);
             await MessageToTrader(client, changedValues, userName);
+            await LogOutRC(client);
         }
         catch (Exception e)
         {
@@ -88,6 +89,12 @@ public class OtherSportNotificationHandler(
         client.DefaultRequestHeaders.Add("Accept", "application/json");
         return client;
     }
+
+    private static async Task LogOutRC(HttpClient client)
+    {
+        await client.PostAsync("api/v1/logout", null);
+    }
+
     private async Task LoginToRc(HttpClient client)
     {
         try
