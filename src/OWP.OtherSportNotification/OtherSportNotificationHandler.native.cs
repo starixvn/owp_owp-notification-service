@@ -72,18 +72,18 @@ public class OtherSportNotificationHandler(
 
         await bBSectionService.InsertMessage(messages, request);
 
-        await SendMessageToRc(aggregatedChangedValues, request.UserName);
+        await SendMessageToRc(aggregatedChangedValues, request.UserName, request.SessionId);
         return Unit.Value;
     }
 
-    private async Task SendMessageToRc(IList<ChangedValue> changedValues, string userName)
+    private async Task SendMessageToRc(IList<ChangedValue> changedValues, string userName, string sessionId)
     {
         try
         {
             var client = CreateClient();
             await LoginToRc(client);
-            await MessageToChannel(client, userName);
-            await MessageToTrader(client, changedValues, userName);
+            await MessageToChannel(client, userName, sessionId);
+            await MessageToTrader(client, changedValues, userName, sessionId);
             await LogOutRC(client);
         }
         catch (Exception e)
@@ -142,7 +142,11 @@ public class OtherSportNotificationHandler(
         }
        
     }
-    private async Task MessageToTrader(HttpClient client, IList<ChangedValue> changedValues, string uploadBy)
+    private async Task MessageToTrader(
+        HttpClient client, 
+        IList<ChangedValue> changedValues, 
+        string uploadBy,
+        string sessionId)
     {
         try
         {
@@ -153,24 +157,34 @@ public class OtherSportNotificationHandler(
             }
 
             var messageModels = await rocketChatMessageFactory.BuildMessage(changedValues);
-            var rcResponse = new List<object>();
+            var rcResponseSuccess = new List<object>();
+            var rcResponseFail = new List<object>();
 
             foreach (var message in messageModels)
             {
                 var messageResponse = await SendMessageWithRetry(client, message);
-
-                rcResponse.Add(new
+                if (messageResponse.Success)
                 {
-                    uploadBy= uploadBy,
-                    user = message.Recipient,
-                    message = messageResponse,
-                });
-
+                    rcResponseSuccess.Add(new
+                    {
+                        recipient = message.Recipient,
+                        message = messageResponse,
+                    });
+                }
+                else
+                {
+                    rcResponseFail.Add(new
+                    {
+                        recipient = message.Recipient,
+                        message = messageResponse,
+                    });
+                }
+                
                 await Task.Delay(TimeSpan.FromSeconds(1));
             }
-
-            await LogDetailedPayload(ToGmt8(DateTime.Now), "[OsNotification]-MessageToTrader",
-                System.Text.Json.JsonSerializer.Serialize(rcResponse));
+           
+            await LogRcResponse("[OsNotification]-MessageToTrader - Success", rcResponseSuccess, uploadBy, sessionId);
+            await LogRcResponse("[OsNotification]-MessageToTrader - Fail", rcResponseFail, uploadBy, sessionId);
         }
         catch (Exception ex)
         {
@@ -179,7 +193,24 @@ public class OtherSportNotificationHandler(
         }
     }
 
-    private static async Task<RCResponse> SendMessageWithRetry(HttpClient client, RocketChatMessageModel message)
+    private async Task LogRcResponse(
+        string action, IList<object> payload, string uploadBy, string sessionId)
+    {
+        if (payload.Any())
+        {
+            await LogDetailedPayload(ToGmt8(DateTime.Now), action,
+                System.Text.Json.JsonSerializer.Serialize(new
+                {
+                    sessionId,
+                    uploadBy,
+                    payload
+                }));
+        }
+       
+    }
+    private static async Task<RCResponse> SendMessageWithRetry(
+        HttpClient client, 
+        RocketChatMessageModel message)
     {
         var imCreateResponse = await client.PostAsJsonAsync("api/v1/im.create", new { username = message.Recipient });
         var imResult = await imCreateResponse.Content.ReadFromJsonAsync<JsonElement>();
@@ -221,20 +252,26 @@ public class OtherSportNotificationHandler(
         return rcResponse;
     }
 
-    private async Task MessageToChannel(HttpClient client, string userName)
+    private async Task MessageToChannel(HttpClient client, string userName, string sessionId)
     {
         try
         {
-            var rcResponse = new List<object>();
             var messageResponse = await SendChannelMessageWithRetry(client, userName);
-            rcResponse.Add(new
+            var logInfo=new
             {
+                sessionId = sessionId,
                 uploadBy = userName,
                 channel = ChannelName,
                 message = messageResponse
-            });
-            await LogDetailedPayload(ToGmt8(DateTime.Now), "[OsNotification]-MessageToChannel: LC_Update_Notification-Fatal",
-                System.Text.Json.JsonSerializer.Serialize(rcResponse));
+            };
+
+            var logAction= "[OsNotification]-MessageToChannel: LC_Update_Notification - Success";
+            if (!messageResponse.Success)
+            {
+                logAction= "[OsNotification]-MessageToChannel: LC_Update_Notification - Fail";
+            }
+            await LogDetailedPayload(ToGmt8(DateTime.Now), logAction,
+                System.Text.Json.JsonSerializer.Serialize(logInfo));
         }
         catch (Exception ex)
         {
