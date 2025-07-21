@@ -27,6 +27,7 @@ services.AddAutoMapper();
 services.Configure<RabbitMQSetting>(builder.Configuration.GetSection(RabbitMQSetting.RabbitMQ));
 
 // Add internal service
+services.AddHttpClient();
 services.AddCoreServices();
 services.AddRabbitMQ();
 services.AddTicket();
@@ -40,7 +41,6 @@ services.AddSingleton<GarbageCollectorJob>();
 services.AddHostedService<MessageServer>();
 services.AddHostedService<GarbageCollectorJob>();
 
-services.AddHttpClientFactory(configuration);
 
 
 var app = builder.Build();
