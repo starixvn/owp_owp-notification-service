@@ -50,7 +50,7 @@ public class OtherSportNotificationHandler(
     CacheManipulator cacheManipulator)
     : IRequestHandler<OtherSportNotificationRequest, Unit>
 {
-    
+
     public async Task<Unit> Handle(OtherSportNotificationRequest request, CancellationToken cancellationToken)
     {
         var messages = await changedValueByCacheAndDatabase.Create(request.SessionId, request.FromDate, request.ToDate);
@@ -119,22 +119,50 @@ public class OtherSportNotificationHandler(
     {
         var assignmentsToNotify = assignments.Where(x => matchesToUnlink.Contains(x.OSMatchId)).ToList();
 
-        foreach (var assignment in assignmentsToNotify)
+        // Sort by sport (Basketball, Tennis, Other Sport) and then by earliest kick-off time
+        var sortedAssignments = assignmentsToNotify
+            .OrderBy(x => GetSportPriority(x.Sport))
+            .ThenBy(x => x.DateTime)
+            .ToList();
+
+        var unlinkNotificationList = new List<UnlinkNotificationList>();
+
+        foreach (var assignment in sortedAssignments)
         {
             var notificationMessage = CreateMatchNotificationMessage(assignment);
-            SendNotification(notificationMessage);//call api
+            unlinkNotificationList.Add(new UnlinkNotificationList
+            {
+                OsMatchId = assignment.OSMatchId,
+                Message = notificationMessage
+            });
         }
+
+        SendNotification(unlinkNotificationList);
+    }
+
+    private int GetSportPriority(string sport)
+    {
+        return sport?.ToLower() switch
+        {
+            "basketball" => 1,
+            "tennis" => 2,
+            _ => 3 // Other Sport
+        };
     }
 
     private string CreateMatchNotificationMessage(MatchInfo assignment)
     {
-        return $"\nSport: {assignment.Sport}\nK.O Time: {assignment.DateTime.ToString("HH:mm")}\nLeague: {assignment.League}\nMatch: {assignment.Home} - {assignment.Away}\n--------";
+        return $"{assignment.Sport}\nK.O Time: {assignment.DateTime.ToString("yyyy-MM-dd HH:mm")}\nLeague: {assignment.League}\nMatch: {assignment.Home} - {assignment.Away}";
+    }
+    
+    private void SendNotification(List<UnlinkNotificationList> unlinkNotificationList)
+    {
+        foreach (var notification in unlinkNotificationList)
+        {
+            Console.WriteLine($"\n{notification.Message}\n--------------------------------");
+        }
     }
 
-    private void SendNotification(string notificationMessage)
-    {
-        Console.WriteLine($"Notification: {notificationMessage}");
-    }
 
 
 }
