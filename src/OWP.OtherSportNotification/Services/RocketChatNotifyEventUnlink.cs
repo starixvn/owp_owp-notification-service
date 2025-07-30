@@ -98,8 +98,15 @@ namespace OWP.OtherSportNotification.Services
                 var batch = messagesList.Skip(i).Take(BATCH_SIZE).ToList();
                 var messages = batch.Select(x => x.Message).ToList();
 
-                await SendBatch(client, messages, request);
-                await cacheManipulator.AddMoreMatchIdsToCache(eventDate, batch.Select(x => x.OsMatchId).ToList());
+                try
+                {
+                    await SendBatch(client, messages, request);
+                    await cacheManipulator.AddMoreMatchIdsToCache(eventDate, batch.Select(x => x.OsMatchId).ToList());
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Failed to send batch notification: {e.Message}");
+                }
             }
         }
 
