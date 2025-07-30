@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Linq.Expressions;
+using MediatR;
 using OWP.Core.NotificationRequests.OtherSport;
 using OWP.OtherSportNotification.Models;
 
@@ -46,11 +47,11 @@ namespace OWP.OtherSportNotification.Services
             var previouslyNotifiedMatches = await cacheManipulator.GetNotificatedMatchesUnlink(eventDate);
             var matchesToUnlink = newMatchIds.Except(previouslyNotifiedMatches).ToList();
 
-            SendUnlinkNotification(client, matchesToUnlink, assignments, request);
+            await SendUnlinkNotification(client, matchesToUnlink, assignments, request, eventDate);
 
         }
 
-        private void SendUnlinkNotification(HttpClient client, List<int> matchesToUnlink, List<MatchInfo> assignments, OtherSportNotificationRequest request)
+        private async Task SendUnlinkNotification(HttpClient client, List<int> matchesToUnlink, List<MatchInfo> assignments, OtherSportNotificationRequest request, DateTime eventDate)
         {
             var assignmentsToNotify = assignments.Where(x => matchesToUnlink.Contains(x.OSMatchId)).ToList();
 
@@ -72,7 +73,7 @@ namespace OWP.OtherSportNotification.Services
             }
 
             // TODO
-           //endNotification(client, unlinkNotificationList.Select(u => u.Message.ToList());
+           await SendNotification(client, unlinkNotificationList, request, eventDate);
         }
 
         private int GetSportPriority(string sport)
@@ -90,14 +91,15 @@ namespace OWP.OtherSportNotification.Services
             return $"{assignment.Sport}\nK.O Time: {assignment.DateTime.ToString("yyyy-MM-dd HH:mm")}\nLeague: {assignment.League}\nMatch: {assignment.Home} - {assignment.Away}";
         }
 
-        private async Task SendNotification(HttpClient client, List<string> messagesList,OtherSportNotificationRequest request)
+        private async Task SendNotification(HttpClient client, List<UnlinkNotificationList> messagesList,OtherSportNotificationRequest request, DateTime eventDate)
         {
             for (var i = 0; i < messagesList.Count; i += BATCH_SIZE)
             {
                 var batch = messagesList.Skip(i).Take(BATCH_SIZE).ToList();
+                var messages = batch.Select(x => x.Message).ToList();
 
-                // Send this batch
-                await SendBatch(client, batch, request);
+                await SendBatch(client, messages, request);
+                await cacheManipulator.AddMoreMatchIdsToCache(eventDate, batch.Select(x => x.OsMatchId).ToList());
             }
         }
 
