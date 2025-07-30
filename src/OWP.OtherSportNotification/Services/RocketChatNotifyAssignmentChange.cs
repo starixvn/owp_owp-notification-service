@@ -2,6 +2,7 @@
 using OWP.OtherSportNotification.Models;
 using System.Net.Http.Json;
 using System.Text.Json;
+using OWP.Core.NotificationRequests.OtherSport;
 
 namespace OWP.OtherSportNotification.Services
 {
@@ -10,8 +11,7 @@ namespace OWP.OtherSportNotification.Services
         Task MessageToTrader(
             HttpClient client,
             IList<ChangedValue> changedValues,
-            string uploadBy,
-            string sessionId);
+            OtherSportNotificationRequest request);
     }
 
     public class RocketChatNotifyAssignmentChangeImp(
@@ -24,8 +24,7 @@ namespace OWP.OtherSportNotification.Services
         public async Task MessageToTrader(
             HttpClient client,
             IList<ChangedValue> changedValues,
-            string uploadBy,
-            string sessionId)
+            OtherSportNotificationRequest request)
         {
             try
             {
@@ -62,8 +61,8 @@ namespace OWP.OtherSportNotification.Services
                     await Task.Delay(TimeSpan.FromSeconds(1));
                 }
 
-                await LogRcResponse("[OsNotification]-MessageToTrader - Success", rcResponseSuccess, uploadBy, sessionId);
-                await LogRcResponse("[OsNotification]-MessageToTrader - Fail", rcResponseFail, uploadBy, sessionId);
+                await LogRcResponse("[OsNotification]-MessageToTrader - Success", rcResponseSuccess, request.UserName, request.SessionId);
+                await LogRcResponse("[OsNotification]-MessageToTrader - Fail", rcResponseFail, request.UserName, request.SessionId);
             }
             catch (Exception ex)
             {

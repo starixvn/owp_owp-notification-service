@@ -28,9 +28,9 @@ namespace OWP.OtherSportNotification.Services
             {
                 CreateClient();
                 await LoginToRc();
-                await notifyUploadAssignment.MessageToChannel(client, request.UserName, request.SessionId);
-                await notifyAssignmentChange.MessageToTrader(client, changedValues, request.UserName, request.SessionId);
-                await notifyEventUnlink.SendMessageUnlinkEvent(request.SessionId, request.FromDate, request.ToDate);
+                await notifyUploadAssignment.MessageToChannel(client, request);
+                await notifyAssignmentChange.MessageToTrader(client, changedValues, request);
+                await notifyEventUnlink.SendMessageUnlinkEvent(client, request);
                 await LogOutRC();
             }
             catch (Exception e)

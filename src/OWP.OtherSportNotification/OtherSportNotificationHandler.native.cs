@@ -46,8 +46,7 @@ public class OtherSportNotificationHandler(
     MessageToRocketChat messageToRc,
     OtherSportRepository repository,
     NotificationService notificationService,
-    IncludeBBSectionService bBSectionService,
-    RocketChatNotifyEventUnlink notifyEventUnlink)
+    IncludeBBSectionService bBSectionService)
     : IRequestHandler<OtherSportNotificationRequest, Unit>
 {
 
@@ -65,8 +64,6 @@ public class OtherSportNotificationHandler(
 
         await bBSectionService.InsertMessage(messages, request);
         await messageToRc.Send(aggregatedChangedValues, request);
-        await notifyEventUnlink.SendMessageUnlinkEvent(request.SessionId, request.FromDate, request.ToDate);
-
 
         return Unit.Value;
     }
