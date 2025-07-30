@@ -1,4 +1,5 @@
-﻿using OWP.OtherSportNotification.Models;
+﻿using System.Threading.Tasks;
+using OWP.OtherSportNotification.Models;
 
 namespace OWP.OtherSportNotification.Services
 {
@@ -10,10 +11,7 @@ namespace OWP.OtherSportNotification.Services
     public class RocketChatNotifyEventUnlinkImp(OtherSportRepository repository,
         CacheManipulator cacheManipulator) : RocketChatNotifyEventUnlink
     {
-        public async Task SendMessageUnlinkEvent(
-        string sessionId,
-        DateTime fromDate,
-        DateTime toDate)
+        public async Task SendMessageUnlinkEvent(string sessionId,DateTime fromDate,DateTime toDate)
         {
             var newSnapshot = await repository.Query(fromDate, toDate);
             var matches = newSnapshot.Matches.Values;
@@ -35,8 +33,6 @@ namespace OWP.OtherSportNotification.Services
             {
                 await ProcessUnlinkNotificationForDate(eventDate, newMatchIds, matches.ToList());
             }
-
-
         }
 
         private async Task ProcessUnlinkNotificationForDate(DateTime eventDate, List<int> newMatchIds, List<MatchInfo> assignments)
@@ -44,22 +40,15 @@ namespace OWP.OtherSportNotification.Services
             var previouslyNotifiedMatches = await cacheManipulator.GetNotificatedMatchesUnlink(eventDate);
             var matchesToUnlink = newMatchIds.Except(previouslyNotifiedMatches).ToList();
 
-            SendUnlinkNotification(eventDate, matchesToUnlink, assignments);
+            await SendUnlinkNotification(eventDate, matchesToUnlink, assignments);
 
-            // Combine previously notified matches with new matches to unlink
-            var updatedNotifiedMatches = previouslyNotifiedMatches.Union(matchesToUnlink).ToList();
-            if (updatedNotifiedMatches.Count != previouslyNotifiedMatches.Count)
-            {
-                await cacheManipulator.SaveNotificatedMatchesUnlink(eventDate, updatedNotifiedMatches);
-            }
         }
 
 
-        private void SendUnlinkNotification(DateTime eventDate, List<int> matchesToUnlink, List<MatchInfo> assignments)
+        private async Task SendUnlinkNotification(DateTime eventDate, List<int> matchesToUnlink, List<MatchInfo> assignments)
         {
             var assignmentsToNotify = assignments.Where(x => matchesToUnlink.Contains(x.OSMatchId)).ToList();
 
-            // Sort by sport (Basketball, Tennis, Other Sport) and then by earliest kick-off time
             var sortedAssignments = assignmentsToNotify
                 .OrderBy(x => GetSportPriority(x.Sport))
                 .ThenBy(x => x.DateTime)
@@ -77,7 +66,7 @@ namespace OWP.OtherSportNotification.Services
                 });
             }
 
-            SendNotification(unlinkNotificationList);
+            await SendNotification(unlinkNotificationList, eventDate);
         }
 
         private int GetSportPriority(string sport)
@@ -86,7 +75,7 @@ namespace OWP.OtherSportNotification.Services
             {
                 "basketball" => 1,
                 "tennis" => 2,
-                _ => 3 // Other Sport
+                _ => 3 
             };
         }
 
@@ -95,11 +84,13 @@ namespace OWP.OtherSportNotification.Services
             return $"{assignment.Sport}\nK.O Time: {assignment.DateTime.ToString("yyyy-MM-dd HH:mm")}\nLeague: {assignment.League}\nMatch: {assignment.Home} - {assignment.Away}";
         }
 
-        private void SendNotification(List<UnlinkNotificationList> unlinkNotificationList)
+        private async Task SendNotification(List<UnlinkNotificationList> unlinkNotificationList, DateTime eventDate)
         {
             foreach (var notification in unlinkNotificationList)
             {
                 Console.WriteLine($"\n{notification.Message}\n--------------------------------");
+
+                await cacheManipulator.AddMoreMatchIdsToCache(eventDate, [notification.OsMatchId]);
             }
         }
     }

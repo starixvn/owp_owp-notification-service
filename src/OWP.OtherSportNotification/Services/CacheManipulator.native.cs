@@ -10,6 +10,7 @@ public interface CacheManipulator
     Task<AssignmentSnapshot> GetAssignmentSnapshot(string sessionId);
     Task SaveNotificatedMatchesUnlink(DateTime eventDate, List<int> osMatchIds);
     Task<List<int>> GetNotificatedMatchesUnlink(DateTime eventDate);
+    Task AddMoreMatchIdsToCache(DateTime eventDate, List<int> additionalMatchIds);
 }
 
 public class CacheManipulatorImp(ICache cache) : CacheManipulator
@@ -66,5 +67,12 @@ public class CacheManipulatorImp(ICache cache) : CacheManipulator
         var (_, value) = await cache.TryGetAsync<List<int>>(cacheKey);
 
         return value ?? [];
+    }
+
+    public async Task AddMoreMatchIdsToCache(DateTime eventDate, List<int> additionalMatchIds)
+    {
+        var existingMatchIds = await GetNotificatedMatchesUnlink(eventDate);
+        var updatedMatchIds = existingMatchIds.Union(additionalMatchIds).ToList();
+        await SaveNotificatedMatchesUnlink(eventDate, updatedMatchIds);
     }
 }
