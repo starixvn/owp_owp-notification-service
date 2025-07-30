@@ -29,7 +29,10 @@ public static class DependenceInjection
         services.AddTransient<NotificationService, NotificationServiceImp>();
         services.AddTransient<IncludeBBSectionService, IncludeBBSectionServiceImp>();
         services.AddTransient<RocketChatMessageFactory, RocketChatMessageFactoryImp>();
-        services.AddTransient<MessageToRc, MessageToRcImp>();
+        services.AddTransient<MessageToRocketChat, MessageToRocketChatImp>();
+        services.AddTransient<RocketChatNotifyUploadAssignment, RocketChatNotifyUploadAssignmentImp>();
+        services.AddTransient<RocketChatNotifyAssignmentChange, RocketChatNotifyAssignmentChangeImp>();
+        services.AddTransient<RocketChatNotifyEventUnlink, RocketChatNotifyEventUnlinkImp>();
 
         return services;
     }
