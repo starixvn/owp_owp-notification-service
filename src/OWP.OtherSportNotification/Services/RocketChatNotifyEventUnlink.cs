@@ -22,12 +22,10 @@ namespace OWP.OtherSportNotification.Services
             var matches = newSnapshot.Matches.Values;
             var newMatchIds = matches
                 .Where(x => x.OfferLive == "Live" && x.AdminsiteMatchId is null)
-                .Select(x => x.OSMatchId)
-                .Distinct()
                 .ToList();
 
             var eventDates = new List<DateTime>();
-            var diffDays = request.FromDate - request.ToDate;
+            var diffDays = request.ToDate - request.FromDate;
 
             for (var i = 0; i <= diffDays.TotalDays; i++)
             {
@@ -36,7 +34,14 @@ namespace OWP.OtherSportNotification.Services
 
             foreach (var eventDate in eventDates)
             {
-                await ProcessUnlinkNotificationForDate(client, eventDate, newMatchIds, matches.ToList(), request);
+                var eventDateMatches = newMatchIds
+                    .Where(x => 
+                    x.DateTime >= eventDate.Date.AddHours(12) && 
+                    x.DateTime < eventDate.Date.AddDays(1).AddHours(12)
+                ).Select(x => x.OSMatchId)
+                .Distinct()
+                .ToList();
+                await ProcessUnlinkNotificationForDate(client, eventDate, eventDateMatches, matches.ToList(), request);
             }
         }
 
@@ -88,7 +93,7 @@ namespace OWP.OtherSportNotification.Services
 
         private string CreateMatchNotificationMessage(MatchInfo assignment)
         {
-            return $"{assignment.Sport}\nK.O Time: {assignment.DateTime.ToString("yyyy-MM-dd HH:mm")}\nLeague: {assignment.League}\nMatch: {assignment.Home} - {assignment.Away}";
+            return $"**{assignment.Sport}**\nK.O Time: {assignment.DateTime.ToString("yyyy-MM-dd HH:mm")}\nLeague: {assignment.League}\nMatch: {assignment.Home} - {assignment.Away}";
         }
 
         private async Task SendNotification(HttpClient client, List<UnlinkNotificationList> messagesList,OtherSportNotificationRequest request, DateTime eventDate)
