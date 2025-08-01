@@ -1,7 +1,13 @@
-﻿using System.Linq.Expressions;
+﻿using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Reflection.Metadata.Ecma335;
+using Fanex.Logging;
 using MediatR;
+using Microsoft.AspNetCore.Mvc.Diagnostics;
+using Newtonsoft.Json;
 using OWP.Core.NotificationRequests.OtherSport;
 using OWP.OtherSportNotification.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace OWP.OtherSportNotification.Services
 {
@@ -12,117 +18,131 @@ namespace OWP.OtherSportNotification.Services
 
     public class RocketChatNotifyEventUnlinkImp(OtherSportRepository repository,
         CacheManipulator cacheManipulator,
-        RocketChatMessageToChannel messageToChannel) : RocketChatNotifyEventUnlink
+        RocketChatMessageToChannel messageToChannel,
+        ILogger logger) : RocketChatNotifyEventUnlink
     {
-        int BATCH_SIZE = 10;
+        const int BATCH_SIZE = 10;
         private const string ChannelName = "#MissingGameNotify";
         public async Task SendMessageUnlinkEvent(HttpClient client, OtherSportNotificationRequest request)
         {
+            //await Task.Delay(TimeSpan.FromSeconds(150));
+            var eventsUnlinkInfo = await GetEventsUnlink(request);
+            var (fromDate, toDate) = NormalizeTimeRange(request.FromDate, request.ToDate);
+            var (basketballGroup, tennisGroup, otherGroup) = CategoryEventBySportType(eventsUnlinkInfo);
+            var eventsWillSendNotyBasketballGroup= await BuildEventWillSendNoty(fromDate, toDate, basketballGroup);
+            var eventsWillSendNotyTennisGroup = await BuildEventWillSendNoty(fromDate, toDate, tennisGroup);
+            var eventsWillSendNotyOtherGroup = await BuildEventWillSendNoty(fromDate, toDate, otherGroup);
+
+            var allEvents = eventsWillSendNotyBasketballGroup
+                .Concat(eventsWillSendNotyTennisGroup)
+                .Concat(eventsWillSendNotyOtherGroup)
+                .ToList();
+
+            var osIdAlreadySendNoty= await SendMessagesInBatches(client, allEvents, request);
+            await CacheEventAlreadySendNoty(fromDate, toDate, osIdAlreadySendNoty, allEvents);
+        }
+
+        
+        private async Task<IList<MatchInfo>> BuildEventWillSendNoty(DateTime fromDate, DateTime toDate, IList<MatchInfo> groupEvents)
+        {
+            var listEventWillSendNoty = new List<MatchInfo>();
+            for (var day = fromDate; day <= toDate; day = day.AddDays(1))
+            {
+                var eventsUnlinkInDay = GetEventsInDay(day, groupEvents);
+                var eventWillSendNoty= await RemoveEventAlreadySendNotyInDay(eventsUnlinkInDay, day);
+                listEventWillSendNoty.AddRange(eventWillSendNoty);
+            }
+
+            return OrderEventsByKO(listEventWillSendNoty);
+
+        }
+
+        private async Task CacheEventAlreadySendNoty(DateTime fromDate, DateTime toDate, IList<int>osIdAlreadySendNoty, IList<MatchInfo> eventsUnlink)
+        {
+            var eventsAlreadySendNoty = eventsUnlink.Where(e => osIdAlreadySendNoty.Contains(e.OSMatchId)).ToList();
+            for (var day = fromDate; day <= toDate; day = day.AddDays(1))
+            {
+                var osIdAlreadySendNotyInDay = 
+                    GetEventsInDay(day, eventsAlreadySendNoty)
+                        .Select(e=>e.OSMatchId)
+                        .ToList();
+                await cacheManipulator.AddMoreMatchIdsToCache(day, osIdAlreadySendNotyInDay);
+            }
+        }
+
+        private async Task<IList<MatchInfo>> RemoveEventAlreadySendNotyInDay(IList<MatchInfo> events, DateTime date)
+        {
+            var osMatchIdAlreadySendNoty = await cacheManipulator.GetNotificatedMatchesUnlink(date);
+
+            return events.Where(e => !osMatchIdAlreadySendNoty.Contains(e.OSMatchId)).ToList();
+        }
+
+        private IList<MatchInfo> OrderEventsByKO(IList<MatchInfo> events)=> events.OrderByDescending(x => x.DateTime).ToList();
+
+        private (IList<MatchInfo> basketballGroup, IList<MatchInfo> tennisGroup, IList<MatchInfo> otherGroup) CategoryEventBySportType(IList<MatchInfo> eventsUnlinkInfo)
+        {
+            var basketballGroup = CategoryEventBySportType(eventsUnlinkInfo, sport=>sport.Equals("Basketball", StringComparison.OrdinalIgnoreCase)) ;
+                
+            var tennisGroup = CategoryEventBySportType(eventsUnlinkInfo, sport => sport.Equals("Tennis", StringComparison.OrdinalIgnoreCase));
+            
+           
+            var otherGroup = CategoryEventBySportType(eventsUnlinkInfo, sport => !sport.Equals("Basketball", StringComparison.OrdinalIgnoreCase) &&
+                !sport.Equals("Tennis", StringComparison.OrdinalIgnoreCase));
+
+            return (basketballGroup, tennisGroup, otherGroup);
+        }
+
+        private IList<MatchInfo> CategoryEventBySportType(IList<MatchInfo> events, Func<string,bool> predicate)
+        {
+            return events
+                .Where(x => predicate(x.Sport))
+                .ToList();
+        }
+
+        private IList<MatchInfo> GetEventsInDay(DateTime targetDay, IList<MatchInfo> eventsUnlinkInfo)
+        {
+            var (dayStart, dayEnd) = NormalizeTimeRange(targetDay, targetDay);
+            var eventsUnlinkInDay = eventsUnlinkInfo.Where(
+                e => e.DateTime >= dayStart && e.DateTime <= dayEnd);
+            return eventsUnlinkInDay.ToList();
+        }
+
+        private (DateTime fromDate, DateTime toDate) NormalizeTimeRange(DateTime dayStart, DateTime dayEnd)
+        => (dayStart.Date.AddHours(12), dayEnd.Date.AddDays(1).AddHours(11).AddMinutes(59));
+
+        private async Task<IList<MatchInfo>> GetEventsUnlink(OtherSportNotificationRequest request)
+        {
             var newSnapshot = await repository.Query(request.FromDate, request.ToDate);
             var matches = newSnapshot.Matches.Values;
-            var newMatchIds = matches
+            return matches
                 .Where(x => x.OfferLive == "Live" && x.AdminsiteMatchId is null)
                 .ToList();
-
-            var eventDates = new List<DateTime>();
-            var diffDays = request.ToDate - request.FromDate;
-
-            for (var i = 0; i <= diffDays.TotalDays; i++)
-            {
-                eventDates.Add(request.FromDate.AddDays(i));
-            }
-
-            foreach (var eventDate in eventDates)
-            {
-                var eventDateMatches = newMatchIds
-                    .Where(x => 
-                    x.DateTime >= eventDate.Date.AddHours(12) && 
-                    x.DateTime < eventDate.Date.AddDays(1).AddHours(12)
-                ).Select(x => x.OSMatchId)
-                .Distinct()
-                .ToList();
-                await ProcessUnlinkNotificationForDate(client, eventDate, eventDateMatches, matches.ToList(), request);
-            }
         }
 
-        private async Task ProcessUnlinkNotificationForDate(
-            HttpClient client, DateTime eventDate, List<int> newMatchIds, List<MatchInfo> assignments
-            , OtherSportNotificationRequest request)
+        private async Task<List<int>> SendMessagesInBatches(HttpClient client, IList<MatchInfo> events, OtherSportNotificationRequest request)
         {
-            var previouslyNotifiedMatches = await cacheManipulator.GetNotificatedMatchesUnlink(eventDate);
-            var matchesToUnlink = newMatchIds.Except(previouslyNotifiedMatches).ToList();
-
-            await SendUnlinkNotification(client, matchesToUnlink, assignments, request, eventDate);
-
-        }
-
-        private async Task SendUnlinkNotification(HttpClient client, List<int> matchesToUnlink, List<MatchInfo> assignments, OtherSportNotificationRequest request, DateTime eventDate)
-        {
-            var assignmentsToNotify = assignments.Where(x => matchesToUnlink.Contains(x.OSMatchId)).ToList();
-
-            var sortedAssignments = assignmentsToNotify
-                .OrderBy(x => GetSportPriority(x.Sport))
-                .ThenBy(x => x.DateTime)
-                .ToList();
-
-            var unlinkNotificationList = new List<UnlinkNotificationList>();
-
-            foreach (var assignment in sortedAssignments)
+            var messageSendSuccessfully = new List<int>();
+            for (var i = 0; i < events.Count; i += BATCH_SIZE)
             {
-                var notificationMessage = CreateMatchNotificationMessage(assignment);
-                unlinkNotificationList.Add(new UnlinkNotificationList
-                {
-                    OsMatchId = assignment.OSMatchId,
-                    Message = notificationMessage
-                });
-            }
-
-            // TODO
-           await SendNotification(client, unlinkNotificationList, request, eventDate);
-        }
-
-        private int GetSportPriority(string sport)
-        {
-            return sport?.ToLower() switch
-            {
-                "basketball" => 1,
-                "tennis" => 2,
-                _ => 3 
-            };
-        }
-
-        private string CreateMatchNotificationMessage(MatchInfo assignment)
-        {
-            return $"**{assignment.Sport}**\nK.O Time: {assignment.DateTime.ToString("yyyy-MM-dd HH:mm")}\nLeague: {assignment.League}\nMatch: {assignment.Home} - {assignment.Away}";
-        }
-
-        private async Task SendNotification(HttpClient client, List<UnlinkNotificationList> messagesList,OtherSportNotificationRequest request, DateTime eventDate)
-        {
-            for (var i = 0; i < messagesList.Count; i += BATCH_SIZE)
-            {
-                var batch = messagesList.Skip(i).Take(BATCH_SIZE).ToList();
-                var messages = batch.Select(x => x.Message).ToList();
-
+                var batches = events.Skip(i).Take(BATCH_SIZE).ToList();
+                var messages = batches.Select(e => $"**{e.Sport}**\nK.O Time: {e.DateTime:yyyy-MM-dd HH:mm}\nLeague: {e.League}\nMatch: {e.Home} - {e.Away}");
                 try
                 {
-                    await SendBatch(client, messages, request);
-                    await cacheManipulator.AddMoreMatchIdsToCache(eventDate, batch.Select(x => x.OsMatchId).ToList());
+                    var message = new
+                    {
+                        channel = ChannelName,
+                        text = string.Join("\n-------------------\n", messages)
+                    };
+                    await messageToChannel.MessageToChannel(client, message, request);
+                    messageSendSuccessfully.AddRange(batches.Select(m => m.OSMatchId));
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    Console.WriteLine($"Failed to send batch notification: {e.Message}");
+                    await logger.ErrorAsync($"Failed to send unlink notification messages in batches:{JsonConvert.SerializeObject(ex)}", "OsUnlinkMatch_MsgToRc");
                 }
             }
-        }
 
-        private async Task SendBatch(HttpClient client, List<string> batch, OtherSportNotificationRequest request)
-        {
-            var message = new
-            {
-                channel = ChannelName,
-                text = string.Join("\n-------------------\n", batch)
-            };
-            await messageToChannel.MessageToChannel(client, message, request);
+            return messageSendSuccessfully;
         }
     }
 }

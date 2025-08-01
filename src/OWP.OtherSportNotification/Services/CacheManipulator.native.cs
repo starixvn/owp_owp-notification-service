@@ -57,22 +57,27 @@ public class CacheManipulatorImp(ICache cache) : CacheManipulator
     public async Task SaveNotificatedMatchesUnlink(DateTime eventDate, List<int> osMatchIds)
     {
         var cachePolicy = new CacheItemOptions().SetAbsoluteExpiration(TimeSpan.FromDays(CACHE_OS_MATCHES_UNLINK_NOTIFICATED_EXPIRED_IN_DAY));
-        var cacheKey = $"{KEY_OS_MATCHES_UNLINK_NOTIFICATED}-{eventDate}";
-        await cache.SetAsync(cacheKey, osMatchIds, cachePolicy);
+        var cacheKey = $"{KEY_OS_MATCHES_UNLINK_NOTIFICATED}-{eventDate:d}";
+        await cache.SetAsync(cacheKey, JsonConvert.SerializeObject(osMatchIds), cachePolicy);
     }
 
     public async Task<List<int>> GetNotificatedMatchesUnlink(DateTime eventDate)
     {
-        var cacheKey = $"{KEY_OS_MATCHES_UNLINK_NOTIFICATED}-{eventDate}";
-        var (_, value) = await cache.TryGetAsync<List<int>>(cacheKey);
+        var cacheKey = $"{KEY_OS_MATCHES_UNLINK_NOTIFICATED}-{eventDate:d}";
+        var (_, value) = await cache.TryGetAsync<string>(cacheKey);
 
-        return value ?? [];
+        return string.IsNullOrWhiteSpace(value)
+               ? []
+        :JsonConvert.DeserializeObject<List<int>>(value);
+            
     }
 
     public async Task AddMoreMatchIdsToCache(DateTime eventDate, List<int> additionalMatchIds)
     {
         var existingMatchIds = await GetNotificatedMatchesUnlink(eventDate);
         var updatedMatchIds = existingMatchIds.Union(additionalMatchIds).ToList();
+        var cacheKey = $"{KEY_OS_MATCHES_UNLINK_NOTIFICATED}-{eventDate:d}";
+        await cache.RemoveAsync(cacheKey);
         await SaveNotificatedMatchesUnlink(eventDate, updatedMatchIds);
     }
 }
