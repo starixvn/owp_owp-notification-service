@@ -25,7 +25,7 @@ namespace OWP.OtherSportNotification.Services
         private const string ChannelName = "#MissingGameNotify";
         public async Task SendMessageUnlinkEvent(HttpClient client, OtherSportNotificationRequest request)
         {
-            //await Task.Delay(TimeSpan.FromSeconds(150));
+            await Task.Delay(TimeSpan.FromSeconds(180));
             var eventsUnlinkInfo = await GetEventsUnlink(request);
             var (fromDate, toDate) = NormalizeTimeRange(request.FromDate, request.ToDate);
             var (basketballGroup, tennisGroup, otherGroup) = CategoryEventBySportType(eventsUnlinkInfo);
