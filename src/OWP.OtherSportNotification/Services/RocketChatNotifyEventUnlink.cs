@@ -28,15 +28,8 @@ namespace OWP.OtherSportNotification.Services
             await Task.Delay(TimeSpan.FromSeconds(180));
             var eventsUnlinkInfo = await GetEventsUnlink(request);
             var (fromDate, toDate) = NormalizeTimeRange(request.FromDate, request.ToDate);
-            var (basketballGroup, tennisGroup, otherGroup) = CategoryEventBySportType(eventsUnlinkInfo);
-            var eventsWillSendNotyBasketballGroup = await BuildEventWillSendNoty(fromDate, toDate, basketballGroup);
-            var eventsWillSendNotyTennisGroup = await BuildEventWillSendNoty(fromDate, toDate, tennisGroup);
-            var eventsWillSendNotyOtherGroup = await BuildEventWillSendNoty(fromDate, toDate, otherGroup);
-
-            var allEvents = eventsWillSendNotyBasketballGroup
-                .Concat(eventsWillSendNotyTennisGroup)
-                .Concat(eventsWillSendNotyOtherGroup)
-                .ToList();
+            var categorizedEvents = CategoryEventBySportType(eventsUnlinkInfo);
+            var allEvents = await BuildEventWillSendNoty(fromDate, toDate, categorizedEvents);
 
             var osIdAlreadySendNoty = await SendMessagesInBatches(client, allEvents, request);
             await CacheEventAlreadySendNoty(fromDate, toDate, osIdAlreadySendNoty, allEvents);
@@ -56,15 +49,16 @@ namespace OWP.OtherSportNotification.Services
             return OrderEventsByKO(listEventWillSendNoty);
 
         }
+        
 
-        private async Task CacheEventAlreadySendNoty(DateTime fromDate, DateTime toDate, IList<int>osIdAlreadySendNoty, IList<MatchInfo> eventsUnlink)
+        private async Task CacheEventAlreadySendNoty(DateTime fromDate, DateTime toDate, IList<int> osIdAlreadySendNoty, IList<MatchInfo> eventsUnlink)
         {
             var eventsAlreadySendNoty = eventsUnlink.Where(e => osIdAlreadySendNoty.Contains(e.OSMatchId)).ToList();
             for (var day = fromDate; day <= toDate; day = day.AddDays(1))
             {
-                var osIdAlreadySendNotyInDay = 
+                var osIdAlreadySendNotyInDay =
                     GetEventsInDay(day, eventsAlreadySendNoty)
-                        .Select(e=>e.OSMatchId)
+                        .Select(e => e.OSMatchId)
                         .ToList();
                 await cacheManipulator.AddMoreMatchIdsToCache(day, osIdAlreadySendNotyInDay);
             }
@@ -79,25 +73,27 @@ namespace OWP.OtherSportNotification.Services
 
         private IList<MatchInfo> OrderEventsByKO(IList<MatchInfo> events)=> events.OrderByDescending(x => x.DateTime).ToList();
 
-        private (IList<MatchInfo> basketballGroup, IList<MatchInfo> tennisGroup, IList<MatchInfo> otherGroup) CategoryEventBySportType(IList<MatchInfo> eventsUnlinkInfo)
+        private IList<MatchInfo> CategoryEventBySportType(IList<MatchInfo> eventsUnlinkInfo)
         {
-            var basketballGroup = CategoryEventBySportType(eventsUnlinkInfo, sport=>sport.Equals("Basketball", StringComparison.OrdinalIgnoreCase)) ;
-                
-            var tennisGroup = CategoryEventBySportType(eventsUnlinkInfo, sport => sport.Equals("Tennis", StringComparison.OrdinalIgnoreCase));
-            
-           
-            var otherGroup = CategoryEventBySportType(eventsUnlinkInfo, sport => !sport.Equals("Basketball", StringComparison.OrdinalIgnoreCase) &&
-                !sport.Equals("Tennis", StringComparison.OrdinalIgnoreCase));
-
-            return (basketballGroup, tennisGroup, otherGroup);
-        }
-
-        private IList<MatchInfo> CategoryEventBySportType(IList<MatchInfo> events, Func<string,bool> predicate)
-        {
-            return events
-                .Where(x => predicate(x.Sport))
+            return eventsUnlinkInfo
+                .GroupBy(x => x.Sport)
+                .OrderBy(g => GetSportPriority(g.Key))
+                .ThenBy(g => g.Key, StringComparer.OrdinalIgnoreCase) 
+                .SelectMany(g => g.OrderByDescending(x => x.DateTime))
                 .ToList();
         }
+
+        private int GetSportPriority(string sport)
+        {
+            return sport?.ToLower() switch
+            {
+                "basketball" => 1,
+                "tennis" => 2,
+                _ => 3
+            };
+        }
+
+
 
         private IList<MatchInfo> GetEventsInDay(DateTime targetDay, IList<MatchInfo> eventsUnlinkInfo)
         {
