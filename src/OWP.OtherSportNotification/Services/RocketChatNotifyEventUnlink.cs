@@ -71,28 +71,34 @@ namespace OWP.OtherSportNotification.Services
             return events.Where(e => !osMatchIdAlreadySendNoty.Contains(e.OSMatchId)).ToList();
         }
 
-        private IList<MatchInfo> OrderEventsByKO(IList<MatchInfo> events)=> events.OrderByDescending(x => x.DateTime).ToList();
+        private IList<MatchInfo> OrderEventsByKO(IList<MatchInfo> events)=> events.OrderBy(x => x.DateTime).ToList();
 
         private IList<MatchInfo> CategoryEventBySportType(IList<MatchInfo> eventsUnlinkInfo)
         {
-            return eventsUnlinkInfo
-                .GroupBy(x => x.Sport)
-                .OrderBy(g => GetSportPriority(g.Key))
-                .ThenBy(g => g.Key, StringComparer.OrdinalIgnoreCase) 
-                .SelectMany(g => g.OrderByDescending(x => x.DateTime))
+            var basketballGroup = eventsUnlinkInfo
+                .Where(x => x.Sport.Equals("Basketball", StringComparison.OrdinalIgnoreCase))
+                .OrderBy(x => x.DateTime)
                 .ToList();
-        }
 
-        private int GetSportPriority(string sport)
-        {
-            return sport?.ToLower() switch
-            {
-                "basketball" => 1,
-                "tennis" => 2,
-                _ => 3
-            };
-        }
+            var tennisGroup = eventsUnlinkInfo
+                .Where(x => x.Sport.Equals("Tennis", StringComparison.OrdinalIgnoreCase))
+                .OrderBy(x => x.DateTime)
+                .ToList();
 
+            var otherSportsGroup = eventsUnlinkInfo
+                .Where(x => !x.Sport.Equals("Basketball", StringComparison.OrdinalIgnoreCase) && 
+                           !x.Sport.Equals("Tennis", StringComparison.OrdinalIgnoreCase))
+                .OrderBy(x => x.Sport, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(x => x.DateTime)
+                .ToList();
+
+            var result = new List<MatchInfo>();
+            result.AddRange(basketballGroup);
+            result.AddRange(tennisGroup);
+            result.AddRange(otherSportsGroup);
+
+            return result;
+        }
 
 
         private IList<MatchInfo> GetEventsInDay(DateTime targetDay, IList<MatchInfo> eventsUnlinkInfo)
