@@ -25,32 +25,21 @@ namespace OWP.OtherSportNotification.Services
         private const string ChannelName = "#MissingGameNotify";
         public async Task SendMessageUnlinkEvent(HttpClient client, OtherSportNotificationRequest request)
         {
-            var thread = new Thread(async void () =>
-            {
-                try
-                {
-                    await Task.Delay(TimeSpan.FromSeconds(180));
-                    var eventsUnlinkInfo = await GetEventsUnlink(request);
-                    var (fromDate, toDate) = NormalizeTimeRange(request.FromDate, request.ToDate);
-                    var (basketballGroup, tennisGroup, otherGroup) = CategoryEventBySportType(eventsUnlinkInfo);
-                    var eventsWillSendNotyBasketballGroup = await BuildEventWillSendNoty(fromDate, toDate, basketballGroup);
-                    var eventsWillSendNotyTennisGroup = await BuildEventWillSendNoty(fromDate, toDate, tennisGroup);
-                    var eventsWillSendNotyOtherGroup = await BuildEventWillSendNoty(fromDate, toDate, otherGroup);
+            await Task.Delay(TimeSpan.FromSeconds(180));
+            var eventsUnlinkInfo = await GetEventsUnlink(request);
+            var (fromDate, toDate) = NormalizeTimeRange(request.FromDate, request.ToDate);
+            var (basketballGroup, tennisGroup, otherGroup) = CategoryEventBySportType(eventsUnlinkInfo);
+            var eventsWillSendNotyBasketballGroup = await BuildEventWillSendNoty(fromDate, toDate, basketballGroup);
+            var eventsWillSendNotyTennisGroup = await BuildEventWillSendNoty(fromDate, toDate, tennisGroup);
+            var eventsWillSendNotyOtherGroup = await BuildEventWillSendNoty(fromDate, toDate, otherGroup);
 
-                    var allEvents = eventsWillSendNotyBasketballGroup
-                        .Concat(eventsWillSendNotyTennisGroup)
-                        .Concat(eventsWillSendNotyOtherGroup)
-                        .ToList();
+            var allEvents = eventsWillSendNotyBasketballGroup
+                .Concat(eventsWillSendNotyTennisGroup)
+                .Concat(eventsWillSendNotyOtherGroup)
+                .ToList();
 
-                    var osIdAlreadySendNoty = await SendMessagesInBatches(client, allEvents, request);
-                    await CacheEventAlreadySendNoty(fromDate, toDate, osIdAlreadySendNoty, allEvents);
-                }
-                catch (Exception e)
-                {
-                    throw; // TODO handle exception
-                }
-            });
-            thread.Start();
+            var osIdAlreadySendNoty = await SendMessagesInBatches(client, allEvents, request);
+            await CacheEventAlreadySendNoty(fromDate, toDate, osIdAlreadySendNoty, allEvents);
         }
 
         
@@ -83,7 +72,7 @@ namespace OWP.OtherSportNotification.Services
 
         private async Task<IList<MatchInfo>> RemoveEventAlreadySendNotyInDay(IList<MatchInfo> events, DateTime date)
         {
-            var osMatchIdAlreadySendNoty = await cacheManipulator.GetNotificatedMatchesUnlink(date);
+            var osMatchIdAlreadySendNoty = await cacheManipulator.GetOsMatchIdAlreadySendNoty(date);
 
             return events.Where(e => !osMatchIdAlreadySendNoty.Contains(e.OSMatchId)).ToList();
         }

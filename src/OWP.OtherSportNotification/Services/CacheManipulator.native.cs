@@ -9,7 +9,7 @@ public interface CacheManipulator
     Task DeleteAssignmentSnapshot(string sessionId);
     Task<AssignmentSnapshot> GetAssignmentSnapshot(string sessionId);
     Task SaveNotificatedMatchesUnlink(DateTime eventDate, List<int> osMatchIds);
-    Task<List<int>> GetNotificatedMatchesUnlink(DateTime eventDate);
+    Task<List<int>> GetOsMatchIdAlreadySendNoty(DateTime eventDate);
     Task AddMoreMatchIdsToCache(DateTime eventDate, List<int> additionalMatchIds);
 }
 
@@ -61,7 +61,7 @@ public class CacheManipulatorImp(ICache cache) : CacheManipulator
         await cache.SetAsync(cacheKey, JsonConvert.SerializeObject(osMatchIds), cachePolicy);
     }
 
-    public async Task<List<int>> GetNotificatedMatchesUnlink(DateTime eventDate)
+    public async Task<List<int>> GetOsMatchIdAlreadySendNoty(DateTime eventDate)
     {
         var cacheKey = $"{KEY_OS_MATCHES_UNLINK_NOTIFICATED}-{eventDate:d}";
         var (_, value) = await cache.TryGetAsync<string>(cacheKey);
@@ -74,7 +74,7 @@ public class CacheManipulatorImp(ICache cache) : CacheManipulator
 
     public async Task AddMoreMatchIdsToCache(DateTime eventDate, List<int> additionalMatchIds)
     {
-        var existingMatchIds = await GetNotificatedMatchesUnlink(eventDate);
+        var existingMatchIds = await GetOsMatchIdAlreadySendNoty(eventDate);
         var updatedMatchIds = existingMatchIds.Union(additionalMatchIds).ToList();
         var cacheKey = $"{KEY_OS_MATCHES_UNLINK_NOTIFICATED}-{eventDate:d}";
         await cache.RemoveAsync(cacheKey);
