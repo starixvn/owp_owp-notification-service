@@ -28,8 +28,15 @@ namespace OWP.OtherSportNotification.Services
             await Task.Delay(TimeSpan.FromSeconds(180));
             var eventsUnlinkInfo = await GetEventsUnlink(request);
             var (fromDate, toDate) = NormalizeTimeRange(request.FromDate, request.ToDate);
-            var categorizedEvents = CategoryEventBySportType(eventsUnlinkInfo);
-            var allEvents = await BuildEventWillSendNoty(fromDate, toDate, categorizedEvents);
+            var (basketballGroup, tennisGroup, otherGroup) = CategoryEventBySportType(eventsUnlinkInfo);
+            var eventsWillSendNotyBasketballGroup = await BuildEventWillSendNoty(fromDate, toDate, basketballGroup);
+            var eventsWillSendNotyTennisGroup = await BuildEventWillSendNoty(fromDate, toDate, tennisGroup);
+            var eventsWillSendNotyOtherGroup = await BuildEventWillSendNoty(fromDate, toDate, otherGroup);
+
+            var allEvents = eventsWillSendNotyBasketballGroup
+                .Concat(eventsWillSendNotyTennisGroup)
+                .Concat(eventsWillSendNotyOtherGroup)
+                .ToList();
 
             var osIdAlreadySendNoty = await SendMessagesInBatches(client, allEvents, request);
             await CacheEventAlreadySendNoty(fromDate, toDate, osIdAlreadySendNoty, allEvents);
@@ -45,20 +52,19 @@ namespace OWP.OtherSportNotification.Services
                 var eventWillSendNoty= await RemoveEventAlreadySendNotyInDay(eventsUnlinkInDay, day);
                 listEventWillSendNoty.AddRange(eventWillSendNoty);
             }
+            return listEventWillSendNoty;
 
-            return OrderEventsByKO(listEventWillSendNoty);
 
         }
-        
 
-        private async Task CacheEventAlreadySendNoty(DateTime fromDate, DateTime toDate, IList<int> osIdAlreadySendNoty, IList<MatchInfo> eventsUnlink)
+        private async Task CacheEventAlreadySendNoty(DateTime fromDate, DateTime toDate, IList<int>osIdAlreadySendNoty, IList<MatchInfo> eventsUnlink)
         {
             var eventsAlreadySendNoty = eventsUnlink.Where(e => osIdAlreadySendNoty.Contains(e.OSMatchId)).ToList();
             for (var day = fromDate; day <= toDate; day = day.AddDays(1))
             {
-                var osIdAlreadySendNotyInDay =
+                var osIdAlreadySendNotyInDay = 
                     GetEventsInDay(day, eventsAlreadySendNoty)
-                        .Select(e => e.OSMatchId)
+                        .Select(e=>e.OSMatchId)
                         .ToList();
                 await cacheManipulator.AddMoreMatchIdsToCache(day, osIdAlreadySendNotyInDay);
             }
@@ -71,35 +77,30 @@ namespace OWP.OtherSportNotification.Services
             return events.Where(e => !osMatchIdAlreadySendNoty.Contains(e.OSMatchId)).ToList();
         }
 
-        private IList<MatchInfo> OrderEventsByKO(IList<MatchInfo> events)=> events.OrderBy(x => x.DateTime).ToList();
-
-        private IList<MatchInfo> CategoryEventBySportType(IList<MatchInfo> eventsUnlinkInfo)
+        private (IList<MatchInfo> basketballGroup, IList<MatchInfo> tennisGroup, IList<MatchInfo> otherGroup) CategoryEventBySportType(IList<MatchInfo> eventsUnlinkInfo)
         {
-            var basketballGroup = eventsUnlinkInfo
-                .Where(x => x.Sport.Equals("Basketball", StringComparison.OrdinalIgnoreCase))
-                .OrderBy(x => x.DateTime)
-                .ToList();
+            var basketballGroup = CategoryEventBySportType(eventsUnlinkInfo, sport=>sport.Equals("Basketball", StringComparison.OrdinalIgnoreCase)) ;
+                
+            var tennisGroup = CategoryEventBySportType(eventsUnlinkInfo, sport => sport.Equals("Tennis", StringComparison.OrdinalIgnoreCase));
 
-            var tennisGroup = eventsUnlinkInfo
-                .Where(x => x.Sport.Equals("Tennis", StringComparison.OrdinalIgnoreCase))
-                .OrderBy(x => x.DateTime)
-                .ToList();
-
-            var otherSportsGroup = eventsUnlinkInfo
-                .Where(x => !x.Sport.Equals("Basketball", StringComparison.OrdinalIgnoreCase) && 
+            var otherGroup = eventsUnlinkInfo
+                .Where(x => !x.Sport.Equals("Basketball", StringComparison.OrdinalIgnoreCase) &&
                            !x.Sport.Equals("Tennis", StringComparison.OrdinalIgnoreCase))
-                .OrderBy(x => x.Sport, StringComparer.OrdinalIgnoreCase)
-                .ThenBy(x => x.DateTime)
+                .GroupBy(x => x.Sport)
+                .OrderBy(g => g.Key, StringComparer.OrdinalIgnoreCase)
+                .SelectMany(g => g.OrderBy(x => x.DateTime))
                 .ToList();
 
-            var result = new List<MatchInfo>();
-            result.AddRange(basketballGroup);
-            result.AddRange(tennisGroup);
-            result.AddRange(otherSportsGroup);
-
-            return result;
+            return (basketballGroup, tennisGroup, otherGroup);
         }
 
+        private IList<MatchInfo> CategoryEventBySportType(IList<MatchInfo> events, Func<string,bool> predicate)
+        {
+            return events
+                .Where(x => predicate(x.Sport))
+                .OrderBy(x => x.DateTime)
+                .ToList();
+        }
 
         private IList<MatchInfo> GetEventsInDay(DateTime targetDay, IList<MatchInfo> eventsUnlinkInfo)
         {
