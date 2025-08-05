@@ -35,7 +35,7 @@ public class MessageServer(
 
            await channel.QueueDeclareAsync(queue: setting.RequestQueue, durable: true, exclusive: false, autoDelete: false);
 
-            await channel.BasicQosAsync(0, 1, false);
+            await channel.BasicQosAsync(0, 4, false);
 
             var consumer = new AsyncEventingBasicConsumer(channel);
             await channel.BasicConsumeAsync(queue: setting.RequestQueue, autoAck: true, consumer: consumer);
