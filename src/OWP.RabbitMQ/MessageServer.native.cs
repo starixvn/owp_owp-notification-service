@@ -5,6 +5,7 @@ using OWP.RabbitMQ.Handler;
 using OWP.RabbitMQ.Models;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using System.Reflection;
 using System.Text;
 
 namespace OWP.RabbitMQ;
@@ -35,12 +36,18 @@ public class MessageServer(
 
            await channel.QueueDeclareAsync(queue: setting.RequestQueue, durable: true, exclusive: false, autoDelete: false);
 
-            await channel.BasicQosAsync(0, 4, false);
+            await channel.BasicQosAsync(0, 1, false);
 
             var consumer = new AsyncEventingBasicConsumer(channel);
-            await channel.BasicConsumeAsync(queue: setting.RequestQueue, autoAck: true, consumer: consumer);
+            await channel.BasicConsumeAsync(queue: setting.RequestQueue, autoAck: false, consumer: consumer);
 
-            consumer.ReceivedAsync += OnReceived;
+            consumer.ReceivedAsync += (model, ea)=>
+            {
+                channel.BasicAckAsync(ea.DeliveryTag, false);
+                _ = OnReceived(model,ea);
+                return Task.CompletedTask;
+
+            };
         }
         catch (Exception ex)
         {
@@ -61,7 +68,6 @@ public class MessageServer(
             var requestMessage = Encoding.UTF8.GetString(body);
 
             await notificationHandler.Handle(props.Type, requestMessage);
-
         }
         catch (Exception ex)
         {
