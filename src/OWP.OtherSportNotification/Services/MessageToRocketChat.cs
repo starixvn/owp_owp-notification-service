@@ -30,7 +30,7 @@ namespace OWP.OtherSportNotification.Services
                 await LoginToRc();
                 await notifyUploadAssignment.MessageToChannel(client, request);
                 await notifyAssignmentChange.MessageToTrader(client, changedValues, request);
-                await notifyEventUnlink.SendMessageUnlinkEvent(client, request);
+                //await notifyEventUnlink.SendMessageUnlinkEvent(client, request);
                 await LogOutRC();
             }
             catch (Exception e)
