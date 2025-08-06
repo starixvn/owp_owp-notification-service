@@ -21,7 +21,7 @@ namespace OWP.OtherSportNotification.Services
         RocketChatMessageToChannel messageToChannel,
         ILogger logger) : RocketChatNotifyEventUnlink
     {
-        const int BATCH_SIZE = 10;
+        const int BATCH_SIZE = 20;
         private const string ChannelName = "#MissingGameNotify";
         public async Task SendMessageUnlinkEvent(HttpClient client, OtherSportNotificationRequest request)
         {
