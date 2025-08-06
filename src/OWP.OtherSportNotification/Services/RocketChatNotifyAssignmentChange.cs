@@ -2,6 +2,7 @@
 using OWP.OtherSportNotification.Models;
 using System.Net.Http.Json;
 using System.Text.Json;
+using OWP.Core.Exceptions;
 using OWP.Core.NotificationRequests.OtherSport;
 
 namespace OWP.OtherSportNotification.Services
@@ -67,7 +68,7 @@ namespace OWP.OtherSportNotification.Services
             catch (Exception ex)
             {
                 await LogDetailedPayload(ToGmt8(DateTime.Now), "[OsNotification]-MessageToTrader - Fatal error", ex.ToString());
-                throw new Exception("[OsNotification]-MessageToTrader - Fatal error", ex);
+                throw new RocketChatException("[OsNotification]-MessageToTrader - Fatal error", ex);
             }
         }
 
@@ -99,7 +100,7 @@ namespace OWP.OtherSportNotification.Services
             {
                 try
                 {
-                    var messagePayload = new { roomId = roomId, text = message.Message };
+                    var messagePayload = new { roomId, text = message.Message };
                     var response = await client.PostAsJsonAsync("api/v1/chat.postMessage", messagePayload);
 
                     if (response.IsSuccessStatusCode)
@@ -136,7 +137,7 @@ namespace OWP.OtherSportNotification.Services
 
         private async Task LogDetailedPayload(DateTime CreatedDate, string Action, string Payload)
         {
-            await repository.WriteLog(new OwpLogCriteria()
+            await repository.WriteLog(new OwpLogCriteria
             {
                 CreatedDate = CreatedDate,
                 Action = Action,

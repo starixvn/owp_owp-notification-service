@@ -1,13 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Reflection.Metadata.Ecma335;
-using Fanex.Logging;
-using MediatR;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
+﻿using Fanex.Logging;
 using Newtonsoft.Json;
 using OWP.Core.NotificationRequests.OtherSport;
 using OWP.OtherSportNotification.Models;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace OWP.OtherSportNotification.Services
 {
