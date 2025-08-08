@@ -119,7 +119,18 @@ namespace OWP.OtherSportNotification.Services
             var matches = newSnapshot.Matches.Values;
             return matches
                 .Where(x => x.OfferLive == "Live" && x.AdminsiteMatchId is null)
+                .Where(x => !IsExcludedSport(x.Sport, x.League))
                 .ToList();
+        }
+
+        private bool IsExcludedSport(string sport, string league)
+        {
+            if (string.IsNullOrEmpty(sport))
+                return false;
+
+            var excludedSports = new[] { "Volleyball", "Handball", "Ice Hockey", "Table Tennis" };
+            return excludedSports.Any(excluded => sport.Equals(excluded, StringComparison.OrdinalIgnoreCase))
+                || (league.Contains("Muaythai", StringComparison.OrdinalIgnoreCase) && sport.Equals("Other Sports", StringComparison.OrdinalIgnoreCase));
         }
 
         private async Task<List<int>> SendMessagesInBatches(HttpClient client, IList<MatchInfo> events, OtherSportNotificationRequest request)
