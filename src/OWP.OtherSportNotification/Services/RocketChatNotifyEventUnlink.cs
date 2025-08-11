@@ -130,7 +130,7 @@ namespace OWP.OtherSportNotification.Services
 
             var excludedSports = new[] { "Volleyball", "Handball", "Ice Hockey", "Table Tennis" };
             return excludedSports.Any(excluded => sport.Equals(excluded, StringComparison.OrdinalIgnoreCase))
-                || (league.Contains("Muaythai", StringComparison.OrdinalIgnoreCase) && sport.Equals("Other Sports", StringComparison.OrdinalIgnoreCase));
+                || (league.Contains("Muay Thai", StringComparison.OrdinalIgnoreCase) && sport.Equals("Other Sports", StringComparison.OrdinalIgnoreCase));
         }
 
         private async Task<List<int>> SendMessagesInBatches(HttpClient client, IList<MatchInfo> events, OtherSportNotificationRequest request)
