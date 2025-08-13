@@ -120,10 +120,12 @@ namespace OWP.OtherSportNotification.Services
         private bool IsExcludedSport(string sport, string league)
         {
             if (string.IsNullOrEmpty(sport))
+            {
                 return false;
+            }
 
             var excludedSports = new[] { "Volleyball", "Handball", "Ice Hockey", "Table Tennis" };
-            return excludedSports.Any(excluded => sport.Equals(excluded, StringComparison.OrdinalIgnoreCase))
+            return Array.Exists(excludedSports, excluded => sport.Equals(excluded, StringComparison.OrdinalIgnoreCase))
                 || (league.Contains("Muay Thai", StringComparison.OrdinalIgnoreCase) && sport.Equals("Other Sports", StringComparison.OrdinalIgnoreCase));
         }
 
