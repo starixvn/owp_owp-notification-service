@@ -31,7 +31,6 @@ public class NotifyRequest : IRequest<bool>
 public class Handler(
     ChangedValueByCacheAndDatabase changedValueByCacheAndDatabase,
     AssigneeChangedValueFilter assigneeChangedValueFilter,
-    WatcherChangedValueGenerator watcherChangedValueGenerator,
     ChangedValueAggregator changedValueAggregator,
     MessageFactory messageFactory,
     CommandRepository commandRepository,
@@ -43,9 +42,8 @@ public class Handler(
     {
         var messages = await changedValueByCacheAndDatabase.Create(request.SessionId, request.EventDate);
         var assigneeChangedValues = await assigneeChangedValueFilter.Filter(messages);
-        var watcherChangedValues = await watcherChangedValueGenerator.Create(messages, assigneeChangedValues);
-        var allChangedValues = watcherChangedValues.Union(assigneeChangedValues).ToList();
-        var aggregatedChangedValues = changedValueAggregator.Aggregate(allChangedValues);
+        
+        var aggregatedChangedValues = changedValueAggregator.Aggregate(assigneeChangedValues);
         var messageModels = messageFactory.Transform(aggregatedChangedValues, request.UserName).ToList();
         await commandRepository.InsertMessage(messageModels, request.SessionId, request.ActorId);
         var messageSender = BuildMessageSender(messageModels);
