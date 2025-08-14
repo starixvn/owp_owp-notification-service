@@ -4,6 +4,7 @@ using System.Net.Http.Json;
 using Fanex.Logging;
 using Microsoft.Extensions.Configuration;
 using OWP.Core.NotificationRequests.OtherSport;
+using OWP.Core.Exceptions;
 
 namespace OWP.OtherSportNotification.Services
 {
@@ -59,7 +60,7 @@ namespace OWP.OtherSportNotification.Services
             {
                 var username = configuration["ChatServer:BotName"];
                 var password = configuration["ChatServer:BotPassword"];
-                var loginPayload = new { user = username, password = password };
+                var loginPayload = new { user = username, password };
 
                 var response = await client.PostAsJsonAsync("api/v1/login", loginPayload);
                 response.EnsureSuccessStatusCode();
@@ -73,13 +74,13 @@ namespace OWP.OtherSportNotification.Services
             {
                 await LogDetailedPayload(ToGmt8(DateTime.Now), "[OsNotification]- Login - Fatal error", exception.ToString());
 
-                throw new Exception("Failed to login to Rocket.Chat", exception);
+                throw new RocketChatException("Failed to login to Rocket.Chat", exception);
             }
         }
         
         private async Task LogDetailedPayload(DateTime CreatedDate, string Action, string Payload)
         {
-            await repository.WriteLog(new OwpLogCriteria()
+            await repository.WriteLog(new OwpLogCriteria
             {
                 CreatedDate = CreatedDate,
                 Action = Action,

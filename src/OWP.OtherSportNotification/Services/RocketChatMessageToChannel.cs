@@ -1,7 +1,7 @@
 ﻿using Fanex.Caching;
-using Newtonsoft.Json;
 using Olympus.OWP.Log.Data.Repository.Criteria;
 using System.Net.Http.Json;
+using OWP.Core.Exceptions;
 using OWP.Core.NotificationRequests.OtherSport;
 
 namespace OWP.OtherSportNotification.Services
@@ -46,7 +46,7 @@ namespace OWP.OtherSportNotification.Services
             {
                 await LogDetailedPayload(ToGmt8(DateTime.Now),
                     "[OsNotification]-MessageToChannel: LC_Update_Notification-Fatal error", ex.ToString());
-                throw new Exception("[OsNotification]-MessageToChannel: LC_Update_Notification-Fatal error", ex);
+                throw new RocketChatException("[OsNotification]-MessageToChannel: LC_Update_Notification-Fatal error", ex);
             }
             finally
             {
@@ -102,7 +102,7 @@ namespace OWP.OtherSportNotification.Services
 
         private async Task LogDetailedPayload(DateTime CreatedDate, string Action, string Payload)
         {
-            await repository.WriteLog(new OwpLogCriteria()
+            await repository.WriteLog(new OwpLogCriteria
             {
                 CreatedDate = CreatedDate,
                 Action = Action,

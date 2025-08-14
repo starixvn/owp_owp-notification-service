@@ -1,13 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Reflection.Metadata.Ecma335;
-using Fanex.Logging;
-using MediatR;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
+﻿using Fanex.Logging;
 using Newtonsoft.Json;
 using OWP.Core.NotificationRequests.OtherSport;
 using OWP.OtherSportNotification.Models;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace OWP.OtherSportNotification.Services
 {
@@ -126,10 +120,12 @@ namespace OWP.OtherSportNotification.Services
         private bool IsExcludedSport(string sport, string league)
         {
             if (string.IsNullOrEmpty(sport))
+            {
                 return false;
+            }
 
             var excludedSports = new[] { "Volleyball", "Handball", "Ice Hockey", "Table Tennis" };
-            return excludedSports.Any(excluded => sport.Equals(excluded, StringComparison.OrdinalIgnoreCase))
+            return Array.Exists(excludedSports, excluded => sport.Equals(excluded, StringComparison.OrdinalIgnoreCase))
                 || (league.Contains("Muay Thai", StringComparison.OrdinalIgnoreCase) && sport.Equals("Other Sports", StringComparison.OrdinalIgnoreCase));
         }
 
