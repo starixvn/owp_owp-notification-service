@@ -8,6 +8,9 @@ namespace OWP.OtherSportNotification.Services
 {
     public interface RocketChatMessageToChannel
     {
+        Task<RCResponse> SendChannelMessageWithRetry(
+            HttpClient client,
+            object message);
         Task MessageToChannel(HttpClient client, object message, OtherSportNotificationRequest request);
     }
 
@@ -54,9 +57,7 @@ namespace OWP.OtherSportNotification.Services
             }
         }
 
-        
-
-        private static async Task<RCResponse> SendChannelMessageWithRetry(
+        public async Task<RCResponse> SendChannelMessageWithRetry(
             HttpClient client,
             object message)
         {

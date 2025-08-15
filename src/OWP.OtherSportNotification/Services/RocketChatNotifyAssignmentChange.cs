@@ -17,11 +17,9 @@ namespace OWP.OtherSportNotification.Services
 
     public class RocketChatNotifyAssignmentChangeImp(
         RocketChatMessageFactory rocketChatMessageFactory,
-        OtherSportRepository repository) : RocketChatNotifyAssignmentChange
+        OtherSportRepository repository,
+        RocketChatMessageToChannel messageToChannel) : RocketChatNotifyAssignmentChange
     {
-        private const int maxRetries = 3;
-        private const int retryDelaySeconds = 2;
-
         public async Task MessageToTrader(
             HttpClient client,
             IList<ChangedValue> changedValues,
@@ -87,7 +85,7 @@ namespace OWP.OtherSportNotification.Services
             }
 
         }
-        private static async Task<RCResponse> SendMessageWithRetry(
+        private async Task<RCResponse> SendMessageWithRetry(
             HttpClient client,
             RocketChatMessageModel message)
         {
@@ -95,45 +93,9 @@ namespace OWP.OtherSportNotification.Services
             var imResult = await imCreateResponse.Content.ReadFromJsonAsync<JsonElement>();
             var roomId = imResult.GetProperty("room").GetProperty("_id").GetString();
 
-            var rcResponse = new RCResponse();
-            for (var attempt = 1; attempt <= maxRetries; attempt++)
-            {
-                try
-                {
-                    var messagePayload = new { roomId, text = message.Message };
-                    var response = await client.PostAsJsonAsync("api/v1/chat.postMessage", messagePayload);
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        rcResponse.Success = true;
-                        rcResponse.Message.Add("Send message to trader successfully");
-                        return rcResponse;
-                    }
-
-                    var responseBody = await response.Content.ReadAsStringAsync();
-
-                    rcResponse.Success = false;
-                    rcResponse.Message.Add($"Attempt {attempt} failed to send message reason: {responseBody}");
-
-                }
-                catch (Exception ex)
-                {
-                    var exMessage = $"Exception: {ex.ToString()}, message info: {System.Text.Json.JsonSerializer.Serialize(message)}";
-                    rcResponse.Success = false;
-                    rcResponse.Message.Add($"Attempt {attempt} exception during message send reason: {exMessage}");
-                }
-                if (attempt < maxRetries)
-                {
-                    await Task.Delay(TimeSpan.FromSeconds(retryDelaySeconds));
-                }
-            }
-
-            return rcResponse;
+            var messagePayload = new { roomId, text = message.Message };
+            return await messageToChannel.SendChannelMessageWithRetry(client, messagePayload);
         }
-
-
-
-
 
         private async Task LogDetailedPayload(DateTime CreatedDate, string Action, string Payload)
         {
