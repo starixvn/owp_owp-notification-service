@@ -21,7 +21,6 @@ public static class DependenceInjection
         services.Add(new ServiceDescriptor(typeof(InsertedMatchChangedValueGenerator), typeof(InsertedMatchChangedValueGeneratorImp), ServiceLifetime.Transient));
         services.Add(new ServiceDescriptor(typeof(MessageFactory), typeof(MessageFactoryImp), ServiceLifetime.Transient));
         services.Add(new ServiceDescriptor(typeof(NotificationSettingQueryRepository), typeof(NotificationSettingQueryRepositoryImp), ServiceLifetime.Transient));
-        services.Add(new ServiceDescriptor(typeof(WatcherChangedValueGenerator), typeof(WatcherChangedValueGeneratorImp), ServiceLifetime.Transient));
         services.Add(new ServiceDescriptor(typeof(ChangedMatchSettingGenerator), typeof(ChangedMatchSettingGeneratorImp), ServiceLifetime.Transient));
         services.Add(new ServiceDescriptor(typeof(ChangedMatchStatusGenerator), typeof(ChangedMatchStatusGeneratorImp), ServiceLifetime.Transient));
         services.Add(new ServiceDescriptor(typeof(ChangedMatchInfoGenerator), typeof(ChangedMatchInfoGeneratorImp), ServiceLifetime.Transient));

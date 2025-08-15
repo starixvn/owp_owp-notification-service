@@ -28,7 +28,6 @@
 			<Setting Key="OWP_AssignmentUpload_AllMatchIdsByDateSel" SpName="OWP_AssignmentUpload_AllMatchIdsByDateSel" DbName="DBOWP.bodb_OWP.wsv_owp" />
 			<Setting Key="OWP_AssignmentUpload_AllMatchSettingsByTimeRange" SpName="OWP_AssignmentUpload_AllMatchSettingsByTimeRange" DbName="DBOWP.bodb_OWP.wsv_owp" />
 			<Setting Key="OWP_AssignmentUpload_GetNotificationSetting" SpName="OWP_AssignmentUpload_GetNotificationSetting" DbName="DBOWP.bodb_OWP.wsv_owp" />
-			<Setting Key="OWP_AssignmentUpload_GetSectionMemberOfUserReceivedWatcher" SpName="OWP_AssignmentUpload_GetSectionMemberOfUserReceivedWatcher" DbName="DBOWP.bodb_OWP.wsv_owp" />
 		</Function>
         <Function Name="OS_AssignmentUpload">
 			<Setting Key="OWP_OSAssignmentUpload_GetSectionBBSupportive" SpName="OWP_OSAssignmentUpload_GetSectionBBSupportive" DbName="DBOWP.bodb_OWP.wsv_owp" />

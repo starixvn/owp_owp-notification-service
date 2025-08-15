@@ -30,33 +30,6 @@ public static class NotificationSettingHelper
         return (int)NotificationSettingCode.AssigneeMatchInfoUpdatedId;
     }
 
-    public static int GetNotificationSettingIdForWatcher(int messageTypeId, int bettypeId)
-    {
-        if (IsUpdateAssignment(messageTypeId))
-        {
-            return GetIdForChangeAssignmentOfWatcher(bettypeId);
-        }
-
-        if (IsMatchSetting(messageTypeId))
-        {
-            return (int)NotificationSettingCode.WatcherMatchInfoUpdatedId;
-        }
-
-        if (IsProviderInfoUpdate(messageTypeId))
-        {
-            return (int)NotificationSettingCode.WatcherProviderInfoUpdatedId;
-        }
-
-        return (int)NotificationSettingCode.WatcherMatchInfoUpdatedId;
-    }
-
-    private static int GetIdForChangeAssignmentOfWatcher(int bettypeId)
-    {
-        return bettypeId == (int)MajorBetType.LA
-            ? (int)NotificationSettingCode.WatcherLAUpdatedId
-            : (int)NotificationSettingCode.WatcherTraderUpdatedId;
-    }
-
     private static int GetIdForChangeAssignmentOfAssignee(int bettypeId)
     {
         return bettypeId == (int)MajorBetType.LA
