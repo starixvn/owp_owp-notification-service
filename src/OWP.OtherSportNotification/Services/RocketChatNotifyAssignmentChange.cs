@@ -89,12 +89,21 @@ namespace OWP.OtherSportNotification.Services
             HttpClient client,
             RocketChatMessageModel message)
         {
-            var imCreateResponse = await client.PostAsJsonAsync("api/v1/im.create", new { username = message.Recipient });
-            var imResult = await imCreateResponse.Content.ReadFromJsonAsync<JsonElement>();
-            var roomId = imResult.GetProperty("room").GetProperty("_id").GetString();
+            try
+            {
+                var imCreateResponse = await client.PostAsJsonAsync("api/v1/im.create", new { username = message.Recipient });
+                var imResult = await imCreateResponse.Content.ReadFromJsonAsync<JsonElement>();
+                var roomId = imResult.GetProperty("room").GetProperty("_id").GetString();
 
-            var messagePayload = new { roomId, text = message.Message };
-            return await messageToChannel.SendChannelMessageWithRetry(client, messagePayload);
+                var messagePayload = new { roomId, text = message.Message };
+                return await messageToChannel.SendChannelMessageWithRetry(client, messagePayload);
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = $"Failed to create IM room for user '{message.Recipient}'. Exception: {ex.Message}";
+                await LogDetailedPayload(ToGmt8(DateTime.Now), "[OsNotification]-SendMessageWithRetry - General Error", errorMessage);
+                return new RCResponse { Success = false, Message = [errorMessage] };
+            }
         }
 
         private async Task LogDetailedPayload(DateTime CreatedDate, string Action, string Payload)
