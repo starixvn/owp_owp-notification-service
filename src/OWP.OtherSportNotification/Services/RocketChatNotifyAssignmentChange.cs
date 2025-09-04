@@ -4,6 +4,8 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using OWP.Core.Exceptions;
 using OWP.Core.NotificationRequests.OtherSport;
+using Fanex.Logging;
+using Newtonsoft.Json;
 
 namespace OWP.OtherSportNotification.Services
 {
@@ -18,7 +20,8 @@ namespace OWP.OtherSportNotification.Services
     public class RocketChatNotifyAssignmentChangeImp(
         RocketChatMessageFactory rocketChatMessageFactory,
         OtherSportRepository repository,
-        RocketChatMessageToChannel messageToChannel) : RocketChatNotifyAssignmentChange
+        RocketChatMessageToChannel messageToChannel,
+        ILogger logger) : RocketChatNotifyAssignmentChange
     {
         public async Task MessageToTrader(
             HttpClient client,
@@ -101,7 +104,8 @@ namespace OWP.OtherSportNotification.Services
             catch (Exception ex)
             {
                 var errorMessage = $"Failed to create IM room for user '{message.Recipient}'. Exception: {ex.Message}";
-                await LogDetailedPayload(ToGmt8(DateTime.Now), "[OsNotification]-SendMessageWithRetry - General Error", errorMessage);
+                await LogDetailedPayload(ToGmt8(DateTime.Now), "[OsNotification]-MessageToTrader - SendMessageWithRetry Error", errorMessage);
+                await logger.ErrorAsync($"{errorMessage} : {JsonConvert.SerializeObject(ex)}", "[OsNotification]-MessageToTrader - SendMessageWithRetry Error");
                 return new RCResponse { Success = false, Message = [errorMessage] };
             }
         }
