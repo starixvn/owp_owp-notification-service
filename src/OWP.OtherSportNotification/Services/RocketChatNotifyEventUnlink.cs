@@ -82,7 +82,9 @@ namespace OWP.OtherSportNotification.Services
                            !x.Sport.Equals("Tennis", StringComparison.OrdinalIgnoreCase))
                 .GroupBy(x => x.Sport)
                 .OrderBy(g => g.Key, StringComparer.OrdinalIgnoreCase)
-                .SelectMany(g => g.OrderBy(x => x.DateTime))
+                .SelectMany(g => g.GroupBy(x => x.League)
+                    .OrderBy(leagueGroup => leagueGroup.Key, StringComparer.OrdinalIgnoreCase)
+                    .SelectMany(leagueGroup => leagueGroup.OrderBy(x => x.DateTime)))
                 .ToList();
 
             return (basketballGroup, tennisGroup, otherGroup);
@@ -92,7 +94,9 @@ namespace OWP.OtherSportNotification.Services
         {
             return events
                 .Where(x => predicate(x.Sport))
-                .OrderBy(x => x.DateTime)
+                .GroupBy(x => x.League)
+                .OrderBy(g => g.Key, StringComparer.OrdinalIgnoreCase)
+                .SelectMany(g => g.OrderBy(x => x.DateTime))
                 .ToList();
         }
 
@@ -135,7 +139,7 @@ namespace OWP.OtherSportNotification.Services
             for (var i = 0; i < events.Count; i += BATCH_SIZE)
             {
                 var batches = events.Skip(i).Take(BATCH_SIZE).ToList();
-                var messages = batches.Select(e => $"**{e.Sport}**\nK.O Time: {e.DateTime:yyyy-MM-dd HH:mm}\nLeague: {e.League}\nMatch: {e.Home} - {e.Away}");
+                var messages = batches.Select(e => $"Sport: **{e.Sport}** | {e.DateTime:yyyy-MM-dd HH:mm} | {e.League} | {e.Home} - {e.Away}");
                 try
                 {
                     var message = new
