@@ -25,8 +25,6 @@ namespace OWP.OtherSportNotification.Services
             await _semaphore.WaitAsync();
             try
             {
-                await logger.InfoAsync("Starting SendMessageUnlinkEvent - waiting for previous execution to complete", "OsUnlinkMatch_Start");
-                
                 var eventsUnlinkInfo = await GetEventsUnlink(request);
                 var (fromDate, toDate) = NormalizeTimeRange(request.FromDate, request.ToDate);
                 var (basketballGroup, tennisGroup, otherGroup) = CategoryEventBySportType(eventsUnlinkInfo);
@@ -41,8 +39,6 @@ namespace OWP.OtherSportNotification.Services
 
                 var osIdAlreadySendNoty = await SendMessagesInBatches(client, allEvents, request);
                 await CacheEventAlreadySendNoty(fromDate, toDate, osIdAlreadySendNoty, allEvents);
-                
-                await logger.InfoAsync("Completed SendMessageUnlinkEvent successfully", "OsUnlinkMatch_Complete");
             }
             catch (Exception ex)
             {
