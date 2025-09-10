@@ -17,23 +17,41 @@ namespace OWP.OtherSportNotification.Services
     {
         const int BATCH_SIZE = 20;
         private const string ChannelName = "#MissingGameNotify";
+        private static readonly SemaphoreSlim _semaphore = new(1, 1);
         public async Task SendMessageUnlinkEvent(HttpClient client, OtherSportNotificationRequest request)
         {
-            await Task.Delay(TimeSpan.FromSeconds(180));
-            var eventsUnlinkInfo = await GetEventsUnlink(request);
-            var (fromDate, toDate) = NormalizeTimeRange(request.FromDate, request.ToDate);
-            var (basketballGroup, tennisGroup, otherGroup) = CategoryEventBySportType(eventsUnlinkInfo);
-            var eventsWillSendNotyBasketballGroup = await BuildEventWillSendNoty(fromDate, toDate, basketballGroup);
-            var eventsWillSendNotyTennisGroup = await BuildEventWillSendNoty(fromDate, toDate, tennisGroup);
-            var eventsWillSendNotyOtherGroup = await BuildEventWillSendNoty(fromDate, toDate, otherGroup);
+            await _semaphore.WaitAsync();
+            try
+            {
+                await logger.InfoAsync("Starting SendMessageUnlinkEvent - waiting for previous execution to complete", "OsUnlinkMatch_Start");
+                
+                await Task.Delay(TimeSpan.FromSeconds(180));
+                var eventsUnlinkInfo = await GetEventsUnlink(request);
+                var (fromDate, toDate) = NormalizeTimeRange(request.FromDate, request.ToDate);
+                var (basketballGroup, tennisGroup, otherGroup) = CategoryEventBySportType(eventsUnlinkInfo);
+                var eventsWillSendNotyBasketballGroup = await BuildEventWillSendNoty(fromDate, toDate, basketballGroup);
+                var eventsWillSendNotyTennisGroup = await BuildEventWillSendNoty(fromDate, toDate, tennisGroup);
+                var eventsWillSendNotyOtherGroup = await BuildEventWillSendNoty(fromDate, toDate, otherGroup);
 
-            var allEvents = eventsWillSendNotyBasketballGroup
-                .Concat(eventsWillSendNotyTennisGroup)
-                .Concat(eventsWillSendNotyOtherGroup)
-                .ToList();
+                var allEvents = eventsWillSendNotyBasketballGroup
+                    .Concat(eventsWillSendNotyTennisGroup)
+                    .Concat(eventsWillSendNotyOtherGroup)
+                    .ToList();
 
-            var osIdAlreadySendNoty = await SendMessagesInBatches(client, allEvents, request);
-            await CacheEventAlreadySendNoty(fromDate, toDate, osIdAlreadySendNoty, allEvents);
+                var osIdAlreadySendNoty = await SendMessagesInBatches(client, allEvents, request);
+                await CacheEventAlreadySendNoty(fromDate, toDate, osIdAlreadySendNoty, allEvents);
+                
+                await logger.InfoAsync("Completed SendMessageUnlinkEvent successfully", "OsUnlinkMatch_Complete");
+            }
+            catch (Exception ex)
+            {
+                await logger.ErrorAsync($"Error in SendMessageUnlinkEvent: {ex.Message}", "OsUnlinkMatch_Error");
+                throw;
+            }
+            finally
+            {
+                _semaphore.Release();
+            }
         }
 
         
