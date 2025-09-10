@@ -20,12 +20,13 @@ namespace OWP.OtherSportNotification.Services
         private static readonly SemaphoreSlim _semaphore = new(1, 1);
         public async Task SendMessageUnlinkEvent(HttpClient client, OtherSportNotificationRequest request)
         {
+            await Task.Delay(TimeSpan.FromSeconds(180));
+            
             await _semaphore.WaitAsync();
             try
             {
                 await logger.InfoAsync("Starting SendMessageUnlinkEvent - waiting for previous execution to complete", "OsUnlinkMatch_Start");
                 
-                await Task.Delay(TimeSpan.FromSeconds(180));
                 var eventsUnlinkInfo = await GetEventsUnlink(request);
                 var (fromDate, toDate) = NormalizeTimeRange(request.FromDate, request.ToDate);
                 var (basketballGroup, tennisGroup, otherGroup) = CategoryEventBySportType(eventsUnlinkInfo);
