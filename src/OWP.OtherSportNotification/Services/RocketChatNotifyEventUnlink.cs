@@ -139,7 +139,7 @@ namespace OWP.OtherSportNotification.Services
             for (var i = 0; i < events.Count; i += BATCH_SIZE)
             {
                 var batches = events.Skip(i).Take(BATCH_SIZE).ToList();
-                var messages = batches.Select(e => $"Sport: **{e.Sport}** | {e.DateTime:yyyy-MM-dd HH:mm} | {e.League} | {e.Home} - {e.Away}");
+                var messages = batches.Select(e => $"**{e.Sport}** | {e.DateTime:yyyy-MM-dd HH:mm} | {e.League} | {e.Home} - {e.Away}");
                 try
                 {
                     var message = new
