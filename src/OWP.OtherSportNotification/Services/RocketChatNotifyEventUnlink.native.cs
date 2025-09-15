@@ -17,23 +17,38 @@ namespace OWP.OtherSportNotification.Services
     {
         const int BATCH_SIZE = 20;
         private const string ChannelName = "#MissingGameNotify";
+        private static readonly SemaphoreSlim _semaphore = new(1, 1);
         public async Task SendMessageUnlinkEvent(HttpClient client, OtherSportNotificationRequest request)
         {
             await Task.Delay(TimeSpan.FromSeconds(180));
-            var eventsUnlinkInfo = await GetEventsUnlink(request);
-            var (fromDate, toDate) = NormalizeTimeRange(request.FromDate, request.ToDate);
-            var (basketballGroup, tennisGroup, otherGroup) = CategoryEventBySportType(eventsUnlinkInfo);
-            var eventsWillSendNotyBasketballGroup = await BuildEventWillSendNoty(fromDate, toDate, basketballGroup);
-            var eventsWillSendNotyTennisGroup = await BuildEventWillSendNoty(fromDate, toDate, tennisGroup);
-            var eventsWillSendNotyOtherGroup = await BuildEventWillSendNoty(fromDate, toDate, otherGroup);
+            
+            await _semaphore.WaitAsync();
+            try
+            {
+                var eventsUnlinkInfo = await GetEventsUnlink(request);
+                var (fromDate, toDate) = NormalizeTimeRange(request.FromDate, request.ToDate);
+                var (basketballGroup, tennisGroup, otherGroup) = CategoryEventBySportType(eventsUnlinkInfo);
+                var eventsWillSendNotyBasketballGroup = await BuildEventWillSendNoty(fromDate, toDate, basketballGroup);
+                var eventsWillSendNotyTennisGroup = await BuildEventWillSendNoty(fromDate, toDate, tennisGroup);
+                var eventsWillSendNotyOtherGroup = await BuildEventWillSendNoty(fromDate, toDate, otherGroup);
 
-            var allEvents = eventsWillSendNotyBasketballGroup
-                .Concat(eventsWillSendNotyTennisGroup)
-                .Concat(eventsWillSendNotyOtherGroup)
-                .ToList();
+                var allEvents = eventsWillSendNotyBasketballGroup
+                    .Concat(eventsWillSendNotyTennisGroup)
+                    .Concat(eventsWillSendNotyOtherGroup)
+                    .ToList();
 
-            var osIdAlreadySendNoty = await SendMessagesInBatches(client, allEvents, request);
-            await CacheEventAlreadySendNoty(fromDate, toDate, osIdAlreadySendNoty, allEvents);
+                var osIdAlreadySendNoty = await SendMessagesInBatches(client, allEvents, request);
+                await CacheEventAlreadySendNoty(fromDate, toDate, osIdAlreadySendNoty, allEvents);
+            }
+            catch (Exception ex)
+            {
+                await logger.ErrorAsync($"Error in SendMessageUnlinkEvent: {ex.Message}", "OsUnlinkMatch_Error");
+                throw;
+            }
+            finally
+            {
+                _semaphore.Release();
+            }
         }
 
         
@@ -82,7 +97,9 @@ namespace OWP.OtherSportNotification.Services
                            !x.Sport.Equals("Tennis", StringComparison.OrdinalIgnoreCase))
                 .GroupBy(x => x.Sport)
                 .OrderBy(g => g.Key, StringComparer.OrdinalIgnoreCase)
-                .SelectMany(g => g.OrderBy(x => x.DateTime))
+                .SelectMany(g => g.GroupBy(x => x.League)
+                    .OrderBy(leagueGroup => leagueGroup.Key, StringComparer.OrdinalIgnoreCase)
+                    .SelectMany(leagueGroup => leagueGroup.OrderBy(x => x.DateTime)))
                 .ToList();
 
             return (basketballGroup, tennisGroup, otherGroup);
@@ -92,7 +109,9 @@ namespace OWP.OtherSportNotification.Services
         {
             return events
                 .Where(x => predicate(x.Sport))
-                .OrderBy(x => x.DateTime)
+                .GroupBy(x => x.League)
+                .OrderBy(g => g.Key, StringComparer.OrdinalIgnoreCase)
+                .SelectMany(g => g.OrderBy(x => x.DateTime))
                 .ToList();
         }
 
@@ -135,7 +154,7 @@ namespace OWP.OtherSportNotification.Services
             for (var i = 0; i < events.Count; i += BATCH_SIZE)
             {
                 var batches = events.Skip(i).Take(BATCH_SIZE).ToList();
-                var messages = batches.Select(e => $"**{e.Sport}**\nK.O Time: {e.DateTime:yyyy-MM-dd HH:mm}\nLeague: {e.League}\nMatch: {e.Home} - {e.Away}");
+                var messages = batches.Select(e => $"**{e.Sport}** | {e.DateTime:yyyy-MM-dd HH:mm} | {e.League} | {e.Home} - {e.Away}");
                 try
                 {
                     var message = new
