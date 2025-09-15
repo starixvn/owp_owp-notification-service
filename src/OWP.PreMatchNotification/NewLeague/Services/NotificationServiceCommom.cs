@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Fanex.Data.Repository;
+using MediatR;
 using Newtonsoft.Json;
 using Olympus.OWP.Log.Data.Repository.Criteria;
 using OWP.PreMatchNotification.Shared.Services;
@@ -107,9 +108,17 @@ namespace OWP.PreMatchNotification.NewLeague.Services
                 {
                     logAction = $"[NewLeagueNotification]-MessageToChannel: {ChannelName} - Fail";
                 }
-
                 var responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                await LogDetailedPayload(ToGmt8(DateTime.Now), logAction, json).ConfigureAwait(false);
+
+                var logInfo = new
+                {
+                    leagues = json,
+                    RequestDate,
+                    channel = ChannelName,
+                    message = response,
+                    responseBody
+                };
+                await LogDetailedPayload(ToGmt8(DateTime.Now), logAction, System.Text.Json.JsonSerializer.Serialize(logInfo)).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
