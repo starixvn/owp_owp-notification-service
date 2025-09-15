@@ -21,6 +21,17 @@ namespace OWP.PreMatchNotification.NewLeague.Services
         private const int CACHE_EXPIRED_IN_3_DAYS = 3;
         private const int batchSize = 20;
         private const string ChannelName = "#New_League_Need_Assigned";
+        
+        private static readonly HashSet<string> ExcludeSabaLeagues = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "SABA CLUB FRIENDLY Virtual FC 24 - 16 Mins Play",
+            "SABA INTERNATIONAL FRIENDLY Virtual PES 21 - 20 Mins Play",
+            "SABA CLUB FRIENDLY Virtual PES 21 - 15 Mins Play",
+            "SABA INTERNATIONAL FRIENDLY Virtual FC 24 - 16 Mins Play",
+            "SABA SPAIN PRIMERA LALIGA Virtual PES 24 - 15 Mins Play",
+            "SABA ENGLISH PREMIER LEAGUE Virtual PES 24 - 15 Mins Play",
+            "SABA VIETNAM V LEAGUE 1 Virtual PES 24 - 15 Mins Play"
+        };
         public async Task SendNotificationForNewLeague(IList<string> leagueLatest, DateTime requestDate, bool isDay)
         {
             var cacheKey = BuildKey(requestDate, isDay);
@@ -29,14 +40,20 @@ namespace OWP.PreMatchNotification.NewLeague.Services
             var newLeague = !leagueInCache.Any()
                 ? []
                 : leagueLatest.Except(leagueInCache, StringComparer.OrdinalIgnoreCase).ToList();
-            // TODO
-            // Msg to RC for new league
+            
+            var filteredLeagues = FilterAllowedLeagues(newLeague);
+            
+            // Send notification for new leagues
+            if (filteredLeagues.Any())
+            {
+                await MessageToChannelInBatches(filteredLeagues, isDay, requestDate);
+            }
 
             if (cacheManipulator.ContainKey(cacheKey))
             {
                 await cacheManipulator.RemoveData(cacheKey);
             }
-            var assignmentSnapshotInJson = JsonConvert.SerializeObject(leagueLatest.Union(leagueInCache));
+            var assignmentSnapshotInJson = JsonConvert.SerializeObject(filteredLeagues.Union(leagueInCache));
             await cacheManipulator.Cache(assignmentSnapshotInJson, cacheKey, TimeSpan.FromMinutes(CACHE_EXPIRED_IN_3_DAYS));
         }
 
@@ -46,17 +63,23 @@ namespace OWP.PreMatchNotification.NewLeague.Services
                 : $"{PREMATCH_SHIFT}-{requestDate:yyyy-MM-dd}-night-shift";
 
 
-        public async Task MessageToChannelInBatches<T>(IList<string> leagues, bool isDay, DateTime RequestDate)
+        public async Task MessageToChannelInBatches(IList<string> leagues, bool isDay, DateTime RequestDate)
         {
             using var client = httpClientFactory.CreateClient("OWPChatBot");
+            
             for (var i = 0; i < leagues.Count; i += batchSize)
             {
                 try
                 {
+                    var batch = leagues.Skip(i).Take(batchSize).ToList();
+                    var shiftType = isDay ? "DAYSHIFT" : "NIGHTSHIFT";
+                    var messages = batch.Select(league => 
+                        $"[{shiftType}] **New League Alert**\n The league **{league}** is currently unassigned.");
+                    
                     var message = new
                     {
                         channel = ChannelName,
-                        text = string.Join("\n-------------------\n", leagues[i])
+                        text = string.Join("\n-------------------\n", messages)
                     };
                     await SendMessageToChannel(client, message, RequestDate);
                 }
@@ -78,14 +101,15 @@ namespace OWP.PreMatchNotification.NewLeague.Services
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
                 var response = await client.PostAsync("api/v1/chat.postMessage", content).ConfigureAwait(false);
+                var logAction = $"[NewLeagueNotification]-MessageToChannel: {ChannelName} - Success";
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    throw new Exception($"Failed to send message to chat server: {response.StatusCode}");
+                    logAction = $"[NewLeagueNotification]-MessageToChannel: {ChannelName} - Fail";
                 }
 
                 var responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                await LogDetailedPayload(ToGmt8(DateTime.Now), $"[NewLeagueNotification]-MessageToChannel {ChannelName} - Success", responseBody).ConfigureAwait(false);
+                await LogDetailedPayload(ToGmt8(DateTime.Now), logAction, json).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -108,6 +132,10 @@ namespace OWP.PreMatchNotification.NewLeague.Services
         private static DateTime ToGmt8(DateTime dateTime)
         {
             return dateTime.ToUniversalTime().AddHours(8);
+        }
+        private static IList<string> FilterAllowedLeagues(IList<string> leagues)
+        {
+            return leagues.Where(league => !ExcludeSabaLeagues.Contains(league)).ToList();
         }
     }
 }
