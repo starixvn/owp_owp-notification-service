@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using Fanex.Data.Repository;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Olympus.OWP.Log.Data.Repository.Criteria;
 using OWP.PreMatchNotification.Shared.Services;
@@ -22,7 +21,7 @@ namespace OWP.PreMatchNotification.NewLeague.Services
         IHttpClientFactory httpClientFactory,
         IDynamicRepository dynamicRepository,
         IConfiguration configuration,
-        Fanex.Logging.ILogger logger) : NotificationServiceCommon
+        ILogger logger) : NotificationServiceCommon
     {
         private HttpClient client;
         private const string PREMATCH_SHIFT = "prematch-shift";
