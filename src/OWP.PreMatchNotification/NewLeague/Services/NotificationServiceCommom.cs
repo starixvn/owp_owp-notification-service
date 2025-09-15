@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using Fanex.Data.Repository;
-using MediatR;
 using Newtonsoft.Json;
 using Olympus.OWP.Log.Data.Repository.Criteria;
 using OWP.PreMatchNotification.Shared.Services;
