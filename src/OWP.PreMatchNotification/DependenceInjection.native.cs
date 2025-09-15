@@ -56,6 +56,5 @@ public static class DependenceInjection
         services.AddTransient<NightShiftNotificationService, NightShiftNotificationServiceImp>();
         services.AddTransient<DayShiftNotificationService, DayShiftNotificationServiceImp>();
         services.AddTransient<NotificationServiceCommon, NotificationServiceCommonImp>();
-        services.AddTransient<RocketChatMessageNewLeague, RocketChatMessageNewLeaguelImp>();
     }
 }
