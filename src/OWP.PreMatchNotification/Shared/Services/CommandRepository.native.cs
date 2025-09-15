@@ -75,7 +75,16 @@ public class CommandRepositoryImp(IDynamicRepository dynamicRepository) : Comman
 
     public async Task<List<string>> QueryDayShiftPreMatchAssignments(QueryShiftPreMatchCriteria criteria)
     {
+        try
+        {
+
         return (await dynamicRepository.FetchAsync<PrematchLeagueInfo>(criteria)).Select(x => x.LeagueName).ToList();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public async Task<TimeSpan?> QueryExistedStartTime(DateTime eventDate)
