@@ -11,11 +11,8 @@ namespace OWP.PreMatchNotification.NewLeague.Services
 
     public class NightShiftNotificationServiceImp(
     CommandRepository repository,
-    CacheManipulatorCommon cacheManipulator) : NightShiftNotificationService
+    NotificationServiceCommon notificationServiceCommon) : NightShiftNotificationService
     {
-        private const string PREMATCH_SHIFT = "prematch-shift";
-        private const int CACHE_EXPIRED_IN_3_DAYS = 3;
-
         public async Task SendNotificationForNewLeague()
         {
             var requestDate = DateTimeOffset.Now.AddHours(12).Date;
@@ -25,29 +22,11 @@ namespace OWP.PreMatchNotification.NewLeague.Services
                 return;
             }
 
-            var cacheKey = BuildKey(requestDate);
-
             var leagueLatest = await repository.QueryDayShiftPreMatchAssignments(
                 Helper.Helper.CreateShiftCriteria(requestDate, false, startTime.Value));
 
-            var leagueInCache = await cacheManipulator.GetMultipleData<string>(cacheKey);
-
-
-            var newLeague = !leagueInCache.Any()
-                ? []
-                : leagueLatest.Except(leagueInCache, StringComparer.OrdinalIgnoreCase).ToList();
-
-            // TODO
-            // Msg to RC for new league
-            if (cacheManipulator.ContainKey(cacheKey))
-            {
-                await cacheManipulator.RemoveData(cacheKey);
-            }
-            var assignmentSnapshotInJson = JsonConvert.SerializeObject(leagueLatest.Union(leagueInCache));
-            await cacheManipulator.Cache(assignmentSnapshotInJson, cacheKey, TimeSpan.FromMinutes(CACHE_EXPIRED_IN_3_DAYS));
+            await notificationServiceCommon.SendNotificationForNewLeague(leagueLatest, requestDate, true);
+            
         }
-
-        private static string BuildKey(DateTime requestDate)
-            => $"{PREMATCH_SHIFT}-{requestDate:yyyy-MM-dd}-night-shift";
     }
 }
