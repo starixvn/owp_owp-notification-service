@@ -1,9 +1,14 @@
 ﻿using System.Text;
 using Fanex.Data.Repository;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Olympus.OWP.Log.Data.Repository.Criteria;
 using OWP.PreMatchNotification.Shared.Services;
-
+using Fanex.Logging;
+using Microsoft.Extensions.Configuration;
+using OWP.Core.Exceptions;
+using System.Net.Http.Json;
+using OWP.PreMatchNotification.NewLeague.Models;
 
 namespace OWP.PreMatchNotification.NewLeague.Services
 {
@@ -15,8 +20,11 @@ namespace OWP.PreMatchNotification.NewLeague.Services
     public class NotificationServiceCommonImp(
         CacheManipulatorCommon cacheManipulator,
         IHttpClientFactory httpClientFactory,
-        IDynamicRepository dynamicRepository) : NotificationServiceCommon
+        IDynamicRepository dynamicRepository,
+        IConfiguration configuration,
+        Fanex.Logging.ILogger logger) : NotificationServiceCommon
     {
+        private HttpClient client;
         private const string PREMATCH_SHIFT = "prematch-shift";
         private const int CACHE_EXPIRED_IN_3_DAYS = 3;
         private const int batchSize = 20;
@@ -40,13 +48,16 @@ namespace OWP.PreMatchNotification.NewLeague.Services
             var newLeague = !leagueInCache.Any()
                 ? []
                 : leagueLatest.Except(leagueInCache, StringComparer.OrdinalIgnoreCase).ToList();
-            
+
             var filteredLeagues = FilterAllowedLeagues(newLeague);
             
             // Send notification for new leagues
             if (filteredLeagues.Any())
             {
+                CreateClient();
+                await LoginToRc();
                 await MessageToChannelInBatches(filteredLeagues, isDay, requestDate);
+                await LogOutRC();
             }
 
             if (cacheManipulator.ContainKey(cacheKey))
@@ -65,8 +76,8 @@ namespace OWP.PreMatchNotification.NewLeague.Services
 
         public async Task MessageToChannelInBatches(IList<string> leagues, bool isDay, DateTime RequestDate)
         {
-            using var client = httpClientFactory.CreateClient("OWPChatBot");
             
+
             for (var i = 0; i < leagues.Count; i += batchSize)
             {
                 try
@@ -122,6 +133,7 @@ namespace OWP.PreMatchNotification.NewLeague.Services
             catch (Exception ex)
             {
                 await LogDetailedPayload(ToGmt8(DateTime.Now), $"[NewLeagueNotification]-MessageToChannel {ChannelName} - Error", ex.Message).ConfigureAwait(false);
+                await logger.ErrorAsync(ex.Message, ex);
             }
         }
 
@@ -144,6 +156,44 @@ namespace OWP.PreMatchNotification.NewLeague.Services
         private static IList<string> FilterAllowedLeagues(IList<string> leagues)
         {
             return leagues.Where(league => !ExcludeSabaLeagues.Contains(league)).ToList();
+        }
+
+        private void CreateClient()
+        {
+            var chatUrl = configuration["ChatServer:Url"];
+            client = httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(chatUrl);
+            client.Timeout = TimeSpan.FromMinutes(2);
+            client.DefaultRequestHeaders.Add("Accept", "application/json");
+        }
+
+        private async Task LogOutRC()
+        {
+            await client.PostAsync("api/v1/logout", null);
+        }
+
+        private async Task LoginToRc()
+        {
+            try
+            {
+                var username = configuration["ChatServer:BotName"];
+                var password = configuration["ChatServer:BotPassword"];
+                var loginPayload = new { user = username, password };
+
+                var response = await client.PostAsJsonAsync("api/v1/login", loginPayload);
+                response.EnsureSuccessStatusCode();
+
+                var authResult = await response.Content.ReadFromJsonAsync<RocketChatAuthResponse>();
+
+                client.DefaultRequestHeaders.Add("X-Auth-Token", authResult.Data.AuthToken);
+                client.DefaultRequestHeaders.Add("X-User-Id", authResult.Data.UserId);
+            }
+            catch (Exception exception)
+            {
+                await LogDetailedPayload(ToGmt8(DateTime.Now), "[OsNotification]- Login - Fatal error", exception.ToString());
+
+                throw new RocketChatException("Failed to login to Rocket.Chat", exception);
+            }
         }
     }
 }
