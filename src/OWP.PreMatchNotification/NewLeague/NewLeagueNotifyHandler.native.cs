@@ -17,7 +17,9 @@ public class NewLeagueNotifyHandler(
     NewLeagueValueGenerator newLeagueGenerator,
     MessageFactory messageFactory,
     CommandRepository commandRepository,
-    NotificationService notificationService)
+    NotificationService notificationService,
+    DayShiftNotificationService dayShiftNotification,
+    NightShiftNotificationService nightShiftNotification)
     : IRequestHandler<PrematchNewLeagueNotifyRequest, Unit>
 {
     private const string OldPrematchLeaguesSnapshotKey = "OWP-Old-PreMatchLeagues";
@@ -30,6 +32,9 @@ public class NewLeagueNotifyHandler(
         await commandRepository.InsertMessage(messageModels, request.SessionId);
 
         await notificationService.Notify(messageModels);
+        await dayShiftNotification.SendNotificationForNewLeague();
+        await nightShiftNotification.SendNotificationForNewLeague();
+
 
         return Unit.Value;
     }
