@@ -1,6 +1,4 @@
-﻿using Fanex.Caching;
-using Newtonsoft.Json;
-using OWP.PreMatchNotification.Shared.Services;
+﻿using OWP.PreMatchNotification.Shared.Services;
 
 namespace OWP.PreMatchNotification.NewLeague.Services
 {
@@ -17,7 +15,7 @@ namespace OWP.PreMatchNotification.NewLeague.Services
         {
             var requestDate = DateTimeOffset.Now.AddHours(12).Date;
             var startTime = await repository.QueryExistedStartTime(requestDate);
-            if (startTime.HasValue)
+            if (!startTime.HasValue)
             {
                 return;
             }

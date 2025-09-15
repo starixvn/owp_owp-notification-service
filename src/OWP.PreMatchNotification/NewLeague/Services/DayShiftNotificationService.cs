@@ -1,6 +1,4 @@
-﻿using Fanex.Caching;
-using Newtonsoft.Json;
-using OWP.PreMatchNotification.Shared.Services;
+﻿using OWP.PreMatchNotification.Shared.Services;
 
 
 namespace OWP.PreMatchNotification.NewLeague.Services

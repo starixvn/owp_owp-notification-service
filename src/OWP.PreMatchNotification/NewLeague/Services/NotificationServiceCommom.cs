@@ -1,5 +1,4 @@
-﻿using Fanex.Caching;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using OWP.PreMatchNotification.Shared.Services;
 
 
@@ -11,8 +10,7 @@ namespace OWP.PreMatchNotification.NewLeague.Services
     }
 
     public class NotificationServiceCommonImp(
-        CacheManipulatorCommon cacheManipulator,
-    CommandRepository repository) : NotificationServiceCommon
+        CacheManipulatorCommon cacheManipulator) : NotificationServiceCommon
     {
         private const string PREMATCH_SHIFT = "prematch-shift";
         private const int CACHE_EXPIRED_IN_3_DAYS = 3;
