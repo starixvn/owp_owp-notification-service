@@ -1,5 +1,4 @@
 ﻿using OWP.PreMatchNotification.Shared.Services;
-using OWP.SyncPrematchLeague.Services;
 
 namespace OWP.PreMatchNotification.NewLeague.Services
 {
@@ -10,8 +9,7 @@ namespace OWP.PreMatchNotification.NewLeague.Services
 
     public class NightShiftNotificationServiceImp(
     CommandRepository repository,
-    NotificationServiceCommon notificationServiceCommon,
-    RocketChatMessageNewLeague rocketChatMessageNewLeague) : NightShiftNotificationService
+    NotificationServiceCommon notificationServiceCommon) : NightShiftNotificationService
     {
         public async Task SendNotificationForNewLeague()
         {
