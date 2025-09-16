@@ -6,9 +6,9 @@ using OWP.PreMatchNotification.Shared.Services;
 using Fanex.Logging;
 using Microsoft.Extensions.Configuration;
 using OWP.Core.Exceptions;
-using System.Net.Http.Json;
 using Olympus.OWP.Cache;
-using OWP.PreMatchNotification.NewLeague.Models;
+using OWP.Core.Services;
+using OWP.Core.Utils;
 
 namespace OWP.PreMatchNotification.NewLeague.Services
 {
@@ -18,6 +18,7 @@ namespace OWP.PreMatchNotification.NewLeague.Services
     }
 
     public class NotificationServiceCommonImp(
+        RocketChatService rocketChatService,
         CacheManipulatorCommon cacheManipulator,
         IHttpClientFactory httpClientFactory,
         IDynamicRepository dynamicRepository,
@@ -25,7 +26,6 @@ namespace OWP.PreMatchNotification.NewLeague.Services
         ILogger logger) : NotificationServiceCommon
     {
         private HttpClient client;
-        private const string PREMATCH_SHIFT = "OWP-prematch-shift";
         private const int CACHE_EXPIRED_IN_3_DAYS = 3;
         private const int batchSize = 20;
         private const string ChannelName = "#New_League_Need_Assigned";
@@ -40,28 +40,46 @@ namespace OWP.PreMatchNotification.NewLeague.Services
             "SABA ENGLISH PREMIER LEAGUE Virtual PES 24 - 15 Mins Play",
             "SABA VIETNAM V LEAGUE 1 Virtual PES 24 - 15 Mins Play"
         };
+
         public async Task SendNotificationForNewLeague(IList<string> leagueLatest, DateTime requestDate, bool isDay)
         {
-            var cacheKey = Utils.BuildPrematchNotificationCacheKey(requestDate, isDay);
-            var leagueInCache = await cacheManipulator.GetMultipleData<string>(cacheKey);
-
-            var newLeague = !leagueInCache.Any()
-                ? []
-                : leagueLatest.Except(leagueInCache, StringComparer.OrdinalIgnoreCase).ToList();
-
-            var filteredLeagues = FilterAllowedLeagues(newLeague);
-            
-            // Send notification for new leagues
-            if (filteredLeagues.Any())
+            try
             {
-                CreateClient();
-                await LoginToRc();
-                await MessageToChannelInBatches(filteredLeagues, isDay, requestDate);
-                await LogOutRC();
-            }
 
-            var assignmentSnapshotInJson = JsonConvert.SerializeObject(newLeague.Union(leagueInCache));
-            await cacheManipulator.Cache(cacheKey, assignmentSnapshotInJson, TimeSpan.FromDays(CACHE_EXPIRED_IN_3_DAYS));
+                var cacheKey = Utils.BuildPrematchNotificationCacheKey(requestDate, isDay);
+                var leagueInCache = await cacheManipulator.GetMultipleData<string>(cacheKey);
+
+                var newLeague = !leagueInCache.Any()
+                    ? []
+                    : leagueLatest.Except(leagueInCache, StringComparer.OrdinalIgnoreCase).ToList();
+
+                var filteredLeagues = FilterAllowedLeagues(newLeague);
+
+                // Send notification for new leagues
+                if (filteredLeagues.Any())
+                {
+                    client = rocketChatService.CreateClient();
+                    await rocketChatService.LoginToRc(client);
+                    await MessageToChannelInBatches(filteredLeagues, isDay, requestDate);
+                    await rocketChatService.LogOutRC(client);
+                }
+
+                var assignmentSnapshotInJson = JsonConvert.SerializeObject(newLeague.Union(leagueInCache));
+                await cacheManipulator.Cache(cacheKey, assignmentSnapshotInJson,
+                    TimeSpan.FromDays(CACHE_EXPIRED_IN_3_DAYS));
+
+            }
+            catch (RocketChatException ex)
+            {
+                await LogDetailedPayload(DateTimeConverter.ToGmt8(DateTime.Now), "[PreMatchNotification] - error",
+                    ex.ToString());
+
+                await logger.ErrorAsync(ex.Message, ex);
+            }
+            catch (Exception e)
+            {
+                await logger.ErrorAsync(e.Message, e);
+            }
         }
 
         public async Task MessageToChannelInBatches(IList<string> leagues, bool isDay, DateTime RequestDate)
@@ -82,11 +100,11 @@ namespace OWP.PreMatchNotification.NewLeague.Services
                         channel = ChannelName,
                         text = string.Join("\n-------------------\n", messages)
                     };
-                    await SendMessageToChannel(client, message, RequestDate);
+                    await SendMessageToChannel(message, RequestDate);
                 }
                 catch (Exception ex)
                 {
-                    await LogDetailedPayload(ToGmt8(DateTime.Now),
+                    await LogDetailedPayload(DateTimeConverter.ToGmt8(DateTime.Now),
                         $"[NewLeagueNotification]-MessageToChannelInBatches: {ChannelName} - Batch failed",
                         System.Text.Json.JsonSerializer.Serialize(ex));
                 }
@@ -94,7 +112,7 @@ namespace OWP.PreMatchNotification.NewLeague.Services
         }
 
 
-        private async Task SendMessageToChannel(HttpClient client, object message, DateTime RequestDate)
+        private async Task SendMessageToChannel(object message, DateTime RequestDate)
         {
             try
             {
@@ -118,11 +136,11 @@ namespace OWP.PreMatchNotification.NewLeague.Services
                     message = response,
                     responseBody
                 };
-                await LogDetailedPayload(ToGmt8(DateTime.Now), logAction, System.Text.Json.JsonSerializer.Serialize(logInfo)).ConfigureAwait(false);
+                await LogDetailedPayload(DateTimeConverter.ToGmt8(DateTime.Now), logAction, System.Text.Json.JsonSerializer.Serialize(logInfo)).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                await LogDetailedPayload(ToGmt8(DateTime.Now), $"[NewLeagueNotification]-MessageToChannel {ChannelName} - Error", ex.Message).ConfigureAwait(false);
+                await LogDetailedPayload(DateTimeConverter.ToGmt8(DateTime.Now), $"[NewLeagueNotification]-MessageToChannel {ChannelName} - Error", ex.Message).ConfigureAwait(false);
                 await logger.ErrorAsync(ex.Message, ex);
             }
         }
@@ -138,52 +156,10 @@ namespace OWP.PreMatchNotification.NewLeague.Services
             };
             await dynamicRepository.ExecuteAsync(owpLogCriteria);
         }
-        
-        private static DateTime ToGmt8(DateTime dateTime)
-        {
-            return dateTime.ToUniversalTime().AddHours(8);
-        }
+       
         private static IList<string> FilterAllowedLeagues(IList<string> leagues)
         {
             return leagues.Where(league => !ExcludeSabaLeagues.Contains(league)).ToList();
-        }
-
-        private void CreateClient()
-        {
-            var chatUrl = configuration["ChatServer:Url"];
-            client = httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri(chatUrl);
-            client.Timeout = TimeSpan.FromMinutes(2);
-            client.DefaultRequestHeaders.Add("Accept", "application/json");
-        }
-
-        private async Task LogOutRC()
-        {
-            await client.PostAsync("api/v1/logout", null);
-        }
-
-        private async Task LoginToRc()
-        {
-            try
-            {
-                var username = configuration["ChatServer:BotName"];
-                var password = configuration["ChatServer:BotPassword"];
-                var loginPayload = new { user = username, password };
-
-                var response = await client.PostAsJsonAsync("api/v1/login", loginPayload);
-                response.EnsureSuccessStatusCode();
-
-                var authResult = await response.Content.ReadFromJsonAsync<RocketChatAuthResponse>();
-
-                client.DefaultRequestHeaders.Add("X-Auth-Token", authResult.Data.AuthToken);
-                client.DefaultRequestHeaders.Add("X-User-Id", authResult.Data.UserId);
-            }
-            catch (Exception exception)
-            {
-                await LogDetailedPayload(ToGmt8(DateTime.Now), "[OsNotification]- Login - Fatal error", exception.ToString());
-
-                throw new RocketChatException("Failed to login to Rocket.Chat", exception);
-            }
         }
     }
 }
