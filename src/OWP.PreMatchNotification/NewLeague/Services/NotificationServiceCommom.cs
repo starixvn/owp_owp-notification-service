@@ -60,19 +60,9 @@ namespace OWP.PreMatchNotification.NewLeague.Services
                 await LogOutRC();
             }
 
-            if (cacheManipulator.ContainKey(cacheKey))
-            {
-                await cacheManipulator.RemoveData(cacheKey);
-            }
-            var assignmentSnapshotInJson = JsonConvert.SerializeObject(filteredLeagues.Union(leagueInCache));
-            await cacheManipulator.Cache(cacheKey, assignmentSnapshotInJson, TimeSpan.FromMinutes(CACHE_EXPIRED_IN_3_DAYS));
+            var assignmentSnapshotInJson = JsonConvert.SerializeObject(newLeague.Union(leagueInCache));
+            await cacheManipulator.Cache(cacheKey, assignmentSnapshotInJson, TimeSpan.FromDays(CACHE_EXPIRED_IN_3_DAYS));
         }
-
-        private static string BuildKey(DateTime requestDate, bool isDay)
-            => isDay
-                ? $"{PREMATCH_SHIFT}-{requestDate:yyyy-MM-dd}-day-shift"
-                : $"{PREMATCH_SHIFT}-{requestDate:yyyy-MM-dd}-night-shift";
-
 
         public async Task MessageToChannelInBatches(IList<string> leagues, bool isDay, DateTime RequestDate)
         {
