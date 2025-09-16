@@ -65,7 +65,7 @@ namespace OWP.PreMatchNotification.NewLeague.Services
                 await cacheManipulator.RemoveData(cacheKey);
             }
             var assignmentSnapshotInJson = JsonConvert.SerializeObject(filteredLeagues.Union(leagueInCache));
-            await cacheManipulator.Cache(assignmentSnapshotInJson, cacheKey, TimeSpan.FromMinutes(CACHE_EXPIRED_IN_3_DAYS));
+            await cacheManipulator.Cache(cacheKey, assignmentSnapshotInJson, TimeSpan.FromMinutes(CACHE_EXPIRED_IN_3_DAYS));
         }
 
         private static string BuildKey(DateTime requestDate, bool isDay)
