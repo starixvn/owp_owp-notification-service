@@ -30,7 +30,7 @@ namespace OWP.PreMatchNotification.NewLeague.Services
         private const int batchSize = 20;
         private const string ChannelName = "#New_League_Need_Assigned";
         
-        private static readonly HashSet<string> ExcludeSabaLeagues = new(StringComparer.OrdinalIgnoreCase)
+        private static readonly HashSet<string> AllowSabaLeagues = new(StringComparer.OrdinalIgnoreCase)
         {
             "SABA CLUB FRIENDLY Virtual FC 24 - 16 Mins Play",
             "SABA INTERNATIONAL FRIENDLY Virtual PES 21 - 20 Mins Play",
@@ -159,7 +159,14 @@ namespace OWP.PreMatchNotification.NewLeague.Services
        
         private static IList<string> FilterAllowedLeagues(IList<string> leagues)
         {
-            return leagues.Where(league => !ExcludeSabaLeagues.Contains(league)).ToList();
+            return leagues.Where(league => 
+            {
+                if (league.Contains("saba", StringComparison.OrdinalIgnoreCase))
+                {
+                    return AllowSabaLeagues.Contains(league);
+                }
+                return true;
+            }).ToList();
         }
     }
 }

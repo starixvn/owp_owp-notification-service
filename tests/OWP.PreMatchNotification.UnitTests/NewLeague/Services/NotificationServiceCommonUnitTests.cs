@@ -291,9 +291,9 @@ public class NotificationServiceCommonUnitTests
         var leagueLatest = new List<string>
         {
             "Premier League",
-            "SABA CLUB FRIENDLY Virtual FC 24 - 16 Mins Play", // Should be excluded
+            "SABA CLUB FRIENDLY Virtual FC 24 - 16 Mins Play", // Should be included (in AllowSabaLeagues)
             "La Liga",
-            "SABA RANDOM LEAGUE" // Not in excluded list, should be included
+            "SABA RANDOM LEAGUE" // Should be excluded (contains "saba" but not in AllowSabaLeagues)
         };
         var requestDate = new DateTime(2024, 1, 15);
         var isDay = true;
@@ -419,9 +419,9 @@ public class NotificationServiceCommonUnitTests
         var leagues = new List<string>
         {
             "Premier League",
-            "SABA CLUB FRIENDLY Virtual FC 24 - 16 Mins Play", // Should be excluded
+            "SABA CLUB FRIENDLY Virtual FC 24 - 16 Mins Play", // Should be included (in AllowSabaLeagues)
             "La Liga",
-            "SABA RANDOM LEAGUE" // Not in excluded list, should be included
+            "SABA RANDOM LEAGUE" // Should be excluded (contains "saba" but not in AllowSabaLeagues)
         };
 
         // Act
@@ -434,8 +434,8 @@ public class NotificationServiceCommonUnitTests
         Assert.Equal(3, result.Count);
         Assert.Contains("Premier League", result);
         Assert.Contains("La Liga", result);
-        Assert.Contains("SABA RANDOM LEAGUE", result);
-        Assert.DoesNotContain("SABA CLUB FRIENDLY Virtual FC 24 - 16 Mins Play", result);
+        Assert.Contains("SABA CLUB FRIENDLY Virtual FC 24 - 16 Mins Play", result);
+        Assert.DoesNotContain("SABA RANDOM LEAGUE", result);
     }
 
     [Fact]
@@ -460,9 +460,9 @@ public class NotificationServiceCommonUnitTests
         // Arrange
         var leagues = new List<string>
         {
-            "SABA CLUB FRIENDLY Virtual FC 24 - 16 Mins Play",
-            "SABA INTERNATIONAL FRIENDLY Virtual PES 21 - 20 Mins Play",
-            "SABA CLUB FRIENDLY Virtual PES 21 - 15 Mins Play"
+            "SABA RANDOM LEAGUE 1", // Not in AllowSabaLeagues, should be excluded
+            "SABA RANDOM LEAGUE 2", // Not in AllowSabaLeagues, should be excluded
+            "SABA RANDOM LEAGUE 3"  // Not in AllowSabaLeagues, should be excluded
         };
 
         // Act
@@ -482,11 +482,11 @@ public class NotificationServiceCommonUnitTests
         var leagues = new List<string>
         {
             "Premier League",
-            "SABA CLUB FRIENDLY Virtual FC 24 - 16 Mins Play", // Excluded
+            "SABA CLUB FRIENDLY Virtual FC 24 - 16 Mins Play", // Included (in AllowSabaLeagues)
             "La Liga",
-            "SABA INTERNATIONAL FRIENDLY Virtual PES 21 - 20 Mins Play", // Excluded
+            "SABA INTERNATIONAL FRIENDLY Virtual PES 21 - 20 Mins Play", // Included (in AllowSabaLeagues)
             "Bundesliga",
-            "SABA RANDOM LEAGUE", // Not in excluded list, so included
+            "SABA RANDOM LEAGUE", // Excluded (contains "saba" but not in AllowSabaLeagues)
             "Serie A"
         };
 
@@ -497,14 +497,46 @@ public class NotificationServiceCommonUnitTests
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(5, result.Count);
+        Assert.Equal(6, result.Count);
         Assert.Contains("Premier League", result);
         Assert.Contains("La Liga", result);
         Assert.Contains("Bundesliga", result);
-        Assert.Contains("SABA RANDOM LEAGUE", result);
         Assert.Contains("Serie A", result);
-        Assert.DoesNotContain("SABA CLUB FRIENDLY Virtual FC 24 - 16 Mins Play", result);
-        Assert.DoesNotContain("SABA INTERNATIONAL FRIENDLY Virtual PES 21 - 20 Mins Play", result);
+        Assert.Contains("SABA CLUB FRIENDLY Virtual FC 24 - 16 Mins Play", result);
+        Assert.Contains("SABA INTERNATIONAL FRIENDLY Virtual PES 21 - 20 Mins Play", result);
+        Assert.DoesNotContain("SABA RANDOM LEAGUE", result);
+    }
+
+    [Fact]
+    public void FilterAllowedLeagues_WithCaseInsensitiveSabaMatching_ShouldFilterCorrectly()
+    {
+        // Arrange
+        var leagues = new List<string>
+        {
+            "Premier League",
+            "saba club friendly virtual fc 24 - 16 mins play", // Should be excluded (case insensitive "saba" but not exact match)
+            "La Liga",
+            "SABA CLUB FRIENDLY Virtual FC 24 - 16 Mins Play", // Should be included (exact match in AllowSabaLeagues)
+            "Bundesliga",
+            "Saba Random League", // Should be excluded (case insensitive "saba" but not in AllowSabaLeagues)
+            "Serie A"
+        };
+
+        // Act
+        var result = _service.GetType()
+            .GetMethod("FilterAllowedLeagues", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static)
+            .Invoke(null, new object[] { leagues }) as IList<string>;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(6, result.Count);
+        Assert.Contains("Premier League", result);
+        Assert.Contains("La Liga", result);
+        Assert.Contains("Bundesliga", result);
+        Assert.Contains("Serie A", result);
+        Assert.Contains("SABA CLUB FRIENDLY Virtual FC 24 - 16 Mins Play", result);
+        Assert.Contains("saba club friendly virtual fc 24 - 16 mins play", result); // Case-insensitive match
+        Assert.DoesNotContain("Saba Random League", result);
     }
 
     #endregion
