@@ -6,6 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Fanex.Caching" Version="2.2.7" />
+    <PackageReference Include="Olympus.OWP.Cache" Version="1.0.0" />
     <PackageReference Include="Olympus.Xml" Version="1.0.0.5" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Fanex.Logging" Version="2.0.2" />

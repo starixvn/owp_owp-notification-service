@@ -7,6 +7,7 @@ using Fanex.Logging;
 using Microsoft.Extensions.Configuration;
 using OWP.Core.Exceptions;
 using System.Net.Http.Json;
+using Olympus.OWP.Cache;
 using OWP.PreMatchNotification.NewLeague.Models;
 
 namespace OWP.PreMatchNotification.NewLeague.Services
@@ -24,7 +25,7 @@ namespace OWP.PreMatchNotification.NewLeague.Services
         ILogger logger) : NotificationServiceCommon
     {
         private HttpClient client;
-        private const string PREMATCH_SHIFT = "prematch-shift";
+        private const string PREMATCH_SHIFT = "OWP-prematch-shift";
         private const int CACHE_EXPIRED_IN_3_DAYS = 3;
         private const int batchSize = 20;
         private const string ChannelName = "#New_League_Need_Assigned";
@@ -41,7 +42,7 @@ namespace OWP.PreMatchNotification.NewLeague.Services
         };
         public async Task SendNotificationForNewLeague(IList<string> leagueLatest, DateTime requestDate, bool isDay)
         {
-            var cacheKey = BuildKey(requestDate, isDay);
+            var cacheKey = Utils.BuildPrematchNotificationCacheKey(requestDate, isDay);
             var leagueInCache = await cacheManipulator.GetMultipleData<string>(cacheKey);
 
             var newLeague = !leagueInCache.Any()
