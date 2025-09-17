@@ -23,7 +23,7 @@ namespace OWP.PreMatchNotification.NewLeague.Services
             var leagueLatest = await repository.QueryDayShiftPreMatchAssignments(
                 Helper.Helper.CreateShiftCriteria(requestDate, false, startTime.Value));
 
-            await notificationServiceCommon.SendNotificationForNewLeague(leagueLatest, requestDate, true);
+            await notificationServiceCommon.SendNotificationForNewLeague(leagueLatest, requestDate, false);
             
         }
     }

@@ -93,8 +93,8 @@ public class CommandRepositoryImp(IDynamicRepository dynamicRepository) : Comman
         {
             EventDate = eventDate
         };
-        var result = (await dynamicRepository.FetchAsync<string>(criteria)).ToList();
+        var result = (await dynamicRepository.FetchAsync<TimeSpan>(criteria)).ToList();
 
-        return result.Any() ? TimeSpan.Parse(result.FirstOrDefault()) : null;
+        return result.Any() ? result.FirstOrDefault() : null;
     }
 }
