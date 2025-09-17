@@ -39,7 +39,7 @@ public class NightShiftNotificationServiceUnitTests
         await _mockNotificationServiceCommon.Received(1).SendNotificationForNewLeague(
             expectedLeagues,
             expectedDate,
-            true);
+            false);
     }
 
     [Fact]
@@ -80,7 +80,7 @@ public class NightShiftNotificationServiceUnitTests
         await _mockNotificationServiceCommon.Received(1).SendNotificationForNewLeague(
             emptyLeagues,
             expectedDate,
-            true);
+            false);
     }
 
     [Fact]
@@ -147,7 +147,7 @@ public class NightShiftNotificationServiceUnitTests
         await _mockNotificationServiceCommon.Received(1).SendNotificationForNewLeague(
             expectedLeagues,
             Arg.Is<DateTime>(date => date == DateTimeOffset.Now.AddHours(12).Date),
-            true);
+            false);
     }
 
     [Fact]
