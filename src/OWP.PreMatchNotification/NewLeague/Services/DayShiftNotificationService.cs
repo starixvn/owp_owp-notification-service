@@ -17,10 +17,10 @@ namespace OWP.PreMatchNotification.NewLeague.Services
         {
             var requestDate = DateTimeOffset.Now.AddHours(12).Date;
 
-            var leagueLatest = await repository.QueryDayShiftPreMatchAssignments(
+            var (leagueLatest, infoSiteMatches) = await repository.QueryDayShiftPreMatchAssignments(
                 Helper.Helper.CreateShiftCriteria(requestDate, true));
-
-            await notificationServiceCommon.SendNotificationForNewLeague(leagueLatest, requestDate, true);
+            var leagueExcludeLeagueTest = Helper.Helper.ExcludeLeagueTest(leagueLatest, infoSiteMatches);
+            await notificationServiceCommon.SendNotificationForNewLeague(leagueExcludeLeagueTest, requestDate, true);
         }
 
     }

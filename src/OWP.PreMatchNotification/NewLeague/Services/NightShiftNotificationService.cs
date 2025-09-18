@@ -19,11 +19,12 @@ namespace OWP.PreMatchNotification.NewLeague.Services
             {
                 return;
             }
-
-            var leagueLatest = await repository.QueryDayShiftPreMatchAssignments(
+            
+            var (leagueLatest, infoSiteMatches) = await repository.QueryDayShiftPreMatchAssignments(
                 Helper.Helper.CreateShiftCriteria(requestDate, false, startTime.Value));
+            var leagueExcludeLeagueTest = Helper.Helper.ExcludeLeagueTest(leagueLatest, infoSiteMatches);
 
-            await notificationServiceCommon.SendNotificationForNewLeague(leagueLatest, requestDate, false);
+            await notificationServiceCommon.SendNotificationForNewLeague(leagueExcludeLeagueTest, requestDate, false);
             
         }
     }

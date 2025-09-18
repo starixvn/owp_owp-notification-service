@@ -19,7 +19,8 @@ public interface CommandRepository
 
     Task<TimeSpan?> QueryExistedStartTime(DateTime eventDate);
 
-    Task<List<string>> QueryDayShiftPreMatchAssignments(QueryShiftPreMatchCriteria criteria);
+    Task<(List<RCPrematchLeagueInfo>, List<RCInfoSiteMatch>)> QueryDayShiftPreMatchAssignments(
+        QueryShiftPreMatchCriteria criteria);
 
 }
 
@@ -73,18 +74,11 @@ public class CommandRepositoryImp(IDynamicRepository dynamicRepository) : Comman
         return result.ToList();
     }
 
-    public async Task<List<string>> QueryDayShiftPreMatchAssignments(QueryShiftPreMatchCriteria criteria)
+    public async Task<(List<RCPrematchLeagueInfo>, List<RCInfoSiteMatch>)> QueryDayShiftPreMatchAssignments(QueryShiftPreMatchCriteria criteria)
     {
-        try
-        {
+        var (preMatchLeagues, infoSiteMatches) = await dynamicRepository.FetchMultipleAsync<RCPrematchLeagueInfo, RCInfoSiteMatch>(criteria);
 
-        return (await dynamicRepository.FetchAsync<PrematchLeagueInfo>(criteria)).Select(x => x.LeagueName).ToList();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        return (preMatchLeagues.ToList(), infoSiteMatches.ToList());
     }
 
     public async Task<TimeSpan?> QueryExistedStartTime(DateTime eventDate)

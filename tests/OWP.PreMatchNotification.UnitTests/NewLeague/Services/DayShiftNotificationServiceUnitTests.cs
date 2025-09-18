@@ -1,4 +1,5 @@
 using OWP.PreMatchNotification.NewLeague.Criteria;
+using OWP.PreMatchNotification.NewLeague.Models;
 using OWP.PreMatchNotification.NewLeague.Services;
 using OWP.PreMatchNotification.Shared.Services;
 
@@ -21,9 +22,20 @@ public class DayShiftNotificationServiceUnitTests
     public async Task SendNotificationForNewLeague_ShouldCallRepositoryWithCorrectParameters()
     {
         // Arrange
-        var expectedLeagues = new List<string> { "Premier League", "La Liga", "Bundesliga" };
+        var expectedLeagues = new List<RCPrematchLeagueInfo>
+        {
+            new() { LeagueId = 1, LeagueName = "Premier League" },
+            new() { LeagueId = 2, LeagueName = "La Liga" },
+            new() { LeagueId = 3, LeagueName = "Bundesliga" }
+        };
+        var expectedInfoSiteMatches = new List<RCInfoSiteMatch>
+        {
+            new() { LeagueId = 1, IsTest = false },
+            new() { LeagueId = 2, IsTest = false },
+            new() { LeagueId = 3, IsTest = false }
+        };
         _mockRepository.QueryDayShiftPreMatchAssignments(Arg.Any<QueryShiftPreMatchCriteria>())
-            .Returns(expectedLeagues);
+            .Returns((expectedLeagues, expectedInfoSiteMatches));
 
         // Act
         await _service.SendNotificationForNewLeague();
@@ -37,18 +49,27 @@ public class DayShiftNotificationServiceUnitTests
     public async Task SendNotificationForNewLeague_ShouldCallNotificationServiceCommonWithCorrectParameters()
     {
         // Arrange
-        var expectedLeagues = new List<string> { "Premier League", "La Liga" };
+        var expectedLeagues = new List<RCPrematchLeagueInfo>
+        {
+            new() { LeagueId = 1, LeagueName = "Premier League" },
+            new() { LeagueId = 2, LeagueName = "La Liga" }
+        };
+        var expectedInfoSiteMatches = new List<RCInfoSiteMatch>
+        {
+            new() { LeagueId = 1, IsTest = false },
+            new() { LeagueId = 2, IsTest = false }
+        };
         var expectedDate = DateTimeOffset.Now.AddHours(12).Date;
 
         _mockRepository.QueryDayShiftPreMatchAssignments(Arg.Any<QueryShiftPreMatchCriteria>())
-            .Returns(expectedLeagues);
+            .Returns((expectedLeagues, expectedInfoSiteMatches));
 
         // Act
         await _service.SendNotificationForNewLeague();
 
         // Assert
         await _mockNotificationServiceCommon.Received(1).SendNotificationForNewLeague(
-            expectedLeagues,
+            Arg.Is<IList<string>>(leagues => leagues.Count == 2 && leagues.Contains("Premier League") && leagues.Contains("La Liga")),
             expectedDate,
             true);
     }
@@ -57,16 +78,17 @@ public class DayShiftNotificationServiceUnitTests
     public async Task SendNotificationForNewLeague_ShouldHandleEmptyLeagueList()
     {
         // Arrange
-        var emptyLeagues = new List<string>();
+        var emptyLeagues = new List<RCPrematchLeagueInfo>();
+        var emptyInfoSiteMatches = new List<RCInfoSiteMatch>();
         _mockRepository.QueryDayShiftPreMatchAssignments(Arg.Any<QueryShiftPreMatchCriteria>())
-            .Returns(emptyLeagues);
+            .Returns((emptyLeagues, emptyInfoSiteMatches));
 
         // Act
         await _service.SendNotificationForNewLeague();
 
         // Assert
         await _mockNotificationServiceCommon.Received(1).SendNotificationForNewLeague(
-            emptyLeagues,
+            Arg.Is<IList<string>>(leagues => leagues.Count == 0),
             Arg.Any<DateTime>(),
             true);
     }
@@ -76,7 +98,7 @@ public class DayShiftNotificationServiceUnitTests
     {
         // Arrange
         _mockRepository.QueryDayShiftPreMatchAssignments(Arg.Any<QueryShiftPreMatchCriteria>())
-            .Returns(Task.FromException<List<string>>(new Exception("Database error")));
+            .Returns(Task.FromException<(List<RCPrematchLeagueInfo>, List<RCInfoSiteMatch>)>(new Exception("Database error")));
 
         // Act & Assert
         await Assert.ThrowsAsync<Exception>(() => _service.SendNotificationForNewLeague());
@@ -86,9 +108,16 @@ public class DayShiftNotificationServiceUnitTests
     public async Task SendNotificationForNewLeague_ShouldHandleNotificationServiceException()
     {
         // Arrange
-        var expectedLeagues = new List<string> { "Premier League" };
+        var expectedLeagues = new List<RCPrematchLeagueInfo>
+        {
+            new() { LeagueId = 1, LeagueName = "Premier League" }
+        };
+        var expectedInfoSiteMatches = new List<RCInfoSiteMatch>
+        {
+            new() { LeagueId = 1, IsTest = false }
+        };
         _mockRepository.QueryDayShiftPreMatchAssignments(Arg.Any<QueryShiftPreMatchCriteria>())
-            .Returns(expectedLeagues);
+            .Returns((expectedLeagues, expectedInfoSiteMatches));
         _mockNotificationServiceCommon.SendNotificationForNewLeague(Arg.Any<IList<string>>(), Arg.Any<DateTime>(), Arg.Any<bool>())
             .Returns(Task.FromException(new Exception("Notification service error")));
 
@@ -100,16 +129,23 @@ public class DayShiftNotificationServiceUnitTests
     public async Task SendNotificationForNewLeague_ShouldUseCorrectDateCalculation()
     {
         // Arrange
-        var expectedLeagues = new List<string> { "Test League" };
+        var expectedLeagues = new List<RCPrematchLeagueInfo>
+        {
+            new() { LeagueId = 1, LeagueName = "Test League" }
+        };
+        var expectedInfoSiteMatches = new List<RCInfoSiteMatch>
+        {
+            new() { LeagueId = 1, IsTest = false }
+        };
         _mockRepository.QueryDayShiftPreMatchAssignments(Arg.Any<QueryShiftPreMatchCriteria>())
-            .Returns(expectedLeagues);
+            .Returns((expectedLeagues, expectedInfoSiteMatches));
 
         // Act
         await _service.SendNotificationForNewLeague();
 
         // Assert
         await _mockNotificationServiceCommon.Received(1).SendNotificationForNewLeague(
-            expectedLeagues,
+            Arg.Is<IList<string>>(leagues => leagues.Count == 1 && leagues.Contains("Test League")),
             Arg.Is<DateTime>(date => date == DateTimeOffset.Now.AddHours(12).Date),
             true);
     }

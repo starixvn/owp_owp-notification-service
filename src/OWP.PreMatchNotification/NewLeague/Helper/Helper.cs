@@ -1,9 +1,17 @@
 ﻿using OWP.PreMatchNotification.NewLeague.Criteria;
+using OWP.PreMatchNotification.NewLeague.Models;
 
 namespace OWP.PreMatchNotification.NewLeague.Helper
 {
     public static class Helper
     {
+        public static IList<string> ExcludeLeagueTest(IList<RCPrematchLeagueInfo> leagues,
+            IList<RCInfoSiteMatch> infoSiteMatches)
+        {
+            return leagues.Where(l=>infoSiteMatches.Any(i=>i.LeagueId==l.LeagueId && !i.IsTest)).
+                Select(x=>x.LeagueName)
+                .ToList();
+        }
         public static QueryShiftPreMatchCriteria CreateShiftCriteria(DateTime eventDate, bool isDay, TimeSpan startTime = new())
         {
             var eventToDateTime = eventDate.AddDays(1).AddHours(11).AddMinutes(59).AddSeconds(59);

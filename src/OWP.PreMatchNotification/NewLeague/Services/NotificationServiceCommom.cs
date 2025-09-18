@@ -170,9 +170,7 @@ namespace OWP.PreMatchNotification.NewLeague.Services
        
         private static IList<string> FilterAllowedLeagues(IList<string> leagues)
         {
-            return leagues.Where(league => league.Contains("saba", StringComparison.OrdinalIgnoreCase)
-            ? AllowSabaLeagues.Contains(league)
-            : !league.Contains("TESTING", StringComparison.OrdinalIgnoreCase)).ToList();
+            return leagues.Where(league => !league.Contains("saba", StringComparison.OrdinalIgnoreCase) || AllowSabaLeagues.Contains(league)).ToList();
         }
     }
 }
