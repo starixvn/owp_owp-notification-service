@@ -71,7 +71,7 @@ namespace OWP.PreMatchNotification.NewLeague.Services
                 }
                 var newCache = JsonConvert.SerializeObject(new CacheInfo
                 {
-                    Actor = currentCacheInfo.Actor,
+                    Actor = "system",
                     Leagues = newLeague.Union(currentCacheInfo.Leagues).ToList(),
                 });
                
