@@ -64,10 +64,9 @@ public class NotificationServiceCommonUnitTests
         var requestDate = new DateTime(2024, 1, 15);
         var isDay = true;
         var expectedCacheKey = "OWP-prematch-notification-2024/01/15-day-shift";
-        var emptyCache = new List<string>();
+        var emptyCacheInfo = new CacheInfo { Leagues = new List<string>() };
 
-        _mockCacheManipulator.GetMultipleData<string>(expectedCacheKey).Returns(emptyCache);
-        _mockCacheManipulator.ContainKey(expectedCacheKey).Returns(false);
+        _mockCacheManipulator.GetSingleData<CacheInfo>(expectedCacheKey, Arg.Any<CacheInfo>()).Returns(emptyCacheInfo);
 
         // Setup successful HTTP responses
         _testHttpMessageHandler.SetupLoginResponse();
@@ -77,12 +76,9 @@ public class NotificationServiceCommonUnitTests
         await _service.SendNotificationForNewLeague(leagueLatest, requestDate, isDay);
 
         // Assert
-        await _mockCacheManipulator.Received(1).GetMultipleData<string>(expectedCacheKey);
-        // When no cache exists, newLeague becomes empty, so it caches an empty array
-        await _mockCacheManipulator.Received(1).Cache(
-            expectedCacheKey,
-            Arg.Any<string>(),
-            TimeSpan.FromDays(3));
+        await _mockCacheManipulator.Received(1).GetSingleData<CacheInfo>(expectedCacheKey, Arg.Any<CacheInfo>());
+        // When no cache exists, newLeague becomes empty, so method returns early without caching
+        await _mockCacheManipulator.DidNotReceive().Cache(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<TimeSpan>());
     }
 
     [Fact]
@@ -94,10 +90,9 @@ public class NotificationServiceCommonUnitTests
         var requestDate = new DateTime(2024, 1, 15);
         var isDay = false;
         var expectedCacheKey = "OWP-prematch-notification-2024/01/15-night-shift";
-        var expectedUnion = leagueLatest.Union(cachedLeagues).ToList();
+        var cachedCacheInfo = new CacheInfo { Leagues = cachedLeagues };
 
-        _mockCacheManipulator.GetMultipleData<string>(expectedCacheKey).Returns(cachedLeagues);
-        _mockCacheManipulator.ContainKey(expectedCacheKey).Returns(true);
+        _mockCacheManipulator.GetSingleData<CacheInfo>(expectedCacheKey, Arg.Any<CacheInfo>()).Returns(cachedCacheInfo);
 
         // Setup successful HTTP responses
         _testHttpMessageHandler.SetupLoginResponse();
@@ -121,10 +116,9 @@ public class NotificationServiceCommonUnitTests
         var requestDate = new DateTime(2024, 3, 10);
         var isDay = true;
         var expectedCacheKey = "OWP-prematch-notification-2024/03/10-day-shift";
-        var emptyCache = new List<string>();
+        var emptyCacheInfo = new CacheInfo { Leagues = new List<string>() };
 
-        _mockCacheManipulator.GetMultipleData<string>(expectedCacheKey).Returns(emptyCache);
-        _mockCacheManipulator.ContainKey(expectedCacheKey).Returns(false);
+        _mockCacheManipulator.GetSingleData<CacheInfo>(expectedCacheKey, Arg.Any<CacheInfo>()).Returns(emptyCacheInfo);
 
         // Setup successful HTTP responses
         _testHttpMessageHandler.SetupLoginResponse();
@@ -134,7 +128,7 @@ public class NotificationServiceCommonUnitTests
         await _service.SendNotificationForNewLeague(leagueLatest, requestDate, isDay);
 
         // Assert
-        await _mockCacheManipulator.Received(1).GetMultipleData<string>(expectedCacheKey);
+        await _mockCacheManipulator.Received(1).GetSingleData<CacheInfo>(expectedCacheKey, Arg.Any<CacheInfo>());
     }
 
     [Fact]
@@ -145,10 +139,9 @@ public class NotificationServiceCommonUnitTests
         var requestDate = new DateTime(2024, 3, 10);
         var isDay = false;
         var expectedCacheKey = "OWP-prematch-notification-2024/03/10-night-shift";
-        var emptyCache = new List<string>();
+        var emptyCacheInfo = new CacheInfo { Leagues = new List<string>() };
 
-        _mockCacheManipulator.GetMultipleData<string>(expectedCacheKey).Returns(emptyCache);
-        _mockCacheManipulator.ContainKey(expectedCacheKey).Returns(false);
+        _mockCacheManipulator.GetSingleData<CacheInfo>(expectedCacheKey, Arg.Any<CacheInfo>()).Returns(emptyCacheInfo);
 
         // Setup successful HTTP responses
         _testHttpMessageHandler.SetupLoginResponse();
@@ -158,7 +151,7 @@ public class NotificationServiceCommonUnitTests
         await _service.SendNotificationForNewLeague(leagueLatest, requestDate, isDay);
 
         // Assert
-        await _mockCacheManipulator.Received(1).GetMultipleData<string>(expectedCacheKey);
+        await _mockCacheManipulator.Received(1).GetSingleData<CacheInfo>(expectedCacheKey, Arg.Any<CacheInfo>());
     }
 
     [Fact]
@@ -170,18 +163,16 @@ public class NotificationServiceCommonUnitTests
         var isDay = true;
         var expectedCacheKey = "OWP-prematch-notification-2024/01/15-day-shift";
         var cachedLeagues = new List<string> { "Cached League" };
+        var cachedCacheInfo = new CacheInfo { Leagues = cachedLeagues };
 
-        _mockCacheManipulator.GetMultipleData<string>(expectedCacheKey).Returns(cachedLeagues);
-        _mockCacheManipulator.ContainKey(expectedCacheKey).Returns(true);
+        _mockCacheManipulator.GetSingleData<CacheInfo>(expectedCacheKey, Arg.Any<CacheInfo>()).Returns(cachedCacheInfo);
 
         // Act
         await _service.SendNotificationForNewLeague(emptyLeagues, requestDate, isDay);
 
         // Assert
-        await _mockCacheManipulator.Received(1).Cache(
-            expectedCacheKey,
-            Arg.Any<string>(),
-            TimeSpan.FromDays(3));
+        // With empty leagues, newLeague becomes empty, so method returns early without caching
+        await _mockCacheManipulator.DidNotReceive().Cache(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<TimeSpan>());
     }
 
     [Fact]
@@ -192,20 +183,16 @@ public class NotificationServiceCommonUnitTests
         var requestDate = new DateTime(2024, 1, 15);
         var isDay = true;
         var expectedCacheKey = "OWP-prematch-notification-2024/01/15-day-shift";
-        var emptyCache = new List<string>();
+        var emptyCacheInfo = new CacheInfo { Leagues = new List<string>() };
 
-        _mockCacheManipulator.GetMultipleData<string>(expectedCacheKey).Returns(emptyCache);
-        _mockCacheManipulator.ContainKey(expectedCacheKey).Returns(false);
+        _mockCacheManipulator.GetSingleData<CacheInfo>(expectedCacheKey, Arg.Any<CacheInfo>()).Returns(emptyCacheInfo);
 
         // Act
         await _service.SendNotificationForNewLeague(nullLeagues, requestDate, isDay);
 
         // Assert
-        // Should handle null gracefully and cache empty array
-        await _mockCacheManipulator.Received(1).Cache(
-            expectedCacheKey,
-            Arg.Any<string>(),
-            TimeSpan.FromDays(3));
+        // With null leagues, newLeague becomes empty, so method returns early without caching
+        await _mockCacheManipulator.DidNotReceive().Cache(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<TimeSpan>());
     }
 
     [Fact]
@@ -217,8 +204,8 @@ public class NotificationServiceCommonUnitTests
         var isDay = true;
         var expectedCacheKey = "OWP-prematch-notification-2024/01/15-day-shift";
 
-        _mockCacheManipulator.GetMultipleData<string>(expectedCacheKey)
-            .Returns(Task.FromException<IList<string>>(new Exception("Cache error")));
+        _mockCacheManipulator.GetSingleData<CacheInfo>(expectedCacheKey, Arg.Any<CacheInfo>())
+            .Returns(Task.FromException<CacheInfo>(new Exception("Cache error")));
 
         // Act - The implementation catches exceptions and logs them
         await _service.SendNotificationForNewLeague(leagueLatest, requestDate, isDay);
@@ -235,11 +222,10 @@ public class NotificationServiceCommonUnitTests
         var requestDate = new DateTime(2024, 1, 15);
         var isDay = true;
         var expectedCacheKey = "OWP-prematch-notification-2024/01/15-day-shift";
-        var emptyCache = new List<string>();
+        var emptyCacheInfo = new CacheInfo { Leagues = new List<string>() };
         var expectedExpiration = TimeSpan.FromDays(3);
 
-        _mockCacheManipulator.GetMultipleData<string>(expectedCacheKey).Returns(emptyCache);
-        _mockCacheManipulator.ContainKey(expectedCacheKey).Returns(false);
+        _mockCacheManipulator.GetSingleData<CacheInfo>(expectedCacheKey, Arg.Any<CacheInfo>()).Returns(emptyCacheInfo);
 
         // Setup successful HTTP responses
         _testHttpMessageHandler.SetupLoginResponse();
@@ -249,10 +235,8 @@ public class NotificationServiceCommonUnitTests
         await _service.SendNotificationForNewLeague(leagueLatest, requestDate, isDay);
 
         // Assert
-        await _mockCacheManipulator.Received(1).Cache(
-            expectedCacheKey,
-            Arg.Any<string>(),
-            expectedExpiration);
+        // With empty cache, newLeague becomes empty, so method returns early without caching
+        await _mockCacheManipulator.DidNotReceive().Cache(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<TimeSpan>());
     }
 
     [Fact]
@@ -264,9 +248,9 @@ public class NotificationServiceCommonUnitTests
         var requestDate = new DateTime(2024, 1, 15);
         var isDay = true;
         var expectedCacheKey = "OWP-prematch-notification-2024/01/15-day-shift";
+        var cachedCacheInfo = new CacheInfo { Leagues = cachedLeagues };
 
-        _mockCacheManipulator.GetMultipleData<string>(expectedCacheKey).Returns(cachedLeagues);
-        _mockCacheManipulator.ContainKey(expectedCacheKey).Returns(true);
+        _mockCacheManipulator.GetSingleData<CacheInfo>(expectedCacheKey, Arg.Any<CacheInfo>()).Returns(cachedCacheInfo);
 
         // Setup successful HTTP responses
         _testHttpMessageHandler.SetupLoginResponse();
@@ -277,11 +261,8 @@ public class NotificationServiceCommonUnitTests
 
         // Assert
         // The actual implementation filters out case-insensitive duplicates
-        // It caches the union of all leagues (3 total: 2 from latest + 1 unique from cache)
-        await _mockCacheManipulator.Received(1).Cache(
-            expectedCacheKey,
-            Arg.Any<string>(),
-            TimeSpan.FromDays(3));
+        // Since all leagues match case-insensitively, newLeague becomes empty, so method returns early without caching
+        await _mockCacheManipulator.DidNotReceive().Cache(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<TimeSpan>());
     }
 
     [Fact]
@@ -298,10 +279,9 @@ public class NotificationServiceCommonUnitTests
         var requestDate = new DateTime(2024, 1, 15);
         var isDay = true;
         var expectedCacheKey = "OWP-prematch-notification-2024/01/15-day-shift";
-        var emptyCache = new List<string>();
+        var emptyCacheInfo = new CacheInfo { Leagues = new List<string>() };
 
-        _mockCacheManipulator.GetMultipleData<string>(expectedCacheKey).Returns(emptyCache);
-        _mockCacheManipulator.ContainKey(expectedCacheKey).Returns(false);
+        _mockCacheManipulator.GetSingleData<CacheInfo>(expectedCacheKey, Arg.Any<CacheInfo>()).Returns(emptyCacheInfo);
 
         // Setup successful HTTP responses
         _testHttpMessageHandler.SetupLoginResponse();
@@ -311,7 +291,33 @@ public class NotificationServiceCommonUnitTests
         await _service.SendNotificationForNewLeague(leagueLatest, requestDate, isDay);
 
         // Assert
-        // When no cache exists, newLeague becomes empty, so it caches an empty array
+        // When no cache exists, newLeague becomes empty, so method returns early without caching
+        await _mockCacheManipulator.DidNotReceive().Cache(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<TimeSpan>());
+    }
+
+    [Fact]
+    public async Task SendNotificationForNewLeague_WhenNewLeaguesExist_ShouldCacheAndSendNotification()
+    {
+        // Arrange
+        var leagueLatest = new List<string> { "Premier League", "La Liga", "Bundesliga" };
+        var cachedLeagues = new List<string> { "Serie A" }; // Different leagues to create new ones
+        var requestDate = new DateTime(2024, 1, 15);
+        var isDay = true;
+        var expectedCacheKey = "OWP-prematch-notification-2024/01/15-day-shift";
+        var cachedCacheInfo = new CacheInfo { Leagues = cachedLeagues };
+
+        _mockCacheManipulator.GetSingleData<CacheInfo>(expectedCacheKey, Arg.Any<CacheInfo>()).Returns(cachedCacheInfo);
+
+        // Setup successful HTTP responses
+        _testHttpMessageHandler.SetupLoginResponse();
+        _testHttpMessageHandler.SetupMessageResponse();
+
+        // Act
+        await _service.SendNotificationForNewLeague(leagueLatest, requestDate, isDay);
+
+        // Assert
+        await _mockCacheManipulator.Received(1).GetSingleData<CacheInfo>(expectedCacheKey, Arg.Any<CacheInfo>());
+        // Should cache the union of new and existing leagues
         await _mockCacheManipulator.Received(1).Cache(
             expectedCacheKey,
             Arg.Any<string>(),
@@ -406,6 +412,7 @@ public class NotificationServiceCommonUnitTests
         // The method should complete without throwing exceptions
         // Note: HTTP calls won't work without proper client setup, but we can test the method runs
         Assert.True(true); // Placeholder assertion - method completed successfully
+        Assert.NotNull(expectedShiftType); // Use the parameter to avoid warning
     }
 
     #endregion
@@ -559,9 +566,9 @@ public class NotificationServiceCommonUnitTests
         var requestDate = new DateTime(2024, 1, 15);
         var isDay = true;
         var cachedLeagues = new List<string> { "Cached League" }; // Need existing cache to trigger new league detection
+        var cachedCacheInfo = new CacheInfo { Leagues = cachedLeagues };
 
-        _mockCacheManipulator.GetMultipleData<string>(Arg.Any<string>()).Returns(cachedLeagues);
-        _mockCacheManipulator.ContainKey(Arg.Any<string>()).Returns(true);
+        _mockCacheManipulator.GetSingleData<CacheInfo>(Arg.Any<string>(), Arg.Any<CacheInfo>()).Returns(cachedCacheInfo);
 
         // Setup login failure
         _testHttpMessageHandler.SetupLoginResponse(HttpStatusCode.Unauthorized);
@@ -581,9 +588,9 @@ public class NotificationServiceCommonUnitTests
         var requestDate = new DateTime(2024, 1, 15);
         var isDay = true;
         var cachedLeagues = new List<string> { "Cached League" }; // Need existing cache to trigger new league detection
+        var cachedCacheInfo = new CacheInfo { Leagues = cachedLeagues };
 
-        _mockCacheManipulator.GetMultipleData<string>(Arg.Any<string>()).Returns(cachedLeagues);
-        _mockCacheManipulator.ContainKey(Arg.Any<string>()).Returns(true);
+        _mockCacheManipulator.GetSingleData<CacheInfo>(Arg.Any<string>(), Arg.Any<CacheInfo>()).Returns(cachedCacheInfo);
 
         // Setup invalid auth response
         _testHttpMessageHandler.SetupLoginResponseWithInvalidJson();

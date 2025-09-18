@@ -55,11 +55,7 @@ app.Run(async context =>
     var request = context.Request.Path.HasValue
     ? context.Request.Path.Value
     : string.Empty;
-#if DEBUG
-    var shiftNotificationService = context.RequestServices.GetService<NightShiftNotificationService>();
-    await shiftNotificationService.SendNotificationForNewLeague();
     await context.Response.WriteAsync($"OWP Notification Services. Request Path = {request}");
-#endif
 });
 
 await app.RunAsync();

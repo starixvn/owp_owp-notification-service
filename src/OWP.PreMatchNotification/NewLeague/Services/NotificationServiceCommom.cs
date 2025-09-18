@@ -9,6 +9,7 @@ using OWP.Core.Exceptions;
 using Olympus.OWP.Cache;
 using OWP.Core.Services;
 using OWP.Core.Utils;
+using OWP.PreMatchNotification.NewLeague.Models;
 
 namespace OWP.PreMatchNotification.NewLeague.Services
 {
@@ -47,11 +48,16 @@ namespace OWP.PreMatchNotification.NewLeague.Services
             {
 
                 var cacheKey = Utils.BuildPrematchNotificationCacheKey(requestDate, isDay);
-                var leagueInCache = await cacheManipulator.GetMultipleData<string>(cacheKey);
+                var currentCacheInfo = await cacheManipulator.GetSingleData(cacheKey, new CacheInfo());
 
-                var newLeague = !leagueInCache.Any()
+                var newLeague = !currentCacheInfo.Leagues.Any()
                     ? []
-                    : leagueLatest.Except(leagueInCache, StringComparer.OrdinalIgnoreCase).ToList();
+                    : leagueLatest.Except(currentCacheInfo.Leagues, StringComparer.OrdinalIgnoreCase).ToList();
+
+                if (!newLeague.Any())
+                {
+                    return;
+                }
 
                 var filteredLeagues = FilterAllowedLeagues(newLeague);
 
@@ -63,11 +69,16 @@ namespace OWP.PreMatchNotification.NewLeague.Services
                     await MessageToChannelInBatches(filteredLeagues, isDay, requestDate);
                     await rocketChatService.LogOutRC(client);
                 }
-
-                var assignmentSnapshotInJson = JsonConvert.SerializeObject(newLeague.Union(leagueInCache));
-                await cacheManipulator.Cache(cacheKey, assignmentSnapshotInJson,
+                var newCache = JsonConvert.SerializeObject(new CacheInfo
+                {
+                    Actor = currentCacheInfo.Actor,
+                    Leagues = newLeague.Union(currentCacheInfo.Leagues).ToList(),
+                });
+               
+                await cacheManipulator.Cache(cacheKey, newCache,
                     TimeSpan.FromDays(CACHE_EXPIRED_IN_3_DAYS));
 
+                await LogDetailedPayload(DateTimeConverter.ToGmt8(DateTime.Now), "[Prematch_Notification]", newCache);
             }
             catch (RocketChatException ex)
             {
