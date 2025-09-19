@@ -8,7 +8,7 @@ namespace OWP.PreMatchNotification.NewLeague.Helper
         public static IList<string> ExcludeLeagueTest(IList<RCPrematchLeagueInfo> leagues,
             IList<RCInfoSiteMatch> infoSiteMatches)
         {
-            return leagues.Where(l=>infoSiteMatches.Any(i=>i.LeagueId==l.LeagueId && !i.IsTest)).
+            return leagues.Where(l=>infoSiteMatches.Any(i=>i.LeagueId==l.LeagueId)).
                 Select(x=>x.LeagueName)
                 .ToList();
         }
