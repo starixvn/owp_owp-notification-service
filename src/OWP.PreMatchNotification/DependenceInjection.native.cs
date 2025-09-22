@@ -2,6 +2,7 @@
 using OWP.PreMatchNotification.Assignment;
 using OWP.PreMatchNotification.LinkedMatch;
 using OWP.PreMatchNotification.NewLeague;
+using OWP.PreMatchNotification.NewLeague.Services;
 using LinkedMatches = OWP.PreMatchNotification.LinkedMatch.Services;
 using MyAssignment = OWP.PreMatchNotification.Assignment.Services.MyAssignment;
 using NewLeagues = OWP.PreMatchNotification.NewLeague.Services;
@@ -50,5 +51,9 @@ public static class DependenceInjection
         // NewLeague
         services.AddMediatR(x => x.RegisterServicesFromAssemblies(typeof(NewLeagueNotifyHandler).Assembly));
         services.AddTransient<NewLeagues.NewLeagueValueGenerator, NewLeagues.NewLeagueValueGeneratorImp>();
+
+        services.AddTransient<NightShiftNotificationService, NightShiftNotificationServiceImp>();
+        services.AddTransient<DayShiftNotificationService, DayShiftNotificationServiceImp>();
+        services.AddTransient<NotificationServiceCommon, NotificationServiceCommonImp>();
     }
 }

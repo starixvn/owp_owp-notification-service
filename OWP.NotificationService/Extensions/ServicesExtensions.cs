@@ -45,6 +45,7 @@ public static class ServicesExtensions
         services.AddTransient<QueryMessageService, QueryMessageServiceImp>();
         services.AddTransient<IDynamicRepository, DynamicRepository>();
         services.AddTransient<Notify.NotificationService, NotificationServiceImp>();
+        services.AddTransient<RocketChatService, RocketChatServiceImp>();
         return services;
     }
 

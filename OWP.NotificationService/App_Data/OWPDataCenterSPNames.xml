@@ -22,6 +22,7 @@
 			<Setting Key="OWP_PreMatchNotification_QueryLeagueAssigneeByOWPLeagueIds" SpName="OWP_PreMatchNotification_QueryLeagueAssigneeByOWPLeagueIds" DbName="DBOWP.bodb_OWP.wsv_owp" />
 			<Setting Key="OWP_PreMatchNotification_QueryAssignmentByPreMatchLeagueId" SpName="OWP_PreMatchNotification_QueryAssignmentByPreMatchLeagueId" DbName="DBOWP.bodb_OWP.wsv_owp" />
 			<Setting Key="OWP_PreMatchNotification_QueryInfoSiteMatchByOWPLeagueIds" SpName="OWP_PreMatchNotification_QueryInfoSiteMatchByOWPLeagueIds" DbName="DBOWP.bodb_OWP.wsv_owp" />
+			<Setting Key="OWP_PreMatchAssignment_QueryDayShift" SpName="OWP_PreMatchAssignment_QueryDayShift" DbName="DBOWP.bodb_OWP.wsv_owp" />
 		</Function>
 		<Function Name="AssignmentUpload">
 			<Setting Key="OWP_AssignmentUpload_AllAssignmentsByTimeRange" SpName="OWP_AssignmentUpload_AllAssignmentsByTimeRange" DbName="DBOWP.bodb_OWP.wsv_owp" />
@@ -33,5 +34,9 @@
 			<Setting Key="OWP_OSAssignmentUpload_GetSectionBBSupportive" SpName="OWP_OSAssignmentUpload_GetSectionBBSupportive" DbName="DBOWP.bodb_OWP.wsv_owp" />
 			<Setting Key="OWP_InternalSystem_WriteLog" SpName="OWP_InternalSystem_WriteLog" DbName="DBOWP.bodb_OWP.wsv_owp" />
 		</Function>
+        <Function Name="OS_AssignmentUpload">
+            <Setting Key="OWP_PreMatchAssignment_QueryDayShift" SpName="OWP_PreMatchAssignment_QueryDayShift" DbName="DBOWP.bodb_OWP.wsv_owp" />
+            <Setting Key="OWP_PreMatchAssignment_GetStartTimeForNightShift" SpName="OWP_PreMatchAssignment_GetStartTimeForNightShift" DbName="DBOWP.bodb_OWP.wsv_owp" />
+        </Function>
 	</Function>
 </Functions>

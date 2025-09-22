@@ -3,13 +3,16 @@ using Fanex.Logging.Sentry.RavenClient;
 using OWP.AssignmentUploadNotification;
 using OWP.LiveDetailNotification;
 using OWP.NotificationService;
+using OWP.NotificationService.CrossCuttingConcern;
 using OWP.NotificationService.Extensions;
 using OWP.OddsCompilerNotification;
 using OWP.OtherSportNotification;
 using OWP.PreMatchNotification;
+using OWP.PreMatchNotification.NewLeague.Services;
 using OWP.RabbitMQ;
 using OWP.RabbitMQ.Models;
 using OWP.TicketNotification;
+using System.Diagnostics;
 var builder = WebApplication.CreateBuilder(args);
 var services= builder.Services;
 var configuration = builder.Configuration;
@@ -44,7 +47,7 @@ services.AddHostedService<GarbageCollectorJob>();
 
 
 var app = builder.Build();
-
+app.UseMiddleware<ErrorHandler>();
 var logger = app.Services.GetRequiredService<Fanex.Logging.ILogger>();
 await logger.InfoAsync("Environment: "+ configuration["Env"]);
 app.Run(async context =>
@@ -52,7 +55,7 @@ app.Run(async context =>
     var request = context.Request.Path.HasValue
     ? context.Request.Path.Value
     : string.Empty;
-    await context.Response.WriteAsync($"OWP Worker Services. Request Path = {request}");
+    await context.Response.WriteAsync($"OWP Notification Services. Request Path = {request}");
 });
 
 await app.RunAsync();

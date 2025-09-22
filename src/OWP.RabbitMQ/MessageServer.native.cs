@@ -62,7 +62,7 @@ public class MessageServer(
     {
         try
         {
-            var props = eventArgs.BasicProperties;
+             var props = eventArgs.BasicProperties;
 
             var body = eventArgs.Body.ToArray();
             var requestMessage = Encoding.UTF8.GetString(body);

@@ -10,6 +10,10 @@ public interface CacheManipulatorCommon
     Task<T> GetSingleData<T>(string key, T defaultValue);
 
     Task RemoveData(string key);
+
+    bool ContainKey(string key);
+
+    Task Cache(string key, string value, TimeSpan expire);
 }
 
 public class CacheManipulatorCommonImp(ICache cache) : CacheManipulatorCommon
@@ -37,10 +41,10 @@ public class CacheManipulatorCommonImp(ICache cache) : CacheManipulatorCommon
     public async Task RemoveData(string key)
         => await cache.RemoveAsync(key);
 
-    public void Cache(string key, string value)
+    public async Task Cache(string key, string value, TimeSpan expire)
     {
-        var cachePolicy = new CacheItemOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(30));
-        cache.Set(key, value, cachePolicy);
+        var cachePolicy = new CacheItemOptions().SetAbsoluteExpiration(expire);
+        await cache.SetAsync(key, value, cachePolicy);
     }
 
     public bool ContainKey(string key)

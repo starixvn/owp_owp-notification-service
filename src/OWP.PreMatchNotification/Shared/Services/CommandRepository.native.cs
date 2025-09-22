@@ -1,5 +1,7 @@
 ﻿using Fanex.Data.Repository;
 using Olympus.Xml;
+using OWP.PreMatchNotification.NewLeague.Criteria;
+using OWP.PreMatchNotification.NewLeague.Models;
 using OWP.PreMatchNotification.Shared.Criteria;
 using OWP.PreMatchNotification.Shared.Models;
 
@@ -14,6 +16,12 @@ public interface CommandRepository
     Task<IList<Assignee>> GetPreMatchLeagueAssignees(IList<int> preMatchLeagueIds);
 
     Task<IList<Assignee>> GetPreMatchLeagueAssigneesByOWPLeagueIds(IList<int> owpLeagueIds, DateTime eventDate);
+
+    Task<TimeSpan?> QueryExistedStartTime(DateTime eventDate);
+
+    Task<(List<RCPrematchLeagueInfo>, List<RCInfoSiteMatch>)> QueryDayShiftPreMatchAssignments(
+        QueryShiftPreMatchCriteria criteria);
+
 }
 
 public class CommandRepositoryImp(IDynamicRepository dynamicRepository) : CommandRepository
@@ -64,5 +72,23 @@ public class CommandRepositoryImp(IDynamicRepository dynamicRepository) : Comman
         var result = await dynamicRepository.FetchAsync<Assignee>(criteria).ConfigureAwait(false);
 
         return result.ToList();
+    }
+
+    public async Task<(List<RCPrematchLeagueInfo>, List<RCInfoSiteMatch>)> QueryDayShiftPreMatchAssignments(QueryShiftPreMatchCriteria criteria)
+    {
+        var (preMatchLeagues, infoSiteMatches) = await dynamicRepository.FetchMultipleAsync<RCPrematchLeagueInfo, RCInfoSiteMatch>(criteria);
+
+        return (preMatchLeagues.ToList(), infoSiteMatches.ToList());
+    }
+
+    public async Task<TimeSpan?> QueryExistedStartTime(DateTime eventDate)
+    {
+        var criteria = new GetStartTimeCriteria
+        {
+            EventDate = eventDate
+        };
+        var result = (await dynamicRepository.FetchAsync<TimeSpan>(criteria)).ToList();
+
+        return result.Any() ? result.FirstOrDefault() : null;
     }
 }
