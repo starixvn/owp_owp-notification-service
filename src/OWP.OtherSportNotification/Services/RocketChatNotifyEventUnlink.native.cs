@@ -29,12 +29,8 @@ namespace OWP.OtherSportNotification.Services
                 var (fromDate, toDate) = NormalizeTimeRange(request.FromDate, request.ToDate);
                 var (basketballGroup, tennisGroup, otherGroup) = CategoryEventBySportType(eventsUnlinkInfo);
                 var eventsWillSendNotyBasketballGroup = await BuildEventWillSendNoty(fromDate, toDate, basketballGroup);
-                var eventsWillSendNotyTennisGroup = await BuildEventWillSendNoty(fromDate, toDate, tennisGroup);
-                var eventsWillSendNotyOtherGroup = await BuildEventWillSendNoty(fromDate, toDate, otherGroup);
 
                 var allEvents = eventsWillSendNotyBasketballGroup
-                    .Concat(eventsWillSendNotyTennisGroup)
-                    .Concat(eventsWillSendNotyOtherGroup)
                     .ToList();
 
                 var osIdAlreadySendNoty = await SendMessagesInBatches(client, allEvents, request);
@@ -145,7 +141,8 @@ namespace OWP.OtherSportNotification.Services
 
             var excludedSports = new[] { "Volleyball", "Handball", "Ice Hockey", "Table Tennis" };
             return Array.Exists(excludedSports, excluded => sport.Equals(excluded, StringComparison.OrdinalIgnoreCase))
-                || (league.Contains("Muay Thai", StringComparison.OrdinalIgnoreCase) && sport.Equals("Other Sports", StringComparison.OrdinalIgnoreCase));
+                || (league.Contains("Muay Thai", StringComparison.OrdinalIgnoreCase) && sport.Equals("Other Sports", StringComparison.OrdinalIgnoreCase))
+                || league.Contains("SABA", StringComparison.OrdinalIgnoreCase);
         }
 
         private async Task<List<int>> SendMessagesInBatches(HttpClient client, IList<MatchInfo> events, OtherSportNotificationRequest request)
